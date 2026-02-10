@@ -100,16 +100,11 @@ class LoadedObject(NameContainable):
 
     def integrateModule(self, module) -> None:
         if app.Config != None:
-            self.appendSettings()
+            app.Config.appendModule(self.getModule())
 
         if self.mounted == False:
             self.mounted = True
             module.mount()
-
-    def appendSettings(self) -> None:
-        _settings = self.getModule().getSettings()
-        for _item in _settings:
-            app.Config.getItem(role = _item.role).append_compare(_item)
 
     def is_name_equals(self, name: str) -> str:
         _parts = self.getTitleWithClass()

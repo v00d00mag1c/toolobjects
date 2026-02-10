@@ -10,7 +10,7 @@ class Image(FileType):
     _img = None
 
     @classmethod
-    def _required_modules(cls):
+    def _requirements(cls):
         return [
             Requirement(
                 name = 'imageio',

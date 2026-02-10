@@ -18,7 +18,7 @@ class Submodule(Link):
     convertation: will be used for convertTo
     '''
 
-    role: list[Literal['usage', 'action', 'object_in', 'object_out', 'object', 'thumbnail', 'common', 'wheel', 'convertation', 'test'] | str] = Field(default = ['common'])
+    role: list[Literal['usage', 'action', 'object_in', 'object_out', 'object', 'thumbnail', 'common', 'wheel', 'convertation', 'test', 'returns'] | str] = Field(default = ['common'])
 
     @field_serializer('item')
     def get_item(self, item) -> str:

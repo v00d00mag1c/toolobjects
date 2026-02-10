@@ -11,7 +11,7 @@ class PostRun(Object):
             if item.is_inited == False:
                 continue
 
-            item.appendSettings()
+            app.Config.appendModule(item.getModule())
 
         # Creating root if not exists
         default_root_password = 'root'

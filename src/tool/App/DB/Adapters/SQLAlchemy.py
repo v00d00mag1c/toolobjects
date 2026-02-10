@@ -256,7 +256,7 @@ class SQLAlchemy(ConnectionAdapter):
         Base.metadata.create_all(self_adapter._engine)
 
     @classmethod
-    def _required_modules(cls):
+    def _requirements(cls):
         return [
             Requirement(
                 name = 'sqlalchemy',
