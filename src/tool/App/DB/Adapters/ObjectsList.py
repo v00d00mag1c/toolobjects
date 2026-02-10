@@ -127,7 +127,7 @@ class ObjectsList(ConnectionAdapter):
 
                 self.owner = owner.uuid
                 self.target = link.item.getDbId()
-                if len(link.data.role) > 0:
+                if link.data != None:
                     self.data = link.data
 
                 link.setDb(self)

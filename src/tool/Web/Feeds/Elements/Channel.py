@@ -13,14 +13,6 @@ class Channel(Element):
     language: str | None = Field(default = None)
     ttl: int | None = Field(default = None)
 
-    def update_data(self, channel: dict):
-        self.title = channel.get('title')
-        self.description = channel.get('description')
-        self.channel_link = channel.get('link')
-        self.generator = channel.get('generator')
-        self.copyright = channel.get('copyright')
-        self.language = channel.get('language')
-
     @classmethod
     def fromElement(cls, element: ET):
         channel = cls()

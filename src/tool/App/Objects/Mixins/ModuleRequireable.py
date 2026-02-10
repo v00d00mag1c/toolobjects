@@ -1,4 +1,3 @@
-from importlib.metadata import distributions
 from pydantic import BaseModel
 
 class ModuleRequireable(BaseModel):
@@ -7,6 +6,7 @@ class ModuleRequireable(BaseModel):
         '''
         pip modules that required by object
         '''
+
         return []
 
     @classmethod
@@ -15,14 +15,9 @@ class ModuleRequireable(BaseModel):
 
     @classmethod
     def getNotInstalledModules(self) -> list:
-        all_installed = {dist.metadata["Name"].lower() for dist in distributions()}
-        satisf_libs = []
         not_libs = []
-
         for required_module in self._requirements():
-            if required_module.name in all_installed:
-                satisf_libs.append(required_module)
-            else:
+            if required_module.is_installed() == False:
                 not_libs.append(required_module)
 
         return not_libs

@@ -23,14 +23,17 @@ class Atom(FeedProtocol):
     def _get_channel(self, data: ET):
         channel = Channel()
 
-        for key in ['title', 'subtitle', 'id']:
+        for key in ['title', 'subtitle', 'id', 'link']:
             _val = data.find('./xmlns:'+key, self.namespaces)
 
-            if _val != None:
-                setattr(channel, key, _val.text)
-
-        if data.find('link') != None:
-            channel.link_item = Link.from_xml(data.find('link'))
+            match(key):
+                case 'title':
+                    channel.obj.name = _val.text
+                case 'link':
+                    channel.link_item = Link.from_xml(data.find('link'))
+                case _:
+                    if _val != None:
+                        setattr(channel, key, _val.text)
 
         return channel
 

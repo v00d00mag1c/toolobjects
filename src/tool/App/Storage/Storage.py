@@ -36,7 +36,7 @@ class Storage(Object):
 
                 item._init_hook()
                 self.append(item)
-                self.log('loaded custom storage item {0}'.format(item.name), role = ['storage.item.loading'])
+                self.log('loaded custom storage {0}'.format(item.name), role = ['storage.item.loading'])
             except Exception as e:
                 self.log_error(e)
 

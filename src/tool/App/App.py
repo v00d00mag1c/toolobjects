@@ -7,6 +7,7 @@ from App.Objects.Arguments.Argument import Argument
 from pathlib import Path
 from pydantic import ConfigDict
 from typing import Any
+from importlib.metadata import distributions
 import queue
 import asyncio
 import threading
@@ -22,6 +23,7 @@ class App(Object):
     # Args
     argv: dict = None
     conf_override: dict = None
+    installed_modules: list = None
 
     # Internal
     loop: Any = None
@@ -40,6 +42,8 @@ class App(Object):
         self.storage = self.src.joinpath('storage') # default storage
         self.storage.mkdir(exist_ok = True)
         self.loop = asyncio.new_event_loop()
+        self.installed_modules = {dist.metadata["Name"].lower() for dist in distributions()}
+
         asyncio.set_event_loop(self.loop)
 
         self.executables_id = Increment()
