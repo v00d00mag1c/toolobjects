@@ -1,4 +1,4 @@
-from App.Executables.Extractor import Extractor
+from App.Objects.Extractor import Extractor
 from App.Arguments.Types.Int import Int
 from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from Data.Number import Number

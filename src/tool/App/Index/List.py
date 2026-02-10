@@ -14,7 +14,7 @@ class List(Object):
     priority_names: list = [
         'App\\Storage\\Config.py', 
         'App\\Logger\\Logger.py', 
-        'App\\Storage\\Storage.py', 
+        #'App\\Storage\\Storage.py', 
         'Web\\DownloadManager\\Manager.py'
     ]
 
@@ -73,8 +73,9 @@ class List(Object):
 
         category="App.Objects" - returns all plugins from App\\Objects
         '''
-        for item in self.items:
-            if '.'.join(item.category).startswith(category):
+        for item in self.items.toList():
+            # TODO: add a better check
+            if '.'.join(item.category).startswith('.'.join(category)):
                 yield item
 
     def getByName(self, key: str, class_name = None) -> LoadedObject:

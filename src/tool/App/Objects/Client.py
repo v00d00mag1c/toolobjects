@@ -1,5 +1,5 @@
 from App.Objects.Executable import Executable
-from App.Executables.Wheel import Wheel
+from App.Objects.Wheel import Wheel
 from typing import ClassVar
 
 class Client(Wheel):

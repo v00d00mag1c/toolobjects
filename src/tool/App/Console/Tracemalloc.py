@@ -1,4 +1,4 @@
-from App.Executables.Act import Act
+from App.Objects.Act import Act
 from App.Responses.AnyResponse import AnyResponse
 import tracemalloc
 

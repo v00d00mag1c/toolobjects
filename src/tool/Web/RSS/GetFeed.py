@@ -1,4 +1,4 @@
-from App.Executables.Extractor import Extractor
+from App.Objects.Extractor import Extractor
 
 class GetFeed(Extractor):
     pass

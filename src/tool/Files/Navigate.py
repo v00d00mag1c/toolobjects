@@ -1,4 +1,4 @@
-from App.Executables.Act import Act
+from App.Objects.Act import Act
 from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Arguments.Types.String import String
 from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion

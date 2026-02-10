@@ -1,4 +1,4 @@
-from App.DB.Adapters.Connection.ConnectionAdapter import ConnectionAdapter
+from App.DB.Adapters.ConnectionAdapter import ConnectionAdapter
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, event, String
 from snowflake import SnowflakeGenerator

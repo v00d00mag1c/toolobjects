@@ -6,7 +6,7 @@ class Linkable:
     Object that can contain links to other objects
     '''
 
-    links: list[Link] = Field(default=[], exclude = True)
+    links: list[Link] = Field(default=[], exclude = True, repr = False)
 
     def addLink(self, item: Link) -> None:
         self.links.append(item)

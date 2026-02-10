@@ -22,7 +22,7 @@ class App(Object):
     hook_thread: Any = None
     executables_id: Increment = None
 
-    def _constructor(self):
+    def constructor(self):
         _args = self._parse_argv(sys.argv)
         self.argv = _args[0]
         self.conf_override = _args[1]
@@ -34,6 +34,34 @@ class App(Object):
         self.loop = asyncio.new_event_loop()
         self.executables_id = Increment()
         self.hook_thread = HookThread()
+
+    def loadPlugins(self, search_dir: Path):
+        self.objects = ObjectsList()
+        self.objects.load(search_dir)
+
+    def loadView(self) -> None:
+        from App.View import View
+
+        '''
+        Firstly it creates temp view that allows to mount globals without errors.
+        Then it loads ObjectsList. Then it finds needed view and sets is as a common. Then it executes the action of this view.
+        The globals are left cuz they are mounted to Wrap.
+        '''
+        tmp_view = View(app = self)
+        tmp_view.setAsCommon()
+
+        self.loadPlugins(self.cwd)
+
+        view_name = self.argv.get('view', 'App.Console.Console.Console')
+        view_class = self.objects.getByName(view_name)
+        view: View = view_class.getModule()()
+        view.setAsCommon()
+        view.setApp(self)
+
+        return view
+
+    async def runView(self, view) -> None:
+        await view.execute(self.argv)
 
     def _parse_argv(self, args):
         '''
@@ -77,10 +105,6 @@ class App(Object):
                     pass
 
         return ARGS, CONF_VALS
-
-    def load_plugins(self, search_dir: Path):
-        self.objects = ObjectsList()
-        self.objects.load(search_dir)
 
 class HookThread():
     '''

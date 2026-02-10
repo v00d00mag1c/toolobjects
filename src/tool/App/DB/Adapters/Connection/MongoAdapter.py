@@ -1,4 +1,4 @@
-from App.DB.Adapters.Connection.ConnectionAdapter import ConnectionAdapter
+from App.DB.Adapters.ConnectionAdapter import ConnectionAdapter
 
 class MongoAdapter(ConnectionAdapter):
     pass
