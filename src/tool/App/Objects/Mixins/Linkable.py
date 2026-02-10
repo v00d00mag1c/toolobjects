@@ -18,6 +18,11 @@ class Linkable():
         )
         return self.addLink(_link)
 
+    def __add__(self, object):
+        self.link(object)
+
+        return self
+
     def unlink(self, item: Link) -> None:
         pass
 

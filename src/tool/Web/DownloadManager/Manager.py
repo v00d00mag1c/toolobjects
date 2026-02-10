@@ -48,6 +48,8 @@ class Manager(Object):
                 name = _dir.hash + '.oct'
             _dir.setCommonFile(_dir.getDir().joinpath(name))
             _dir = str(_dir.getDir())
+        else:
+            _dir = str(_dir)
 
         _item = Item(
             url = url,

@@ -64,7 +64,7 @@ class ConfigItem(Object):
         self.updateFile()
 
     def check_file(self):
-        self.path.mkdir(parents=True,exist_ok=True)
+        self.path.mkdir(exist_ok = True)
         if self.file.exists() == False:
             temp_stream = open(self.file, 'w', encoding='utf-8')
             default_settings = dict()

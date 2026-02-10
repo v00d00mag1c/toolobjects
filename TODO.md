@@ -84,13 +84,23 @@ modules:
 - [x] Media.Text.Text
 - [x] Abstract.TODO or Abstract.Checkmarks
 
+web crawler:
+
+- [ ] images downloading
+- [ ] css assets downloading
+- [ ] css assets downloading: data:base64
+- [ ] removing scripts mode
+- [ ] screenshot taker
+- [ ] href and src replacer
+- [ ] setting every style of element mode
+- [ ] fonts downloading
+
 web:
 
 - [x] WebServer
 - [ ] websocket connection: set event_index in executable to distinguish variables messages
-- [ ] main blocks
+- [ ] flutter maybe
 - [ ] displaytype=js_module
-- [ ] svelte modules
 
 others:
 

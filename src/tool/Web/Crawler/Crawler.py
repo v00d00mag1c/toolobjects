@@ -12,19 +12,18 @@ from urllib.parse import urlparse
 from pydantic import Field
 import asyncio
 
-from bs4 import BeautifulSoup
 
 class Crawler(Object):
     webdriver: Webdriver = Field(default = None)
+    url_override: str = Field(default = None)
 
     async def start_webdriver(self):
         await self.webdriver.start()
 
     async def set_url(self, url: str):
-        self.webdriver._driver.get(url)
-
         self.log('opened url {0}'.format(url))
 
+        self.webdriver._driver.get(url)
         self.webdriver._driver.implicitly_wait(self.getOption('web.crawler.implicitly_wait'))
 
     async def scroll_down(self):
@@ -56,13 +55,20 @@ class Crawler(Object):
         return self.webdriver._driver.page_source
 
     def get_parsed_html(self):
-        return PageHTML(bs = BeautifulSoup(self.webdriver._driver.page_source, 'html.parser'))
+        return PageHTML.from_html(self.webdriver._driver.page_source)
 
     def get_title(self):
         return self.webdriver._driver.title
 
+    def override_url(self, url: str):
+        self.url_override = url
+
     def get_url(self):
-        return urlparse(self.webdriver._driver.current_url)
+        _url = self.url_override
+        if _url == None:
+            _url = self.webdriver._driver.current_url
+
+        return urlparse(_url)
 
     def get_base_url(self):
         _url = self.get_url()
