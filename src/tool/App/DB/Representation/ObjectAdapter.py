@@ -6,6 +6,7 @@ from App.Objects.Object import Object
 from abc import ABC, abstractmethod
 from App.DB.Representation.AbstractAdapter import AbstractAdapter
 from App.Objects.Misc.UnknownObject import UnknownObject
+from App.Objects.Misc.Migrated import Migrated
 import json
 
 class ObjectAdapter(AbstractAdapter):
@@ -51,6 +52,11 @@ class ObjectAdapter(AbstractAdapter):
             _content = self._parseJson()
             _object_name = _content.get('obj').get('saved_via').get('object_name')
             _class = app.ObjectsList.getByName(_object_name).getModule()
+
+            # If found that class is migrated, use class that it references. also there is content passed, it may be used to check types of schema idk
+            if _class == Migrated:
+                _class = _class.get_migrated_to(_content)
+
             _item = _class.model_validate(_content, strict = False)
             _item.setDb(self)
 

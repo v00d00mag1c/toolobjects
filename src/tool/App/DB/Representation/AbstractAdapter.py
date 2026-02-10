@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from typing import Any
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 
 class AbstractAdapter():
     _adapter: Any = None
@@ -17,17 +18,25 @@ class AbstractAdapter():
     @classmethod
     def getById(cls, uuid: int):
         return cls.getQuery().addCondition(Condition(
-            val1 = 'uuid',
+            val1 = Value(
+                column = 'uuid'
+            ),
             operator = '==',
-            val2 = uuid
+            val2 = Value(
+                value = uuid
+            )
         )).first()
 
     @classmethod
     def getByIds(cls, uuids: list[int]):
         return cls.getQuery().addCondition(Condition(
-            val1 = 'uuid',
+            val1 = Value(
+                column = 'uuid'
+            ),
             operator = 'in',
-            val2 = uuids
+            val2 = Value(
+                value = uuids
+            )
         )).getAll()
 
     @abstractmethod

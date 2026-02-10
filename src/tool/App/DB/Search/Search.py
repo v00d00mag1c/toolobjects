@@ -6,6 +6,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Types.Int import Int
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from App.DB.Query.Sort import Sort
 from App.Storage.Item.StorageItem import StorageItem
 from App.Storage.StorageUUID import StorageUUID
@@ -80,9 +81,13 @@ class Search(Act):
                     _ids.append(linked_item.item.getDb().uuid)
 
             _query.addCondition(Condition(
-                val1 = 'uuid',
+                val1 = Value(
+                    column = 'uuid'
+                ),
                 operator = _operator,
-                val2 = _ids
+                val2 = Value(
+                    value = _ids
+                )
             ))
 
         if len(i.get('uuids')) > 0:
@@ -91,9 +96,13 @@ class Search(Act):
                 _ids_check.append(item_id.uuid)
 
             _query.addCondition(Condition(
-                val1 = 'uuid',
+                val1 = Value(
+                    column = 'uuid'
+                ),
                 operator = 'in',
-                val2 = _ids_check
+                val2 = Value(
+                    value = _ids_check
+                )
             ))
 
         for condition in i.get('sort'):

@@ -100,7 +100,7 @@ class DBInsertable():
                     if _set_db == True:
                         link.setDb(_db_item.addLink(link = link))
 
-                    self.log('flushed link with id {0} order {1}'.format(link.getDbId(), _id), role = ['flushed', 'flushing.link'])
+                    self.log('flushed link with id {0}, order {1}'.format(link.getDbId(), _id), role = ['flushed', 'flushing.link'])
 
                     _id += 1
                 except Exception as e:
@@ -117,7 +117,7 @@ class DBInsertable():
         if into.name == 'tmp':
             _role.append('storage.flushing.tmp')
 
-        self.log(f"flushed item to db {into.name}, uuid: {self.getDbId()}", role = _role)
+        self.log(f"flushed item", role = _role)
 
         return _db_item
 
