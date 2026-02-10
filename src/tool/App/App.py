@@ -16,15 +16,14 @@ class App(Object):
     objects: ObjectsList = None
 
     def _constructor(self):
-        self.argv = self._parse_argv()
+        self.argv = self._parse_argv(sys.argv)
         self.cwd = Path(os.getcwd())
         self.src = self.cwd.parent
         self.loop = asyncio.get_event_loop()
 
-    def _parse_argv(self):
+    def _parse_argv(self, args):
         # didn't changed since sep.2024
         delimiter = '--'
-        args = sys.argv
         parsed_args = {}
         key = None
         for arg in args[1:]:

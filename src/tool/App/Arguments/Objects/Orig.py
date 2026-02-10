@@ -11,11 +11,11 @@ class Orig(Argument):
     def implementation(self, original_value: str):
         if self.orig == None:
             return original_value
-        
-        if isinstance(original_value, self.object):
+
+        if isinstance(original_value, self.orig):
             return original_value
 
-        _item = self.object
+        _item = self.orig
         _item.model_validate(original_value)
 
         return _item(**original_value)

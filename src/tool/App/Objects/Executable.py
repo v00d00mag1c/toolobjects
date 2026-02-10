@@ -3,6 +3,12 @@ from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Responses.Response import Response
 
 class Executable(Object):
+    '''
+    Object that has "execute()" interface, single entrypoint.
+    
+    getArguments(): validation
+    '''
+
     class _Hooks(Object._Hooks):
         @property
         def events(self) -> list:

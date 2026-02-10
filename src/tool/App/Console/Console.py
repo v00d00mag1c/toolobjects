@@ -1,12 +1,16 @@
 from App.Views.View import View
 from App.Arguments.ArgumentsDict import ArgumentsDict
-from Data.DictList import DictList
+from App.Data.DictList import DictList
 from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Arguments.Objects.Executable import Executable
 from App.Logger.Log import Log
 
 class Console(View):
+    '''
+    View that represents CMD. Runs executable from "i"
+    '''
+
     @staticmethod
     def printLog(to_print: Log = None):
         try:

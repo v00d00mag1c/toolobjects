@@ -1,3 +1,5 @@
+# Initialization file
+
 from App.App import App
 
 current = App()

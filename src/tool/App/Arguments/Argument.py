@@ -5,6 +5,21 @@ from typing import Any, List
 from pydantic import Field, computed_field
 
 class Argument(Object):
+    '''
+    Object that allows to define what arguments something (executable) uses.
+    It takes string on input and can convert it to stated in name value.
+
+    Example: App.Arguments.Objects.Executable takes string on input and returns the Plugin from list
+
+    Passes in App.Data.DictList for convenience. So it relays on "name" field
+
+    default: What value will be set if nothing passed
+    assertions: List of App.Arguments.Assertions.*; post-getValue() checks. So it saves "inputs" and "current" for this
+    current: what was got after "getValue()"
+    auto_apply: current will be set after constructor()
+
+    Argument can be used not only for validation, but for storing, for example, Queue "prestart"
+    '''
     name: str = Field()
     default: Any = Field(default = None)
     inputs: str = Field(default = None) # workaround
@@ -14,15 +29,18 @@ class Argument(Object):
 
     current: Any = Field(default=None)
 
-    # This is an abstract method.
-    # I think it should pass self.inputs in i ? i={} as settings will not be used anyway
     def implementation(self, original_value: str) -> Any:
+        '''
+        Abstract method, must be overriden
+        '''
         return original_value
 
     def getValue(self, original_value: Any | str, sets_current: bool = True, *args, **kwargs) -> Any:
+        if original_value == None and self.default != None:
+            original_value = self.default
+
         result = self.implementation(original_value, *args, **kwargs)
         self.inputs = original_value
-
         if sets_current == True:
             self.current = result
 

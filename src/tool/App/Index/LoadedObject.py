@@ -17,13 +17,13 @@ class LoadedObject(Object):
     @property
     def name(self) -> str:
         '''
-        Workaround to get DictList working
+        property to get DictList working
         '''
 
         if self.module == None:
             return '_____' + self.title
 
-        return self.module.meta.class_name_str
+        return self.module.meta.class_name_joined
 
     @staticmethod
     def from_path(path: Path):
@@ -43,7 +43,7 @@ class LoadedObject(Object):
 
     def succeed_load(self):
         self.is_success = True
-        self.log(f"Loaded object {self.module.meta.name_joined}")
+        self.log(f"Loaded object {self.module.meta.class_name_joined}")
 
     def failed_load(self, exception: Exception):
         self.is_success = False

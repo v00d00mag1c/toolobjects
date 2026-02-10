@@ -15,16 +15,13 @@ class List(Argument):
 
         # WORKAROUND
 
-        try:
-            from Data.JSON import JSON
+        from Data.JSON import JSON
 
-            if type(original_value) == str:
-                _json = JSON(original_value)
-                if _json.isValid() == True:
-                    original_value = _json.getSelf()
-        except:
-            pass
+        if type(original_value) == str:
+            if JSON.isStringValidJson(original_value) == True:
+                original_value = JSON.fromText(original_value).data
 
+        print(original_value)
         if self.orig == None:
             return original_value
 

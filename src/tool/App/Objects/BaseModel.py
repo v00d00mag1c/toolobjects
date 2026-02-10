@@ -94,7 +94,7 @@ class BaseModel(PydanticBaseModel):
             return self.name + [self.outer.__name__]
 
         @property
-        def class_name_str(self):
+        def class_name_joined(self):
             return ".".join(self.class_name)
 
         @property
