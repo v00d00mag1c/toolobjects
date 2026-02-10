@@ -31,3 +31,9 @@ If you dont want to exit:
 ```
 python tool.py -view App.Console.InteractiveView
 ```
+
+Override config values:
+
+```
+python tool.py --c.logger.print.exclude "{}"
+```

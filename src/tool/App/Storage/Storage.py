@@ -1,7 +1,19 @@
 from App.Objects.Object import Object
+from App.Arguments.Objects.Orig import Orig
 from App.Storage.StorageItem import StorageItem
 from pydantic import Field
 from App import app
+
+class StorageArgument(Orig):
+    def constructor(self):
+        def _on_string(val: str):
+            return app.Storage.get(val)
+
+        super().constructor()
+
+        self.orig = StorageItem
+        self.on_string = _on_string
+        self.on_string_format = '{name}'
 
 class Storage(Object):
     '''

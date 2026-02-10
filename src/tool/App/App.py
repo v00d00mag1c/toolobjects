@@ -84,9 +84,6 @@ class App(Object):
                 ),
                 LoadedObject(
                     path = 'App\\Logger\\Logger.py'
-                ),
-                LoadedObject(
-                    path = 'Web\\DownloadManager\\Manager.py'
                 )
             ],
             load_after = [
@@ -98,6 +95,9 @@ class App(Object):
                 ),
                 LoadedObject(
                     path = 'App\\Storage\\Storage.py'
+                ),
+                LoadedObject(
+                    path = 'Web\\DownloadManager\\Manager.py'
                 ),
                 LoadedObject(
                     path = 'App\\Objects\\Index\\PostRun.py'
@@ -120,10 +120,10 @@ class App(Object):
             'conf': {},
             'env': {}
         }
-        delimiters = {
-            'conf': '--',
-            'args': '-',
-            'env': ':)'
+        DELIMITER = '-'
+        pseudo_args = {
+            '-c.': 'conf',
+            '-e.': 'env'
         }
 
         _iterate = 0
@@ -133,18 +133,19 @@ class App(Object):
         for arg in args:
             is_name = _iterate % 2 == 0
             if is_name:
-                for key, val in delimiters.items():
-                    if arg.startswith(val):
-                        _key = arg[len(val):]
-                        _key_dict = key
-
-                        break
+                if arg.startswith(DELIMITER):
+                    _key = arg[len(DELIMITER):]
+                    _key_dict = pseudo_args.get(_key[0:3])
+                    if _key_dict != None:
+                        _key =_key[3:]
+                    else:
+                        _key_dict = 'args' 
             else:
                 vals.get(_key_dict)[_key] = arg
 
             _iterate += 1
 
-        return vals.get('args'), vals.get('conf')
+        return list(vals.values())
 
 class HookThread():
     '''

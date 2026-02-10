@@ -1,5 +1,4 @@
 from .BaseModel import BaseModel
-from .AllowExtraFields import AllowExtraFields
 from .Section import Section
 from .Hookable import Hookable
 from .Configurable import Configurable
@@ -12,10 +11,12 @@ from App.ACL.Limitable import Limitable
 from App.Storage.DB.DBInsertable import DBInsertable
 from App.Daemons.Daemonable import Daemonable
 from typing import ClassVar
+from pydantic import ConfigDict
 
-class Object(BaseModel, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable, DBInsertable, Daemonable, AllowExtraFields, Limitable):
+class Object(BaseModel, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable, DBInsertable, Daemonable, Limitable):
     '''
     The base class of app
     '''
 
+    model_config = ConfigDict(extra='allow')
     self_name: ClassVar[str] = 'Object'

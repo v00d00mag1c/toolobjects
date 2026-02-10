@@ -36,17 +36,16 @@ class Manager(Object):
     #session: Type[aiohttp.ClientSession] = None
     queue: DownloadManagerItems = None
 
-    def constructor(self):
-        self.max_concurrent_downloads = self.getOption('download_manager.max_concurrent_downloads')
-        self.max_kbps_speed = self.getOption('download_manager.max_kbps_speed')
-        self.timeout_seconds = self.getOption("download_manager.timeout_seconds")
-        self.queue = self.DownloadManagerItems()
-
     @classmethod
     def mount(cls):
         from App import app
 
-        manager = cls()
+        manager = cls(
+            max_concurrent_downloads = cls.getOption('download_manager.max_concurrent_downloads'),
+            max_kbps_speed = cls.getOption('download_manager.max_kbps_speed'),
+            timeout_seconds = cls.getOption("download_manager.timeout_seconds"),
+            queue = cls.DownloadManagerItems()
+        )
 
         app.mount('DownloadManager', manager)
 

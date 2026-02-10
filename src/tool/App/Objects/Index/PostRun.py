@@ -8,10 +8,4 @@ class PostRun(Object):
             if item.is_inited == False:
                 continue
 
-            _module = item.getModule()
-
-            for _item in _module.getAllSettings():
-                if _item.role == 'config':
-                    app.Config.values.compare.append(_item)
-                elif _item.role == 'env':
-                    app.Env.values.compare.append(_item)
+            item.appendSettings()

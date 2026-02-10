@@ -38,7 +38,7 @@ class ConsoleView(View):
         dicts = ArgumentDict(items = [
             Executable(
                 name = 'pre_i',
-                default = 'App.Console.ConsoleExecutorWheel',
+                default = 'App.Objects.Operations.DefaultExecutorWheel',
                 assertions = [
                     NotNoneAssertion()
                 ]

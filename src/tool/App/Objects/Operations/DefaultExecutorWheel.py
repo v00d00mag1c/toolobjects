@@ -9,7 +9,7 @@ from App.Responses.ObjectsList import ObjectsList
 from App.Storage.Movement.Save import Save
 from App import app
 
-class ConsoleExecutorWheel(Act):
+class DefaultExecutorWheel(Act):
     '''
     Class that switches the action looking by object type
     '''

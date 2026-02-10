@@ -39,5 +39,5 @@ class Configurable:
     def getOption(cls, name: str, default: Any = None, where: Literal['env', 'config'] = 'config'):
         if where == 'config':
             return app.Config.get(name, default)
-        
+
         return app.Env.get(name, default)

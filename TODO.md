@@ -26,9 +26,9 @@ core:
 - [x] ~~add collections?~~ allow to override getLinks
 - [x] Configurable: role of the argument 'env' or 'config'
 - [x] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
-- [ ] name of object required twice
+- [x] name of object required twice
 - [ ] App.ReloadModules
-- [ ] namespace: load submodules
+- [x] namespace: load submodules
 
 db and storage:
 
@@ -44,8 +44,9 @@ db and storage:
 - [x] extra fields are not saving
 - [x] db flush: export between dbs
 - [ ] App.Storage.Movement.ExportAsZip, App.Storage.Movement.ImportZip
+- [ ] App.Storage.Movement.ExportAsFiles
 - [ ] objectlist adapter
-- [ ] argument: default env val
+- [x] argument: default env val
 - [x] VirtualPath
 - [ ] VirtualPath pagination (adapter pagination also)
 - [ ] App.Object.Paginable

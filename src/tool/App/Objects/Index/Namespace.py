@@ -57,6 +57,7 @@ class Namespace(Object):
                 pass
             except Exception as exception:
                 item.is_success = False
+                self.log_error(f"{item.name} not imported")
                 self.log_error(exception)
 
                 if isinstance(exception, AssertionError) == False and isinstance(exception, ModuleNotFoundError) == False and isinstance(exception, NotAnObjectError) == False:

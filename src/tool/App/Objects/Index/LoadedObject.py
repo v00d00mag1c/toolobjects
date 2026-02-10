@@ -87,9 +87,17 @@ class LoadedObject(Object):
 
     def integrateModule(self, module) -> None:
         if app.Config != None:
-            app.Config.appendSettingsOfModule(module)
+            self.appendSettings()
 
         module.mount()
+
+    def appendSettings(self) -> None:
+        _settings = self.getModule().getAllSettings()
+        for _item in _settings:
+            if _item.role == 'env':
+                app.Env.values.compare.append(_item)
+            else:
+                app.Config.values.compare.append(_item)
 
     @cached_property
     def name(self) -> str:
