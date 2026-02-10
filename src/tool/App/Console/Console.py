@@ -5,6 +5,7 @@ from App.Arguments.Objects.Executable import Executable
 from App.Arguments.Types.Boolean import Boolean
 from Data.JSON import JSON
 from App.View import View
+from App import app
 
 class Console(View):
     '''
@@ -14,6 +15,8 @@ class Console(View):
     async def implementation(self, i: dict = {}):
         executable = i.get('i')
         assert executable.canBeExecuted(), 'object does not contains execute interface'
+        assert executable.canBeUsedBy(None), 'access denied'
+
         _item = executable()
         _item.integrate(i.values)
         results = await _item.execute(i = i)

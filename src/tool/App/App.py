@@ -73,6 +73,9 @@ class App(Object):
                     path = 'App\\Storage\\Config.py'
                 ),
                 LoadedObject(
+                    path = 'App\\ACL\\AuthLayer.py'
+                ),
+                LoadedObject(
                     path = 'App\\Logger\\Logger.py'
                 ),
                 LoadedObject(

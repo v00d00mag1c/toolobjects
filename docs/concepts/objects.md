@@ -4,7 +4,7 @@ BaseModel
 
 Pydantic model with class names functions
 
-There is Objects with entry point - Executables. They can create other objects from data they receive.
+There is Objects with entry point - Executables (Command pattern). They can create other objects from data they get.
 
 Client needs to know the list of objects in the app, so we collecting it in ObjectsList.
 
