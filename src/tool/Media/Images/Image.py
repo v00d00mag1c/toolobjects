@@ -15,24 +15,9 @@ class Image(Media):
 
     @classmethod
     def _submodules(cls) -> list:
-        from Media.Download import Download
-        from Media.ByStorageUnit import ByStorageUnit
-        from Media.ByPath import ByPath
         from Media.Images.Thumbnails.ResizeByPercentage import ResizeByPercentage
 
         return [
-            Submodule(
-                item = Download,
-                role = ['media_method', 'wheel']
-            ),
-            Submodule(
-                item = ByStorageUnit,
-                role = ['media_method', 'wheel']
-            ),
-            Submodule(
-                item = ByPath,
-                role = ['media_method', 'wheel']
-            ),
             Submodule(
                 item = ResizeByPercentage, # You don't need a thumbnail when all files are stored locally
                 role = ['thumbnail', 'thumbnail_disabled_default']

@@ -15,24 +15,9 @@ class Video(Media):
 
     @classmethod
     def _submodules(cls) -> list:
-        from Media.Download import Download
-        from Media.ByStorageUnit import ByStorageUnit
-        from Media.ByPath import ByPath
         from Media.Videos.Thumbnails.Frames import Frames
 
         return [
-            Submodule(
-                item = Download,
-                role = ['media_method', 'wheel']
-            ),
-            Submodule(
-                item = ByStorageUnit,
-                role = ['media_method', 'wheel']
-            ),
-            Submodule(
-                item = ByPath,
-                role = ['media_method', 'wheel']
-            ),
             Submodule(
                 item = Frames,
                 role = ['thumbnail']

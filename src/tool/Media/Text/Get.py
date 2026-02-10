@@ -4,7 +4,6 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Types.String import String
-from Media.Text.Text import Text
 
 class Get(Extractor):
     @classmethod

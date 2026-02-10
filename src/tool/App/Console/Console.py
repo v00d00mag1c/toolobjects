@@ -76,7 +76,7 @@ class Console(View):
             Argument(
                 name = 'console.print.as',
                 orig = String,
-                default = 'str',
+                default = 'json',
                 allowed_values = AllowedValues(
                     values = ['str', 'json'],
                     strict = True
