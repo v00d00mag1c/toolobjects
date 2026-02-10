@@ -4,7 +4,9 @@ from pathlib import Path
 from pydantic import ConfigDict
 from typing import Any
 from .Index.List import List as ObjectsList
+import queue
 import asyncio
+import threading
 import sys
 import os
 
@@ -15,6 +17,7 @@ class App(Object):
     storage: str = None
     loop: Any = None
     objects: ObjectsList = None
+    hook_thread: Any = None
 
     def _constructor(self):
         self.argv = self._parse_argv(sys.argv)
@@ -22,7 +25,9 @@ class App(Object):
         self.src = self.cwd.parent
         self.storage = self.src.joinpath('storage')
         self.storage.mkdir(exist_ok = True)
-        self.loop = asyncio.get_event_loop()
+        self.loop = asyncio.new_event_loop()
+
+        self.hook_thread = HookThread()
 
     def _parse_argv(self, args):
         # didn't changed since sep.2024
@@ -47,3 +52,34 @@ class App(Object):
     def load_plugins(self, search_dir: Path):
         self.objects = ObjectsList()
         self.objects.load(search_dir)
+
+class HookThread():
+    '''
+    It allows to use hooks without await things, but also it provides bad sync in main thread
+    '''
+
+    def __init__(self):
+        self.task_queue = queue.Queue()
+        self.running = True
+        self.thread = threading.Thread(target=self._loop, daemon=True)
+        self.thread.start()
+
+    def _loop(self):
+        self.running_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.running_loop)
+
+        while self.running:
+            try:
+                hook_func, args, kwargs = self.task_queue.get(timeout=0.5)
+
+                try:
+                    if asyncio.iscoroutinefunction(hook_func):
+                        self.running_loop.run_until_complete(hook_func(*args, **kwargs))
+                    else:
+                        hook_func(*args, **kwargs)
+                except Exception as e:
+                    pass
+                finally:
+                    self.task_queue.task_done()
+            except queue.Empty:
+                continue

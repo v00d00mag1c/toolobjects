@@ -1,4 +1,4 @@
-from pydantic import PrivateAttr
+from pydantic import Field
 from typing import ClassVar, Any, Callable
 from App import app
 import asyncio
@@ -7,69 +7,58 @@ class Hookable():
     '''
     Allows to run subscribed functions at every event
     '''
-    hooks: ClassVar[Any] = PrivateAttr(default = None)
+    hooks: dict[str, list] = Field(default = {})
 
-    def init_subclass(cls):
-        cls.hooks = cls._Hooks()
+    @classmethod
+    def getClassEventsTypes(cls):
+        '''
+        events of each class
+        '''
+        return []
 
-    class _Hooks:
-        items: dict = {}
+    def constructor(self):
+        super().constructor()
 
-        def __init__(self):
-            for event in self.getEventsList():
-                self.items[event] = []
+        self.hooks = {}
 
-        # TODO: move to decorator
-        def check_category(self, category: str):
-            assert category in self.getEventsList(), f"category \"{category}\" not in events list"
+        for event in self.getClassEventsTypes():
+            self.hooks[event] = []
 
-            if self.items.get(category) == None:
-                self.items[category] = []
+    def checkEventType(self, category: str):
+        assert category in self.getClassEventsTypes(), f"category \"{category}\" not in events list"
 
-        @property
-        def events(self) -> list:
-            '''
-            Every class must have "loaded" event. You must duplicate it every time :(
-            '''
-            return []
+        if self.hooks.get(category) == None:
+            self.hooks[category] = []
 
-        def getEventsList(self) -> list:
-            '''
-            no, i've done workaround
-            '''
+    def getEvent(self, category: str) -> list:
+        self.checkEventType(category)
 
-            return self.events + ['loaded']
+        return self.hooks.get(category)
 
-        def register(self):
-            pass
+    def runHook(self, hook_func: Callable, *args, **kwargs) -> None:
+        if asyncio.iscoroutinefunction(hook_func):
+            app.app.hook_thread.task_queue.put((hook_func, args, kwargs))
 
-        def get(self, category: str) -> list:
-            self.check_category(category)
+            #task = app.app.loop.create_task(hook_func(*args, **kwargs))
+            #app.app.loop.call_soon(lambda: None)
 
-            return self.items.get(category)
+        return hook_func(*args, **kwargs)
 
-        def run(self, hook_func: Callable, *args, **kwargs) -> None:
-            if asyncio.iscoroutinefunction(hook_func):
-                loop = asyncio.get_running_loop()
-                task = loop.create_task(hook_func(*args, **kwargs))
+    def addHook(self, category: str, hook: Callable) -> None:
+        self.checkEventType(category)
+        self.hooks.get(category).append(hook)
 
-            return hook_func(*args, **kwargs)
+    def removeHook(self, category: str, hook: Callable) -> None:
+        self.checkEventType(category)
+        self.hooks.get(category).remove(hook)
 
-        def add(self, category: str, hook: Callable) -> None:
-            self.check_category(category)
-            self.items.get(category).append(hook)
+    # TODO: Add HookCategory class
+    def triggerHooks(self, category: str, *args, **kwargs) -> None:
+        self.checkEventType(category)
 
-        def remove(self, category: str, hook: Callable) -> None:
-            self.check_category(category)
-            self.items.get(category).remove(hook)
+        for hook in self.hooks.get(category):
+            self.runHook(hook, *args, **kwargs)
 
-        # TODO: Add HookCategory class
-        def trigger(self, category: str, *args, **kwargs) -> None:
-            self.check_category(category)
-
-            for hook in self.items.get(category):
-                self.run(hook, *args, **kwargs)
-
-        # TODO
-        async def await_trigger(self, category: str, *args, **kwargs) -> None:
-            self.trigger(category, *args, **kwargs)
+    # TODO
+    async def awaitTriggerHooks(self, category: str, *args, **kwargs) -> None:
+        self.triggerHooks(category, *args, **kwargs)

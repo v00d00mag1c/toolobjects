@@ -70,13 +70,12 @@ class LoadedObject(Object):
             raise NotAnObjectError(f"{module_name} is not a class")
 
         try:
-            common_object.hooks.trigger('loaded')
+            # Hook cannot be triggered for all class, so ive added "mount" hack
+            #common_object.triggerHooks('loaded')
 
-            # hack to mount singletone. Must be moved to 'hooks'
             if hasattr(common_object, 'mount') == True:
                 common_object.mount()
         except Exception as e:
-            print(e)
             self.log(e, exception_prefix = "exception when importing: ")
 
         return common_object

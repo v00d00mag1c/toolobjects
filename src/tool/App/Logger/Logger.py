@@ -10,11 +10,10 @@ class Logger(Object):
     '''
     Class that prints messages (Log's) into hooked functions
     '''
- 
-    class _Hooks(Object._Hooks):
-        @property
-        def events(self) -> list:
-            return ['log']
+
+    @classmethod
+    def getClassEventsTypes(cls) -> list:
+        return ['log']
 
     @classmethod
     def mount(cls):
@@ -34,7 +33,7 @@ class Logger(Object):
                 items = PrintLog()
                 await items.implementation({'log': to_print})
 
-            self.hooks.add('log', print_log)
+            self.addHook('log', print_log)
 
     def log(self, 
             message: str | Exception, 
@@ -57,6 +56,6 @@ class Logger(Object):
         if prefix != None:
             msg.prefix = LogPrefix(**prefix)
         if trigger == True:
-            self.hooks.trigger('log', to_print = msg)
+            self.triggerHooks('log', to_print = msg)
 
         return msg

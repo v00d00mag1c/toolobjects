@@ -14,10 +14,9 @@ class Executable(Variableable, Validable, Object):
 
     self_name: ClassVar[str] = 'Executable'
 
-    class _Hooks(Object._Hooks):
-        @property
-        def events(self) -> list:
-            return ['before_execute', 'after_execute']
+    @classmethod
+    def getClassEventsTypes(cls) -> list:
+        return ['before_execute', 'after_execute']
 
     async def implementation(self, i: ArgumentsDict) -> Response:
         '''
@@ -47,12 +46,12 @@ class Executable(Variableable, Validable, Object):
             raise_on_assertions = raise_on_assertions,
         )
 
-        await self.hooks.await_trigger('before_execute', i = passing)
+        await self.awaitTriggerHooks('before_execute', i = passing)
 
         response = await self.implementation_wrap(i = passing)
 
         # assert response != None, 'implementation() returned nothing'
 
-        await self.hooks.await_trigger('after_execute', i = passing)
+        await self.awaitTriggerHooks('after_execute', i = passing)
 
         return response
