@@ -21,7 +21,7 @@ class Interactive(Executable):
             parsed = app.app._parse_argv(['cli.py'] + _args.split(' '))
 
             _executable = app.app.objects.getByName(val)
-            executable = _executable.module()
+            executable = _executable.getModule()()
 
             try:
                 print(await executable.execute(parsed))

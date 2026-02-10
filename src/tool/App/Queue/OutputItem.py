@@ -14,4 +14,4 @@ class OutputItem(Object):
         '''
         vals = LinkValue(value = self.key)
 
-        return obj.module.fromItems(vals.toString(prestart, items))
+        return obj.getModule().fromItems(vals.toString(prestart, items))

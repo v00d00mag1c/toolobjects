@@ -11,7 +11,12 @@ class List(Object):
     id: Increment = None
     items: DictList = None
     calls: list = []
-    priority_names: list = ['App\\Storage\\Config.py', 'App\\Logger\\Logger.py', 'App\\Storage\\Storage.py', 'Web\\DownloadManager\\Manager.py']
+    priority_names: list = [
+        'App\\Storage\\Config.py', 
+        'App\\Logger\\Logger.py', 
+        'App\\Storage\\Storage.py', 
+        'Web\\DownloadManager\\Manager.py'
+    ]
 
     def constructor(self):
         self.id = Increment()
@@ -20,29 +25,21 @@ class List(Object):
     def load(self, search_dir: Path):
         # traceback.print_list(traceback.extract_stack())
 
-        self.log("Loading objects list...")
+        # It will never show because Logger is not loaded and mounted at this moment :))
+        self.log("Loading objects list")
         _cached_names = []
 
-        for item_path in self.scan(search_dir):
-            plugin = LoadedObject.from_path(item_path)
-
-            try:
-                plugin.module = plugin.get_module()
-                plugin.succeed_load()
-
-            except NotAnObjectError:
-                pass
-            except Exception as e:
-                plugin.failed_load(e)
+        for plugin in self.scan(search_dir):
+            if plugin.is_prioritized == True:
+                plugin.selfInit()
 
             self.items.append(plugin)
 
             # Loading submodules
-            if plugin.module != None:
-                _cached_names.append(plugin.module.getClassNameJoined())
+            if plugin.getModule() != None:
+                _cached_names.append(plugin.getModule().getClassNameJoined())
 
-                submodules = plugin.module.getAllSubmodules()
-                for submodule in submodules:
+                for submodule in plugin.getModule().getAllSubmodules():
                     name = submodule.item.getClassNameJoined()
                     if name in _cached_names:
                         continue
@@ -51,43 +48,37 @@ class List(Object):
                     _obj.is_submodule = True
                     _obj.category = submodule.item.getClassName()
                     _obj.title = submodule.item.__name__
-                    _obj.module = submodule.item
+                    _obj._module = submodule.item
 
                     _obj.succeed_load()
 
     def scan(self, path: Path) -> Generator[Path]:
-        items: list = list()
+        _side_names = ['', '__pycache__', 'Base.py', 'tool.py', '.gitkeep']
         files = path.rglob('*.py')
         priority = [path.joinpath(p) for p in self.priority_names]
 
-        # 1st iteration
+        for plugin in priority:
+            _plugin = LoadedObject.from_path(plugin.relative_to(path))
+            _plugin.is_prioritized = True
+
+            yield _plugin
+
         for plugin in files:
-            # 2nd iteration
-            if plugin not in priority:
-                items.append(plugin)
+            if plugin.name not in _side_names and plugin not in priority:
+                yield LoadedObject.from_path(plugin.relative_to(path))
 
-        # adding priority and plugins that are not in priority. Maybe its better to do sort there*?
-        for plugin in priority + items:
-            # Hardcoded check. should be changed
-            if plugin.name in ['', '__pycache__', 'Base.py', 'tool.py', '.gitkeep']:
-                continue
+    def getObjectsByNamespace(self, category: list[str]) -> Generator[LoadedObject]:
+        '''
+        find by category:
 
-            yield plugin.relative_to(path)
-
-    def getListBySelfName(self, class_name = None) -> list[LoadedObject]:
-        output = []
-        for item_name, item in self.items.items():
-            if class_name != None:
-                if class_name != item.self_name:
-                    continue
-
-            output.append(item)
-
-        return output
+        category="App.Objects" - returns all plugins from App\\Objects
+        '''
+        for item in self.items:
+            if '.'.join(item.category).startswith(category):
+                yield item
 
     def getByName(self, key: str, class_name = None) -> LoadedObject:
         _item = self.items.get(key)
-
         if class_name != None:
             if class_name != _item.self_name:
                 return None

@@ -17,7 +17,7 @@ async def _main():
 
     view_name = current.argv.get('view', 'App.Console.Console.Console')
     view_class = current.objects.getByName(view_name)
-    view = view_class.module()
+    view = view_class.getModule()()
     view.setAsCommon()
     view.setApp(current)
 

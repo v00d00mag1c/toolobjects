@@ -29,7 +29,7 @@ class Item(Object):
         if plugin == None:
             return None
 
-        return plugin.module
+        return plugin.getModule()
 
     def getBuildArguments(self):
         return self.build

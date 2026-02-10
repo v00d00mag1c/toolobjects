@@ -14,7 +14,7 @@ class Log(Object):
     '''
 
     message: str = Field(default="-")
-    types: list[str] = Field(default = [])
+    role: list[str] = Field(default = [])
     time: datetime = Field(default_factory=lambda: datetime.now())
     kind: LogKind.LogKind = Field(default = LogKind.LogKind())
     section: LogSection.LogSection = Field(default = LogSection.LogSection())

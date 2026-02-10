@@ -10,7 +10,7 @@ class Executable(Argument):
         if obj == None:
             return None
 
-        return obj.module
+        return obj.getModule()
 
     @property
     def none_message(self):

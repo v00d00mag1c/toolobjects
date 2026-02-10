@@ -23,7 +23,9 @@ class ArgumentsDict(Object):
 
     def get(self, name: str, default: str | Any = None):
         '''
-        Allows to get value (so it supposed to used as standart dict)
+        Allows to get value (so it supposed to used as standart dict).
+
+        This method can't be annotated, so no syntax highlight :(:(
         '''
         _out = self.items.get(name)
         if _out == None:
