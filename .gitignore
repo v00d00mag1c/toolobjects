@@ -6,8 +6,8 @@ build/
 env/
 venv/
 src/tool/Custom*
+src/namespaces*
 src/venv/
-src/assets/app*
 storage/*
 src/storage/*
 src/config/*

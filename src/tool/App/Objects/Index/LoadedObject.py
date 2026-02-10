@@ -82,7 +82,7 @@ class LoadedObject(NameContainable):
         spec.loader.exec_module(module)
 
         common_object = getattr(module, self.title, None)
-        assert common_object != None, f"{module_name}: {self.title} is not found"
+        assert common_object != None, "{0}: class with title {1} does not exists in this module".format(module_name, self.title)
         if ignore_requires == False and hasattr(common_object, 'getNotInstalledModules') == True:
             _modules = common_object.getNotInstalledModules()
             assert len(_modules) == 0, f"following modules not installed: {', '.join(_modules)}"

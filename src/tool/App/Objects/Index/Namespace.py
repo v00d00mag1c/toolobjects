@@ -27,6 +27,8 @@ class Namespace(Object):
 
     items: DictList = Field(default = None)
 
+    _unserializable = ['items', '_names']
+
     def init_hook(self):
         self.items = DictList(items=[])
 

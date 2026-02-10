@@ -41,10 +41,20 @@ class ObjectsList(Object):
         )
 
         for item in _custom + cls.getOption('objects.index.namespaces'):
-            _objects.namespaces.append(item)
+            _objects.append_namespace(item)
             item.load()
 
         app.mount('ObjectsList', _objects)
+
+    def append_namespace(self, namespace: Namespace):
+        self.namespaces.append(namespace)
+
+    def has_namespace_with_name(self, name: str):
+        for item in self.namespaces:
+            if item.name == name:
+                return True
+
+        return False
 
     def getItems(self, check_namespaces: bool = True) -> DictList:
         if self._last_current != None and self._last_current == self.current:
