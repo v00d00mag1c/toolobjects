@@ -35,6 +35,6 @@ class DaemonList(Object):
             ListArgument(
                 name = 'daemons.autostart',
                 default = [],
-                orig = StorageUUID,
+                orig = Daemon,
             )
         ]

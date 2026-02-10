@@ -33,7 +33,7 @@ class Convertable(BaseModel):
     @classmethod
     def getDisplayments(cls) -> Generator[BaseModel]:
         for item in cls.getMRO():
-            if hasattr(item, 'getDisplayments') == True:
+            if hasattr(item, '_displayments') == True:
                 new = item._displayments()
                 if new == None:
                     continue
@@ -47,7 +47,7 @@ class Convertable(BaseModel):
             if as_type in displayment_probaly.display_type:
                 return displayment_probaly.value().implementation(i = {'orig': self})
 
-    def displayAsString(self) -> str:
+    def displayAsString(self, show_id: bool = True) -> str:
         def getIdSign():
             if self.hasDb():
                 return f"[{self._db._adapter._storage_item.name}_{self._db.uuid}]"
@@ -59,6 +59,7 @@ class Convertable(BaseModel):
         if _res != None:
             _ret = _res
 
-        _ret += getIdSign()
+        if show_id == True:
+            _ret += getIdSign()
 
         return _ret

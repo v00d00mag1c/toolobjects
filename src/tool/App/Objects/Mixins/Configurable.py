@@ -15,7 +15,7 @@ class Configurable:
         alls = []
 
         for class_val in cls.getMRO():
-            if hasattr(class_val, "getSettings") == False:
+            if hasattr(class_val, "_settings") == False:
                 continue
 
             items = class_val._settings()

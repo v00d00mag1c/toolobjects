@@ -7,7 +7,7 @@ class StringDisplayment(Displayment):
     Class that display object some way
     '''
 
-    display_type: ClassVar[str] = 'any'
+    display_type: ClassVar[str] = 'str'
     role: list[str] = Field(default = [])
 
     value: str | Any = None # probaly module

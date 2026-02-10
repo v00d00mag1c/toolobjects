@@ -23,7 +23,7 @@ class Variableable:
         alls = []
 
         for class_val in cls.getMRO():
-            if hasattr(class_val, "getVariables") == False:
+            if hasattr(class_val, "_variables") == False:
                 continue
             _vars = class_val._variables()
             if _vars == None:

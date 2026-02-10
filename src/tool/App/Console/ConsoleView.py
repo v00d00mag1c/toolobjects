@@ -28,7 +28,7 @@ class ConsoleView(View):
         pre_i = i.get('pre_i')()
         results = await pre_i.execute(i)
 
-        self._print_call(results, i.get('console_view.print_result'), i.get('console_view.print_as'))
+        self._print_call(results, i)
 
     def _auth(self, username, password):
         return app.AuthLayer.login(
@@ -37,19 +37,22 @@ class ConsoleView(View):
             login_from = 'console'
         )
 
-    def _print_call(self, results, print_result: bool = True, print_as: bool = 'str'):
-        if print_result == True:
+    def _print_call(self, results, i):
+        if i.get('console.print') == True:
             if results == None or results.isInstance(NoneResponse):
                 self.log('nothing returned', role = ['empty_response', 'view_message'])
                 return
 
-            if print_as == 'str' and isinstance(results, ObjectsList):
+            if i.get('console.print.as') == 'str' and isinstance(results, ObjectsList):
+                _displays = list()
                 for item in results.getItems():
                     if hasattr(item, 'displayAsString') == False:
                         self.log_raw('[item without displayment]')
                         continue
 
-                    self.log_raw(item.displayAsString())
+                    _displays.append(item.displayAsString(show_id = i.get('console.print.display_ids')))
+
+                self.log_raw(i.get('console.print.divider').join(_displays))
             else:
                 self.log_raw(JSON(data = results.to_json()).dump(indent = 4))
 
@@ -57,14 +60,24 @@ class ConsoleView(View):
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
             Argument(
-                name = 'console_view.print_result',
+                name = 'console.print',
                 orig = Boolean,
                 default = True
             ),
             Argument(
-                name = 'console_view.print_as',
+                name = 'console.print.as',
                 orig = String,
                 default = 'str'
+            ),
+            Argument(
+                name = 'console.print.display_ids',
+                orig = Boolean,
+                default = True
+            ),
+            Argument(
+                name = 'console.print.divider',
+                orig = String,
+                default = '\n'
             ),
             Argument(
                 name = 'auth_username',

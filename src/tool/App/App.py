@@ -144,7 +144,11 @@ class App(Object):
                     if _key_dict != None:
                         _key =_key[3:]
                     else:
-                        _key_dict = 'args' 
+                        _key_dict = 'args'
+
+                        # Arguments like part1.part2 are incorrectly parsed by shell. User may pass argument with two dashes, but it won't be recognized by arguments validator. So if it starts with two dashes and not recognized as config override, it will remove first dash character
+                        if _key[0] == '-':
+                            _key = _key[1:]
             else:
                 vals.get(_key_dict)[_key] = arg
 

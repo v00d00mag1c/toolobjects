@@ -15,7 +15,7 @@ class Submodulable:
         modules = []
 
         for item in cls.getMRO():
-            if hasattr(item, 'getSubmodules') == False:
+            if hasattr(item, '_submodules') == False:
                 continue
 
             _items = item._submodules()

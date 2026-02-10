@@ -6,4 +6,7 @@ class Boolean(Object):
 
     @classmethod
     def asArgument(cls, val: int | str) -> bool:
+        if val == None:
+            return False
+
         return int(val) != 0

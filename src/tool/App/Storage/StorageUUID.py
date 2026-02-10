@@ -3,6 +3,8 @@ from typing import Self, Literal
 from pydantic import Field
 from App import app
 
+from App.Objects.Displayments.StringDisplayment import StringDisplayment
+
 class StorageUUID(Object):
     '''
     Object by id and storage name
@@ -70,3 +72,14 @@ class StorageUUID(Object):
             return None
 
         return _item.toPython()
+
+    class DisplayAsString():
+        def implementation(self, i):
+            orig = i.get('orig')
+            return str(orig.getId())
+
+    @classmethod
+    def _displayments(cls):
+        return [StringDisplayment(
+            value = cls.DisplayAsString
+        )]

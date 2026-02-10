@@ -1,13 +1,13 @@
 from typing import Any, Generator
 from App.Objects.Object import Object
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class DictList(Object):
     '''
     List with object that contains "name" field and so can be used as Dict
     '''
 
-    items: list[Object] # name-field-containing
+    items: list[Object] = Field(default = []) # name-field-containing
 
     def toList(self) -> list:
         return self.items

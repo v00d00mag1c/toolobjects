@@ -27,14 +27,14 @@ class Storage(Object):
 
         for item in self.getOption('storage.items'):
             if item.unused == True:
-                self.log('storage item {0} is disabled'.format(item.name))
+                self.log('storage item {0} is disabled'.format(item.name), role = ['storage_load'])
                 continue
 
             _names.append(item.name)
 
             item._init_hook()
             self.append(item)
-            self.log('loaded custom storage item {0}'.format(item.name))
+            self.log('loaded custom storage item {0}'.format(item.name), role = ['storage_load'])
 
         default_items = [
             StorageItem(

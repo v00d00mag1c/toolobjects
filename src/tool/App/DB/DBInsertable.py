@@ -106,6 +106,12 @@ class DBInsertable():
         if ignore_flush_hooks == False:
             self.flush_hook(into)
 
+        _role = ['flushed']
+        if into.name == 'tmp':
+            _role.append('flushed_into_tmp')
+
+        self.log(f"flushed item to db {into.name}, uuid: {self.getDbId()}", role = _role)
+
         return _db_item
 
     def delete(self, remove_links: bool = True):

@@ -62,7 +62,7 @@ class Executable(Object, Variableable, Validable):
         else:
             i.modified = True
 
-        self.log(f"Calling {self.getClassNameJoined()}")
+        self.log(f"Calling {self.getClassNameJoined()}", role = ['execute_called'])
 
         if app.ExecutablesList != None:
             app.ExecutablesList.add(self)

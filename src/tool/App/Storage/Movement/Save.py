@@ -59,7 +59,6 @@ class Save(Act):
             for item in i.get('items').getItems():
                 item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'))
 
-                self.log(f"flushed item to db {storage.name}, uuid: {item.getDbId()}")
                 results += 1
 
                 for link_item in link_to:

@@ -31,7 +31,7 @@ class Validable:
 
         # Slicing 1 because first arguments already got
         for _class in cls.getMRO()[1:]:
-            if hasattr(_class, 'getArguments') == True:
+            if hasattr(_class, '_arguments') == True:
                 new_arguments = _class._arguments()
                 if new_arguments == None:
                     continue
