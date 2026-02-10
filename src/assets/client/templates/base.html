@@ -7,13 +7,23 @@
     <link rel="stylesheet" href="static/client/css/style.css">
 </head>
 <body>
-    <div id="content">
-        {% if app_name %}
+    {% if app_name %}
+        <div id="upper">
             <div>
-                <a href="/"><b>{{ app_name }}</b></a>
+                <a href="/">
+                    <b>{{ app_name }}</b>
+                </a>
+                <div class="divider"></div>
+                <a href="/?i=App&act=self_user">
+                    {{ user.name }}
+                </a>
             </div>
-        {% endif %}
+        </div>
 
+        <div id="upper_divider"></div>
+    {% endif %}
+
+    <div id="content">
         {% if error %}
             <div id="error">
                 <b>{{ error }}</b>

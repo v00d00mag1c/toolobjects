@@ -1,0 +1,59 @@
+{
+    "name": "English",
+    "native_name": "English",
+    "id": "en_US",
+    "keys": [
+        {
+            "id": "client.index.title",
+            "value": "Index"
+        },
+        {
+            "id": "client.index.logged_as",
+            "value": "Logged as <span>{0}</span>."
+        },
+        {
+            "id": "client.index.logout",
+            "value": "Logout"
+        },
+        {
+            "id": "client.index.content",
+            "value": "Content"
+        },
+        {
+            "id": "client.app",
+            "value": "App"
+        },
+        {
+            "id": "client.namespaces",
+            "value": "Namespaces"
+        },
+        {
+            "id": "client.storages",
+            "value": "Storages"
+        },
+        {
+            "id": "client.config",
+            "value": "Config"
+        },
+        {
+            "id": "client.management",
+            "value": "Management"
+        },
+        {
+            "id": "client.management.reload_modules",
+            "value": "Reload modules"
+        },
+        {
+            "id": "client.management.reload_locales",
+            "value": "Reload locales"
+        },
+        {
+            "id": "client.management.turn_off",
+            "value": "Turn off"
+        },
+        {
+            "id": "client.user.current",
+            "value": "Current user"
+        }
+    ]
+}

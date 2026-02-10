@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+Management
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form action="/?i=App&act=reload_modules" method="post">
+            <input type="submit" value="{{ tr('client.management.reload_modules' )}}">
+        </form>
+    </div>
+    <div>
+        <form action="/?i=App&act=reload_locales" method="post">
+            <input type="submit" value="{{ tr('client.management.reload_locales' )}}">
+        </form>
+    </div>
+    <div>
+        <form action="/?i=App&act=turn_off" method="post">
+            <input type="submit" value="{{ tr('client.management.turn_off' )}}">
+        </form>
+    </div>
+{% endblock %}

@@ -153,19 +153,26 @@ class Server(View):
 
     def _register_routes(self, i):
         for route in self._getCustomRoutes():
-            for add_type in route[2]:
-                getattr(self._app.router, 'add_' + add_type)(route[0], route[1])
+            self._register_route(route)
 
     def _register_default_routes(self, i):
         for route in [
-            ('/', self._index, 'get'),
+            ('/', self._index, ['get', 'post']),
             ('/static/{path:.*}', self._get_asset, 'get'),
             ('/storage/{storage}/{uuid}/{path:.*}', self._get_storage_unit, 'get'),
             ('/api', self._single_call, 'get'),
             ('/rpc', self._ws, 'get'),
             ('/api/upload/{storage}', self._upload_storage_unit, 'post'),
         ]:
-            getattr(self._app.router, 'add_' + route[2])(route[0], route[1])
+            self._register_route(route)
+
+    def _register_route(self, route: list):
+        add_types = route[2]
+        if type(add_types) == str:
+            add_types = [add_types]
+
+        for add_type in add_types:
+            getattr(self._app.router, 'add_' + add_type)(route[0], route[1])
 
     def _index(self, request):
         return web.Response(

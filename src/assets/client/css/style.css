@@ -2,6 +2,25 @@
     padding: 0px 30px;
 }
 
+#upper {
+    margin-top: -8px;
+    margin-left: 30px;
+    display: block;
+    width: fit-content;
+    min-width: 136px;
+    background: #dfdddd;
+    padding: 3px 7px;
+}
+
+#upper .divider {
+    padding: 0px 1px;
+    display: inline-block;
+}
+
+#upper_divider {
+    padding: 7px 0px;
+}
+
 #error {
     border-bottom: 1px solid #eadfdf;
     padding: 1px 1px 5px 1px;

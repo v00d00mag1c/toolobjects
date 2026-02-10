@@ -1,5 +1,6 @@
 from App.Objects.Object import Object
 from App.Locale.Key import Key
+from typing import Any, Optional
 from pydantic import Field, PrivateAttr
 
 class Lang(Object):
@@ -15,5 +16,5 @@ class Lang(Object):
         for key_item in self.keys:
             self._keys[key_item.id] = key_item
 
-    def get(self, key: str) -> str:
-        return self._keys.get(key)
+    def get(self, key: str, default: Optional[Any] = None) -> str:
+        return self._keys.get(key, default)

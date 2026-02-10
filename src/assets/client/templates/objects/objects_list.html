@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Objects list
+{% endblock %}
+
+{% block body %}
+    <span>list of objects:</span>
+
+    <div id='objects'>
+        {% for item in objects %}
+            <div>
+                <a href="?i=App.Objects.Operations.DefaultExecutorWheel&name={{ item.get_name_for_dictlist() }}">{{ item.get_name_for_dictlist() }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

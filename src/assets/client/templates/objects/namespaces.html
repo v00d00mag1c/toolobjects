@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ tr("client.namespaces") }}
+{% endblock %}
+
+{% block body %}
+    <b>{{ tr("client.namespaces") }}:</b>
+    <div id='namespaces'>
+        {% for item in namespaces %}
+            <div><a href="?i=App.Objects.Index.Namespaces.Get&name={{ item.name }}">{{ item.name }}</a></div>
+        {% endfor %}
+    </div>
+{% endblock %}

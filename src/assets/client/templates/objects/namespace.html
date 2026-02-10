@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Namespaces
+{% endblock %}
+
+{% block body %}
+    <div>
+        <b>{{ namespace.name }}</b>
+    </div>
+
+    <div>
+        <a href="?i=App.Objects.Operations.DefaultExecutorWheel&name={{ item.get_name_for_dictlist() }}">Objects</a>
+    </div>
+{% endblock %}

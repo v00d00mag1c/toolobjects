@@ -16,4 +16,4 @@ class Storages(Displayment):
             'storages': app.Storage.items,
         })
 
-        return aiohttp_jinja2.render_template('storages.html', request, context)
+        return aiohttp_jinja2.render_template('storage/storages.html', request, context)

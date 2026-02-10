@@ -43,7 +43,8 @@ class Client(Server):
     def _get_template_context(self, request):
         return {
             'app_name': self.getOption('app.name'),
-            'user': self._get_current_user(request)
+            'user': self._get_current_user(request),
+            'tr': app.Locales.get
         }
 
     def _auth(self, args: dict, request):
@@ -129,9 +130,15 @@ class Client(Server):
         object_name = query.get('i', 'App.Client.Client')
         displayment = self.displayments.get(object_name)
 
+        self.log('request to displayment {0}'.format(object_name))
+
         if displayment == None or len(displayment) == 0:
-            _context.update({'error': 'Not found displayment for this'})
+            _context.update({'error_message': 'Not found displayment for {0}'.format(object_name)})
 
-            return await PageIndex().render_as_page(request, _context)
+            return await PageIndex().render_as_error(request, _context)
 
-        return await displayment[0]().render_as_page(request, _context)
+        try:
+            return await displayment[0]().render_as_page(request, _context)
+        except Exception as e:
+            _context.update({'error_message': str(e)})
+            return await PageIndex().render_as_error(request, _context)

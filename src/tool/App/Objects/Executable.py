@@ -49,7 +49,7 @@ class Executable(Object, Variableable, Validable):
             return self._implementation(i)
 
     async def execute(self, 
-                      i: ArgumentValues | dict, 
+                      i: ArgumentValues | dict = {}, 
                       check_arguments: bool = True, 
                       raise_on_assertions: bool = True,
                       skip_user_check: bool = False) -> Response:

@@ -17,4 +17,4 @@ class Explorer(Displayment):
             }),
         })
 
-        return aiohttp_jinja2.render_template('virtual_path.html', request, context)
+        return aiohttp_jinja2.render_template('objects/virtual_path.html', request, context)
