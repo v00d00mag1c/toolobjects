@@ -1,6 +1,8 @@
 from App.Objects.Object import Object
 from App.Objects.Arguments.ListArgument import ListArgument
+from App.Objects.Arguments.Argument import Argument
 from App.Objects.Threads.ExecutionThread import ExecutionThread
+from Data.Boolean import Boolean
 from Data.Dict import Dict
 from pydantic import Field
 from App import app
@@ -14,7 +16,7 @@ class List(Object):
             items = []
         )
 
-        for item in cls.getOption('app.autostart'):
+        for item in cls.getOption('app.autostart.items'):
             autostarts.items.append(item)
 
         app.mount('Autostart', autostarts)
@@ -22,26 +24,39 @@ class List(Object):
     async def start_them(self, pre_i):
         self.log('Starting startup scripts')
 
+        as_root = self.getOption('app.autostart.as_root')
         _iterator = 0
 
         _pre_i = pre_i()
 
-        for item in self.items:
-            thread = ExecutionThread(id = -1)
-            thread.set_name('autostart_item ' + str(_iterator))
-            thread.set(_pre_i.execute(item))
+        for args in self.items:
+            try:
+                _copied = args.copy()
+                if _copied.get('auth') == 'root' and as_root:
+                    _copied['auth'] = app.AuthLayer.getUserByName('root')
+                else:
+                    _copied['auth'] = app.AuthLayer.byToken(_copied.get('auth'))
 
-            app.ThreadsList.add(thread)
+                thread = ExecutionThread(id = -1)
+                thread.set_name('autostart_item ' + str(_iterator))
+                thread.set(_pre_i.execute(_copied))
 
-            await thread.get()
+                app.ThreadsList.add(thread)
 
-            _iterator += 1
+                _iterator += 1
+            except Exception as e:
+                self.log_error(e)
 
     @classmethod
     def _settings(cls):
         return [
+            Argument(
+                name = 'app.autostart.as_root',
+                default = False,
+                orig = Boolean
+            ),
             ListArgument(
-                name = 'app.autostart',
+                name = 'app.autostart.items',
                 default = [],
                 orig = Dict,
             )

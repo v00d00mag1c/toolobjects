@@ -66,6 +66,7 @@ class ExecuteIterative(Test):
         max_iterations = i.get('max_iterations')
         current_iterator = i.get('start_iteration')
         same_all_time = i.get('same_all_time')
+        iteration_key = i.get('iteration_key')
         is_infinite = max_iterations < 1
         end_str = '∞'
 
@@ -78,7 +79,7 @@ class ExecuteIterative(Test):
 
             self.log(f"Run {current_iterator}/{end_str}, interval {interval}")
 
-            _dict_args[self.iteration_key] = current_iterator
+            _dict_args[iteration_key] = current_iterator
 
             if same_all_time == True:
                 await _obj.execute(_dict_args)

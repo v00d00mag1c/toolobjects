@@ -11,8 +11,12 @@ class Token(Object):
     value: str = Field()
     user: str = Field()
     expires_at: datetime = Field()
+    infinite: bool = Field(default = False)
 
     def is_expired(self):
+        if self.infinite == True:
+            return False
+
         return datetime.now().timestamp() > self.expires_at.timestamp()
 
     def can_be_refreshed(self):
@@ -23,8 +27,9 @@ class Token(Object):
         return secrets.token_urlsafe(64)
 
     @staticmethod
-    def get_expired():
-        lifetime = app.AuthLayer.getOption('app.auth.token.life')
+    def get_expired(lifetime: int = None):
+        if lifetime == None:
+            lifetime = app.AuthLayer.getOption('app.auth.token.life')
 
         assert lifetime > 0, 'Invalid token lifetime'
 

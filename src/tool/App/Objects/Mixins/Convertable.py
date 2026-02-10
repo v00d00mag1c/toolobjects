@@ -31,7 +31,7 @@ class Convertable(BaseModel):
             if self.hasDb():
                 return f"[{self._db._adapter._storage_item.name}_{self._db.uuid}]"
 
-            return '[not flushed]'
+            return ''
     
         _ret = "<{0}>".format(self._getClassNameJoined()) # self.__repr_str__(', ')
         _res = self._display_as_string()

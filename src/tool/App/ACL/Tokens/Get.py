@@ -5,6 +5,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.ACL.Tokens.Token import Token
 from Data.String import String
+from Data.Boolean import Boolean
 from App import app
 import datetime
 
@@ -21,6 +22,11 @@ class Get(Act):
                 name = 'password',
                 orig = String,
                 assertions = [NotNone()]
+            ),
+            Argument(
+                name = 'infinite',
+                orig = Boolean,
+                default = False
             )
         ])
 
@@ -35,6 +41,8 @@ class Get(Act):
             user = _user.name,
             expires_at = Token.get_expired()
         )
+        if i.get('infinite'):
+            _token.infinite = True
 
         _token.flush(app.Storage.get('users'))
 

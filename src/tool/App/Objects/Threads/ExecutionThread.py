@@ -38,9 +38,9 @@ class ExecutionThread(Object):
     def set_name(self, name: str):
         self.name = name
 
-    async def _execute_wrapper(self, coro: Coroutine):
+    async def _execute_wrapper(self, coroutine: Coroutine):
         try:
-            result = await coro
+            result = await coroutine
             return result
         except asyncio.CancelledError:
             self.log_error('Task {0} was cancelled'.format(self.global_id))
