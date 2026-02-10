@@ -5,14 +5,8 @@ from App import app
 
 class DaemonTest(Test):
     async def implementation(self, i):
-        runs = ConsoleLogTest()
-        runs.args = {}
-        _storage = app.Storage.get('content')
-        _item = _storage.adapter.flush(runs)
-
-        _object = _item.toPython()
         daemon = Daemon(
-            item = _object,
+            item = ConsoleLogTest(),
             max_iterations = 100
         )
         await daemon.start()

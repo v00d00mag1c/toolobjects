@@ -23,7 +23,7 @@ class File(Object):
     @staticmethod
     def fromPath(path: Path):
         from Files.Dir import Dir
-        from Files.FileTypes.FileType import FileType
+        from Files.FileType import FileType
 
         item = FileType()
         if path.is_dir() == True:

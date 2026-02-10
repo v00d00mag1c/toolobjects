@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Text.Text import Text
+from Media.Text.Text import Text
 from App import app
 
 class FlushWithLinksTest(Test):
@@ -10,7 +10,7 @@ class FlushWithLinksTest(Test):
             lnk.link(item)
 
         self.log('flushingg to dbb')
-        _storage = app.Storage.get('content')
+        _storage = app.Storage.get('common')
         _item = lnk.flush(_storage)
 
         self.log_raw(lnk.getLinkedItems())

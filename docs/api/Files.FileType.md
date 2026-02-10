@@ -1,4 +1,4 @@
-### File.FileTypes.FileType
+### File.FileType
 
 Type: `Object`
 

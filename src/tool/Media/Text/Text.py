@@ -8,7 +8,7 @@ class Text(Object):
 
     @classmethod
     def _submodules(cls) -> list:
-        from Data.Text.TextToFile import TextToFile
+        from Media.Text.TextToFile import TextToFile
 
         return [
             Submodule(

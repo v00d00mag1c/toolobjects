@@ -1,4 +1,4 @@
-from App.Objects.Misc.DictList import DictList
+from Data.DictList import DictList
 from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject
 from App.Objects.Index.Namespace import Namespace

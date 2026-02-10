@@ -1,4 +1,4 @@
-### Data.Gallery.Download
+### Media.Images.Download
 
 Type: `Extractor`
 
@@ -16,7 +16,7 @@ URL to download
 
 ##### gallery
 
-`type`: `Data.Gallery.Gallery`
+`type`: `Media.Images.Gallery`
 
 can be received by uuid
 

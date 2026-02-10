@@ -1,12 +1,12 @@
 from App.Objects.Test import Test
-from Data.Text.Text import Text
-from Data.Random.GetRandomInt.GetRandomInt import Random
+from Media.Text.Text import Text
+from Data.Random.GetRandomInt import GetRandomInt
 from App import app
 
 class FlushTest(Test):
     async def implementation(self, i):
         self.log('creating models')
-        _id = Random().randomInt(0,1)
+        _id = GetRandomInt().randomInt(0,1)
 
         items = [Text(value='123456'),Text(value='asdfghjkl')]
 

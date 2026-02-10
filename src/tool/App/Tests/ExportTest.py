@@ -3,7 +3,7 @@ from App import app
 from App.Storage.Movement.Export import Export
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.StorageItem import StorageItem
-from Data.Text.Text import Text
+from Media.Text.Text import Text
 
 class ExportTest(Test):
     async def implementation(self, i):

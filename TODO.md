@@ -18,7 +18,6 @@ core:
 - [x] App.Objects.Linkable
 - [x] App.Config.Config
 - [x] App.Console.PrintLog
-- [x] move App.Data.DictList to App.Objects.DictList
 - [x] logger: section skips
 - [x] logger: output to file
 - [x] ~~App.Executables.Call list~~ List of running executables
@@ -83,7 +82,7 @@ modules:
 - [ ] App.Logger.List
 - [ ] App.Logger.GetFile
 - [ ] Web.RSS.GetFeed
-- [x] Data.Text.Text
+- [x] Media.Text.Text
 - [x] Abstract.TODO or Abstract.Checkmarks
 
 web:

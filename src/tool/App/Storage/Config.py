@@ -43,6 +43,9 @@ class Config(Object):
     def get(self, name: str, default: Any = None, role: str = 'config'):
         return self.getItem(role = role).get(name, default)
 
+    def set(self, name: str, value: Any = None, role: str = 'config'):
+        return self.getItem(role = role).set(name, value)
+
     def getItem(self, role: Literal['config', 'env'] = 'config'):
         if role == 'config':
             return self.items[self.common]

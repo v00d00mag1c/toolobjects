@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject, NotAnObjectError
-from App.Objects.Misc.DictList import DictList
+from Data.DictList import DictList
 from typing import Generator
 from pathlib import Path
 from pydantic import Field

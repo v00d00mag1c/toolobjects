@@ -1,16 +1,12 @@
 from App.Objects.Object import Object
 from App.Objects.Executable import Executable
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
-from App.Daemons.DaemonItem import DaemonItem
+from App.Storage.StorageUUID import StorageUUID
 from pydantic import Field
 import asyncio
 
 class Daemon(Object):
-    '''
-    Object that executes every x minutes
-    '''
-
-    item: DaemonItem | Executable = Field(default = None)
+    item: StorageUUID | Executable = Field(default = None)
 
     is_stopped: bool = Field(default = True)
     interval: int = Field(default = 10)
@@ -19,19 +15,17 @@ class Daemon(Object):
     max_iterations: int = Field(default = 0)
 
     def getModule(self):
-        if isinstance(self.item, DaemonItem):
-            return self.item.getModule()
+        if isinstance(self.item, StorageUUID):
+            return self.item.toPython()
 
         return self.item
 
     async def iteration(self, iterator_index):
         module = self.getModule()
         _args = ArgumentValues(items=module.args)
+        _args.values['iteration'] = iterator_index
 
-        res = await module.execute(_args)
-        await module.implementation_iterate(_args, iterator_index)
-
-        return res
+        return await module.execute(_args)
 
     async def start(self):
         # move to threading maybe? TODO
@@ -48,7 +42,7 @@ class Daemon(Object):
         while reached_end == False:
             self.total_iterations += 1
             current_iterator += 1
-            self.log(f"Making run {current_iterator}/{_end}, interval {self.interval}")
+            self.log(f"Run {current_iterator}/{_end}, interval {self.interval}")
 
             await self.iteration(current_iterator)
 

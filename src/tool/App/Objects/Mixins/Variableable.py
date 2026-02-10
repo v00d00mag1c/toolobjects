@@ -1,4 +1,4 @@
-from App.Objects.Misc.DictList import DictList
+from Data.DictList import DictList
 
 class Variableable:
     '''

@@ -16,12 +16,12 @@ class ConfigTest(Test):
         self.log(f"updating compare of config")
         #app.Config.updateCompare()
 
-        self.log(f"all the settings of config: {app.Config.values.compare}")
+        self.log(f"all the settings of config: {app.Config.getItem('config').values.compare}")
         self.log(f"env:")
 
-        env_test = app.Env.get("test")
+        env_test = app.Config.get("test", role = 'env')
         self.log(f"env test is {env_test}")
 
-        app.Env.set("test", "676767")
-        env_test_2 = app.Env.get("test")
+        app.Config.set("test", "676767", role = 'env')
+        env_test_2 = app.Config.get("test", role = 'env')
         self.log(f"env test is {env_test_2}")

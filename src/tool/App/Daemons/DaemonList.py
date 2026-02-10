@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Daemons.DaemonItem import DaemonItem
+from App.Storage.StorageUUID import StorageUUID
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Daemons.Daemon import Daemon
 from pydantic import Field
@@ -17,7 +17,10 @@ class DaemonList(Object):
         for item in cls.getOption('daemons.autostart'):
             daemons.append(item)
 
-        app.mount('Daemons', daemons)
+        app.mount('DaemonList', daemons)
+
+    def append(self, item):
+        self.items.append(item.toPython())
 
     @classmethod
     def _settings(cls):
@@ -25,6 +28,6 @@ class DaemonList(Object):
             ListArgument(
                 name = 'daemons.autostart',
                 default = [],
-                orig = DaemonItem,
+                orig = StorageUUID,
             )
         ]

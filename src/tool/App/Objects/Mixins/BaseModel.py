@@ -17,12 +17,8 @@ class BaseModel(Model):
 
         return self
 
-    def minimal_json(self, include_self_name: bool = False):
-        _data = self.to_json(only_class_fields=True, by_alias=True)
-        if include_self_name:
-            _data['class_name'] = self.class_name
-
-        return _data
+    def minimal_json(self):
+        return self.to_json(only_class_fields=True, by_alias=True)
 
     def to_json(self, 
                 convert_links: Literal['unwrap', 'none'] = 'unwrap', 

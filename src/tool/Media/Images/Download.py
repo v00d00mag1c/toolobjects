@@ -4,8 +4,8 @@ from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Arguments.Argument import Argument
 from Data.String import String
 from Data.Boolean import Boolean
-from Files.FileTypes.Image import Image
-from Data.Gallery.Gallery import Gallery
+from Media.Images.Image import Image
+from Media.Images.List import List
 from App.Objects.Misc.Source import Source
 from Web.URL import URL
 from App import app
@@ -22,7 +22,7 @@ class Download(Extractor):
             Argument(
                 name = 'gallery',
                 id_allow = True,
-                orig = Gallery
+                orig = List
             ),
             Argument(
                 name = 'filename',

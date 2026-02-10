@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Text.Text import Text
+from Media.Text.Text import Text
 from App.Objects.Relations.Link import Link
 
 class LinksTest(Test):

@@ -1,9 +1,9 @@
 from App.Objects.Client import Client
 from App.Objects.Relations.Submodule import Submodule
-from Files.FileTypes.Image import Image
-from Data.Gallery.AddImages import AddImages
+from Media.Images.Image import Image
+from Media.Images.AddImages import AddImages
 
-class Gallery(Client):
+class List(Client):
     @classmethod
     def _submodules(cls) -> list:
         return [

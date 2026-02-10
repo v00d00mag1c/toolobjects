@@ -2,7 +2,7 @@
 
 Object that allows to define what arguments something (executable) uses. It takes string on input and can convert it to stated in name value. To get final value, it uses class link from the `orig` field (`asArgument()`)
 
-List of this must be passed in App.Data.DictList for convenience; it relays on "name" field
+List of this must be passed in Data.DictList for convenience; it relays on "name" field
 
 Argument can be used not only for validation, but for storing (queue prestart, variables)
 

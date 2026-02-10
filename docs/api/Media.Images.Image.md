@@ -1,4 +1,4 @@
-### File.FileTypes.Image
+### Media.Images.Image
 
 Type: `Object`
 
