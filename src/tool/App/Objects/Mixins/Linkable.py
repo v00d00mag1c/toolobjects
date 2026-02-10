@@ -54,13 +54,13 @@ class Linkable(BaseModel):
     def isLinked(self, link: BaseModel) -> bool:
         return True
 
-    def getLinkedItems(self) -> Generator[Link]:
+    def getLinkedItems(self, ignore_db: bool = False) -> Generator[Link]:
         '''
-        Returns linked items, literally.
+        Returns linked items.
         Non-overridable!
         '''
 
-        if self.getDb() != None:
+        if self.getDb() != None and ignore_db == False:
             for item in self.getDb().getLinks():
                 yield item
 

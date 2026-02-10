@@ -16,7 +16,7 @@ class FileType(Object):
             return self.file
 
         if self.storage_unit != None:
-            return self.storage_unit.get_storage_adapter().getStorageUnit().toFile()
+            return self.storage_unit.getStorageUnit().toFile()
 
     def move(self, new: Object):
         if new.file != None:

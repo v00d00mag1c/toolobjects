@@ -3,7 +3,7 @@ from Media.Text.Text import Text
 from Data.Random.GetRandomInt import GetRandomInt
 from App import app
 
-class FlushTest(Test):
+class Flush(Test):
     async def implementation(self, i):
         self.log('creating models')
         _id = GetRandomInt().randomInt(0,1)

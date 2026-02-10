@@ -1,14 +1,12 @@
 from App.Objects.Test import Test
 from App import app
 
-class StorageTest(Test):
+class Storage(Test):
     async def implementation(self, i):
         self.log('storage test')
-        for item in app.Storage.items:
-            self.log(str(item.to_json()))
 
         self.log('content db:' + str(app.Storage.get('common')))
-        self.log('content db dir: ' + str(app.Storage.get('common').getStorageDir()))
+        self.log('content db dir: ' + str(app.Storage.get('common').get_storage_adapter().getStorageDir()))
         _unit = app.Storage.get('common').get_storage_adapter().getStorageUnit()
         __name = _unit.getDir().joinpath('tmp')
         __name_2 = _unit.getDir().joinpath('txt.txt')

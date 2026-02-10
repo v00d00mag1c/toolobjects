@@ -93,12 +93,6 @@ class SQLAlchemy(ConnectionAdapter):
         from sqlalchemy import Column, Integer, event, String
 
         Base = declarative_base()
-        _session = self_adapter._session
-
-        def _commit():
-            _session.commit()
-
-        self_adapter.commit = _commit
 
         class _LinkAdapter(LinkAdapter, Base):
             __tablename__ = 'links'
@@ -125,7 +119,7 @@ class SQLAlchemy(ConnectionAdapter):
             def getQuery(cls):
                 _query = self_adapter.QueryAdapter()
                 _query._model = cls
-                _query._query = _session.query(cls)
+                _query._query = self_adapter.getSession().query(cls)
 
                 return _query
 
@@ -145,7 +139,7 @@ class SQLAlchemy(ConnectionAdapter):
                 if owner._orig != None:
                     owner._orig.save()
 
-                _session.add(self)
+                self_adapter.getSession().add(self)
 
             def fallback(self):
                 return None
@@ -165,12 +159,12 @@ class SQLAlchemy(ConnectionAdapter):
                     self.order_index = Increment(value = 0)
 
                     if self.uuid != None:
-                        self.order_index.move(_session.query(_LinkAdapter).filter(_LinkAdapter.owner == self.uuid).count())
+                        self.order_index.move(self_adapter.getSession().query(_LinkAdapter).filter(_LinkAdapter.owner == self.uuid).count())
 
                 return self.order_index
 
             def toDB(self, obj: Object):
-                _session.add(self)
+                self_adapter.getSession().add(self)
                 self.get_permission_to_flush(obj)
                 self._orig = obj
                 self.flush_content(self._orig)
@@ -186,9 +180,21 @@ class SQLAlchemy(ConnectionAdapter):
 
             # Link functions
             def getLinks(self) -> Generator[CommonLink]:
-                links = _session.query(_LinkAdapter).filter(_LinkAdapter.owner == self.uuid).order_by(_LinkAdapter.order)
+                _query = self_adapter.QueryAdapter()
+                _query._query = self_adapter.getSession().query(_LinkAdapter)
+                _query._model = _LinkAdapter
+                _query.addCondition(Condition(
+                    val1 = 'owner',
+                    operator = '==',
+                    val2 = self.uuid
+                ))
+                _query.addSort(Sort(
+                    condition = Condition(
+                        val1 = 'order'
+                    )
+                ))
 
-                for link in links:
+                for link in _query.getAll():
                     _res = link.toPython()
                     if link == None or _res == None:
                         yield CommonLink(
@@ -202,7 +208,7 @@ class SQLAlchemy(ConnectionAdapter):
             def getQuery(cls):
                 _query = self_adapter.QueryAdapter()
                 _query._model = cls
-                _query._query = _session.query(cls)
+                _query._query = self_adapter.getSession().query(cls)
 
                 return _query
 
@@ -225,7 +231,7 @@ class SQLAlchemy(ConnectionAdapter):
                     for item in self.getLinks():
                         item.delete()
 
-                _session.delete(self)
+                self_adapter.getSession().delete(self)
 
         @event.listens_for(_ObjectAdapter, 'before_insert', propagate=True)
         @event.listens_for(_LinkAdapter, 'before_insert', propagate=True)
@@ -264,6 +270,12 @@ class SQLAlchemy(ConnectionAdapter):
 
         self._engine = create_engine(connection_str)
         self._session = Session(self._engine, expire_on_commit=False)
+
+    def getSession(self):
+        return self._session
+
+    def commit(self):
+        self.getSession().commit()
 
     _engine: Any = None
     _session: Any = None

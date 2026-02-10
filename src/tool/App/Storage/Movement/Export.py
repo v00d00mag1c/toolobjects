@@ -54,8 +54,9 @@ class Export(Act):
         news = StorageItem(
             name = export_name,
             directory = str(i.get('dir')),
+            db_type = 'App.DB.Adapters.SQLite',
             db = {
-                'adapter': 'sqlite'
+                'auto_commit': True
             }
         )
         news._init_hook()

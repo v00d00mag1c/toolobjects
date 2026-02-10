@@ -15,21 +15,20 @@ class StorageUnit(Object):
     name: str = Field(default = None)
     ext: str = Field(default = None)
     common: str = Field(default = None)
-    _common_path: str = None
+    _root_path: str = None # Path
 
-    def _init_hook(self):
-        self.getUpper().mkdir(exist_ok=True)
-        self.getDir().mkdir(exist_ok=True)
-
-    def getCommonPath(self):
-        if self._common_path == None:
-            assert self.hasDb(), 'storage unit does not contains _common_path and db ref'
+    def get_root(self):
+        if self._root_path == None:
+            assert self.hasDb(), 'storage unit does not contains _root_path and db ref'
 
             _storage = self.getDb()._adapter._storage_item
 
-            return _storage.getStorageDir()
+            return _storage.storage_adapter.pathFromHash(self.hash)[1]
 
-        return self._common_path
+        return self._root_path
+
+    def set_root(self, path: str):
+        self._root_path = str(path)
 
     def getCommonFile(self) -> File:
         _common = Path(self.common)
@@ -44,23 +43,15 @@ class StorageUnit(Object):
             yield _file
 
     def getFirstFile(self) -> File:
-        for item in self.files:
-            return item
-
-    def getUpper(self):
-        return Path(self.getCommonPath()).joinpath(self.hash[0:2])
+        return self.files[0]
 
     def getDir(self):
-        return self.getUpper().joinpath(self.hash)
+        return self.get_root()
 
     def get_url(self):
         _storage = self.getDb()._adapter._storage_item
 
         return '/storage/{0}/{1}/'.format(_storage.name, self.getDbId())
-
-    def fromDir(self, common_path: Path, hash: str):
-        self.hash = hash
-        self._common_path = common_path
 
     def setCommonFile(self, file_path: Path):
         self.name = file_path.name
@@ -84,23 +75,14 @@ class StorageUnit(Object):
 
         return path.relative_to(dirs)
 
-    def flush_hook(self, into: Type): # StorageItem cant be annotated anywhere :(
-        _upper = into.getStorageDir().joinpath(self.hash[0:2])
-        _upper.mkdir(exist_ok = True)
-        _hash = _upper.joinpath(self.hash)
-        _hash.mkdir(exist_ok = True)
+    def flush_hook(self, into: Type):
+        into.storage_adapter.copy_storage_unit(self)
 
-        try:
-            self.copySelf(_hash)
-        except AssertionError as e:
-            self.log_raw(e)
-            pass
+    def copySelf(self, new_root: Path):
+        assert str(self.getDir()) != str(new_root), 'its already here'
 
-    def copySelf(self, new_path: Path):
-        assert str(self.getDir()) != str(new_path), 'its already here'
-
-        shutil.copytree(str(self.getDir()), str(new_path), dirs_exist_ok = True)
-        self.log(f"copied storageunit from {str(self.getDir())} to {str(new_path)}")
+        shutil.copytree(str(self.getDir()), str(new_root), dirs_exist_ok = True)
+        self.log(f"copied storageunit from {str(self.getDir())} to {str(new_root)}")
 
     def toFile(self) -> File:
         _common_file = self.getCommonFile()

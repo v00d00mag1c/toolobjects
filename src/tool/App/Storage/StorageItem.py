@@ -17,7 +17,7 @@ class StorageItem(Object):
     name: str = Field()
 
     # input
-    storage_type: str = Field(default = 'double_divided_hash_dirs')
+    storage_type: str = Field(default = 'App.Storage.Adapters.DoubleDividedHashDirs')
     storage: dict = Field(default = {})
 
     db_type: str = Field(default = None)
@@ -51,21 +51,22 @@ class StorageItem(Object):
         return self.storage_adapter != None
 
     def _init_hook(self):
-        if self.db_type != None:
-            self.adapter = self._get_adapter_by_name(self.db_type, self.db)
-
         if self.storage_type != None:
-            self.storage_adapter = self._get_adapter_by_name(self.storage_type, self.storage, ['App', 'Storage', 'Adapters'])
+            self.storage_adapter = self._unwrap(self.storage_type, self.storage)
 
-    def _get_adapter_by_name(self, adapter_name: str, unwrap_dict: dict = {}, group: list[str] = ['App', 'DB', 'Adapters']):
-        for adapter in app.ObjectsList.getByName(group):
-            _module = adapter.getModule()
-            if _module.protocol_name == adapter_name:
-                item = _module(**unwrap_dict)
-                item._storage_item = self
-                item._init_hook()
+        if self.db_type != None:
+            self.adapter = self._unwrap(self.db_type, self.db)
 
-                return item
+    def _unwrap(self, name: str, unwrap: dict = {}):
+        _obj = app.ObjectsList.getByName(name)
+
+        assert _obj != None, 'adapter with name {0} not found'.format(name)
+
+        _item = _obj.getModule()(**unwrap)
+        _item._storage_item = self
+        _item._init_hook()
+
+        return _item
 
     @classmethod
     def asArgument(cls, val: str):

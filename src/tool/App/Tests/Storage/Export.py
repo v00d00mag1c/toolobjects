@@ -1,13 +1,13 @@
 from App.Objects.Test import Test
 from App import app
-from App.Storage.Movement.Export import Export
+from App.Storage.Movement.Export import Export as RealExport
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.StorageItem import StorageItem
 from Media.Text.Text import Text
 
-class ExportTest(Test):
+class Export(Test):
     async def implementation(self, i):
-        return await Export().execute({
+        return await RealExport().execute({
             'items': ObjectsList(items = [
                 Text(value = ';/'),
                 Text(value = ';)'),
