@@ -1,14 +1,14 @@
 from .Object import Object
 from .Validable import Validable
-from App.Executables.Call import Call
 from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Responses.Response import Response
 from App.Objects.Variableable import Variableable
 from typing import ClassVar, Optional
 from pydantic import Field
+from App import app
 import asyncio
 
-class Executable(Variableable, Validable, Object):
+class Executable(Object, Variableable, Validable):
     '''
     Object that has "execute()" interface, single entrypoint.
     
@@ -17,8 +17,8 @@ class Executable(Variableable, Validable, Object):
     common_object: another object that executable can represent
     '''
 
+    id: int = 0
     self_name: ClassVar[str] = 'Executable'
-    call: Call = Field(default = None)
     common_object: ClassVar[Optional[list]] = None
 
     @classmethod
@@ -50,6 +50,8 @@ class Executable(Variableable, Validable, Object):
         (No, it calls implementation_wrap())
         '''
 
+        self.id = app.app.executables_id.getIndex()
+
         args = self.getAllArguments()
         passing = args.compareWith(
             inputs = i,
@@ -57,13 +59,11 @@ class Executable(Variableable, Validable, Object):
             raise_on_assertions = raise_on_assertions,
         )
 
-        self.call = Call()
-        self.call.predicate = self.getClassNameJoined()
-
-        if hasattr(i, 'toOriginalDict') == False:
-            self.call.arguments = i
-        else:
-            self.call.arguments = i.original_items
+        # TODO: provide single type
+        #if type(i) == dict:
+        #    self.args = i
+        #else:
+        #    self.args = i.toDict()
 
         await self.awaitTriggerHooks('before_execute', i = passing)
 

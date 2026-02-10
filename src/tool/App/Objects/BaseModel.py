@@ -1,10 +1,6 @@
 from pydantic import BaseModel as PydanticBaseModel, computed_field, Field
-from typing import ClassVar
-from .classproperty import classproperty
-from .Outer import Outer
 
 class BaseModel(PydanticBaseModel):
-    _internal_fields: ClassVar[list] = []
 
     @computed_field
     @property
@@ -23,13 +19,7 @@ class BaseModel(PydanticBaseModel):
 
     # model_dump alias
     def to_json(self, exclude_internal: bool = True):
-        # todo remove
-        exclude = []
-        if exclude_internal == True:
-            for item in self._internal_fields:
-                exclude.append(item)
-
-        return self.model_dump(mode='json',exclude=exclude)
+        return self.model_dump(mode='json')
 
     @classmethod
     def getMRO(cls) -> list:

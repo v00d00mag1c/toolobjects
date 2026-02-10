@@ -11,10 +11,18 @@ class Linkable:
     def addLink(self, item: Link) -> None:
         self.links.append(item)
 
-    def getLinks(self) -> list[Link]:
-        from App.Objects.Link import Link as RealLink
-
+    def getLinkedItems(self) -> list[Link]:
+        '''
+        Returns linked items, literally.
+        Non-overridable!
+        '''
         return self.links
+
+    def getVirtualLinkedItems(self) -> list[Link]:
+        '''
+        Returns linked items. This method can be overriden
+        '''
+        return self.getLinkedItems()
 
     def linkItem(self, object, link_type: int):
         pass

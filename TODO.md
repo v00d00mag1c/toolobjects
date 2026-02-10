@@ -26,9 +26,9 @@
 - [x] Files.FileManager.Navigate
 - [x] logger: section skips
 - [x] logger: output to file
-- [ ] App.Executables.Call list
-- [ ] flushed object: allow to override name
-- [ ] add collections? and collections that can override getLinks
+- [ ] ~~App.Executables.Call list~~
+- [ ] flushed object: allow to override name ()
+- [x] ~~add collections?~ and collections that can override getLinks
 - [ ] App.Daemons.Daemon
 - [ ] Web.DownloadManager.Manager
 - [ ] Data.XML

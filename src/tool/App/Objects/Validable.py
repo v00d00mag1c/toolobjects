@@ -1,6 +1,9 @@
 from App.Arguments.ArgumentsDict import ArgumentsDict
+from pydantic import Field
 
 class Validable:
+    args: dict = Field(default = {})
+
     @classmethod
     def getArguments(cls) -> ArgumentsDict:
         '''

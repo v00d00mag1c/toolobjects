@@ -4,11 +4,11 @@ from .ObjectMeta import ObjectMeta
 from .Source import Source
 from .SavedVia import SavedVia
 from typing import ClassVar
-from pydantic import Field, computed_field
+from pydantic import Field, computed_field, field_serializer
 from datetime import datetime
 
 class Saveable():
-    _internal_fields: ClassVar[list] = ['collection', 'object_meta', 'saved_via']
+    _internal_fields = ['collection', 'object_meta', 'saved_via']
     self_name: ClassVar[str] = 'Saveable'
 
     '''
@@ -33,5 +33,9 @@ class Saveable():
     declared_created_at: datetime = Field(default_factory=lambda: datetime.now())
     edited_at: datetime = Field(default=None)
 
-    def getAllExceptInternalFields(self):
-        pass
+    @field_serializer('created_at', 'declared_created_at', 'edited_at')
+    def get_timestamp(self, dt: datetime, _info) -> int:
+        if dt == None:
+            return None
+
+        return int(dt.timestamp())
