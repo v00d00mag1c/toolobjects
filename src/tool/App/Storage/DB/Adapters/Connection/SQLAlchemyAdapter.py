@@ -38,6 +38,9 @@ class SQLAlchemyAdapter(ConnectionAdapter):
                 target = Column(Integer())
                 role = Column(String())
 
+            def getById(self, id: int):
+                return session.query(self.__class__).get(id)
+
             def getLinks(self) -> list:
                 pass
 

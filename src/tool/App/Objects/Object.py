@@ -9,9 +9,10 @@ from .ModuleRequireable import ModuleRequireable
 from .Submodulable import Submodulable
 from .Saveable import Saveable
 from App.Storage.DB.DBInsertable import DBInsertable
+from App.Daemons.Daemonable import Daemonable
 from typing import ClassVar
 
-class Object(BaseModel, AllowExtraFields, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable, DBInsertable):
+class Object(BaseModel, AllowExtraFields, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable, DBInsertable, Daemonable):
     '''
     The base class of app, extended pydantic BaseModel.
     Fields can be flushed to json, also there is Section (log) functions and hooks.

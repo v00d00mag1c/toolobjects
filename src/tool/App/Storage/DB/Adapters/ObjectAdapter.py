@@ -8,7 +8,7 @@ class ObjectAdapter():
     must contain uuid and content
     '''
 
-    def search(self):
+    def getById(self, id: int):
         pass
 
     def getObject(self):

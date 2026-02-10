@@ -6,7 +6,7 @@ class Variableable:
     What they can do? maybe progressbar or preview result
     Variables are just DictList with App.Arguments.Argument. They are copying from prototype that already was inited
     '''
-    variables: DictList = None
+    variables: DictList | None = None
 
     def init_vars(self):
         self.log('init vars')

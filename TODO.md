@@ -36,12 +36,12 @@
 - [ ] App.Logger.GetFile
 - [ ] App.ACL.Auth ?
 - [ ] Web.RSS.GetFeed
-- [ ] DisplayType (?)
+- [ ] DisplayType (?) submodule=displayment
 - [x] get rid of saveable
 - [x] Executable.common_object move to submodule with common name
 - [x] declare requirements that module uses
 - [ ] allow to replace some field with link
-- [ ] db flush: move links
+- [x] db flush: move links
 - [ ] db flush: replaced links
 - [ ] ~~custom object can contain "source" and "meta" fields in it and replace the original (?)~~
 - [ ] db flush: when loading from db save the link to db's item and add sync between them
@@ -51,7 +51,6 @@
 - [ ] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
 - [ ] Configurable: role to argumnet 'env' or 'config'
 - [ ] db flush: export between dbs
-- [ ] submodule=displayment
 - [ ] objectlist adapter
 - [ ] pathes like {db name}:/{object}/{object id or name}
 - [x] "non-executable" check

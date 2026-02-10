@@ -13,3 +13,6 @@ class ConsoleLogTest(Test):
                 'prefix': {'id': 7777777777777777777777777777, 'name': 'PREFIX'} 
             }
         })
+
+    async def implementation_iterate(self, i, iteration_index):
+        self.log_raw(iteration_index)
