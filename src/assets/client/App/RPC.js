@@ -1,4 +1,4 @@
-import {RPCEvent} from "/static/App/RPCEvent.js"
+import {RPCEvent} from "/static/client/App/RPCEvent.js"
 
 export class RPC {
     events = {

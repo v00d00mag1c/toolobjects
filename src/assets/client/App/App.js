@@ -1,5 +1,5 @@
-import { RPC } from "/static/App/RPC.js"
-import { Page } from "/static/Page/Page.js"
+import { RPC } from "/static/client/App/RPC.js"
+import { Page } from "/static/client/Page/Page.js"
 
 export class App {
     rpc = null

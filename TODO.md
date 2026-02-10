@@ -95,6 +95,7 @@ documentation:
 web:
 
 - [x] WebServer
+- [ ] websocket connection: set event_index in executable to distinguish variables messages
 - [ ] main blocks
 - [ ] displaytype=js_module
 - [ ] svelte modules

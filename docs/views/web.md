@@ -1,9 +1,9 @@
 ### Web server
 
-The "web" view is object "App.Web.Server.Run":
+The "web" view is object "App.Web.Server":
 
 ```
-python tool.py -view App.Web.Server.Run
+python tool.py -view App.Web.Server
 ```
 
 Default host (`web.options.host`) and port (`web.options.port`) are 127.0.0.1:22222.

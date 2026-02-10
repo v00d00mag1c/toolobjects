@@ -11,14 +11,14 @@ from App import app
 from pathlib import Path
 from App.Storage.DB.Adapters.Search.Condition import Condition
 from App.Storage.StorageUnit import StorageUnit
-import asyncio, traceback, os
+import asyncio, traceback
 
-class Run(View):
-    # Run is sounds like act name, but its view. its required to nest it to Server dir because we need to separate client js classes
+class Server(View):
     async def implementation(self, i):
         _pre_i = i.get('pre_i')
 
-        _client = Path(__file__).parent.joinpath('client')
+        _assets = app.app.src.joinpath('assets')
+        _client = _assets.joinpath('client')
         _host = self.getOption("web.options.host")
         _port = self.getOption("web.options.port")
         _app = web.Application()
@@ -30,11 +30,11 @@ class Run(View):
                 """
                 <html>
                     <head>
-                        <script defer src="/static/node_modules/alpinejs/dist/cdn.min.js"></script>
+                        <script defer src="/static/client/node_modules/alpinejs/dist/cdn.min.js"></script>
                     </head>
                     <body>
                         <script type="module">
-                            import { App } from "/static/App/App.js"
+                            import { App } from "/static/client/App/App.js"
 
                             window.app = new App()
                             await window.app.run()
@@ -47,12 +47,18 @@ class Run(View):
 
         def _get_asset(request):
             asset_path  = request.match_info.get('path', '')
-            static_file = _client.joinpath(asset_path)
+            static_file = _assets.joinpath(asset_path)
+
+            _msg = f"asset request to {str(asset_path)}"
             try:
                 assert static_file.exists() == True and static_file.is_file() == True
-                static_file.resolve().relative_to(_client.resolve())
+                static_file.resolve().relative_to(_assets.resolve())
             except (ValueError, RuntimeError, AssertionError):
+
+                self.log(_msg + ", failed.")
                 raise web.HTTPForbidden(reason="Not found / Access denied")
+
+            self.log(_msg)
 
             return web.FileResponse(static_file)
 
@@ -229,7 +235,8 @@ class Run(View):
 
         await site.start()
 
-        self.log("Started server at {0}:{1}".format(_host, _port))
+        _http = 'http://'
+        self.log("Started server on {0}{1}:{2}".format(_http, _host, _port))
 
         while True:
             await asyncio.sleep(3600)

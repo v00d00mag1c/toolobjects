@@ -1,4 +1,4 @@
-import {Renderable} from "/static/Objects/Renderable.js"
+import {Renderable} from "/static/client/Objects/Renderable.js"
 
 export class LogicalBlock extends Renderable {
     constructor(id) {

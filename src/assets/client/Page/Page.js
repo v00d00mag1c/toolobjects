@@ -1,5 +1,5 @@
-import { LogicalBlock } from "/static/Page/LogicalBlock.js"
-import { default_page_styles } from "/static/Page/Styles.js"
+import { LogicalBlock } from "/static/client/Page/LogicalBlock.js"
+import { default_page_styles } from "/static/client/Page/Styles.js"
 
 export class Page {
     blocks = []

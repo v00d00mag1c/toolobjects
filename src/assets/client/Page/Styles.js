@@ -5,7 +5,7 @@ function _get_style(style) {
 }
 
 export const default_page_styles = async function () {
-    return await _get_style('/static/Styles/Common.css')
+    return await _get_style('/static/client/Styles/Common.css')
 }
 
 export default default_page_styles
