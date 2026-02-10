@@ -15,5 +15,5 @@ class PrintLog(Executable):
             )
         ])
 
-    async def implementation(self, i):
+    def implementation(self, i):
         print(i.get('log').toStr())

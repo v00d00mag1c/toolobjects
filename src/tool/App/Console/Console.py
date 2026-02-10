@@ -20,6 +20,7 @@ class Console(View):
         if results == None:
             self.log('nothing returned')
         else:
+            self.log(f'{executable.meta.class_name_joined} returned:')
             _json = JSON(data = results.to_json())
             print(_json.dump(indent = 4))
 

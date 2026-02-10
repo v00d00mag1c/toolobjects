@@ -13,6 +13,7 @@ import os
 
 class App(Object):
     argv: dict = None
+    conf_override: dict = None
     cwd: str = None
     src: str = None
     storage: str = None
@@ -22,35 +23,60 @@ class App(Object):
     executables_id: Increment = None
 
     def _constructor(self):
-        self.argv = self._parse_argv(sys.argv)
-        self.cwd = Path(os.getcwd())
-        self.src = self.cwd.parent
-        self.storage = self.src.joinpath('storage')
+        _args = self._parse_argv(sys.argv)
+        self.argv = _args[0]
+        self.conf_override = _args[1]
+        #self.cwd = Path(os.getcwd())
+        self.cwd = Path(__file__).parent.parent # objects dir
+        self.src = self.cwd.parent # "tool", "storage", "venv" and update scripts
+        self.storage = self.src.joinpath('storage') # default storage
         self.storage.mkdir(exist_ok = True)
         self.loop = asyncio.new_event_loop()
         self.executables_id = Increment()
-
         self.hook_thread = HookThread()
 
     def _parse_argv(self, args):
-        # didn't changed since sep.2024
-        delimiter = '--'
-        parsed_args = {}
+        '''
+        "-arg1 val1" - argument to the View
+        "--arg1 val1" - argument to config
+        '''
+
+        ARGS = {}
+        CONF_VALS = {}
+
+        # sep.2024
+        ARG_DELIMITER = '-'
+        CONF_VAL_DELIMITER = '--'
+
         key = None
+        key_type = None
+
         for arg in args[1:]:
-            if arg.startswith(delimiter):
+            if arg.startswith(CONF_VAL_DELIMITER):
                 if key:
-                    parsed_args[key] = True
+                    ARGS[key] = True
                 key = arg[2:]
-                parsed_args[key] = True
+                key_type = CONF_VAL_DELIMITER
+                CONF_VALS[key] = True
+            elif arg.startswith(ARG_DELIMITER):
+                if key:
+                    ARGS[key] = True
+                key = arg[1:]
+                key_type = ARG_DELIMITER
+                ARGS[key] = True
             else:
                 if key:
-                    parsed_args[key] = arg
+                    if key_type == ARG_DELIMITER:
+                        ARGS[key] = arg
+                    else:
+                        CONF_VALS[key] = arg
+
                     key = None
+                    key_type = None
                 else:
                     pass
 
-        return parsed_args
+        return ARGS, CONF_VALS
 
     def load_plugins(self, search_dir: Path):
         self.objects = ObjectsList()

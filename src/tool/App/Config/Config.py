@@ -38,6 +38,7 @@ class Config(Object):
         )
         configs.checkFile()
         configs.updateCompare()
+        configs.comparer.values.update(app.app.conf_override)
 
         app.mount('Config', configs)
 
@@ -63,7 +64,8 @@ class Config(Object):
         try:
             self.comparer.values = json.load(self._stream)
         except json.JSONDecodeError as __exc:
-            self.reset()
+            self.log("failed to load config json")
+            #self.reset()
 
     def updateFile(self) -> None:
         self._stream.seek(0)

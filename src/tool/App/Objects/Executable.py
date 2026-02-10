@@ -6,6 +6,7 @@ from App.Responses.Response import Response
 from App.Objects.Variableable import Variableable
 from typing import ClassVar
 from pydantic import Field
+import asyncio
 
 class Executable(Variableable, Validable, Object):
     '''
@@ -31,7 +32,11 @@ class Executable(Variableable, Validable, Object):
         '''
         Wrap that can be overriden
         '''
-        return await self.implementation(i)
+
+        if asyncio.iscoroutinefunction(self.implementation):
+            return await self.implementation(i)
+        else:
+            return self.implementation(i)
 
     async def execute(self, 
                       i: ArgumentsDict, 

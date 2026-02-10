@@ -7,7 +7,6 @@ from .LogFile import LogFile
 from .LogSection import LogSection
 from .LogPrefix import LogPrefix
 import traceback
-
 from pydantic import Field
 
 class Logger(Object):
@@ -33,6 +32,7 @@ class Logger(Object):
         logger = cls(
             hidden_categories = app.Config.get("logger.hide_sections"),
         )
+        logger.log_to_console = logger.getOption('logger.out_to_console')
 
         if app.Config.get("logger.out_to_file") == True:
             logger.log_file = LogFile.autoName(logs_dir)
@@ -67,6 +67,34 @@ class Logger(Object):
 
         return msg
 
+    @staticmethod
+    def _shouldPrint(to_print: Log, categories: list, where_name: str):
+        for category in categories:
+            if category.isLogMeets(to_print, where_name) == True:
+                return False
+
+        return True
+
+    def constructor(self):
+        def print_log(to_print, check_categories):
+            if self.log_to_console == False:
+                return
+
+            if self._shouldPrint(to_print, check_categories, 'console') == True:
+                items = PrintLog()
+                items.implementation({'log': to_print})
+
+        self.addHook('log', print_log)
+
+        async def print_file(to_print, check_categories):
+            if self.log_file == None:
+                return
+
+            if self._shouldPrint(to_print, check_categories, 'file') == True:
+                self.log_file.log(to_print)
+
+        self.addHook('log', print_file)
+
     @classmethod
     def getSettings(cls):
         from App.Arguments.Objects.List import List
@@ -96,33 +124,11 @@ class Logger(Object):
                 )
             ),
             Boolean(
-                name = 'logger.out_to_file',
+                name = 'logger.print_to_file',
                 default = False
+            ),
+            Boolean(
+                name = 'logger.print_to_console',
+                default = True
             )
         ]
-
-    @staticmethod
-    def _shouldPrint(to_print: Log, categories: list, where_name: str):
-        for category in categories:
-            if category.isLogMeets(to_print, where_name) == True:
-                return False
-
-        return True
-
-    def constructor(self):
-        if self.log_to_console == True:
-            async def print_log(to_print, check_categories):
-                if self._shouldPrint(to_print, check_categories, 'console') == True:
-                    items = PrintLog()
-                    await items.implementation({'log': to_print})
-
-            self.addHook('log', print_log)
-
-        async def print_file(to_print, check_categories):
-            if self.log_file == None:
-                return
-
-            if self._shouldPrint(to_print, check_categories, 'file') == True:
-                self.log_file.log(to_print)
-
-        self.addHook('log', print_file)
