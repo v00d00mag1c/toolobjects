@@ -86,7 +86,7 @@ class LoadedObject(NameContainable):
         assert common_object != None, "{0}: class with title {1} does not exists in this module".format(module_name, self.title)
         if ignore_requires == False and hasattr(common_object, 'getNotInstalledModules') == True:
             _modules = common_object.getNotInstalledModules()
-            assert len(_modules) == 0, f"following modules not installed: {', '.join(_modules)}"
+            assert len(_modules) == 0, f"following modules are not installed: {', '.join(_modules)}"
 
         try:
             if issubclass(common_object, BaseModel) == False:

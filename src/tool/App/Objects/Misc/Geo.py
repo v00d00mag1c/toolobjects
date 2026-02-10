@@ -1,6 +1,6 @@
-from App.Objects.Object import Object
+from App.Objects.Mixins.Model import Model
 from pydantic import Field
 
-class Geo(Object):
+class Geo(Model):
     lat: float = Field(default = None)
     long: float = Field(default = None)
