@@ -2,11 +2,13 @@ from Media.Media import Media
 from Web.HTTP.RequestHeaders import RequestHeaders
 from App.Objects.Relations.Submodule import Submodule
 from App.Objects.Requirements.Requirement import Requirement
+from typing import ClassVar
 
 class Video(Media):
     thumbnail_type = ['video']
     default_name = 'video.mp4'
     mime_type = 'video/mp4'
+    media_type: ClassVar[str] = 'video'
     _vid = None
 
     @classmethod

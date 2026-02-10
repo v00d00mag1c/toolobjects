@@ -13,6 +13,8 @@ from pathlib import Path
 
 from Media.ByPath import ByPath
 from Data.Primitives.Collections.Collection import Collection
+from App.Locale.Documentation import Documentation
+from App.Locale.Key import Key
 
 class ByDir(Extractor):
     @classmethod
@@ -26,12 +28,30 @@ class ByDir(Extractor):
             Argument(
                 name = 'split',
                 orig = Boolean,
-                default = False
+                default = True,
+                documentation = Documentation(
+                    name = Key(
+                        value = 'Split folders on collections'
+                    ),
+                    description = Key(
+                        value = 'False: Every file will be added to single collection.\nTrue: Every folder will represent collection with their files'
+                    )
+                )
             ),
             Argument(
                 name = 'split.collection_type',
                 orig = Object,
                 default = 'Data.Primitives.Collections.Collection'
+            ),
+            Argument(
+                name = 'split.find_covers',
+                orig = Boolean,
+                default = True
+            ),
+            ListArgument(
+                name = 'split.find_covers.extensions',
+                orig = String,
+                default = []
             ),
             ListArgument(
                 name = 'allowed_extensions',
@@ -47,6 +67,8 @@ class ByDir(Extractor):
 
     async def _implementation(self, i):
         allowed_extensions = i.get('allowed_extensions')
+        find_covers = i.get('split.find_covers')
+        find_covers_ext = i.get('split.find_covers.extensions')
         do_split = i.get('split')
         collection_type = i.get('split.collection_type')
         if collection_type is None:
@@ -55,8 +77,13 @@ class ByDir(Extractor):
         max_depth = i.get('dir_max_depth')
         if len(allowed_extensions) == 0:
             allowed_extensions = i.get('object').extensions
+        if len(find_covers_ext) == 0:
+            find_covers_ext = i.get('object').cover_extensions
         if len(allowed_extensions) == 0:
             allowed_extensions = None
+        if len(find_covers_ext) == 0:
+            find_covers_ext = None
+        pathes_collections = dict()
 
         def check_suffix(path):
             for suffix in path.suffixes:
@@ -70,31 +97,80 @@ class ByDir(Extractor):
 
             return False
 
-        def rglob(path, pattern, max_depth, current_depth = 0) -> Generator:
-            pathes = {'items': list(), 'name': path.name}
-            for item in path.glob(pattern):
-                path = Path(item)
-                if path.is_dir():
-                    yield from rglob(path, pattern, max_depth, current_depth + 1)
+        def check_cover(path):
+            for suffix in path.suffixes:
+                _suf = suffix.lower()[1:]
 
-                if check_suffix(path) == False:
+                if find_covers_ext != None:
+                    if _suf in find_covers_ext:
+                        return True
+                else:
+                    return True
+
+            return False
+
+        def rglob(path, pattern, max_depth, current_depth = 0, old_coll = None) -> Generator:
+            pathes = {'path': path, 'coll': None, 'old_path': old_coll, 'items': list(), 'name': path.name}
+            # Split is enabled, so creating collection for the current level
+            coll = None
+            covers = list()
+            if do_split:
+                coll = collection_type()
+                # Assigning it the name of the folder
+                coll.obj.name = path.name
+                coll.local_obj.make_public()
+                pathes['coll'] = coll
+
+                self.log('split to new collection ({0})'.format(coll.obj.name))
+
+                #pathes_collections[str(path)] = coll
+                self.append(coll)
+
+                if old_coll != None:
+                    old_coll.link(coll)
+
+            for item in path.glob(pattern):
+                new_path = Path(item)
+
+                if find_covers:
+                    if check_cover(new_path):
+                        covers.append(new_path)
+
+                if new_path.is_dir():
+                    yield from rglob(new_path, pattern, max_depth, current_depth + 1, coll)
+
+                if check_suffix(new_path) == False:
                     continue
 
-                pathes.get('items').append(str(path))
+                pathes['items'].append(str(new_path))
+
+            if coll != None:
+                for cover_item in covers:
+                    self.log('found cover item {0}'.format(str(cover_item)))
+
+                    try:
+                        for _item in i.get('object').get_thumbnail_for_collection(cover_item):
+                            coll.local_obj.add_thumbnail(_item)
+                    except Exception as e:
+                        self.log_error(e)
 
             yield pathes
 
+        # Passed paths
         for dir_item in i.get('dir'):
-            for item in rglob(dir_item, '*', max_depth):
-                _vals = i.getValues()
-                _vals['path'] = item.get('items')
+            self.log('Path {0}'.format(dir_item))
 
-                vals = await ByPath().execute(_vals)
-                coll = None
-                if do_split:
-                    coll = collection_type()
-                    coll.obj.name = item.get('name')
-                    self.append(coll)
+            # Iterating subfolders
+            for item in rglob(dir_item, '*', max_depth):
+                self.log('Subpath {0}'.format(item.get('path')))
+
+                # Getting as ByPath
+                _execute_vals = i.getValues()
+                _execute_vals['set_info'] = True
+                _execute_vals['path'] = item.get('items')
+
+                vals = await ByPath().execute(_execute_vals)
+                coll = item.get('coll')
 
                 for item in vals.getItems():
                     if coll:

@@ -70,8 +70,7 @@ class StorageItem(Object):
     def get_root_collection(self):
         if self.root_uuid != None:
             if self.name in self.root_uuid:
-                _ids = self.root_uuid.split('_')
-                return StorageUUID(storage = self.name, uuid = int(_ids[1])).toPython()
+                return StorageUUID.fromString(self.root_uuid).toPython()
             else:
                 return StorageUUID(storage = self.name, uuid = self.root_uuid).toPython()
 

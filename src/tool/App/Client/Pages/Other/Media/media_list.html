@@ -12,11 +12,19 @@
 
 <div class="gallery">
     {% for item in items %}
-        {% if item._getNameJoined() in allowed_names %}
+        {% if item.media_type in ['image', 'video'] %}
             <div class="search_item gallery_item">
                 <a href="{{url_for_object}}{{item.getDbIds()}}&act=display&as=Media.Images.Image&ref={{current_url_encoded}}">
                     <img src="{{item.get_url(True)}}" alt="{{item.any_description}}">
                 </a>
+            </div>
+        {% elif item.media_type == 'audio' %}
+            <div style="width:100%;">
+                <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.any_name}}</a>
+
+                <div>
+                    <audio src="{{item.get_url(True)}}" preload="none" controls></audio>
+                </div>
             </div>
         {% else %}
             <a href="{{url_for_object}}{{item.getDbIds()}}">unsupported</a>

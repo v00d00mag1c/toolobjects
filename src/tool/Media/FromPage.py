@@ -68,7 +68,7 @@ class FromPage(Extractor):
             if i.get('web.crawler.scroll_down'):
                 await new_page._page.scroll_down(i.get('web.crawler.scroll_down.cycles'))
 
-            media_urls = await new_page._page.get().evaluate("""
+            values = await new_page._page.get().evaluate("""
                 (i) => {
                     selectors = i[0]
                     allowed_selectors = i[1]
@@ -82,40 +82,11 @@ class FromPage(Extractor):
                     }
 
                     """+object_type.get_page_js_function()+"""
-
-                    for (let i = 0; i < elements.length; i++) {
-                        element = elements[i];
-                        let src = '';
-                        let tagName = element.tagName;
-                        if (element.src) {
-                            if (element.src.startsWith('data:')) {
-                                continue;
-                            }
-
-                            src = element.src;
-                        }
-                        """+object_type.get_page_js_insert_function()+"""
-                        if (!src || src == '') {
-                            continue;
-                        }
-
-                        urls.push({
-                            'src': src,
-                            'tagName': tagName
-                        });
-                    }
-
-                    return urls;
+                    """+object_type.get_page_js_return_function()+"""
                 }
             """, [selectors, allowed_selectors])
 
-            urls = list()
-            for item in media_urls:
-                urls.append(item.get('src'))
+            _vals = await object_type.convert_page_results(i, values)
 
-            _vals = i.getValues()
-            _vals['url'] = urls
-            _res = await Download().execute(_vals)
-
-            for _res_item in _res.getItems():
+            for _res_item in _vals.getItems():
                 self.append(_res_item)

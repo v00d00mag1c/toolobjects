@@ -2,12 +2,14 @@ from Media.Media import Media
 from App.Objects.Requirements.Requirement import Requirement
 from App.Objects.Relations.Submodule import Submodule
 from Web.HTTP.RequestHeaders import RequestHeaders
+from typing import ClassVar
 
 class Image(Media):
     thumbnail_type = ['image']
     default_name = 'image.jpg'
     mime_type = 'image/jpeg'
     extensions = ['png', 'jpeg', 'jpg', 'gif']
+    media_type: ClassVar[str] = 'image'
     _img = None
 
     @classmethod

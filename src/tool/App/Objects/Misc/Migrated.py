@@ -11,5 +11,5 @@ class Migrated(Object):
     migrated_to: ClassVar[str] = '' # Change this
 
     @classmethod
-    def get_migrated_to(cls, content: dict) -> str:
+    def get_migrated_to(cls, content: dict = None) -> str:
         return app.ObjectsList.getByName(cls.migrated_to).getModule()

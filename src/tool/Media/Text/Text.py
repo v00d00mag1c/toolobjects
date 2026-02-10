@@ -4,6 +4,7 @@ from pydantic import Field, computed_field
 from App.Objects.Relations.Submodule import Submodule
 from Web.HTTP.RequestHeaders import RequestHeaders
 from Data.Types.String import String
+from App.Objects.Responses.ObjectsList import ObjectsList
 
 class Text(Media):
     value: str | LinkInsertion = Field(default = '')
@@ -22,6 +23,30 @@ class Text(Media):
             return self.value
         else:
             return self.get_file().getPath().read_text(encoding = self.encoding)
+
+    @classmethod
+    def get_page_js_selectors(cls):
+        return ['span', 'p']
+
+    @classmethod
+    def get_page_js_return_function(cls):
+        return """
+        for (let i = 0; i < elements.length; i++) {
+            element = elements[i];
+            let src = element.innerText;
+            let tagName = element.tagName;
+            if (!src || src == '') {
+                continue;
+            }
+
+            urls.push({
+                'text': src,
+                'tagName': tagName
+            });
+        }
+
+        return urls;
+        """
 
     @classmethod
     def _submodules(cls) -> list:
@@ -46,3 +71,13 @@ class Text(Media):
 
     def _display_as_string(self):
         return String.cut(str(self.text), 500)
+
+    @classmethod
+    async def convert_page_results(cls, i, results: dict):
+        _objs = ObjectsList(items = [])
+        for item in results:
+            _objs.append(Text(
+                value = item.get('text')
+            ))
+
+        return _objs

@@ -27,7 +27,10 @@ class Page(Object):
     _unserializable = ['_downloader', '_page', '_page_response']
 
     async def _init_hook(self):
-        await self._crawler.register(self)
+        if self._crawler:
+            await self._crawler.register(self)
+        else:
+            self.log('crawler not passed')
 
     def get_html(self):
         return self.html

@@ -96,6 +96,12 @@ modules:
 - [x] Media.Text.Text
 - [x] Abstract.TODO or Abstract.Checkmarks
 
+media:
+
+- [x] FromPage
+- [x] web links bookmarks
+- [ ] RSS CDATA
+
 web crawler:
 
 - [x] assets downloading
@@ -105,6 +111,7 @@ web crawler:
 - [x] href and src replacer
 - [ ] inline styles mode
 - [ ] relative links replacer
+- [x] tampermonkey script
 
 web:
 

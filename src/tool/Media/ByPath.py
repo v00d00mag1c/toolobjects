@@ -39,15 +39,24 @@ class ByPath(Extractor):
                 name = 'set_source',
                 orig = Boolean,
                 default = False
+            ),
+            Argument(
+                name = 'set_info',
+                orig = Boolean,
+                default = False
             )
         ])
 
     async def _implementation(self, i):
         for item in i.get('path'):
+            _path = Path(item)
             try:
                 objects = self._get_objects(i, item)
 
                 for obj_item in objects:
+                    if i.get('set_info'):
+                        obj_item.fill_info_by_path(_path)
+ 
                     if i.get('set_source'):
                         obj_item.obj.set_common_source(Source(
                             obj = FilePath(

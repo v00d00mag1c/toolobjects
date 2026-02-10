@@ -7,7 +7,6 @@ class MediaList(Displayment):
         self.context.update({
             'items': orig_items,
             'args': args,
-            'hasattr': hasattr,
-            'allowed_names': ['Media.Images.Image']
+            'hasattr': hasattr
         })
         return self.render_string('Other/Media/media_list.html')
