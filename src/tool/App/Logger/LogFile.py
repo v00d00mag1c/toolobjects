@@ -31,7 +31,7 @@ class LogFile(Object):
         return LogFile(path = str(path), name = current_name)
 
     def log(self, item: Log):
-        self.items.append(item.model_dump(mode='json',exclude_none=None,exclude_computed_fields=True,exclude=['class_name__']))
+        self.items.append(item.to_json(mode='json',exclude_none=None,exclude_computed_fields=True,exclude=['class_name__']))
         self._updated += 1
 
         if self._updated >= self._update_every_count: 

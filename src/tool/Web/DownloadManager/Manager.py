@@ -1,9 +1,11 @@
 from App.Objects.Object import Object
 from App.Objects.Misc.Increment import Increment
 from App.Objects.Arguments.Argument import Argument
-from Web.DownloadManager.Item import Item as DownloadManagerItem
+from Web.DownloadManager.Item import Item
+from App.Storage.StorageUnit import StorageUnit
 from Web.HTTP.Headers import Headers
 from Data.Int import Int
+from Data.Boolean import Boolean
 from Data.String import String
 from pydantic import Field
 from typing import Type
@@ -18,37 +20,71 @@ class Manager(Object):
             self.items = []
             self.downloads = Increment()
 
-        def append(self, item: DownloadManagerItem):
+        def append(self, item: Item):
             self.items.append(item)
 
-        def remove(self, item: DownloadManagerItem):
-            pass
+        def remove(self, item: Item):
+            self.items.remove(item)
 
         def getById(self, id: int):
             for item in self.items:
                 if item.id == id:
                     return item
 
-    max_concurrent_downloads: int = Field(default = 3)
-    max_kbps_speed: int = Field(default = None)
-    timeout_seconds: int = Field(default = 10)
+    max_kbps_speed: int = None
     queue: DownloadManagerItems = None
-
     semaphore: Type[asyncio.Semaphore] = None
     #timeout: Type[aiohttp.ClientTimeout] = None
-    #session: Type[aiohttp.ClientSession] = None
-    queue: DownloadManagerItems = None
+    session: Type = None
+
+    def addURL(self, url: str, dir: StorageUnit | str = None, name: str = None) -> Item:
+        self._check()
+
+        _dir = ''
+        if dir != None:
+            _dir = dir
+        if isinstance(_dir, StorageUnit):
+            _dir = str(_dir.getDir())
+            if name == None:
+                name = _dir.hash + '.oct'
+
+        _item = Item(
+            url = url,
+            download_dir = _dir,
+            name = name
+        )
+        _item._manager_link = self
+        _item._constructor()
+
+        self.queue.append(_item)
+
+        return _item
+
+    def _check(self):
+        if self.session == None:
+            self._constructor()
+
+    def _constructor(self):
+        '''
+        bc it loads before loop creates
+        '''
+        import aiohttp
+
+        self.session = aiohttp.ClientSession(
+            timeout = self.timeout,
+        )
 
     @classmethod
     def mount(cls):
         from App import app
+        import aiohttp
 
-        manager = cls(
-            max_concurrent_downloads = cls.getOption('download_manager.max_concurrent_downloads'),
-            max_kbps_speed = cls.getOption('download_manager.max_kbps_speed'),
-            timeout_seconds = cls.getOption("download_manager.timeout_seconds"),
-            queue = cls.DownloadManagerItems()
+        manager = cls()
+        manager.queue = cls.DownloadManagerItems(
+            max_kbps_speed = cls.getOption('download_manager.max_concurrent_downloads')
         )
+        manager.semaphore = asyncio.Semaphore(manager.queue.max_kbps_speed)
+        manager.timeout = aiohttp.ClientTimeout(total = cls.getOption("download_manager.timeout_seconds"))
 
         app.mount('DownloadManager', manager)
 
@@ -56,7 +92,7 @@ class Manager(Object):
         _headers = Headers()
         _headers.user_agent = self.getOption("download_manager.user_agent")
 
-        return _headers.model_dump(by_alias = True)
+        return _headers.to_json(by_alias = True)
 
     @classmethod
     def getSettings(cls):
@@ -81,4 +117,18 @@ class Manager(Object):
                 default = "",
                 orig = String
             ),
+            Argument(
+                name = 'download_manager.new_session_per_download',
+                default = False,
+                orig = Boolean
+            ),
+            Argument(
+                name = 'download_manager.allow_redirects',
+                default = True,
+                orig = Boolean
+            )
         ]
+
+    @classmethod
+    def getClassEventTypes(cls) -> list:
+        return ['downloading', 'success', 'ended', 'started']

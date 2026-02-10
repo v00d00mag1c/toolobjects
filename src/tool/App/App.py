@@ -40,6 +40,8 @@ class App(Object):
         self.storage = self.src.joinpath('storage') # default storage
         self.storage.mkdir(exist_ok = True)
         self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.loop)
+
         self.executables_id = Increment()
         self.hook_thread = HookThread()
 

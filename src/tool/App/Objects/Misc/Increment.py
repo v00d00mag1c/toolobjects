@@ -12,6 +12,9 @@ class Increment(Object):
     def getIndex(self):
         self.increment()
 
+        return self.getCount()
+
+    def getCount(self):
         return self._id
 
     def null(self):

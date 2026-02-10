@@ -13,7 +13,8 @@ class BaseModel(PydanticBaseModel):
     _include_extra: ClassVar[bool] = True
     _excludes: ClassVar[list[str]] = None
     _internal_fields: ClassVar[list[str]] = ['meta', 'saved_via', 'links', 'db_info']
-    _unserializable: ClassVar[list[str]] = []
+    _unserializable: ClassVar[list[str]] = ['_only_class_fields', '_convert_links', '_include_extra', '_excludes', '_internal_fields', '_unserializable']
+    _only_class_fields: bool = False
 
     @computed_field
     @property
@@ -35,7 +36,9 @@ class BaseModel(PydanticBaseModel):
                 exclude_internal: bool = False,
                 exclude_none: bool = False,
                 exclude: list[str] = [],
-                include_extra: bool = True):
+                by_alias: bool = True,
+                include_extra: bool = True,
+                only_class_fields: bool = True):
         '''
         convert_links: replace LinkInsertions with their "unwrap()" function results
 
@@ -56,13 +59,15 @@ class BaseModel(PydanticBaseModel):
         for item in exclude:
             excludes.append(item)
 
-        PydanticBaseModel._convert_links = False
-        PydanticBaseModel._include_extra = include_extra
-        PydanticBaseModel._excludes = excludes
-        PydanticBaseModel._convert_links = convert_links == 'unwrap'
+        BaseModel._convert_links = False
+        BaseModel._include_extra = include_extra
+        BaseModel._excludes = excludes
+        BaseModel._convert_links = convert_links == 'unwrap'
+        BaseModel._only_class_fields = only_class_fields
 
         results = self.model_dump(mode = 'json', 
-                exclude_none = exclude_none)
+                exclude_none = exclude_none,
+                by_alias = by_alias)
 
         return results
 
@@ -157,8 +162,11 @@ class BaseModel(PydanticBaseModel):
         for field_name in self.__class__.model_computed_fields:
             _field_names.append(field_name)
 
+        if self.__class__._only_class_fields == True:
+            _field_names = self.__class__.__annotations__
+
         for field_name in _field_names:
-            if PydanticBaseModel._excludes != None and field_name in PydanticBaseModel._excludes:
+            if BaseModel._excludes != None and field_name in BaseModel._excludes:
                 continue
 
             if field_name in self.__class__._unserializable:
@@ -168,7 +176,7 @@ class BaseModel(PydanticBaseModel):
 
             if isinstance(value, LinkInsertion):
                 value.setDb(self.getDb())
-                if PydanticBaseModel._convert_links == True:
+                if BaseModel._convert_links == True:
                     result[field_name] = value.unwrap()
                 else:
                     result[field_name] = value
@@ -177,12 +185,12 @@ class BaseModel(PydanticBaseModel):
                 for item in value:
                     item.setDb(self.getDb())
 
-                    if PydanticBaseModel._convert_links == True:
+                    if BaseModel._convert_links == True:
                         result.get('field_name').append(item.unwrap())
             else:
                 result[field_name] = self._serializer(value)
 
-        if PydanticBaseModel._include_extra == True:
+        if BaseModel._include_extra == True:
             for key, val in self.model_extra.items():
                 result[key] = val
 
