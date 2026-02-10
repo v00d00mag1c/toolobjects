@@ -14,3 +14,14 @@ class FileType(Object):
 
         if self.storage_unit != None:
             return self.storage_unit
+
+    def set_storage_unit(self, storage_unit: StorageUnit):
+        if storage_unit.isIndexed() == False:
+            storage_unit.save()
+
+        _lnk = self.link(storage_unit)
+
+        self.storage_unit = StorageUnitLink(
+            path = storage_unit.guessName(),
+            insertion = _lnk.toInsert()
+        )

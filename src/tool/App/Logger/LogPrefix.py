@@ -6,4 +6,4 @@ class LogPrefix(Object):
     id: int | str = Field(default=0)
 
     def toString(self):
-        return f"{self.name}->{self.id}"
+        return f"{self.name}:{self.id}"

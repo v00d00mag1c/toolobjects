@@ -55,6 +55,8 @@ class Argument(Object):
         return self.getImplementation(original_value)
 
     def getImplementation(self, original_value: Any | str):
+        self.inputs = original_value
+
         if self.check_json == True and JSON.isStringValidJson(original_value) == True:
             val = JSON.fromText(original_value).data
 

@@ -28,6 +28,12 @@ class ObjectsList(Object):
     def mount(cls):
         from App import app
 
+        _custom = [
+            Namespace(
+                name = 'custom',
+                root = str(app.app.cwd.joinpath('Custom'))
+            )
+        ]
         _objects = cls(
             namespaces = [
                 app.app.objects
@@ -35,7 +41,7 @@ class ObjectsList(Object):
             current = cls.getOption("objects.index.namespaces.current")
         )
 
-        for item in cls.getOption('objects.index.namespaces'):
+        for item in _custom + cls.getOption('objects.index.namespaces'):
             _objects.namespaces.append(item)
             item.load()
 

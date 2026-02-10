@@ -10,9 +10,10 @@ class LogFile(Object):
     path: str = Field()
     name: str = Field()
     items: list = Field(default = [], exclude = True)
-    _update_every_count = 1
+    _update_every_count = 100
     _updated = 0
     _stream: Any = None
+    _log_indent: int = None # Change if wanna read at file
 
     def getPath(self) -> Path:
         extension = '.log.json'
@@ -31,9 +32,12 @@ class LogFile(Object):
         return LogFile(path = str(path), name = current_name)
 
     def log(self, item: Log):
-        self.items.append(item.to_json(exclude_none=None,exclude_computed_fields=True,exclude=['class_name__']))
-        self._updated += 1
+        try:
+            self.items.append(item.minimal_json(include_self_name = True))
+        except Exception as e:
+            self.log_error(e)
 
+        self._updated += 1
         if self._updated >= self._update_every_count: 
             self._updateFile()
             self._saveFile()
@@ -56,7 +60,7 @@ class LogFile(Object):
     def _updateFile(self):
         self._stream.truncate(0)
         self._stream.seek(0)
-        self._stream.write(json.dumps(self.items, indent=4) + '\n')
+        self._stream.write(json.dumps(self.items, indent=self._log_indent) + '\n')
 
     def _saveFile(self):
         try:

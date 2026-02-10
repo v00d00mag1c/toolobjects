@@ -12,7 +12,7 @@ class _Wrap:
     def mount(self, name: str, item):
         msg = f"Mounted {name} into globals"
         try:
-            self.Logger.log(msg, section = ['Wrap'])
+            self.Logger.log(msg, role = ['objects_loading', 'objects_mounting'], section = ['Wrap'])
         except:
             pass
 

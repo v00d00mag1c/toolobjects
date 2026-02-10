@@ -42,5 +42,8 @@ class File(Object):
 
         return _upper.parent
 
+    def getPath(self) -> Path:
+        return Path(self.path)
+
     def getContent(self):
         return [self.to_json()]

@@ -36,7 +36,7 @@ class Logger(Object):
         )
         logger.log_to_console = logger.getOption('logger.print.console')
 
-        if app.Config.get("logger.print.file") == True:
+        if cls.getOption("logger.print.file") == True:
             logger.log_file = LogFile.autoName(logs_dir)
             logger.log_file.open()
 
@@ -44,7 +44,7 @@ class Logger(Object):
 
     def log(self, 
             message: str | Exception, 
-            section: str | list = ['Nonce'],
+            section: str | list = ['❤️'],
             role: list[str] = [],
             prefix: LogPrefix = None, 
             exception_prefix: str = '',

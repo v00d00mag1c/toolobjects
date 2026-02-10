@@ -31,6 +31,8 @@ class Linkable(BaseModel):
                 self.log('addLink: {0} {1} item is flushed, {2} is not, so we will flush item that we link'.format(self.getClassNameJoined(), self.getDbId(), link.item.getClassNameJoined()))
 
                 link.item.setDb(link.item.flush(self.getDb()._adapter._storage_item))
+            else:
+                self.log('addLink: both items are flushed')
 
             if self.sameDbWith(link.item) == False:
                 self.log('OK, link item and current item has db, but they are not same, so changing linking item db to current item db')

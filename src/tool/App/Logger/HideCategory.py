@@ -18,8 +18,8 @@ class HideCategory(Object):
     where: may be console, web, file or smth
     '''
 
-    section: list = Field(default = [])
-    role: list = Field(default = None)
+    section: list = Field(default = None)
+    role: str = Field(default = None)
     where: list[Literal['console', 'file']] = Field(default = None)
     wildcard: bool = Field(default = False)
     unused: bool = Field(default = False)
@@ -42,6 +42,9 @@ class HideCategory(Object):
         return True
 
     def isSectionMeets(self, section: list[str]) -> bool:
+        if self.section == None:
+            return True
+
         if self.wildcard == True:
             if len(section) == 0:
                 return True

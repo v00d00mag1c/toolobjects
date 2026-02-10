@@ -3,6 +3,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.StorageItem import StorageItem
 from pydantic import Field
+from Data.Int import Int
 from App import app
 
 class Storage(Object):
@@ -24,7 +25,7 @@ class Storage(Object):
 
         default_items = [
             StorageItem(
-                name = 'content',
+                name = 'common',
                 db = {
                     'adapter': 'sqlite',
                 }
@@ -63,5 +64,10 @@ class Storage(Object):
                 name = 'storage.dbs',
                 default = [],
                 orig = StorageItem
+            ),
+            Argument(
+                name = 'app.db.linking.depth.default',
+                default = 29,
+                orig = Int
             )
         ]

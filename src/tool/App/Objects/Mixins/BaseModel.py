@@ -38,8 +38,12 @@ class BaseModel(PydanticBaseModel):
     def isInstance(self, object: PydanticBaseModel) -> bool:
         return self.getClassNameJoined() == object.getClassNameJoined()
 
-    def minimal_json(self):
-        return self.to_json(only_class_fields=True, by_alias=True)
+    def minimal_json(self, include_self_name: bool = False):
+        _data = self.to_json(only_class_fields=True, by_alias=True)
+        if include_self_name:
+            _data['class_name'] = self.class_name
+
+        return _data
 
     def to_json(self, 
                 convert_links: Literal['unwrap', 'none'] = 'unwrap', 
@@ -238,7 +242,7 @@ class BaseModel(PydanticBaseModel):
                     if _val == _defaults.get(field_name, None):
                         continue
 
-                if hasattr(_val, 'setDb'):
+                if hasattr(_val, 'setDb') and hasattr(self, 'setDb'):
                     _val.setDb(self.getDb())
 
                 result[field_name] = _val

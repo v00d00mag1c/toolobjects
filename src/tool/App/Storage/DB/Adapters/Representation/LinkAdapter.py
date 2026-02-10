@@ -3,7 +3,6 @@ from Data.JSON import JSON
 from abc import abstractmethod
 from App.Storage.DB.Adapters.Representation.AbstractAdapter import AbstractAdapter
 from App.Storage.DB.Adapters.Representation.ObjectAdapter import ObjectAdapter
-from App.Objects.Misc.UnknownObject import UnknownObject
 
 class LinkAdapter(AbstractAdapter):
     owner: int = None

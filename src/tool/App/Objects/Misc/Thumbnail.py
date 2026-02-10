@@ -1,6 +1,5 @@
 from App.Objects.Mixins.BaseModel import BaseModel
 from pydantic import Field
 
-class Source(BaseModel):
+class Thumbnail(BaseModel):
     obj: BaseModel = Field()
-    is_common: bool = Field(default = False)

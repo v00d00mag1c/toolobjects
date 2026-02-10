@@ -26,7 +26,7 @@ class Executable(Object, Variableable, Validable):
         return LogPrefix(
             id = self.id,
             #name = self.class_name
-            name = 'Executable'
+            name = 'ID'
         )
 
     @abstractmethod

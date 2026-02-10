@@ -6,19 +6,15 @@ from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
-from Data.String import String
-from Data.Boolean import Boolean
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.Movement.Save import Save
 from App.Objects.Locale.Documentation import Documentation
 from App.Objects.Locale.Key import Key
+from Data.String import String
+from Data.Boolean import Boolean
 from App import app
 
 class DefaultExecutorWheel(Act):
-    '''
-    Class that switches the action looking by object type
-    '''
-
     async def implementation(self, i: ArgumentValues):
         force_flush = i.get('force_flush')
         executable = i.get('i')
@@ -126,5 +122,6 @@ class DefaultExecutorWheel(Act):
                     )
                 ),
             )
+            # link_to and link_max_depth will be passed because of missing_args_inclusion
         ],
         missing_args_inclusion = True)

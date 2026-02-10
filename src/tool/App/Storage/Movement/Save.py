@@ -2,12 +2,12 @@ from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
-from Data.Int import Int
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Responses.AnyResponse import AnyResponse
 from App.Storage.StorageItem import StorageItem
 from App.Storage.StorageUUID import StorageUUID
+from Data.Int import Int
 from App import app
 
 class Save(Act):
@@ -34,7 +34,7 @@ class Save(Act):
             Argument(
                 name = 'link_max_depth',
                 orig = Int,
-                default = 10 # TODO move to const
+                default = cls.getOption('app.db.linking.depth.default')
             )
         ])
 
@@ -45,7 +45,7 @@ class Save(Act):
             link_to.append(item.toPython())
 
         for storage in i.get('storage'):
-            assert storage != None, f"storage {storage.name} not found"
+            assert storage != None, "storage not founb" #f"storage {storage.name} not found"
             assert storage.hasAdapter(), f"storage {storage.name} does not contains db connection"
 
             for item in i.get('items').getItems():

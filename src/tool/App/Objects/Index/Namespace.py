@@ -52,13 +52,13 @@ class Namespace(Object):
 
                     self.noticeModuleLoaded(item)
                 else:
-                    self.log(f"{item.name}: loaded but not imported", role=['module_skipped'])
+                    self.log(f"{item.name}: loaded but not imported", role=['objects_loading', 'module_skipped'])
             except AssertionError:
                 pass
             except Exception as exception:
                 item.is_success = False
-                self.log_error(f"{item.name} not imported")
-                self.log_error(exception)
+                self.log_error(f"{item.name} not imported", role=['objects_loading'])
+                self.log_error(exception, role=['objects_loading'])
 
                 if isinstance(exception, AssertionError) == False and isinstance(exception, ModuleNotFoundError) == False and isinstance(exception, NotAnObjectError) == False:
                     raise exception
@@ -76,7 +76,7 @@ class Namespace(Object):
 
         # Wont output because Logger is not loaded at this moment
         # TODO not load from Custom
-        self.log(f"Namespace {self.name}, loading objects from dir {self.root}")
+        self.log(f"Namespace {self.name}, loading objects from dir {self.root}", role = ['objects_loading'])
 
         global_path = Path(self.root)
         _side_names = ['', '__init__.py', '__pycache__', 'Base.py', 'tool.py', '.gitkeep']
@@ -148,7 +148,7 @@ class Namespace(Object):
         return self.items.items
 
     def noticeModuleLoaded(self, item: LoadedObject):
-        _role = []
+        _role = ['objects_loading']
         if item.is_prioritized:
             _role.append('priority')
         if item.is_submodule:

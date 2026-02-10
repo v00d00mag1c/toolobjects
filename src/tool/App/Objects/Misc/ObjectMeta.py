@@ -6,26 +6,28 @@ from .Source import Source
 from .SavedVia import SavedVia
 
 class ObjectMeta(BaseModel):
-    '''
-    Additional data about object
-    '''
-
     saved_via: SavedVia = Field(default = None)
+    custom_saved_via: Optional[list[SavedVia]] = Field(default = [])
+
     name: Optional[str] = Field(default=None)
-    description: Optional[str] = Field(default=None)
-    indexation: Optional[str] = Field(default=None)
     original_name: Optional[str] = Field(default=None)
+
+    description: Optional[str] = Field(default=None)
+    shadow_description: Optional[str] = Field(default=None)
     original_description: Optional[str] = Field(default=None)
-    thumbnail: Optional[dict] = Field(default = None)
+
+    role: Optional[list[str]] = Field(default = [])
     duration: Optional[int] = Field(default = None)
-    role: Optional[list[str]] = Field(default = None) # dont know yet where to use
-    object_names: Optional[list[str]] = Field(default = None) # Custom saved_via.object_names
-    collection: Optional[bool] = Field(default=False) # Is a collection
-    source: Source = Field(default = Source(), repr = False)
+
+    collection: Optional[bool] = Field(default=False)
+    public: Optional[bool] = Field(default=False)
+
+    source: list[Source] = Field(default = [], repr = False)
+    thumbnail: Optional[dict] = Field(default = None)
 
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
-    declared_created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
     edited_at: Optional[datetime] = Field(default=None)
+    declared_created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
 
     @property
     def any_name(self):
@@ -33,3 +35,14 @@ class ObjectMeta(BaseModel):
             return self.original_name
 
         return self.name
+
+    def set_common_source(self, source: Source):
+        source.is_common = True
+
+        self.source.append(source)
+
+    def add_source(self, source: Source):
+        self.source.append(source)
+
+    def make_public(self):
+        self.public = True

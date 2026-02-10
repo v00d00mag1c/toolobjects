@@ -28,6 +28,8 @@ class ObjectAdapter(AbstractAdapter):
         ...
 
     def toPython(self):
+        _object_name = None
+
         try:
             _content = JSON().fromText(self.content)
             _object_name = _content.data.get('obj').get('saved_via').get('object_name')
@@ -36,5 +38,16 @@ class ObjectAdapter(AbstractAdapter):
             _item.setDb(self)
 
             return _item
-        except (AttributeError, json.decoder.JSONDecodeError):
+        except (AttributeError, json.decoder.JSONDecodeError) as e:
+            _msg = f"Object with uuid {self.uuid} was tried to be loaded, "
+
+            if _object_name == None:
+                _msg += f"obj.saved_via.object_name is not accesible"
+            else:
+                _msg += f"type is {_object_name}, {str(e)}"
+
+            _msg += ". UnknownObject returned"
+
+            app.Logger.log(message = _msg, role = ["object_adapter_db_import"])
+
             return UnknownObject()

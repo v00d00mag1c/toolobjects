@@ -44,9 +44,10 @@ class Manager(Object):
         if dir != None:
             _dir = dir
         if isinstance(_dir, StorageUnit):
-            _dir = str(_dir.getDir())
             if name == None:
                 name = _dir.hash + '.oct'
+            _dir.setCommonFile(_dir.getDir().joinpath(name))
+            _dir = str(_dir.getDir())
 
         _item = Item(
             url = url,

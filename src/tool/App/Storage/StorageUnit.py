@@ -42,10 +42,6 @@ class StorageUnit(Object):
         self._common_path = common_path
 
     def setCommonFile(self, file_path: Path):
-        '''
-        Sets relative file as common
-        '''
-
         self.name = file_path.name
         self.ext = file_path.suffix[1:]
         self.common = str(file_path.relative_to(self.getDir()))
@@ -89,7 +85,21 @@ class StorageUnit(Object):
             ext = self.getCommonPath().suffix[1:]
         )
 
-    def save(self):
-        self.files = self.genFilesList()
+    def guessName(self) -> str:
+        _name = None
+        _common = Path(self.common)
+        for file in self.files:
+            if _common != None and file.getPath() == _common:
+                return file.name
 
-        super().save()
+            _name = file.name
+
+        return _name
+
+    def isIndexed(self) -> bool:
+        return len(self.files) > 0
+
+    def save(self):
+        self.files = list(self.genFilesList())
+
+        return super().save()

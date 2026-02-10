@@ -106,7 +106,9 @@ class SQLAlchemy(ConnectionAdapter):
 
                 link.setDb(self)
                 self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
-                owner._orig.save()
+
+                if owner._orig != None:
+                    owner._orig.save()
 
                 _session.add(self)
 

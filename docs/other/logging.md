@@ -15,17 +15,7 @@ i may recomend:
 ```
     "logger.print.exclude": [
         {
-            "section": [
-                "App",
-                "Objects",
-                "Index",
-                "Namespace"
-            ]        
-        },
-        {
-            "section": [
-                "Wrap"
-            ]
+            "role": "objects_loading"  
         }
     ],
     "logger.print.file": false,
