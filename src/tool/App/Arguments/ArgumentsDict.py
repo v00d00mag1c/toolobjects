@@ -27,11 +27,18 @@ class ArgumentsDict(Object):
         return ArgumentsDict(items = DictList(items = items))
 
     def toNames(self) -> list:
-        return self.items.toNames()
+        if hasattr(self.items, 'toNames'):
+            return self.items.toNames()
+
+        names = []
+        for key, val in self.items.items():
+            names.append(key)
+
+        return names
 
     def toDict(self, exclude: list = []):
         _items = {}
-        for name in self.items.toNames():
+        for name in self.toNames():
             if name in exclude:
                 continue
 
