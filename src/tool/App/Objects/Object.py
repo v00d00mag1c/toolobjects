@@ -36,12 +36,16 @@ class Object(BaseModel,
 
     @classmethod
     def asArgument(cls, val: str) -> BaseModel:
-        if type(val) == str:
+        if isinstance(val, str):
             _val = app.ObjectsList.getByName(key = val)
             if _val == None:
                 return None
 
             return _val.getModule()
+
+        # isinstance not works
+        if hasattr(val, 'self_name'):
+            return val
 
         return super().asArgument(val)
 

@@ -21,16 +21,18 @@ class ConsoleView(View):
         return await self.execute(_parsed_argv[0])
 
     async def implementation(self, i: ArgumentValues = {}):
-        _user = app.AuthLayer.login(
-            name = i.get('username'),
-            password = i.get('password')
-        )
-        i.set('auth', _user)
+        i.set('auth', self._auth(i.get('username'), i.get('password')))
 
         pre_i = i.get('pre_i')()
         results = await pre_i.execute(i)
 
         self._print_call(results, i.get('console_view.print_result'), i.get('console_view.print_as'))
+
+    def _auth(self, username, password):
+        return app.AuthLayer.login(
+            name = username,
+            password = password
+        )
 
     def _print_call(self, results, print_result: bool = True, print_as: bool = 'str'):
         if print_result == True:

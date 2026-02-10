@@ -30,6 +30,7 @@ core:
 - [ ] App.ReloadModules
 - [x] namespace: load submodules
 - [ ] remove Optional required by model_validate
+- [ ] keep spaces in brackets in _parse_argv
 
 db and storage:
 

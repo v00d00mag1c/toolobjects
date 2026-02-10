@@ -6,6 +6,8 @@ import traceback
 
 class InteractiveView(ConsoleView):
     async def implementation(self, i):
+        i.set('auth', self._auth(i.get('username'), i.get('password')))
+
         pre_i = i.get('pre_i')()
 
         is_exit = False
@@ -26,6 +28,7 @@ class InteractiveView(ConsoleView):
                 if _i == 'App.Console.Same':
                     _args['i'] = prev
 
+                _args['auth'] = i.get('auth')
                 results = await pre_i.execute(_args)
                 self._print_call(results, i.get('console_view.print_result'), i.get('console_view.print_as'))
 
