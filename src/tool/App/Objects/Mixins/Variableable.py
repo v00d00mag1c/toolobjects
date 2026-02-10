@@ -3,8 +3,7 @@ from App.Objects.Misc.DictList import DictList
 class Variableable:
     '''
     Allows to define class variables. They will be created in every class instance.
-    What they can do? maybe progressbar or preview result
-    Variables are just DictList with App.Objects.Arguments.Argument. They are copying from prototype that already was inited
+    Variables are just DictList with App.Objects.Arguments.Argument. They copies from prototype that already was inited
     '''
     _instance_variables: DictList | None = None
 

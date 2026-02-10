@@ -1,7 +1,7 @@
 from .Assertions.Assertion import Assertion
 from App.Objects.Object import Object
 from App.Objects.Misc.NameContainable import NameContainable
-from typing import Any, List, Literal, Callable, Generator
+from typing import Any, List, Literal, Callable, Generator, Optional
 from pydantic import Field, computed_field, field_serializer
 from App.Locale.Documentation import Documentation
 from App.Storage.StorageUUID import StorageUUID
@@ -10,7 +10,7 @@ from App.Objects.Index.ModuleData import ModuleData
 
 class Argument(NameContainable):
     name: str = Field()
-    orig: list[Any] | Any = Field(default = None)
+    orig: list[Any] | Any = Field(default = None, exclude = True)
     default: Any | Callable = Field(default = None)
     inputs: str = Field(default = None) # workaround for assertions
 
@@ -23,6 +23,12 @@ class Argument(NameContainable):
     assertions: List[Assertion] = Field(default=[])
     role: Literal['config', 'env'] = Field(default='config')
     documentation: Documentation = Field(default = None)
+    serialization: Optional[dict] = Field(default = None)
+    orig_serialization: Optional[dict] = Field(default = {
+        'only_class_fields': True,
+        'by_alias': True,
+        'exclude_defaults': True,
+    })
 
     current: Any = Field(default=None)
 
@@ -58,10 +64,15 @@ class Argument(NameContainable):
             if StorageUUID.validate(val):
                 return StorageUUID.fromString(val).toPython()
 
+        _orig = self.getOrig()
         if self.is_class_returns:
-            return self.getOrig().asClass(val)
+            return _orig.asClass(val)
 
-        return self.getOrig().asArgument(val)
+        # If only class reference was passed in "orig"
+        if callable(_orig):
+            return _orig.asArgument(val)
+        else:
+            return _orig.asArgumentAsInstance(val)
 
     def getOrig(self) -> Object:
         return self.orig
@@ -85,6 +96,9 @@ class Argument(NameContainable):
         if self.auto_apply == True:
             self.autoApply()
 
+    def serialize_self(self):
+        return self.to_json(**self.serialization)
+
     def autoApply(self):
         self.current = self.getValue(None)
 
@@ -93,7 +107,13 @@ class Argument(NameContainable):
         if orig == None:
             return None
 
-        return ModuleData.from_module(orig)
+        if callable(orig):
+            _module = ModuleData.from_module(orig.__class__)
+            _module.instance_values = orig.to_json(**self.orig_serialization)
+
+            return _module
+        else:
+            return ModuleData.from_module(orig)
 
     @field_serializer('default')
     def get_default(self, default) -> str:

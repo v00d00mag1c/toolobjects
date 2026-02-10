@@ -2,7 +2,7 @@ from App.Objects.Responses.Response import Response
 from App.Objects.Mixins.Model import Model
 from App.Objects.Object import Object
 from App.Objects.Relations.Submodule import Submodule
-from pydantic import Field
+from pydantic import Field, computed_field
 from typing import Generator
 from App.Storage.StorageUUID import StorageUUID
 
@@ -20,6 +20,11 @@ class ObjectsList(Response):
     unsaveable: bool = Field(default = False)
     ignore_flush_hooks: bool = Field(default = False)
     # If your Executable returns something that should be saved, "unsaveable" should be False. But if it searches something, it should be True because it will be re-flushed in DefaultExtractorWheel
+
+    @computed_field
+    @property
+    def count(self) -> int:
+        return len(self.items)
 
     def append(self, item: Object):
         self.items.append(item)

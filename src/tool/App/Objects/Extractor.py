@@ -14,7 +14,10 @@ class Extractor(Executable):
         return [
             Variable(
                 name = 'items',
-                value = ObjectsList(unsaveable = False)
+                value = ObjectsList(unsaveable = False),
+                serialization = {
+                    'exclude': ['items']
+                }
             )
         ]
 

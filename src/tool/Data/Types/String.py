@@ -1,14 +1,29 @@
-from App.Objects.Object import Object
-from pydantic import Field
+from App.Objects.Misc.Valueable import Valueable
 from App.Objects.Act import Act
+from pydantic import Field
+from typing import Optional
 
-class String(Object):
-    value: str = Field()
+class String(Valueable):
+    value: Optional[str] = Field(default = None)
+    min_length: Optional[int] = Field(default = None)
+    max_length: Optional[int] = Field(default = None)
 
     @classmethod
     def asArgument(cls, val):
         if val == None:
             return None
+
+        return str(val)
+
+    def asArgumentAsInstance(self, val):
+        if val == None:
+            return None
+
+        if self.min_length != None:
+            assert len(val) > self.min_length, 'string is too short'
+
+        if self.max_length != None:
+            assert len(val) < self.max_length, 'string is too long'
 
         return str(val)
 

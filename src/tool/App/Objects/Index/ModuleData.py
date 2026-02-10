@@ -7,6 +7,7 @@ class ModuleData(BaseModel):
     submodules: list = Field(default = [])
     requirements: list = Field(default = [])
     settings: list = Field(default = [])
+    instance_values: dict = Field(default = None)
 
     @staticmethod
     def from_module(module, include_subs: bool = False, 

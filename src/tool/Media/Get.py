@@ -44,7 +44,7 @@ class Get(ExtendedWheel):
 
         # Thumbnails
 
-        allowed_thumbnails = None # If None, runs every thumbnail submodule
+        allowed_thumbnails = [] # If None, runs every thumbnail submodule
         for item in i.get('thumbnails'):
             if item == '*':
                 allowed_thumbnails = None

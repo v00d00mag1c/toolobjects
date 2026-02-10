@@ -28,9 +28,10 @@ core:
 - [x] name of object required twice
 - [x] namespace: load submodules
 - [x] ~~remove Optional required by model_validate~~
-- [ ] keep spaces in brackets in _parse_argv, choose another argparser
+- [ ] keep spaces in brackets in `_parse_argv`, choose argparser that supports it
 - [x] App.Objects.Operations.Edit
 - [x] App.ReloadModules
+- [x] advanced arguments
 
 db and storage:
 
@@ -110,15 +111,15 @@ web crawler:
 web:
 
 - [x] WebServer
-- [ ] websocket connection: set event_index in executable to distinguish variables messages
+- [ ] websocket connection: set event_index in executable to distinguish variables messages or smth
 - [ ] hook functions for thread and variables
 - [ ] displaytype=js_module
 - [x] file uploading
-- [ ] file uploading auth
+- [x] file uploading auth
 
 others:
 
-- [ ] Remove Arguments and Variable functions and move them to submodules system with role=validation or role=variable
+- [ ] ~~Remove Arguments and Variable functions and move them to submodules system with role=validation or role=variable~~
 - [x] ~~custom object can contain "source" and "meta" fields in it and replace the original, so name it differently?~~
 - [ ] object that can contain self subtypes, for example File can be imagined as Image with file field. ObjectsList.findByMRO
 - [ ] there is similar functions: Configurable.getAllSettings, Validable.getAllArguments, Submodulable.getAllSubmodules, Variableable.getAllVariables, no functions to skip one of mro's item. maybe move it to MROThing
@@ -128,9 +129,10 @@ others:
 - [ ] safety: permissions per every class
 - [ ] restrictedpython when importing
 - [ ] Example: App.Storage.Movement.Import. mount_name is None by default, and if its not, its sets that the name from last part. and maybe its better to set default as lambda function?
-- [ ] App.Object.Paginable
-- [ ] storage unit password & encryption
+- [ ] ~~App.Object.Paginable~~
+- [ ] storage unit password encryption
 - [x] App.Storage.Movement* acts logically should belong to App.DB*
-- [ ] LinkInsertion must be changed after flushing from db (but i did workaround with self._get() function)
-- [ ] remove console and to_json differences
-- [ ] storageunit generates hash randomly but maybe hash the common file?
+- [ ] ~~LinkInsertion must be changed after flushing from db~~ (self._get() is compromis)
+- [ ] ~~remove console and to_json differences~~
+- [ ] storageunit generates hash randomly but maybe hash the common file? (no it is imposible because the common file is not known beforehand)
+- [ ] db operators as objects implementation (for example addCondition(val1 = 'uuid', operator = '==', val2 = String(max_length = 10, min_length = 2)))

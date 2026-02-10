@@ -45,3 +45,6 @@ class Object(BaseModel,
             return val
 
         return super().asArgument(val)
+
+    def asArgumentAsInstance(self, val: str) -> BaseModel:
+        return self.asArgument(val)

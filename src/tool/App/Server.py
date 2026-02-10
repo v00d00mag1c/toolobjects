@@ -314,7 +314,7 @@ class Server(View):
             await ws.send_str(JSON(data={
                 'type': 'variable',
                 'event_index': _event_index,
-                'payload': variable.to_json()
+                'payload': variable.serialize_self()
             }).dump())
 
         pre_i = pre_i()
