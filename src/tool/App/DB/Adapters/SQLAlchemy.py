@@ -31,9 +31,6 @@ class SQLAlchemy(ConnectionAdapter):
 
             return getattr(self._model, condition.getFirst())
 
-            # return getattr(self._model, condition.getFirst())
-
-        # naaah
         def _op_equals(self, condition):
             return self._query.filter(self._getComparement(condition) == condition.getLast())
 
@@ -92,6 +89,8 @@ class SQLAlchemy(ConnectionAdapter):
             return self._query.first()
 
         def count(self):
+            self._apply()
+
             return self._query.count()
 
         def getAll(self):

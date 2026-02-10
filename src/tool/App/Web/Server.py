@@ -2,19 +2,28 @@ from App.Objects.View import View
 from App.Objects.Object import Object
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Responses.Error import Error
+
 from Data.String import String
 from Data.Int import Int
 from Data.Boolean import Boolean
 from Data.JSON import JSON
+
+from pydantic import Field
+from App.Storage.StorageUnit import StorageUnit
+
+from App.DB.Query.Condition import Condition
+
+from pathlib import Path
+
+import asyncio, traceback
+import socket
+from concurrent.futures import ThreadPoolExecutor
+from App.Objects.Threads.ExecutionThread import ExecutionThread
+
 from aiohttp import web
 from App import app
-from pathlib import Path
-from pydantic import Field
-from App.DB.Query.Condition import Condition
-from App.Storage.StorageUnit import StorageUnit
-from App.ACL.Tokens.Token import TokenExpiredError
-import asyncio, traceback
 
+# TODO: split into multiple files
 class Server(View):
     ws_connections: list = Field(default = list())
     pre_i: Object = Field(default = None)
@@ -49,10 +58,26 @@ class Server(View):
         await site.start()
 
         _http = 'http://'
-        self.log("Started server on {0}{1}:{2}".format(_http, _host, _port))
+        self.log("Started server on {0}{1}:{2}".format(_http, self._get_ip(_host), _port))
 
         while True:
             await asyncio.sleep(3600)
+
+    def _get_ip(self, host: str):
+        if host in ['127.0.0.1', 'localhost']:
+            return '127.0.0.1'
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        ip = None
+        try:
+            s.connect(('8.8.8.8', 80))
+            ip = s.getsockname()[0]
+        except Exception:
+            ip = '127.0.0.1'
+        finally:
+            s.close()
+
+        return ip
 
     def _register_routes(self, server_app, i):
         pass
@@ -61,12 +86,11 @@ class Server(View):
         _assets = app.app.src.joinpath('assets')
         _pre_i = i.get('pre_i')
 
-        def _spa(request):
+        def _index(request):
             return web.Response(
                 text =
                 """
                 <html>
-                    <head></head>
                     <body>
                         <script type="module">
                             import { App } from "/static/client/App/App.js"
@@ -144,17 +168,22 @@ class Server(View):
 
             return web.FileResponse(str(file))
 
-        async def _call_shortcut(pre_i, args):
+        async def _call_shortcut(pre_i, args: dict, event_index: int):
             _json = JSON(data = {})
             results = None
 
-            try:
-                args['auth'] = app.AuthLayer.byToken(args.get('auth'))
-            except TokenExpiredError as e:
-                pass
+            args['auth'] = app.AuthLayer.byToken(args.get('auth'))
+
+            if args.get('auth') != None:
+                self.log('auth as {0}'.format(args.get('auth').name))
+            else:
+                self.log('not authenticated')
 
             try:
-                results = await pre_i.execute(args)
+                thread = ExecutionThread(id = event_index)
+                thread.set(pre_i.execute(args))
+                results = await thread.get()
+                thread.end()
             except Exception as e:
                 results = Error(
                     name = e.__class__.__name__,
@@ -192,28 +221,30 @@ class Server(View):
                         continue
 
                     data = JSON.fromText(text = msg.data).data
-                    _type = data.get('type')
-                    _event_index = int(data.get('event_index'))
-                    _payload = data.get('payload')
-
-                    self.log('got message {0}, index {1}'.format(_type, _event_index))
-
-                    if _type == 'object':
-                        pre_i = _pre_i()
-                        pre_i.set_event_index(_event_index)
-                        results = await _call_shortcut(pre_i, _payload)
-
-                        await ws.send_str(JSON(data={
-                            'type': _type,
-                            'event_index': _event_index,
-                            'payload': results.data
-                        }).dump())
+                    if data.get('type') == 'object':
+                        asyncio.create_task(_handle_object_message(ws, _pre_i, data))
                 except Exception as e:
                     traceback.print_exception(e)
 
             self.ws_connections.remove(ws)
 
             return ws
+
+        async def _handle_object_message(ws, pre_i, data):
+            _event_type = data.get('type')
+            _event_index = int(data.get('event_index'))
+            _payload = data.get('payload')
+
+            self.log('got message {0}, index {1}'.format(_event_type, _event_index))
+
+            pre_i = pre_i()
+            results = await _call_shortcut(pre_i, _payload, _event_index)
+
+            await ws.send_str(JSON(data={
+                'type': _event_type,
+                'event_index': _event_index,
+                'payload': results.data
+            }).dump())
 
         async def _upload_storage_unit(request):
             _storage = request.match_info.get('storage', '')
@@ -241,7 +272,7 @@ class Server(View):
             )
 
         for route in [
-            ('/', _spa, 'get'),
+            ('/', _index, 'get'),
             ('/static/{path:.*}', _get_asset, 'get'),
             ('/storage/{storage}/{uuid}/{path:.*}', _get_storage_unit, 'get'),
             ('/storage/js/', _get_js_lib, 'post'),

@@ -160,7 +160,7 @@ class App(Object):
 
 class HookThread():
     '''
-    It allows to use hooks without await things, but also it provides bad sync in main thread
+    Thread for async hooks
     '''
 
     def __init__(self):

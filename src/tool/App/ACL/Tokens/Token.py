@@ -1,5 +1,4 @@
 from App.Objects.Object import Object
-from App.ACL.User import User
 from datetime import datetime
 from pydantic import Field
 import secrets
@@ -32,5 +31,9 @@ class Token(Object):
         _now = datetime.now().timestamp()
         return _now + lifetime
 
-    def to_user(self) -> User:
-        return app.AuthLayer.getUserByName(self.user)
+    def to_user(self) -> Object:
+        _user = app.AuthLayer.getUserByName(self.user)
+        if _user != None:
+            _user.via_token = self
+
+        return _user

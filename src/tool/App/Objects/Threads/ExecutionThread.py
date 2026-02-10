@@ -71,7 +71,7 @@ class ExecutionThread(Object):
             app.ExecutablesList.remove(self)
 
     async def get(self, timeout: Optional[float] = None):
-        self.log('Running execution thread')
+        self.log('Running thread')
 
         assert self.thread != None, 'this thread is unavailable'
         assert self.thread.is_alive() == False, 'this thread is already running'

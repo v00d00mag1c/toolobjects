@@ -1,21 +1,31 @@
 from App.Objects.Test import Test
 from App.Objects.Object import Object
-from App.Tests.ConsoleLogTest import ConsoleLogTest
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from Data.Int import Int
+from Data.Boolean import Boolean
 from Data.Float import Float
+from Data.String import String
+from pydantic import Field
 from App import app
+import asyncio
 
 class ExecuteIterative(Test):
+    total_iterations: int = Field(default = 0)
+
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
             Argument(
-                name = 'i_daemon',
+                name = 'i_2',
                 orig = Object,
                 assertions = [NotNoneAssertion()]
+            ),
+            Argument(
+                name = 'start_iteration',
+                orig = Int,
+                default = 0
             ),
             Argument(
                 name = 'interval',
@@ -25,26 +35,57 @@ class ExecuteIterative(Test):
             Argument(
                 name = 'max_iterations',
                 orig = Int,
-                default = -1
+                default = 5 # -1 for infinite
+            ),
+            Argument(
+                name = 'same_all_time',
+                orig = Boolean,
+                default = False
+            ),
+            Argument(
+                name = 'iteration_key',
+                orig = String,
+                default = 'iteration'
             )
         ])
 
     async def implementation(self, i):
-        _object = i.get('i_daemon')
+        _object = i.get('i_2')
 
         assert _object != None
+        assert _object.canBeExecuted(), 'no execution interface'
 
-        _args = i.getValues(exclude = ['i_daemon', 'interval', 'max_iterations']).copy()
+        _obj = _object()
 
-        daemon_item = _object()
-        
-        assert daemon_item.canBeExecuted(), 'non-executable'
+        _dict_args = i.getValues(exclude = [self._arguments().toNames()]).copy()
 
-        daemon_item.args = _args
-        daemon = Daemon(
-            item = daemon_item,
-            interval = i.get('interval'),
-            max_iterations = i.get('max_iterations'),
-        )
+        reached_end = False
 
-        await daemon.start()
+        is_stopped = False
+        interval = i.get('interval')
+        max_iterations = i.get('max_iterations')
+        current_iterator = i.get('start_iteration')
+        same_all_time = i.get('same_all_time')
+        is_infinite = max_iterations < 1
+        end_str = '∞'
+
+        if is_infinite == False:
+            end_str = max_iterations
+
+        while reached_end == False and is_stopped == False:
+            self.total_iterations += 1
+            current_iterator += 1
+
+            self.log(f"Run {current_iterator}/{end_str}, interval {interval}")
+
+            _dict_args[self.iteration_key] = current_iterator
+
+            if same_all_time == True:
+                await _obj.execute(_dict_args)
+            else:
+                await _object().execute(_dict_args)
+
+            if is_infinite == False:
+                reached_end = current_iterator > max_iterations
+
+            await asyncio.sleep(interval)

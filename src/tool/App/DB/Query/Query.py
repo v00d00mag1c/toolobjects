@@ -99,3 +99,5 @@ class Query(ABC):
             operator = '==',
             val2 = obj.getClassNameJoined(),
         ))
+
+        return self

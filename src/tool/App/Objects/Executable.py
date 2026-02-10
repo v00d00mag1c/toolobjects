@@ -110,7 +110,3 @@ class Executable(Object, Variableable, Validable):
 
         #self.internal_use = False # idk whats this
         self.args = args.values
-
-    def set_event_index(self, id: int):
-        self.event_index = id
-        self.log("ID: {0}, Event ID: {1}".format(self.id, id))

@@ -43,9 +43,8 @@ export class App {
                             margin: 0px;
                         }
                     </style>
-                    <p>Use <b>/api</b> to call,</p>
-                    <p>Or <b>/rpc</b>, or <b>window.app.rpc.call({"i": ...}) in DevTools.</b></p>
-                    <p>Or use <a href="?draw=1">raw js version</a></b></p>
+                    <p>Use <b>/api</b>, or <b>/rpc</b>, or <b>window.app.rpc.call({"i": ...}) in DevTools.</b></p>
+                    <p>Or <a href="?draw=1">raw js version</a></b></p>
                 </div>
             `)
         }
