@@ -29,7 +29,7 @@ class Validable:
         # Takes current ArgumentDict
         _list = cls._arguments()
 
-        # Slicing current class
+        # Slicing the current ArgumentDict
         for _class in cls.getMRO()[1:]:
             if hasattr(_class, '_arguments'):
                 new_arguments = _class._arguments()

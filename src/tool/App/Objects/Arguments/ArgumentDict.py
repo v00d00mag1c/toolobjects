@@ -70,7 +70,13 @@ class ArgumentDict(DictList):
         Appends another ArgumentDict's items to current ArgumentDict
         '''
 
+        _names = self.toNames()
+
         for item in another_dict.items:
+            if item.get_name_for_dictlist() in _names:
+                # self.log('\"{0}\" is already exists'.format(item.get_name_for_dictlist()))
+                continue
+
             self.items.append(item)
 
         return self

@@ -51,11 +51,10 @@ class Object(BaseModel,
 
     @property
     def append_prefix(self):
-        ids = 0
-        if self.hasDb():
-            ids = self.getDbIds()
+        if self.hasDb() == False:
+            return None
 
         return {
             'name': 'uuid',
-            'id': ids
+            'id': self.getDbIds()
         }

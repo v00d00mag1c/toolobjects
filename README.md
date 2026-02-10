@@ -31,6 +31,7 @@ Experimental framework that provides object system.
 * Locale, Documentation
 * Queue
 * Autostart
+* Scheduled tasks
 
 **III**
 

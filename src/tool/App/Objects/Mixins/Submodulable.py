@@ -3,7 +3,7 @@ from App.Objects.Relations.Submodule import Submodule
 class Submodulable:
     '''
     Allows to set objects that are connected with current object.
-    It applies submodules by __mro__ and uses App.Objects.Submodule for linking
+    It applies App.Objects.Submodules from __mro__
     '''
 
     @classmethod
