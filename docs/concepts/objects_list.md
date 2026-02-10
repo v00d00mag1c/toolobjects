@@ -1,7 +1,7 @@
-After run app will load the list of object in program. It stores them in Namespace. You can pass your own namespaces by setting objects.namespaces.
+App creates the list of the objects at the start. It takes them from current working directory. That's allows to get Object by name and know in advance count of them.
 
-### Globals
+Custom objects can be added with new Namespaces (`objects.index.namespaces`). You can place them at the Custom dir, it ignored in common Namespace.
 
-LoadedObject will call mount() function of each class. Class can override it to set a property in Wrap.
+However, custom objects can load malware, so the Namespace doesn't loads module after finding a file by default, but it still did not helps.
 
-Wrap is an __init__ file in App dir: it wraps current View and allows to get and set global classes.
+Also you can switch between available namespaces with `objects.index.namespaces.current` settings by passing their names

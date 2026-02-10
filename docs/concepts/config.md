@@ -1,4 +1,4 @@
-Config is an entity that allows to define what options the app takes. All config entries applies from all app's classes (ObjectsList). The passed values are getting from storage/config/config.json. Config entries uses Argument classes, like in validation. But you also can pass role that can be "config" or "env".
+Object needs a place to store settings. So there is Configurable that allows to define settings of every class and Config. At the and of the objects list generation, it will add every object options to Config compare values. Input values will be taken from the config.json file.
 
 Env is also a config but for sensitive data, values also are taking from json file.
 

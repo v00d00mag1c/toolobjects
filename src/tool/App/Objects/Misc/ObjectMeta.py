@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, field_serializer
+from pydantic import Field, field_serializer
+from App.Objects.Mixins.BaseModel import BaseModel
 from datetime import datetime
 from typing import Optional
 from .Source import Source

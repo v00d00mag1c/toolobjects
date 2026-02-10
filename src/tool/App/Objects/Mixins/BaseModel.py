@@ -190,7 +190,7 @@ class BaseModel(PydanticBaseModel):
             else:
                 result[field_name] = self._serializer(value)
 
-        if BaseModel._include_extra == True:
+        if BaseModel._include_extra == True and self.model_extra != None:
             for key, val in self.model_extra.items():
                 result[key] = val
 

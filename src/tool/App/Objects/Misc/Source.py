@@ -1,5 +1,6 @@
-from pydantic import Field, BaseModel
+from pydantic import Field
 from typing import Optional
+from App.Objects.Mixins.BaseModel import BaseModel
 
 class Source(BaseModel):
     '''

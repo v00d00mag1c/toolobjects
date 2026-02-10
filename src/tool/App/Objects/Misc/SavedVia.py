@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
+from App.Objects.Mixins.BaseModel import BaseModel
 
 class SavedVia(BaseModel):
     object_name: str = Field(default = None)

@@ -1,25 +1,17 @@
-Every thing in this app is an Object: it contain fields, functions etc. Object is consists of:
+Object system
 
-BaseModel
+Every entity in the app is an Object. More correct, every py-file (except boot) is counts as object. Basically you can imagine every kind of data (that is like json) like an Object. 
 
-Pydantic model with class names functions
+Object is builded with mixins that adds functionality to it:
 
-There is Objects with entry point - Executables (Command pattern). They can create other objects from data they get.
+**Configurable**
 
-Client needs to know the list of objects in the app, so we collecting it in ObjectsList.
+Allows to set settinga of the object that will be applied to the whole app
 
-We need to know what arguments we should pass to Executable, so defining it at ArgumentsDict with Argument class.
+**BaseModel**
 
-We need to log messages at runtime, so we using Logger.
+Pydantic's BaseModel with some functions and hacks
 
-We need to store settings of something, so we using Config or Env.
+**Linkable**
 
-Objects can be linked to each other, also you can replace an object field by LinkInsertion.
-
-We need to save and load objects from persistent storage, so we have Storage and DBAdapter.
-
-Object can use files, so we using StorageUnit to represent them.
-
-### App
-
-App is a singletone that creates at the boot (tool.py). The app wrapper is View that is an executable. For example "Console" view that gets executable name in "i" param and runs it.
+Allows to create links between items

@@ -1,11 +1,5 @@
-Storage is a list of StorageItems.
+So, we need a place to store Objects and their files. We has StorageItem class and Storage for listing them.
 
-StorageItem is an entity that contains db (ConnectionAdapter) and the storagsunit storage (dir).
+We have StorageUnit to store files and DBAdapter.
 
-StorageUnit is representation of the file. It creates dir from hash (that randomly-generated) that can contain many files and dirs in it.
-
-ConnectionAdapter is an adapter for db connection. It must provide objects and links flush functions. It has ObjectAdapter and LinkAdapter. The adapter class chooses automatically from the App.Storage.DB.Connection.Adapters from the db in StorageItem.
-
-The object can be flushed and be got from DB. In all cases it sets the "_db" link that allows to access db version of object. If _db was set, getLinkedItems() will get links not from links list but from db.
-
-App.Storage.DB.Adapters.Search.Condition, App.Storage.DB.Adapters.Search.Sort ...
+DBAdapter represents any type of db connection. By default it uses SQL adapter. Every adapter must implement object flushing, queries and linking
