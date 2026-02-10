@@ -2,6 +2,7 @@ from .Object import Object
 from .Mixins.Validable import Validable
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Responses.Response import Response
+from App.Objects.Responses.NoneResponse import NoneResponse
 from App.Objects.Mixins.Variableable import Variableable
 from App.Logger.LogPrefix import LogPrefix
 from typing import ClassVar, Optional
@@ -94,6 +95,9 @@ class Executable(Object, Variableable, Validable):
 
         if app.ExecutablesList != None:
             app.ExecutablesList.remove(self)
+
+        if response == None:
+            return NoneResponse()
 
         return response
 

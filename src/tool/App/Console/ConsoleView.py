@@ -3,6 +3,7 @@ from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Executable import Executable
 from App.Objects.Responses.ObjectsList import ObjectsList
+from App.Objects.Responses.NoneResponse import NoneResponse
 from Data.JSON import JSON
 from Data.Boolean import Boolean
 from Data.String import String
@@ -38,7 +39,7 @@ class ConsoleView(View):
 
     def _print_call(self, results, print_result: bool = True, print_as: bool = 'str'):
         if print_result == True:
-            if results == None:
+            if results == None or results.isInstance(NoneResponse):
                 self.log('nothing returned', role = ['empty_response', 'view_message'])
                 return
 

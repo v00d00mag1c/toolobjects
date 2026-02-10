@@ -7,6 +7,7 @@ from App.DB.Adapters.Representation.ObjectAdapter import ObjectAdapter
 class Query(ABC):
     conditions: list[Condition] = []
     sorts: list[Sort] = []
+    limits: int = None
     operators: ClassVar[dict] = {
         '==': '_op_equals',
         '!=': '_op_not_equals',
@@ -44,8 +45,11 @@ class Query(ABC):
         ...
 
     @abstractmethod
-    def limit(self, limit: int) -> Self:
+    def count(self) -> int:
         ...
+
+    def limit(self, limit: int) -> Self:
+        self.limits = limit
 
     def addCondition(self, condition: Condition) -> Self:
         self.conditions.append(condition)
@@ -73,6 +77,11 @@ class Query(ABC):
             self._applySort(item)
             item.applied = True
 
+    @abstractmethod
+    def _applyLimits(self) -> Self:
+        ...
+
     def _apply(self) -> Self:
         self._applyConditions()
         self._applySorts()
+        self._applyLimits()

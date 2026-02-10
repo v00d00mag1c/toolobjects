@@ -100,6 +100,10 @@ class Search(Act):
             _query.limit(i.get('limit'))
 
         for item in _query.getAll():
-            _objects.append(item.toPython())
+            try:
+                _objects.append(item.toPython())
+            except Exception as e:
+                self.log_error(e, exception_prefix = f"{item.uuid} not printing: ")
 
+        _objects.total_count = _query.count()
         return _objects

@@ -64,20 +64,24 @@ class SQLAlchemy(ConnectionAdapter):
 
             return self
 
+        def _applyLimits(self):
+            self._query = self._query.limit(self.limits)
+
+            return self._query
+
         def first(self):
             self._apply()
 
             return self._query.first()
+
+        def count(self):
+            return self._query.count()
 
         def getAll(self):
             self._apply()
 
             for item in self._query:
                 yield item
-
-        def limit(self, limit: int):
-            self._query = self._query.limit(limit)
-            return self
 
     # we have to put this into function(
     def _init_models(self_adapter):

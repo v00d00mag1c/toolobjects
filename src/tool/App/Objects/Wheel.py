@@ -13,7 +13,7 @@ class Wheel(Executable):
 
     @classmethod
     def _arguments(cls) -> ArgumentDict:
-        itms = ArgumentDict()
+        itms = ArgumentDict(items = [])
         itms.missing_args_inclusion = True
 
         return itms
@@ -49,9 +49,7 @@ class Wheel(Executable):
 
         _submodule = self.__class__.compareAndGetFirstSuitableSubmodule(modules, i)
         if _submodule != None:
-            return _submodule
-
-        return _submodule.item()
+            return _submodule.item()
 
     @classmethod
     def compareAndGetFirstSuitableSubmodule(cls, items: list, values: dict):
