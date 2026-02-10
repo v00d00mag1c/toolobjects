@@ -1,6 +1,9 @@
 from App.Objects.Object import Object
+from Web.Feeds.RSS import RSS
+from Web.Feeds.Atom import Atom
+import xml.etree.ElementTree as ET
 
-class Response(Object):
+class Feed(Object):
     @classmethod
     async def download(cls, url: str) -> str:
         import aiohttp
@@ -11,3 +14,12 @@ class Response(Object):
                 response_xml = await response.text()
 
         return response_xml
+
+    @classmethod
+    def detect_type(cls, data: ET):
+        _type = data.tag.split('}', 1)[1]
+
+        if _type == 'feed':
+            return Atom
+        elif _type == 'rss' or _type == 'RDF':
+            return RSS

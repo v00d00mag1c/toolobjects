@@ -21,45 +21,47 @@ class DefaultExecutorWheel(Act):
 
     async def _implementation(self, i: ArgumentValues):
         force_flush = i.get('force_flush')
-        executable = i.get('i')
+        item_class = i.get('i')
 
-        assert executable != None, 'not found object'
-        assert app.app.view.canUseObject(executable), 'object cannot be used at this view'
-        assert executable.canBeUsedBy(i.get('auth')), 'access denied to executable {0}'.format(executable._getClassNameJoined())
+        assert item_class != None, 'not found object'
+        assert app.app.view.canUseObject(item_class), 'object cannot be used at this view'
+        assert item_class.canBeUsedBy(i.get('auth')), 'access denied to executable {0}'.format(item_class._getClassNameJoined())
 
+        item_that_executed = None
         results = None
         if force_flush == False:
-            assert executable.canBeExecuted(), 'object does not contains execution interface'
+            assert item_class.canBeExecuted(), 'object does not contains execution interface'
 
-            _item = executable()
-            _item.integrate(i.values)
+            item_class = item_class()
+            item_class.integrate(i.values)
 
-            if hasattr(_item, 'getVariables') and 'var_update' in _item.getClassEventTypes():
+            # Hooks from websockets workaround
+
+            if hasattr(item_class, 'getVariables') and 'var_update' in item_class.getClassEventTypes():
                 for hook in self.ev_hooks:
-                    _item.addHook('var_update', hook)
+                    item_class.addHook('var_update', hook)
 
-            results = await _item.execute(i = i)
+            results = await item_class.execute(i = i)
         else:
             _vals = i.getValues(exclude = app.app.view.getCompareKeys() + self.getCompareKeys() + ['auth'])
+
             results = ObjectsList(items = [], unsaveable = False)
-            _item = executable()
 
             # isinstance(executable, Executable wont work with cls (
-
-            if hasattr(executable, 'integrate') and i.get('as_args'):
-                _item = executable(args = _vals)
+            if hasattr(item_class, 'integrate') and i.get('as_args'):
+                item_that_executed = item_class(args = _vals)
             else:
                 _keys = dict()
                 # outside arguments can get there, so saving only values from fields
-                for key in _item._getFieldsNames():
+                for key in item_class._getFieldsNames():
                     if _vals.get(key) == None:
                         continue
 
                     _keys[key] = _vals.get(key)
 
-                _item = executable(**_keys)
+                item_that_executed = item_class(**_keys)
 
-            results.append(_item)
+            results.append(item_that_executed)
 
         if isinstance(results, ObjectsList) and results.should_be_saved() == True:
             save_to = i.get('save_to')
