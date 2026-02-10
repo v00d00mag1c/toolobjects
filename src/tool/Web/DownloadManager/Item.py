@@ -5,6 +5,12 @@ import asyncio, datetime
 from App.Logger.LogPrefix import LogPrefix
 from pathlib import Path
 
+class NotFoundError(Exception):
+    pass
+
+class AccessDeniedError(Exception):
+    pass
+
 class Item(Object):
     _manager_link: Any = None
     _task: Any = None
@@ -34,24 +40,34 @@ class Item(Object):
     def getPath(self):
         return Path(self.download_dir).joinpath(self.name)
 
-    async def start(self) -> asyncio.Task:
+    async def start(self, new_headers: dict = {}) -> asyncio.Task:
         async with self._manager_link.getSession() as session:
             self.log(f"URL: {self.url}")
             self.started_at = datetime.datetime.now()
             self.resume()
-            self._task = await asyncio.create_task(self.download(session))
+            self._task = await asyncio.create_task(self.download(session, new_headers))
 
             return self._task
 
-    async def download(self, session):
+    async def download(self, session, new_headers: dict = {}):
+        _headers = self._manager_link.getHeaders().to_minimal_json()
+        _headers.update(new_headers)
         async with self._manager_link.semaphore:
             request = session.get(self.url,
                                        allow_redirects=self._manager_link.getOption('download_manager.allow_redirects'), 
-                                       headers=self._manager_link.getHeaders(),
+                                       headers=_headers,
                                        timeout = self._manager_link.timeout)
 
             async with request as response:
                 status = response.status
+                if status == 404:
+                    raise NotFoundError('404 error')
+
+                if status == 403:
+                    _read = await response.content.read()
+                    self.log_error('access denied, page: {0}'.format(_read.decode("utf8")))
+
+                    raise AccessDeniedError('access denied')
 
                 assert status not in [404, 403], '{0} error'.format(status)
 

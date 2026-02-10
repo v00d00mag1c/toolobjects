@@ -1,4 +1,5 @@
 from App.Objects.Extractor import Extractor
+from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.Argument import Argument
@@ -13,6 +14,11 @@ class ByPath(Extractor):
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
+            Argument(
+                name = 'object',
+                orig = Object,
+                assertions = [NotNone()]
+            ),
             Argument(
                 name = 'path',
                 orig = String,
@@ -31,7 +37,7 @@ class ByPath(Extractor):
         _new_file = _new_dir.joinpath(_path.name)
 
         _unit.setCommonFile(_new_file)
-        image = Image()
-        image.set_storage_unit(_unit)
+        _obj = i.get('object')()
+        _obj.set_storage_unit(_unit)
 
-        self.append(image)
+        self.append(_obj)

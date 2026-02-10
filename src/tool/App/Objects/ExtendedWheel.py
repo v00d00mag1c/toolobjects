@@ -19,7 +19,7 @@ class ExtendedWheel(Wheel):
         _obj = i.get('object')
         modules = []
         for submodule in _obj.getSubmodules():
-            if 'wheel' not in submodule.role and 'media_method' not in submodule.role:
+            if 'wheel' not in submodule.role:
                 continue
 
             modules.append(submodule)

@@ -44,7 +44,6 @@ class Get(ExtendedWheel):
             return await self._not_found_implementation(i)
 
         _val = await extract.execute(i)
-        _new_list = ObjectsList(items = [])
         _thumbnails = list()
         for thumb in _obj.getSubmodules():
             if 'thumbnail' in thumb.role:

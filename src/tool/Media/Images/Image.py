@@ -5,27 +5,28 @@ from App.Objects.Relations.Submodule import Submodule
 from pathlib import Path
 
 class Image(Media):
+    default_name = 'image.jpg'
     _img = None
 
     @classmethod
     def _submodules(cls) -> list:
-        from Media.Images.Download import Download
-        from Media.Images.ByStorageUnit import ByStorageUnit
-        from Media.Images.ByPath import ByPath
+        from Media.Download import Download
+        from Media.ByStorageUnit import ByStorageUnit
+        from Media.ByPath import ByPath
         from Media.Images.MakeThumbnail import MakeThumbnail
 
         return [
             Submodule(
                 item = Download,
-                role = ['media_method']
+                role = ['media_method', 'wheel']
             ),
             Submodule(
                 item = ByStorageUnit,
-                role = ['media_method']
+                role = ['media_method', 'wheel']
             ),
             Submodule(
                 item = ByPath,
-                role = ['media_method']
+                role = ['media_method', 'wheel']
             ),
             Submodule(
                 item = MakeThumbnail,
@@ -45,7 +46,11 @@ class Image(Media):
         from PIL import Image
 
         if self._img == None:
-            self._img = Image.open(str(self.get_file().getPath()))
+            _file = self.get_file()
+            if _file == None:
+                return None
+
+            self._img = Image.open(str(_file.getPath()))
 
         return self._img
 
@@ -77,3 +82,10 @@ class Image(Media):
             role = ['image'],
             obj = _thumb_image
         )
+
+    def save(self):
+        _read = self._read_file()
+        self._set_dimensions(_read)
+        self._reset_file()
+
+        super().save()

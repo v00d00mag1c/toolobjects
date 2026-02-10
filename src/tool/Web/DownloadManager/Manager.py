@@ -97,8 +97,11 @@ class Manager(Object):
     def getHeaders(self) -> dict:
         _headers = Headers()
         _headers.user_agent = UserAgent.get_or_generate()
+        _headers.accept = self.getOption('download_manager.headers.accept')
+        _headers.accept_encoding = self.getOption('download_manager.headers.accept-encoding')
+        _headers.accept_language = self.getOption('download_manager.headers.accept-language')
 
-        return _headers.to_minimal_json()
+        return _headers
 
     @classmethod
     def _settings(cls):
@@ -124,8 +127,23 @@ class Manager(Object):
                 orig = Int
             ),
             Argument(
-                name = "download_manager.user_agent",
-                default = None,
+                name = "download_manager.headers.user-agent", # pass '' to randomize
+                default = 'to/0.1 (Linux; x86_64)',
+                orig = String
+            ),
+            Argument(
+                name = "download_manager.headers.accept-encoding",
+                default = 'gzip, deflate, br, zstd',
+                orig = String
+            ),
+            Argument(
+                name = "download_manager.headers.accept-language",
+                default = 'en_US',
+                orig = String
+            ),
+            Argument(
+                name = "download_manager.headers.accept",
+                default = 'text/html,application/xhtml+xml,application/xml,image/avif,image/webp,image/apng,*/*',
                 orig = String
             ),
             Argument(

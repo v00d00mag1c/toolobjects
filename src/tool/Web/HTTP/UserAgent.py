@@ -3,12 +3,10 @@ from pydantic import Field
 import ua_generator
 
 class UserAgent(Valueable):
-    value: str = Field(default = None)
-
     @classmethod
     def get_or_generate(cls):
-        _conf = cls.getOption('download_manager.user_agent')
-        if _conf == None:
+        _conf = cls.getOption('download_manager.headers.user-agent')
+        if _conf == '':
             return cls.generate()
 
         return _conf

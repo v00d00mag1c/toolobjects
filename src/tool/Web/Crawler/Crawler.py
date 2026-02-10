@@ -122,6 +122,9 @@ class Crawler(Object):
                 name = 'selenium',
                 version = '4.39.0'
             ),
+            #Requirement(
+            #    name = 'selenium-wire',
+            #),
             Requirement(
                 name = 'beautifulsoup4',
                 version = '4.14.3'
