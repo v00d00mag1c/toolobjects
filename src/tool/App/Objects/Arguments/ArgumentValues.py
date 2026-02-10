@@ -114,6 +114,13 @@ class ArgumentValues(Object):
 
         return vals
 
+    def getPlaceholderValues(self) -> dict:
+        _ret = dict()
+        for key, val in self.values.items():
+            _ret[key] = '*'
+
+        return _ret
+
     '''
     def change_for(self, class_object):
         _new = ArgumentValues(compare = ArgumentDict(items = []))

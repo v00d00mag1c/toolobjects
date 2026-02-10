@@ -58,6 +58,8 @@ class DoubleDividedHashDirs(StorageAdapter):
             if change_common == True:
                 unit._root_path = _hash[1]
         except AssertionError as e:
+            pass
+        except Exception as e:
             unit.log_error(e, exception_prefix = 'Error when moving storage unit: ')
             pass
 
