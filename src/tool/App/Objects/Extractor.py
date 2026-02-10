@@ -19,9 +19,6 @@ class Extractor(Executable):
         ]
 
     def append(self, out: Object):
-        '''
-        Append to response
-        '''
         self.variables.get("items").append(out)
 
     async def implementation(self, i = {}) -> None:

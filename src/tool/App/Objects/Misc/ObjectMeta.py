@@ -46,3 +46,8 @@ class ObjectMeta(BaseModel):
 
     def make_public(self):
         self.public = True
+
+    def get_common_source(self):
+        for source in self.source:
+            if source.is_common == True:
+                return source

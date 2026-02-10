@@ -31,6 +31,16 @@ class StorageUnit(Object):
 
         return self._common_path
 
+    def getCommonFile(self) -> File:
+        _common = Path(self.common)
+        for item in self.files:
+            if _common != None and item.getPath() == _common:
+                return item
+
+    def getFirstFile(self) -> File:
+        for item in self.files:
+            return item
+
     def getUpper(self):
         return Path(self.getCommonPath()).joinpath(self.hash[0:2])
 
@@ -78,23 +88,25 @@ class StorageUnit(Object):
         shutil.copytree(str(self.getDir()), str(new_path), dirs_exist_ok = True)
         self.log(f"copied storageunit from {str(self.getDir())} to {str(new_path)}")
 
-    def toFile(self):
-        return File(
-            path = str(self.getDir()),
-            name = self.getCommonPath().name,
-            ext = self.getCommonPath().suffix[1:]
-        )
+    def toFile(self) -> File:
+        _common_file = self.getCommonFile()
+        if _common_file == None:
+            _common_file = self.getFirstFile()
+
+        if _common_file == None:
+            return None
+
+        _common_file.path = str(self.getDir())
+        return _common_file
 
     def guessName(self) -> str:
-        _name = None
-        _common = Path(self.common)
-        for file in self.files:
-            if _common != None and file.getPath() == _common:
-                return file.name
+        _common = self.getCommonFile()
+        if _common != None:
+            return _common.name
 
-            _name = file.name
-
-        return _name
+        _any = self.getFirstFile()
+        if _any != None:
+            return _any.name
 
     def isIndexed(self) -> bool:
         return len(self.files) > 0

@@ -91,15 +91,3 @@ class Linkable(BaseModel):
             _next_links = link.item.getLinksRecurisvely(current_level = current_level + 1, max_depth = max_depth)
             for item in _next_links:
                 yield item
-
-    def _get(self, field, default = None):
-        # If field is link insertion, unwrapping it and getting as normal value
-
-        _field = getattr(self, field, default)
-        if hasattr(_field, '_link_insertion_type') == True:
-            return _field.unwrap()
-
-        return _field
-
-    def _set(self, field, value = None):
-        setattr(self, field, value)

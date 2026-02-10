@@ -7,3 +7,6 @@ from pydantic import Field, model_serializer
 class StorageUnitLink(BaseModel, DBInsertable, Section):
     path: str = Field()
     insertion: LinkInsertion = Field()
+
+    def getStorageUnit(self):
+        return self._get('insertion')

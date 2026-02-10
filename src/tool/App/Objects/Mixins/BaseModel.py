@@ -252,3 +252,15 @@ class BaseModel(PydanticBaseModel):
                 result[key] = val
 
         return result
+
+    def _get(self, field, default = None):
+        # If field is link insertion, unwrapping it and getting as normal value
+
+        _field = getattr(self, field, default)
+        if hasattr(_field, '_link_insertion_type') == True:
+            return _field.unwrap()
+
+        return _field
+
+    def _set(self, field, value = None):
+        setattr(self, field, value)
