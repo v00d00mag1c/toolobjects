@@ -33,7 +33,7 @@ class ByPath(Extractor):
             Argument(
                 name = 'symlink',
                 orig = Boolean,
-                default = False
+                default = True
             ),
             Argument(
                 name = 'set_source',
@@ -74,12 +74,20 @@ class ByPath(Extractor):
                 self.log_error('not enough rights to do symlink')
                 self.fatal(e)
         else:
-            shutil.copy(str(path), str(_new_dir))
+            ByPath._copy(str(path), str(_new_dir))
 
         _new_file = _new_dir.joinpath(path.name)
         _unit.setCommonFile(_new_file)
 
         return _unit
+
+    @staticmethod
+    def _copy(src, dst):
+        if os.path.islink(src):
+            linkto = os.readlink(src)
+            os.symlink(linkto, dst)
+        else:
+            shutil.copy(src, dst)
 
     def _get_objects(self, i, path) -> Generator[Object]:
         storage_unit = self._move_file(path, i)

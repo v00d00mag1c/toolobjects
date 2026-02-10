@@ -3,6 +3,7 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Types.String import String
 from Data.Types.Boolean import Boolean
 from App.Objects.Misc.Source import Source
@@ -18,7 +19,7 @@ class Download(Extractor):
                 orig = Object,
                 assertions = [NotNone()]
             ),
-            Argument(
+            ListArgument(
                 name = 'url',
                 orig = String,
                 assertions = [NotNone()]
@@ -35,27 +36,28 @@ class Download(Extractor):
         ])
 
     async def _implementation(self, i):
-        _url = URL(
-            value = i.get('url')
-        )
-        _obj = i.get('object')
-        filename = i.get('filename')
-        if filename == None:
-            filename = _url.get_filename()
+        for item in i.get('url'):
+            _url = URL(
+                value = item
+            )
+            _obj = i.get('object')
+            filename = i.get('filename')
             if filename == None:
-                filename = _obj.default_name
+                filename = _url.get_filename()
+                if filename == None:
+                    filename = _obj.default_name
 
-        _item = _obj()
-        if i.get('download') == True:
-            _unit = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
+            _item = _obj()
+            if i.get('download') == True:
+                _unit = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
 
-            item = app.DownloadManager.addURL(_url.value, _unit, filename)
-            await item.start(_obj.headers)
+                item = app.DownloadManager.addURL(_url.value, _unit, filename)
+                await item.start(_obj.get_headers())
 
-            _item.set_storage_unit(_unit)
+                _item.set_storage_unit(_unit)
 
-        _item.obj.set_common_source(Source(
-            obj = _url
-        ))
+            _item.obj.set_common_source(Source(
+                obj = _url
+            ))
 
-        self.append(_item)
+            self.append(_item)

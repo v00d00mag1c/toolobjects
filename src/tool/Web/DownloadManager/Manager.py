@@ -133,7 +133,8 @@ class Manager(Object):
             ),
             Argument(
                 name = "download_manager.headers.accept-encoding",
-                default = 'gzip, deflate, br, zstd',
+                #default = 'gzip, deflate, br, zstd',
+                default = '',
                 orig = String
             ),
             Argument(

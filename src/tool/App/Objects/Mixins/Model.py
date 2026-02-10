@@ -5,7 +5,13 @@ from pydantic import model_serializer
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 
 class Model(PydanticBaseModel):
+    # Unserializable fields:
+
+    # Like "exclude" on Field: won't be serialized anywhere
     _unserializable: ClassVar[list[str]] = ['_dump_options', '_unserializable']
+
+    # Fields with names from this list won't be serialized on output, but will on db insertion
+    _unserializable_on_output: ClassVar[list[str]] = []
 
     # model_dump does not checks this params, so doing workaround. TODO remove
     _dump_options: ClassVar[dict] = {
@@ -121,12 +127,13 @@ class Model(PydanticBaseModel):
         return cls.getSubmodules(with_role = ['allowed_view'])
 
     def to_minimal_json(self):
-        return self.to_json(only_class_fields=True, by_alias=True, exclude_defaults = True)
+        return self.to_json(only_class_fields = True, by_alias = True, exclude_defaults = True)
 
-    def to_extended_json(self):
+    def to_db_json(self):
         return self.to_json(
             exclude_internal = False,
             exclude = ['links', 'db_info', 'class_name'],
+            exclude_output_values = False,
             convert_links = False,
             exclude_none = True,
             exclude_defaults = True,
@@ -137,6 +144,7 @@ class Model(PydanticBaseModel):
                 convert_links: Literal['unwrap', 'none'] = 'unwrap', 
                 exclude_internal: bool = False,
                 exclude_none: bool = False,
+                exclude_output_values: bool = True,
                 exclude: list[str] = [],
                 exclude_defaults: bool = False,
                 by_alias: bool = True,
@@ -155,8 +163,15 @@ class Model(PydanticBaseModel):
         '''
 
         excludes = ['links']
+
+        '''
         if exclude_internal == True:
             for _exclude in self._internal_fields:
+                excludes.append(_exclude)
+        '''
+
+        if exclude_output_values:
+            for _exclude in self._unserializable_on_output:
                 excludes.append(_exclude)
 
         for item in exclude:
@@ -283,7 +298,7 @@ class Model(PydanticBaseModel):
 
                         _res = _val
                 except Exception as e:
-                    self.log_error(e, exception_prefix = 'Can\'t include field {0}'.format(field_name))
+                    self.log_error(e, exception_prefix = 'Can\'t include field {0}: '.format(field_name))
 
                 result[field_name_key] = _res
             if Model._dump_options['include_extra'] == True and self.model_extra != None:
@@ -291,7 +306,7 @@ class Model(PydanticBaseModel):
                     try:
                         result[key] = val
                     except Exception as e:
-                        self.log_error(e, exception_prefix = 'Can\'t include field {0}'.format(key))
+                        self.log_error(e, exception_prefix = 'Can\'t include field {0}: '.format(key))
         except Exception as _e:
             self.log_error(e, exception_prefix='Error loading model {0}: '.format(self._getClassNameJoined()))
 

@@ -81,7 +81,7 @@ class StorageUnit(Object):
     def copySelf(self, new_root: Path):
         assert str(self.getDir()) != str(new_root), 'its already here'
 
-        shutil.copytree(str(self.getDir()), str(new_root), dirs_exist_ok = True)
+        shutil.copytree(str(self.getDir()), str(new_root), dirs_exist_ok = True, symlinks = True)
         #self.log(f"copied storageunit from {str(self.getDir())} to {str(new_root)}")
         self.log(f"copied storageunit to the new dir")
 

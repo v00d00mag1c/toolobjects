@@ -6,10 +6,6 @@ from App.Objects.Requirements.Requirement import Requirement
 class Video(Media):
     thumbnail_type = ['video']
     default_name = 'video.mp4'
-    headers = RequestHeaders(
-        accept = 'video/mp4',
-        content_type = 'video/mp4'
-    )
     mime_type = 'video/mp4'
     _vid = None
 

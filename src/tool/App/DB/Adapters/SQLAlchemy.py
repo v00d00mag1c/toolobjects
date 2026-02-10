@@ -126,7 +126,7 @@ class SQLAlchemy(ConnectionAdapter):
                 if obj == None:
                     obj = self._orig
 
-                self.content = json.dumps(obj.to_extended_json())
+                self.content = json.dumps(obj.to_db_json())
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
 

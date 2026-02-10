@@ -5,7 +5,6 @@ from Data.Types.JSON import JSON
 from App.Storage.StorageUUID import StorageUUID
 from Data.Types.List import List
 
-# DEPRECATED
 class ListArgument(Argument):
     allow_commas_fallback: bool = Field(default = True)
     single_recommended: bool = Field(default = False)

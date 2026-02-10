@@ -42,6 +42,8 @@ class Argument(NameContainable):
     not_passed_message: str = Field(default = '{0} not passed')
     none_message: str = Field(default = '{0} with value {1} is None')
 
+    _unserializable = ['arg_value']
+
     def get_name_for_dictlist(self) -> str:
         return self.name
 

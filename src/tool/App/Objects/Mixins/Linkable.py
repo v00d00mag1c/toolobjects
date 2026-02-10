@@ -51,7 +51,10 @@ class Linkable():
             pass
             #self.log('current item does not has db!')
 
-        self.log('linked items with classes {0}, {1}'.format(self._getClassNameJoined(), link.item._getClassNameJoined()), role = ['linked_items'])
+        self.log('linked items with classes {0}, {1}'.
+                 format(self._getClassNameJoined(), link.item._getClassNameJoined()), 
+                 role = ['linked_items'])
+
         self.local_obj.links.append(link)
 
         return link

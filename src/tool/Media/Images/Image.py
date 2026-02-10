@@ -6,11 +6,8 @@ from Web.HTTP.RequestHeaders import RequestHeaders
 class Image(Media):
     thumbnail_type = ['image']
     default_name = 'image.jpg'
-    headers = RequestHeaders(
-        accept = 'image/jpeg',
-        content_type = 'image/jpeg'
-    )
     mime_type = 'image/jpeg'
+    extensions = ['png', 'jpeg', 'jpg', 'gif']
     _img = None
 
     @classmethod
@@ -55,6 +52,10 @@ class Image(Media):
         if self.obj.has_dimensions() == False:
             self.log('setting image dimensions...')
 
-            _read = self._read_file()
-            self._set_dimensions(_read)
+            try:
+                _read = self._read_file()
+                self._set_dimensions(_read)
+            except Exception as e:
+                self.log_error(e)
+
             self._reset_file()

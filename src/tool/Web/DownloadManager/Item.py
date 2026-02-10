@@ -6,6 +6,7 @@ from App.Logger.LogPrefix import LogPrefix
 from Web.HTTP.RequestHeaders import RequestHeaders
 from pathlib import Path
 from Data.Types.String import String
+from Web.Mime import Mime
 
 class NotFoundError(Exception):
     pass
@@ -71,7 +72,7 @@ class Item(Object):
 
                 if status == 403:
                     _read = await response.content.read()
-                    _dc = _read.decode("utf8")
+                    _dc = _read.decode("utf-8")
 
                     if len(_dc) < 1000:
                         raise AccessDeniedError('access denied, error: {0}'.format(_dc))
@@ -97,11 +98,21 @@ class Item(Object):
     async def saveFile(self, response) -> None:
         self.downloaded_bytes = 0
 
-        with open(self.getPath(), 'wb') as stream:
+        encoding = response.get_encoding() or 'utf-8'
+        mode = 'wb' if Mime._is_binary(response.headers.get('Content-Type', '').lower()) else 'w'
+        is_binary = mode == 'wb'
+
+        with open(self.getPath(), mode, encoding = encoding if is_binary == False else None) as stream:
             async for chunk in response.content.iter_chunked(self.response_iter):
                 await self._run_flag.wait()
 
-                stream.write(chunk)
+                if is_binary:
+                    stream.write(chunk)
+                else:
+                    if isinstance(chunk, bytes):
+                        chunk = chunk.decode(encoding, errors='replace')
+
+                    stream.write(chunk)
 
                 now = datetime.datetime.now()
                 elapsed_time = now - self.started_at

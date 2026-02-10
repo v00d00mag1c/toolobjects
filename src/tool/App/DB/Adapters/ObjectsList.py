@@ -168,7 +168,7 @@ class ObjectsList(ConnectionAdapter):
                     'uuid': self.uuid,
                     'owner': self.owner,
                     'target': self.target,
-                    'data': self.data.to_minimal_json(),
+                    'data': self.data.to_db_json(),
                     'order': self.order,
                 }
 
@@ -210,7 +210,7 @@ class ObjectsList(ConnectionAdapter):
                 if obj == None:
                     obj = self._orig
 
-                self.content = obj.to_extended_json()
+                self.content = obj.to_db_json()
 
             def getLinks(self) -> Generator[CommonLink]:
                 _query = self_adapter.QueryAdapter()
