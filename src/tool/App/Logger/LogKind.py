@@ -3,11 +3,12 @@ from pydantic import Field
 from enum import Enum
 
 class LogKindEnum(Enum):
-    success = "success"
-    error = "error"
-    deprecated = "deprecated"
-    message = "message"
-    highlight = "highlight"
+    success = 'success'
+    error = 'error'
+    deprecated = 'deprecated'
+    message = 'message'
+    highlight = 'highlight'
+    bright = 'bright'
 
 class ColorsEnum(Enum):
     red = "\033[91m"
@@ -31,5 +32,7 @@ class LogKind(Object):
                 return ColorsEnum.deprecated.value
             case LogKindEnum.highlight.value:
                 return ColorsEnum.pink.value
+            case LogKindEnum.bright.value:
+                return ColorsEnum.cyan.value
             case _:
                 return ColorsEnum.white.value

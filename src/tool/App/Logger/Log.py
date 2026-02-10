@@ -4,11 +4,11 @@ from pydantic import Field
 from datetime import datetime
 
 class Log(Object):
-    message: str = Field(default=":/")
+    message: str = Field(default="-")
     time: datetime = Field(default_factory=lambda: datetime.now())
-    kind: LogKind.LogKind = Field(default=None)
-    section: LogSection.LogSection = Field(default=["N/A"])
-    prefix: LogPrefix.LogPrefix = Field(default=None)
+    kind: LogKind.LogKind = Field(default = LogKind.LogKind())
+    section: LogSection.LogSection = Field(default = LogSection.LogSection())
+    prefix: LogPrefix.LogPrefix = Field(default = None)
 
     def toParts(self) -> list[str]:
         KIND_COLOR = self.kind.get_color()

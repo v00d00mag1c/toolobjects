@@ -37,10 +37,7 @@ class Hookable():
 
     def runHook(self, hook_func: Callable, *args, **kwargs) -> None:
         if asyncio.iscoroutinefunction(hook_func):
-            app.app.hook_thread.task_queue.put((hook_func, args, kwargs))
-
-            #task = app.app.loop.create_task(hook_func(*args, **kwargs))
-            #app.app.loop.call_soon(lambda: None)
+            return app.app.hook_thread.task_queue.put((hook_func, args, kwargs))
 
         return hook_func(*args, **kwargs)
 
