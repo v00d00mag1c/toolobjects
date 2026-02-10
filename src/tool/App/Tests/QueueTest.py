@@ -15,14 +15,14 @@ class QueueTest(Test):
             ''',
             'items': '''
             [{
-                "predicate": "Data.Random",
+                "predicate": "Data.Random.GetRandomInt.GetRandomInt",
                 "arguments": {
                     "min": 0,
                     "max": 10000
                 }
             },
             {
-                "predicate": "App.Operations.Equate",
+                "predicate": "App.Queue.Operations.Equate",
                 "arguments": {
                     "equate_this": {
                         "direct_value": "$0"

@@ -4,6 +4,7 @@ from typing import Any
 from pathlib import Path
 from App import app
 from functools import cached_property
+from App.Objects.Index.ModuleData import ModuleData
 import importlib, sys
 
 class NotAnObjectError(Exception):
@@ -123,3 +124,11 @@ class LoadedObject(Object):
     @property
     def is_inited(self) -> bool:
         return self._module != None
+
+    @computed_field
+    @property
+    def module(self) -> ModuleData:
+        if self.hasModuleLoaded() == False:
+            return None
+
+        return ModuleData.from_module(self.getModule(), include_subs = True, include_args = True, include_settings = True, include_requirements = True, include_variables = True)

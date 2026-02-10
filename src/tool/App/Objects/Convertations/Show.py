@@ -3,8 +3,9 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Responses.ObjectsList import ObjectsList
 
-class Convert(Act):
+class Show(Act):
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
@@ -13,23 +14,12 @@ class Convert(Act):
                 id_allow = True,
                 orig = Object,
                 assertions = [NotNoneAssertion()]
-            ),
-            Argument(
-                name = 'to',
-                orig = Object,
-                assertions = [NotNoneAssertion()]
             )
         ])
 
     async def implementation(self, i):
-        _variant = 0
-        _from = i.get('from')
-        _to = i.get('to')
-        _converts = _from.findConvertationsForClass(_to)
-        if len(_converts) == 0:
-            return None
+        _list = ObjectsList()
+        for submodule in i.get('from').getSubmodules(with_role=['convertation']):
+            _list.append(submodule)
 
-        _convert = _converts[_variant]
-        return await _convert.item().execute({
-            'orig': _from
-        })
+        return _list

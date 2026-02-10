@@ -23,7 +23,7 @@ WebSocket-connection. You must pass data in json-format, common args at the `pay
     "type": "object",
     "event_index": 0,
     "payload": {
-        "i": "Data.Text",
+        "i": "Data.Text.Text",
         "force_flush": 1,
         "value": "1234"
     }

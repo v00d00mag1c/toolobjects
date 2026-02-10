@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Text import Text
+from Data.Text.Text import Text
 from App.Storage.StorageUnit import StorageUnit
 from App.Storage.StorageItem import StorageItem
 from Data.JSON import JSON

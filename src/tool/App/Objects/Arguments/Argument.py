@@ -1,14 +1,15 @@
 from .Assertions.Assertion import Assertion
 from App.Objects.Object import Object
 from typing import Any, List, Literal, Callable, Generator
-from pydantic import Field, computed_field
+from pydantic import Field, computed_field, field_serializer
 from App.Objects.Locale.Documentation import Documentation
 from App.Storage.StorageUUID import StorageUUID
 from Data.JSON import JSON
+from App.Objects.Index.ModuleData import ModuleData
 
 class Argument(Object):
     name: str = Field()
-    orig: list[Any] | Any = Field()
+    orig: list[Any] | Any = Field(default = None)
     default: Any | Callable = Field(default = None)
     inputs: str = Field(default = None) # workaround for assertions
 
@@ -85,3 +86,21 @@ class Argument(Object):
     @property
     def none_message(self):
         return 'returned None'
+
+    @field_serializer('orig')
+    def get_orig(self, orig) -> str:
+        if orig == None:
+            return None
+
+        return ModuleData.from_module(orig)
+
+    @field_serializer('default')
+    def get_default(self, default) -> str:
+        if callable(default) or self.is_sensitive or self.role == 'env':
+            return None
+
+        return default
+
+    @field_serializer('inputs')
+    def get_inputs(self, inputs) -> str:
+        return None

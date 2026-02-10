@@ -38,6 +38,10 @@ class BaseModel(PydanticBaseModel):
     def isInstance(self, object: PydanticBaseModel) -> bool:
         return self.getClassNameJoined() == object.getClassNameJoined()
 
+    @classmethod
+    def isSame(cls, object: PydanticBaseModel) -> bool:
+        return cls.getNameJoined() == object.getNameJoined()
+
     def minimal_json(self, include_self_name: bool = False):
         _data = self.to_json(only_class_fields=True, by_alias=True)
         if include_self_name:

@@ -8,10 +8,12 @@ class Equate(Act):
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items=[
             Argument(
-                name = 'equate_this'
+                name = 'equate_this',
+                orig = None
             ),
             Argument(
-                name = 'to'
+                name = 'to',
+                orig = None
             )
         ])
 

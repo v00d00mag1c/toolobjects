@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Text import Text
+from Data.Text.Text import Text
 from App import app
 
 class FlushWithLinksTest(Test):

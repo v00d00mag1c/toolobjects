@@ -45,6 +45,10 @@ class ConsoleView(View):
 
             if print_as == 'str' and isinstance(results, ObjectsList):
                 for item in results.getItems():
+                    if hasattr(item, 'displayAsString') == False:
+                        self.log_raw('[item without displayment]')
+                        continue
+
                     self.log_raw(item.displayAsString())
             else:
                 self.log_raw(JSON(data = results.to_json()).dump(indent = 4))

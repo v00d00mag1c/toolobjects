@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Random import Random
+from Data.Random.GetRandomInt.GetRandomInt import Random
 from App.Queue.Run import Run
 from App.Storage.Movement.Save import Save
 
@@ -10,7 +10,7 @@ class SaveQueueTest(Test):
         args = {
             'items': [
                 {
-                    'predicate': 'Data.Random.Random',
+                    'predicate': 'Data.Random.GetRandomInt.GetRandomInt.Random',
                     'arguments': {
                         'min': 999,
                         'max': 8888888

@@ -13,8 +13,8 @@ import asyncio
 
 class Executable(Object, Variableable, Validable):
     id: int = 0
+    event_index: int = Field(default = None)
     self_name: ClassVar[str] = 'Executable'
-    event_index: ClassVar[int] = None
     #internal_use: bool = Field(default = True)
     args: Optional[dict] = Field(default = {})
     _unserializable = ['id', 'variables', 'self_name', 'event_index']
@@ -27,7 +27,6 @@ class Executable(Object, Variableable, Validable):
     def append_prefix(self) -> LogPrefix:
         return LogPrefix(
             id = self.id,
-            #name = self.class_name
             name = 'ID'
         )
 
@@ -109,3 +108,7 @@ class Executable(Object, Variableable, Validable):
 
         #self.internal_use = False # idk whats this
         self.args = args.values
+
+    def set_event_index(self, id: int):
+        self.event_index = id
+        self.log("ID: {0}, Event ID: {1}".format(self.id, id))

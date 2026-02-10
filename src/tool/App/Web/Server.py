@@ -165,6 +165,7 @@ class Server(View):
 
                     if _type == 'object':
                         pre_i = _pre_i()
+                        pre_i.set_event_index(_event_index)
                         results = await _call_shortcut(pre_i, _payload)
 
                         await ws.send_str(JSON(data={

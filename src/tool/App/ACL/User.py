@@ -1,5 +1,4 @@
 from App.Objects.Object import Object
-from App.ACL.AuthToken import AuthToken
 from App.ACL.Permissions.ObjectPermission import ObjectPermission
 from argon2 import PasswordHasher
 from App import app

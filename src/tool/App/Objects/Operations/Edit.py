@@ -14,7 +14,6 @@ class Edit(Act):
             Argument(
                 name = 'object',
                 orig = Object,
-                literally = True,
                 id_allow = True,
                 assertions = [NotNoneAssertion()]
             ),

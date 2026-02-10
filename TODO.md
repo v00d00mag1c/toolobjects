@@ -83,7 +83,7 @@ modules:
 - [ ] App.Logger.List
 - [ ] App.Logger.GetFile
 - [ ] Web.RSS.GetFeed
-- [x] Data.Text
+- [x] Data.Text.Text
 - [x] Abstract.TODO or Abstract.Checkmarks
 
 documentation:

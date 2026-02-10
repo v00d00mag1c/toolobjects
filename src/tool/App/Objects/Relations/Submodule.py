@@ -1,6 +1,7 @@
 from App.Objects.Relations.Link import Link
 from typing import Literal
-from pydantic import Field
+from pydantic import Field, field_serializer
+from App.Objects.Index.ModuleData import ModuleData
 
 class Submodule(Link):
     '''
@@ -16,3 +17,10 @@ class Submodule(Link):
     '''
 
     role: list[Literal['action', 'object_in', 'object_out', 'object', 'thumbnail', 'common', 'wheel', 'convertation', 'test'] | str] = Field(default = ['common'])
+
+    @field_serializer('item')
+    def get_item(self, item) -> str:
+        if item == None:
+            return None
+
+        return ModuleData.from_module(item)

@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Random import Random
+from Data.Random.GetRandomInt.GetRandomInt import Random
 from App.DB.Search import Search
 from App import app
 from App.DB.Adapters.Search.Condition import Condition

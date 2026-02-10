@@ -5,7 +5,7 @@ from Data.Int import Int
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 import random
 
-class Random(Extractor):
+class GetRandomInt(Extractor):
     @classmethod
     def _arguments(cls):
         return ArgumentDict(items=[

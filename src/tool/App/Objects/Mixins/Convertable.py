@@ -10,9 +10,9 @@ class Convertable(BaseModel):
     def findConvertationsForClass(cls, for_class: BaseModel) -> list:
         converters = []
         for submodule in cls.getSubmodules(with_role=['convertation']):
-            obj_in = submodule.item.getSubmodules(with_role=['object_out'])
-            for _submodule in obj_in:
-                if _submodule.item is for_class:
+            object_out = submodule.item.getSubmodules(with_role=['object_out'])
+            for _submodule in object_out:
+                if _submodule.item.isSame(for_class):
                     converters.append(submodule)
 
         return converters

@@ -34,7 +34,7 @@ Permission to use object by some user. By default, non-root user can't use any o
 ```
     "app.auth.permissions": [
         {
-            "object_name": "App.Data.Text",
+            "object_name": "App.Data.Text.Text",
             "user": "test",
             "allow": true
         }

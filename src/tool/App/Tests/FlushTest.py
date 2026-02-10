@@ -1,6 +1,6 @@
 from App.Objects.Test import Test
-from Data.Text import Text
-from Data.Random import Random
+from Data.Text.Text import Text
+from Data.Random.GetRandomInt.GetRandomInt import Random
 from App import app
 
 class FlushTest(Test):
