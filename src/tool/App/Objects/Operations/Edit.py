@@ -4,8 +4,8 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.String import String
-from Data.Boolean import Boolean
+from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 
 class Edit(Act):
     @classmethod

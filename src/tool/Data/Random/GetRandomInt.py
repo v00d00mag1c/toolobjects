@@ -1,7 +1,7 @@
 from App.Objects.Extractor import Extractor
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.Int import Int
+from Data.Types.Int import Int
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 import random
 

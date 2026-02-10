@@ -3,7 +3,7 @@ from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Threads.ExecutionThread import ExecutionThread
 from App.Objects.Autostart.Item import Item
-from Data.Boolean import Boolean
+from Data.Types.Boolean import Boolean
 from pydantic import Field
 from App import app
 

@@ -3,10 +3,10 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.Int import Int
-from Data.Boolean import Boolean
-from Data.Float import Float
-from Data.String import String
+from Data.Types.Int import Int
+from Data.Types.Boolean import Boolean
+from Data.Types.Float import Float
+from Data.Types.String import String
 from pydantic import Field
 from App import app
 import asyncio

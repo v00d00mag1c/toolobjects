@@ -6,7 +6,7 @@ from App.Objects.Arguments.LiteralArgument import LiteralArgument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Primitives.Collections.Collection import Collection
 from App.Objects.Object import Object
-from Data.String import String
+from Data.Types.String import String
 
 class Manage(Act):
     @classmethod

@@ -22,7 +22,7 @@ class LinkValue(Object):
             if i > 0:
                 prev = applied_parts[i - 1]
 
-            self.log(f"part {i}: {item} with previous = {prev}")
+            self.log(f"part {i}: {item} with previous = *")
 
             if item.startswith(ITEMS_MODIFIER):
                 ids = int(item.replace(ITEMS_MODIFIER, ''))
@@ -53,6 +53,6 @@ class LinkValue(Object):
 
                 applied_parts.append(getattr(prev, item))
 
-        self.log(f"{_items} >>> {applied_parts}")
+        self.log(f"{_items} >>> *")
 
         return applied_parts[RETURN_INDEX]

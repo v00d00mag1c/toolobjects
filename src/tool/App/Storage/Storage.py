@@ -4,7 +4,7 @@ from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.Item.StorageItem import StorageItem
 from pydantic import Field
 from typing import Generator
-from Data.Int import Int
+from Data.Types.Int import Int
 from App import app
 
 class Storage(Object):

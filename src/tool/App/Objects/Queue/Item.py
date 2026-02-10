@@ -62,7 +62,7 @@ class Item(Object):
     async def run(self, prestart: list, items: list, preexecutor: Object, auth: User):
         arguments = self.get_arguments(prestart, items)
 
-        self.log(f"Running {self.predicate} with arguments {arguments}")
+        self.log(f"Running {self.predicate} with arguments *")
 
         item_class = self.get_predicate()
         item_instance = item_class(**self.get_build_arguments(prestart, items))

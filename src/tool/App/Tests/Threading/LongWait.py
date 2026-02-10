@@ -1,7 +1,7 @@
 from App.Objects.Test import Test
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
-from Data.Float import Float
+from Data.Types.Float import Float
 import asyncio
 
 class LongWait(Test):

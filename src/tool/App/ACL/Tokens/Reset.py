@@ -2,7 +2,7 @@ from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.String import String
+from Data.Types.String import String
 from App import app
 from App.DB.Query.Condition import Condition
 from App.ACL.Tokens.Token import Token

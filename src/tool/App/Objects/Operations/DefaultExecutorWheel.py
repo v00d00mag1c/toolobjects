@@ -10,8 +10,8 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.Movement.Save import Save
 from App.Locale.Documentation import Documentation
 from App.Locale.Key import Key
-from Data.String import String
-from Data.Boolean import Boolean
+from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 from pydantic import Field
 from typing import Coroutine
 from App import app

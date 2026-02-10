@@ -3,7 +3,7 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Responses.AnyResponse import AnyResponse
-from Data.String import String
+from Data.Types.String import String
 from App import app
 
 class Get(Act):

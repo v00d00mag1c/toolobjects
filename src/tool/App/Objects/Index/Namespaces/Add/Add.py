@@ -3,8 +3,8 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 
-from Data.Boolean import Boolean
-from Data.String import String
+from Data.Types.Boolean import Boolean
+from Data.Types.String import String
 
 from App.Objects.Index.Namespace import Namespace
 from App import app

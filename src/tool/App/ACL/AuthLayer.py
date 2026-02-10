@@ -8,8 +8,8 @@ from App.ACL.Permissions.Permission import Permission
 from App.ACL.Tokens.Token import Token
 from App.DB.Query.Condition import Condition
 from App import app
-from Data.Boolean import Boolean
-from Data.Float import Float
+from Data.Types.Boolean import Boolean
+from Data.Types.Float import Float
 
 class AuthLayer(Object):
     def getUserByName(self, name: str) -> User:

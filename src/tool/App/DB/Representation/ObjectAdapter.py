@@ -1,4 +1,4 @@
-from Data.JSON import JSON
+from Data.Types.JSON import JSON
 from App import app
 from App.Objects.Relations.Link import Link as CommonLink
 from typing import Any, Generator

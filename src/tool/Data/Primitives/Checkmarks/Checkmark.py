@@ -1,7 +1,7 @@
 from App.Objects.Object import Object
 from App.Objects.Act import Act
 from App.Objects.Relations.LinkInsertion import LinkInsertion
-from Data.String import String
+from Data.Types.String import String
 from pydantic import Field
 
 class Checkmark(Object):

@@ -3,7 +3,7 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.ACL.Tokens.Token import Token
-from Data.String import String
+from Data.Types.String import String
 from App.DB.Query.Condition import Condition
 from App import app
 from App.Objects.Responses.ObjectsList import ObjectsList

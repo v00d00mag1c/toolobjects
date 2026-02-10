@@ -1,7 +1,7 @@
 from Data.Explorer.ExplorerProtocol import ExplorerProtocol
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
-from Data.String import String
+from Data.Types.String import String
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.VirtualPath.Path import Path as VirtualPath
 from App.DB.Search.Search import Search

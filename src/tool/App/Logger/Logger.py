@@ -3,7 +3,7 @@ from App.Console.PrintLog import PrintLog
 from App.Logger.HideCategory import HideCategory
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
-from Data.Boolean import Boolean
+from Data.Types.Boolean import Boolean
 from .Log import Log
 from .LogSection import LogSection
 from .LogPrefix import LogPrefix

@@ -2,8 +2,8 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Argument import Argument
 from App.Locale.Lang import Lang
-from Data.String import String
-from Data.JSON import JSON
+from Data.Types.String import String
+from Data.Types.JSON import JSON
 from typing import Generator
 from pydantic import Field
 from pathlib import Path

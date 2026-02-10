@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from pydantic import Field
-from Data.DictList import DictList
+from App.Objects.Misc.DictList import DictList
 # from Plugins.App.Objects.Arguments.Assertions.NotNone import NotNone
 
 import json

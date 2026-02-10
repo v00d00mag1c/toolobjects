@@ -4,7 +4,7 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Responses.ObjectsList import ObjectsList
 from Data.Primitives.Checkmarks.Checkmark import Checkmark
 from Data.Primitives.Checkmarks.List import List
-from Data.String import String
+from Data.Types.String import String
 
 class AddCheckmark(Act):
     @classmethod

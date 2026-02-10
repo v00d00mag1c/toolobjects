@@ -5,8 +5,8 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Storage.Item.StorageItem import StorageItem
 from App.Storage.Item.Mount import Mount
 from App.Objects.Responses.ObjectsList import ObjectsList
-from Data.String import String
-from Data.Boolean import Boolean
+from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 
 class Create(Act):
     @classmethod

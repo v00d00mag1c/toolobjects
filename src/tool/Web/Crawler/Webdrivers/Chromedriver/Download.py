@@ -3,7 +3,7 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.LiteralArgument import LiteralArgument
 from Web.Crawler.Webdrivers.Chromedriver.Chromedriver import Chromedriver
 from Web.Crawler.Webdrivers.Chromedriver.Add import Add
-from Data.String import String
+from Data.Types.String import String
 from App import app
 from pathlib import Path
 import aiohttp

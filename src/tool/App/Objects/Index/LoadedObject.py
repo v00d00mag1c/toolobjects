@@ -1,4 +1,5 @@
 from App.Objects.Object import Object
+from App.Objects.Mixins.BaseModel import BaseModel
 from App.Objects.Misc.NameContainable import NameContainable
 from pydantic import Field, computed_field
 from typing import Any
@@ -88,7 +89,7 @@ class LoadedObject(NameContainable):
             assert len(_modules) == 0, f"following modules not installed: {', '.join(_modules)}"
 
         try:
-            if issubclass(common_object, Object) == False:
+            if issubclass(common_object, BaseModel) == False:
                 raise NotAnObjectError(f"{module_name} probaly is not an Object")
         except TypeError:
             raise NotAnObjectError(f"{module_name} is not a class")

@@ -1,5 +1,5 @@
 from App.Objects.Relations.Link import Link
-from Data.JSON import JSON
+from Data.Types.JSON import JSON
 from abc import abstractmethod
 from App.DB.Representation.AbstractAdapter import AbstractAdapter
 from App.DB.Representation.ObjectAdapter import ObjectAdapter

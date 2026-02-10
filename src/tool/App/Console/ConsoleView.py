@@ -5,9 +5,9 @@ from App.Objects.Executable import Executable
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Responses.NoneResponse import NoneResponse
 from App.Objects.Threads.ExecutionThread import ExecutionThread
-from Data.JSON import JSON
-from Data.Boolean import Boolean
-from Data.String import String
+from Data.Types.JSON import JSON
+from Data.Types.Boolean import Boolean
+from Data.Types.String import String
 from App.Objects.View import View
 from App import app
 

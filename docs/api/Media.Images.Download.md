@@ -8,7 +8,7 @@ Downloads image from `url`, saves it as `StorageUnit` and `Media.Files.FileTypes
 
 ##### url
 
-`type`: `Data.String`
+`type`: `Data.Types.String`
 
 `assertions`: NotNone
 
@@ -24,7 +24,7 @@ Gallery to link. If passed, links the downloaded Image to it.
 
 ##### filename
 
-`type`: `Data.String`
+`type`: `Data.Types.String`
 
 `default`: `image.png`
 

@@ -13,7 +13,7 @@ class ValueReplace(Test):
 
         queue = Queue(
             prestart = [{
-                'predicate': 'Data.Int',
+                'predicate': 'Data.Types.Int',
                 'build': {
                     'name': 'random',
                     'current': 0

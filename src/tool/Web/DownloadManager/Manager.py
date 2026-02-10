@@ -1,12 +1,12 @@
 from App.Objects.Object import Object
-from Data.Increment import Increment
+from App.Objects.Misc.Increment import Increment
 from App.Objects.Arguments.Argument import Argument
 from Web.DownloadManager.Item import Item
 from App.Storage.StorageUnit import StorageUnit
 from Web.HTTP.Headers import Headers
-from Data.Int import Int
-from Data.Boolean import Boolean
-from Data.String import String
+from Data.Types.Int import Int
+from Data.Types.Boolean import Boolean
+from Data.Types.String import String
 from pydantic import Field
 from typing import Any
 import asyncio#, aiohttp

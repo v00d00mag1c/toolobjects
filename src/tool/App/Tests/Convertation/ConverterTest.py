@@ -1,6 +1,6 @@
 from App.Objects.Test import Test
-from Data.XML import XML
-from Data.JSON import JSON
+from Data.Types.XML.XML import XML
+from Data.Types.JSON import JSON
 
 class ConverterTest(Test):
     async def _implementation(self, i):

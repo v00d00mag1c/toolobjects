@@ -7,8 +7,8 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Responses.AnyResponse import AnyResponse
 from App.Storage.Item.StorageItem import StorageItem
 from App.Storage.StorageUUID import StorageUUID
-from Data.Int import Int
-from Data.Boolean import Boolean
+from Data.Types.Int import Int
+from Data.Types.Boolean import Boolean
 from App import app
 
 class Save(Act):

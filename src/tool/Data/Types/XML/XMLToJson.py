@@ -2,8 +2,8 @@ from App.Objects.Convertation import Convertation
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Relations.Submodule import Submodule
 from App.Objects.Requirements.Requirement import Requirement
-from Data.JSON import JSON
-from Data.XML import XML
+from Data.Types.JSON import JSON
+from Data.Types.XML.XML import XML
 
 class XMLToJson(Convertation):
     def _implementation(self, i) -> ObjectsList:

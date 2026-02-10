@@ -4,7 +4,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Responses.ObjectsList import ObjectsList
 from argon2 import PasswordHasher
-from Data.String import String
+from Data.Types.String import String
 
 class GetHash(Act):
     @classmethod

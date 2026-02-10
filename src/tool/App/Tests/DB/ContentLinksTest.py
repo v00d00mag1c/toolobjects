@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from Media.Text.Text import Text
 from App.Storage.StorageUnit import StorageUnit
 from App.Storage.Item.StorageItem import StorageItem
-from Data.JSON import JSON
+from Data.Types.JSON import JSON
 from App import app
 from App.Objects.Responses.ObjectsList import ObjectsList
 

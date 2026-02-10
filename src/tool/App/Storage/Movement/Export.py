@@ -3,8 +3,8 @@ from datetime import datetime
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
-from Data.String import String
-from Data.Boolean import Boolean
+from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.Item.Create import Create
 from App.Storage.Movement.Save import Save

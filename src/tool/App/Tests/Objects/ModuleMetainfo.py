@@ -1,9 +1,9 @@
 from App.Objects.Test import Test
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
-from Data.Boolean import Boolean
-from Data.String import String
-from Data.JSON import JSON
+from Data.Types.Boolean import Boolean
+from Data.Types.String import String
+from Data.Types.JSON import JSON
 from App import app
 
 class ModuleMetainfo(Test):

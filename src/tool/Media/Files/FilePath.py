@@ -1,4 +1,4 @@
-from Data.String import String
+from Data.Types.String import String
 
 class FilePath(String):
     pass

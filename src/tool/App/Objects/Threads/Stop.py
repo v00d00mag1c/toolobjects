@@ -2,7 +2,7 @@ from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.Int import Int
+from Data.Types.Int import Int
 from App import app
 
 class Stop(Act):

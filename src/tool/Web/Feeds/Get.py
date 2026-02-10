@@ -1,5 +1,5 @@
 from App.Objects.Extractor import Extractor
-from Data.String import String
+from Data.Types.String import String
 from Web.Feeds.Elements.Feed import Feed
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.ArgumentDict import ArgumentDict

@@ -4,7 +4,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.LiteralArgument import LiteralArgument
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Arguments.Assertions.NotNone import NotNone
-from Data.String import String
+from Data.Types.String import String
 from pathlib import Path
 import shutil, datetime
 

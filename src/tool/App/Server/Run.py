@@ -3,10 +3,10 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Responses.Error import Error
 
-from Data.String import String
-from Data.Int import Int
-from Data.Boolean import Boolean
-from Data.JSON import JSON
+from Data.Types.String import String
+from Data.Types.Int import Int
+from Data.Types.Boolean import Boolean
+from Data.Types.JSON import JSON
 import random
 
 from pydantic import Field

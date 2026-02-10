@@ -1,4 +1,4 @@
-from Data.Int import Int
+from Data.Types.Int import Int
 
 class Float(Int):
     value: float = None

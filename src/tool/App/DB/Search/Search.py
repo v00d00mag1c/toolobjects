@@ -4,7 +4,7 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
-from Data.Int import Int
+from Data.Types.Int import Int
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
 from App.Storage.Item.StorageItem import StorageItem

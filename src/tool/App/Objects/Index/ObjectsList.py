@@ -1,10 +1,10 @@
-from Data.DictList import DictList
+from App.Objects.Misc.DictList import DictList
 from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject
 from App.Objects.Index.Namespace import Namespace
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
-from Data.String import String
+from Data.Types.String import String
 from typing import Generator
 from App import app
 from pydantic import Field
@@ -27,12 +27,6 @@ class ObjectsList(Object):
     def mount(cls):
         from App import app
 
-        _custom = [
-            Namespace(
-                name = 'custom',
-                root = str(app.app.cwd.joinpath('Custom'))
-            )
-        ]
         _objects = cls(
             namespaces = [
                 app.app.objects
@@ -40,7 +34,7 @@ class ObjectsList(Object):
             current = cls.getOption("objects.index.namespaces.current")
         )
 
-        for item in _custom + cls.getOption('objects.index.namespaces'):
+        for item in cls.getOption('objects.index.namespaces'):
             _objects.append_namespace(item)
             item.load()
 

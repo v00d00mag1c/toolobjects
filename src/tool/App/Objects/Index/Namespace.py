@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject, NotAnObjectError
-from Data.DictList import DictList
+from App.Objects.Misc.DictList import DictList
 from typing import Generator
 from pathlib import Path
 from pydantic import Field
@@ -55,9 +55,9 @@ class Namespace(Object):
 
                     self.noticeModuleLoaded(item)
                 else:
-                    self.log(f"{_name}: loaded but not imported", role=['objects.loading', 'objects.loading.module.skipped'])
+                    self.log(f"{_name}: loaded, not imported", role=['objects.loading', 'objects.loading.module.skipped'])
             except AssertionError as exception:
-                self.log_error(exception, role=['objects.loading'])
+                self.log_error(exception, role=['objects.loading'], exception_prefix = '{0} not imported: '.format(_name))
             except Exception as exception:
                 item.is_success = False
                 self.log_error(f"{_name} not imported", role=['objects.loading'])

@@ -9,7 +9,7 @@ class XML(Object):
 
     @classmethod
     def _submodules(cls) -> list:
-        from Data.XMLToJson import XMLToJson
+        from Data.Types.XML.XMLToJson import XMLToJson
 
         return [
             Submodule(
