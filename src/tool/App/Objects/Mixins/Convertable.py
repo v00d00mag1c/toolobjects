@@ -42,3 +42,6 @@ class Convertable(BaseModel):
             _ret += getIdSign()
 
         return _ret
+
+    def _display_as_string(self) -> str:
+        return ''

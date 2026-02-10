@@ -131,7 +131,7 @@ class ObjectsList(ConnectionAdapter):
                     self.data = link.data
 
                 link.setDb(self)
-                self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
+                # self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
                 self_adapter.data.get('links').append(self.to_json())
 
                 if owner._orig != None:

@@ -7,8 +7,6 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Misc.Source import Source
 from Web.URL import URL
 
-from App.Objects.Responses.ObjectsList import ObjectsList
-
 import xml.etree.ElementTree as ET
 
 class Get(Extractor):

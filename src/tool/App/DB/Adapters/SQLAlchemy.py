@@ -152,10 +152,13 @@ class SQLAlchemy(ConnectionAdapter):
                     self.data = json.dumps(link.data)
 
                 link.setDb(self)
-                self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
+                # self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
 
                 if owner._orig != None:
                     owner._orig.save()
+
+                if self.uuid is None:
+                    self.uuid = next(self_adapter._id_gen)
 
                 self_adapter.getSession().add(self)
 
@@ -189,6 +192,9 @@ class SQLAlchemy(ConnectionAdapter):
                 return self.order_index
 
             def toDB(self, obj: Object):
+                if self.uuid is None:
+                    self.uuid = next(self_adapter._id_gen)
+
                 self_adapter.getSession().add(self)
                 self.get_permission_to_flush(obj)
                 self._orig = obj
@@ -199,7 +205,6 @@ class SQLAlchemy(ConnectionAdapter):
                     obj = self._orig
 
                 self.content = json.dumps(obj.to_extended_json())
-
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
 
@@ -284,12 +289,6 @@ class SQLAlchemy(ConnectionAdapter):
                 self_adapter.getSession().delete(self)
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
-
-        @event.listens_for(_ObjectAdapter, 'before_insert', propagate=True)
-        @event.listens_for(_LinkAdapter, 'before_insert', propagate=True)
-        def receive_before_insert(mapper, connection, target):
-            if target.uuid is None:
-                target.uuid = next(self_adapter._id_gen)
 
         self_adapter.ObjectAdapter = _ObjectAdapter
         self_adapter.LinkAdapter = _LinkAdapter

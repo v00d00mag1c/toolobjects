@@ -97,7 +97,7 @@ class DBInsertable():
                                     set_db = set_db,
                                     ignore_flush_hooks = ignore_flush_hooks)
 
-                    self.log('flushed link with index {0}'.format(_id))
+                    self.log('flushed link with id {0} order {1}'.format(link.getDbId(), _id))
                     if _set_db == True:
                         link.setDb(_db_item.addLink(link = link))
 

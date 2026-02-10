@@ -16,7 +16,7 @@ class ConnectionAdapter(Object, Protocol):
     _unserializable = ['_storage_item', '_id_gen', 'ObjectAdapter', 'LinkAdapter']
 
     name: str = Field(default = 'objects')
-    auto_commit: bool = Field(default = True)
+    auto_commit: bool = Field(default = False)
 
     objects_table_name: str = Field(default = 'objects')
     links_table_name: str = Field(default = 'links')
