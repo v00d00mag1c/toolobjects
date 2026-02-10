@@ -4,6 +4,8 @@ from App import app
 class ObjectAdapter():
     '''
     Transition class between App.Objects.Object and SQL
+
+    must contain uuid and content
     '''
 
     def search(self):

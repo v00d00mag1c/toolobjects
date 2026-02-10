@@ -1,9 +1,10 @@
 from App.Objects.BaseModel import BaseModel, computed_field
+from App.Storage.DB.DBInsertable import DBInsertable
 from pydantic import Field
 from typing import Any, Literal
 from enum import Enum
 
-class Link(BaseModel):
+class Link(BaseModel, DBInsertable):
     '''
     Link to an object.
 

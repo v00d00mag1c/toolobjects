@@ -30,6 +30,9 @@ class ObjectsList(Object):
             ]
         )
 
+        for item in cls.getOption('objects.index.namespaces'):
+            _objects.namespaces.append(item)
+
         app.mount('ObjectsList', _objects)
 
     def getItems(self) -> DictList:
@@ -65,3 +68,19 @@ class ObjectsList(Object):
                 return None
 
         return _item
+
+    @classmethod
+    def getSettings(cls):
+        from App.Arguments.Objects.List import List
+        from App.Arguments.Objects.Orig import Orig
+
+        return [
+            List(
+                name = 'objects.index.namespaces',
+                default = [],
+                orig = Orig(
+                    name = 'objects.index.namespace',
+                    orig = Namespace
+                )
+            )
+        ]

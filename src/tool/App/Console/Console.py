@@ -2,6 +2,7 @@ from App.Arguments.ArgumentDict import ArgumentDict
 from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Arguments.Objects.Executable import Executable
+from App.Arguments.Types.Boolean import Boolean
 from Data.JSON import JSON
 from App.View import View
 
@@ -15,11 +16,12 @@ class Console(View):
         assert executable.canBeExecuted(), 'cannot be executed'
         results = await executable().execute(i = i)
 
-        if results == None:
-            self.log('nothing returned', role = ['empty_response', 'view_message'])
-        else:
-            self.log(f'{executable.getClassNameJoined()} returned:')
-            self.log_raw(JSON(data = results.to_json()).dump(indent = 4))
+        if i.get('print_result') == True:
+            if results == None:
+                self.log('nothing returned', role = ['empty_response', 'view_message'])
+            else:
+                self.log(f'{executable.getClassNameJoined()} returned:')
+                self.log_raw(JSON(data = results.to_json()).dump(indent = 4))
 
     @classmethod
     def getArguments(cls) -> ArgumentDict:
@@ -31,6 +33,10 @@ class Console(View):
                     NotNoneAssertion(),
                     InputNotInValues(values=['App.Console.Console.Console'])
                 ]
+            ),
+            Boolean(
+                name = 'print_result',
+                default = True
             )
         ],
             missing_args_inclusion = True

@@ -59,6 +59,7 @@ class App(Object):
         self.objects = Namespace(
             name = 'common',
             root = str(self.cwd),
+            ignore_dirs = ['Custom'],
             load_before = [
                 LoadedObject(
                     path = 'App\\Storage\\Config.py'

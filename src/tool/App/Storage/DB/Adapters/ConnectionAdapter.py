@@ -11,5 +11,5 @@ class ConnectionAdapter(Object):
     ObjectAdapter: Any = None
     ObjectLinkAdapter: Any = None
 
-    def insertObject(self, item: Object):
+    def flush(self, item: Object):
         pass

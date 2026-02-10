@@ -8,7 +8,19 @@ class Linkable:
 
     links: list[Link] = Field(default=[], exclude = True, repr = False)
 
+    def link(self, object, role: list = []):
+        self.addLink(Link(
+            item = object,
+            role = role
+        ))
+
+    def unlink(self, item: Link, type: int) -> None:
+        pass
+
     def addLink(self, item: Link) -> None:
+        #if self.links == None:
+            #self.links = []
+
         self.links.append(item)
 
     def getLinkedItems(self) -> list[Link]:
@@ -24,11 +36,15 @@ class Linkable:
         '''
         return self.getLinkedItems()
 
-    def linkItem(self, object, link_type: int):
-        pass
+    def getLinksRecurisvely(self, current_level = 0, max_depth = 10) -> list[Link]:
+        _items = []
+        if current_level >= max_depth:
+            return []
 
-    def addCommonLink(self, item: Link) -> None:
-        pass
+        for link in self.getLinkedItems():
+            _items.append(link)
+            _next_links = link.item.getLinksRecurisvely(current_level = current_level + 1, max_depth = max_depth)
+            for item in _next_links:
+                _items.append(item)
 
-    def unlink(self, item: Link, type: int) -> None:
-        pass
+        return _items

@@ -8,9 +8,10 @@ from .Convertable import Convertable
 from .ModuleRequireable import ModuleRequireable
 from .Submodulable import Submodulable
 from .Saveable import Saveable
-from typing import ClassVar, Any
+from App.Storage.DB.DBInsertable import DBInsertable
+from typing import ClassVar
 
-class Object(BaseModel, AllowExtraFields, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable):
+class Object(BaseModel, AllowExtraFields, Linkable, Saveable, ModuleRequireable, Section, Submodulable, Hookable, Configurable, Convertable, DBInsertable):
     '''
     The base class of app, extended pydantic BaseModel.
     Fields can be flushed to json, also there is Section (log) functions and hooks.
@@ -20,4 +21,3 @@ class Object(BaseModel, AllowExtraFields, Linkable, Saveable, ModuleRequireable,
     '''
 
     self_name: ClassVar[str] = 'Object'
-    _db: Any = None  # : ConnectionAdapterObject

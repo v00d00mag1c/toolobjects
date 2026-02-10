@@ -1,2 +1,4 @@
 class ObjectLinkAdapter():
-    pass
+    '''
+    must contain: uuid, owner, target and roles
+    '''
