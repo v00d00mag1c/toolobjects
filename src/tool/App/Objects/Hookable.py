@@ -7,7 +7,7 @@ class Hookable():
     '''
     Allows to run subscribed functions at every event
     '''
-    hooks: dict[str, list] = Field(default = {})
+    _hooks: dict[str, list] = {}
 
     @classmethod
     def getClassEventsTypes(cls):
@@ -19,21 +19,21 @@ class Hookable():
     def constructor(self):
         super().constructor()
 
-        self.hooks = {}
+        self._hooks = {}
 
         for event in self.getClassEventsTypes():
-            self.hooks[event] = []
+            self._hooks[event] = []
 
     def checkEventType(self, category: str):
         assert category in self.getClassEventsTypes(), f"category \"{category}\" not in events list"
 
-        if self.hooks.get(category) == None:
-            self.hooks[category] = []
+        if self._hooks.get(category) == None:
+            self._hooks[category] = []
 
     def getEvent(self, category: str) -> list:
         self.checkEventType(category)
 
-        return self.hooks.get(category)
+        return self._hooks.get(category)
 
     def runHook(self, hook_func: Callable, *args, **kwargs) -> None:
         if asyncio.iscoroutinefunction(hook_func):
@@ -43,17 +43,17 @@ class Hookable():
 
     def addHook(self, category: str, hook: Callable) -> None:
         self.checkEventType(category)
-        self.hooks.get(category).append(hook)
+        self._hooks.get(category).append(hook)
 
     def removeHook(self, category: str, hook: Callable) -> None:
         self.checkEventType(category)
-        self.hooks.get(category).remove(hook)
+        self._hooks.get(category).remove(hook)
 
     # TODO: Add HookCategory class
     def triggerHooks(self, category: str, *args, **kwargs) -> None:
         self.checkEventType(category)
 
-        for hook in self.hooks.get(category):
+        for hook in self._hooks.get(category):
             self.runHook(hook, *args, **kwargs)
 
     # TODO

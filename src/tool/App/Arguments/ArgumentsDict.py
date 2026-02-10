@@ -28,7 +28,7 @@ class ArgumentsDict(Object):
         if _out == None:
             return default
 
-        if getattr(_out, "val", None) != None:
+        if getattr(_out, "value", None) != None:
             return _out.value
         else:
             return _out

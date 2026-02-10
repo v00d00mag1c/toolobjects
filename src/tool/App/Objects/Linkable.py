@@ -1,5 +1,5 @@
 from pydantic import Field
-from App.Objects.Object import Object
+#from App.Objects.Object import Object
 from App.Objects.Link import Link
 
 class Linkable:
@@ -10,7 +10,9 @@ class Linkable:
     links: list[Link] = Field(default=[])
 
     def addLink(self, item: Link) -> None:
-        #self.links.append(item)
+        self.links.append(item)
+
+    def linkItem(self, object, link_type: int):
         pass
 
     def addCommonLink(self, item: Link) -> None:

@@ -8,7 +8,6 @@ class NotAnObjectError(Exception):
 
 class LoadedObject(Object):
     is_success: bool = False
-    is_submodule: bool = False
 
     title: str = None
     category: list[str] = None

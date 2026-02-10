@@ -2,6 +2,8 @@
 
 from App.App import App
 from App.Views.View import View
+#import tracemalloc
+#tracemalloc.start()
 
 current = App()
 current._constructor()

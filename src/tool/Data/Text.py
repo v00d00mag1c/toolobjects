@@ -1,4 +1,5 @@
 from App.Objects.Saveable import Saveable
+from pydantic import Field
 
 class Text(Saveable):
-    pass
+    text: str = Field(default = '')

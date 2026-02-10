@@ -11,6 +11,7 @@ class List(Object):
     id: Increment = None
     items: DictList = None
     calls: list = []
+    priority_names: list = ['App\\Config\\Config.py', 'App\\Logger\\Logger.py', 'App\\Storage\\Storage.py', 'App\\DB\\Connection.py', 'Web\\DownloadManager\\DownloadManager.py']
 
     def constructor(self):
         self.id = Increment()
@@ -37,8 +38,7 @@ class List(Object):
     def scan(self, path: Path) -> Generator[Path]:
         items: list = list()
         files = path.rglob('*.py')
-        priority_names: list = ['App\\Config\\Config.py', 'App\\Logger\\Logger.py', 'App\\Env\\Env.py', 'App\\Storage\\Storage.py', 'App\\DB\\Connection.py', 'Web\\DownloadManager\\DownloadManager.py']
-        priority = [path.joinpath(p) for p in priority_names]
+        priority = [path.joinpath(p) for p in self.priority_names]
 
         # 1st iteration
         for plugin in files:

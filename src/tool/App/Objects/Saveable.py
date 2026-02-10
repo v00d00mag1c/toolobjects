@@ -5,9 +5,10 @@ from .Object import Object
 from .Saved import Saved
 from .Source import Source
 from .ObjectMeta import ObjectMeta
+from .Linkable import Linkable
 from typing import ClassVar
 
-class Saveable(Object):
+class Saveable(Object, Linkable):
     '''
     Item that can be flushed into DB
 
@@ -26,9 +27,12 @@ class Saveable(Object):
     original_description: str = Field(default=None)
     index_description: str = Field(default=None)
 
+    # Time of object creation
     created_at: datetime = Field(default_factory=lambda: datetime.now())
-    declared_created_at: datetime = Field(default_factory=lambda: datetime.now())
     edited_at: datetime = Field(default=None)
+
+    # Time of object creation generally
+    declared_created_at: datetime = Field(default_factory=lambda: datetime.now())
 
     '''
     If you want to extend these fields, extend them as internal classes and annotate again

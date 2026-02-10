@@ -6,7 +6,6 @@ from enum import Enum
 class LinkTypeEnum(Enum):
     CONTENT = 0 # will be used for json content insertion
     EXTERNAL = 1
-    REVISION = 2
 
 class Link(Object):
     '''
@@ -15,5 +14,6 @@ class Link(Object):
 
     item: Object = Field()
     common: bool = Field(default = False)
+    thumbnail: bool = Field(default = False)
+    revision: bool = Field(default = False)
     link_type: LinkTypeEnum = Field(default = LinkTypeEnum.CONTENT.value)
-

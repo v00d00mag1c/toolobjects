@@ -15,7 +15,7 @@ class Comparer(Object):
 
     raise_on_assertions: bool = Field(default=False)
     missing_args_inclusion: bool = Field(default=False)
-    default_on_none: bool = Field(default=True)
+    default_on_none: bool = Field(default=False)
     default_on_assertion: bool = Field(default=True)
     none_values_skipping: bool = Field(default=True)
 
