@@ -1,9 +1,10 @@
-from Media.Files.FileType import FileType
+from Media.Media import Media
 from Web.HTTP.RequestHeaders import RequestHeaders
 from App.Objects.Relations.Submodule import Submodule
 from App.Objects.Requirements.Requirement import Requirement
 
-class Video(FileType):
+class Video(Media):
+    thumbnail_type = ['video']
     default_name = 'video.mp4'
     headers = RequestHeaders(
         accept = 'video/mp4',
@@ -17,7 +18,7 @@ class Video(FileType):
         from Media.Download import Download
         from Media.ByStorageUnit import ByStorageUnit
         from Media.ByPath import ByPath
-        from Media.Videos.MakeThumbnail import MakeThumbnail
+        from Media.Videos.Thumbnails.FirstFrame import FirstFrame
 
         return [
             Submodule(
@@ -31,6 +32,10 @@ class Video(FileType):
             Submodule(
                 item = ByPath,
                 role = ['media_method', 'wheel']
+            ),
+            Submodule(
+                item = FirstFrame,
+                role = ['thumbnail']
             )
         ]
 
@@ -54,15 +59,15 @@ class Video(FileType):
 
         return self._vid
 
+    def _reset_file(self):
+        self._vid.close()
+        self._vid = None
+
     def _set_dimensions(self, vid):
         video_stream = next(s for s in vid.streams if s.type == 'video')
 
         self.obj.width = video_stream.codec_context.width
         self.obj.height = video_stream.codec_context.height
-
-    def _reset_file(self):
-        self._vid.close()
-        self._vid = None
 
     def save(self):
         if self.obj.has_dimensions() == False:

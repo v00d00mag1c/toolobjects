@@ -6,6 +6,7 @@ from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Responses.Response import Response
+from App.Objects.Misc.Thumbnail import Thumbnail
 from Data.Types.Boolean import Boolean
 from Data.Types.String import String
 from Media.Media import Media
@@ -43,7 +44,6 @@ class Get(ExtendedWheel):
         _val = await extract.execute(i)
 
         # Thumbnails
-
         allowed_thumbnails = [] # If None, runs every thumbnail submodule
         for item in i.get('thumbnails'):
             if item == '*':
@@ -63,7 +63,7 @@ class Get(ExtendedWheel):
                         if thumb.item.is_same_name(allowed):
                             _is_current_allowed = True
                 else:
-                    _is_current_allowed = True
+                    _is_current_allowed = 'thumbnail_disabled_default' not in thumb.role
 
                 if _is_current_allowed == True:
                     thumbnails_methods.append(thumb)
@@ -74,17 +74,24 @@ class Get(ExtendedWheel):
                 item.local_obj.make_public()
 
             for thumb_func in thumbnails_methods:
+                _item = thumb_func.item
+
                 try:
-                    _item = thumb_func.item
                     _resp = await _item().execute({
                         'object': item
                     })
-                    item.local_obj.add_thumbnails(_resp.getItems())
+
+                    for thumb_result in _resp.getItems():
+                        item.local_obj.add_thumbnail(Thumbnail(
+                            obj = thumb_result,
+                            role = _obj.thumbnail_type,
+                        ))
 
                     self.log('thumbnail for item {0}, {1}'.format(item_count, _item._getNameJoined()), role = ['thumbnail'])
                 except Exception as e:
-                    self.log_error(e, role = ['thumbnail'], exception_prefix = 'Error when making thumbnail: ')
+                    self.log_error(e, role = ['thumbnail'], exception_prefix = 'thumbnail for item {0}, {1}: '.format(item_count, _item._getNameJoined()))
 
+            item.save()
             item_count += 1
 
         return _val

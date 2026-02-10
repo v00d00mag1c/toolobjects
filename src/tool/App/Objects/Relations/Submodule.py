@@ -20,7 +20,7 @@ class Submodule(Model):
     '''
 
     item: Any = Field()
-    role: list[Literal['link_allowed', 'usage', 'action', 'object_in', 'object_out', 'object', 'thumbnail', 'common', 'wheel', 'convertation', 'test', 'returns', 'allowed_view'] | str] = Field(default = ['common'])
+    role: list[Literal['link_allowed', 'usage', 'action', 'object_in', 'object_out', 'object', 'thumbnail', 'thumbnail_disabled_default', 'common', 'wheel', 'convertation', 'test', 'returns', 'allowed_view'] | str] = Field(default = ['common'])
 
     @field_serializer('item')
     def get_item(self, item) -> str:

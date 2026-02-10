@@ -37,10 +37,10 @@ class ObjectAdapter(AbstractAdapter):
     def get_permission_to_flush(self, item: Object):
         _storage = self._adapter._storage_item
         if _storage.allowed_objects != None:
-            assert item._getClassNameJoined() in _storage.allowed_objects, 'object is not allowed to flush'
+            assert item.mro_name_check(_storage.allowed_objects) == True, 'object is not allowed to flush'
 
         if _storage.forbidden_objects != None:
-            assert item._getClassNameJoined() not in _storage.forbidden_objects, 'object with this type is forbidden in this db'
+            assert item.mro_name_check(_storage.forbidden_objects) == False, 'object with this type is forbidden in this db'
 
         return True
 

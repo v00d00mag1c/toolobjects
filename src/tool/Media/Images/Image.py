@@ -6,6 +6,7 @@ from Web.HTTP.RequestHeaders import RequestHeaders
 from pathlib import Path
 
 class Image(Media):
+    thumbnail_type = ['image']
     default_name = 'image.jpg'
     headers = RequestHeaders(
         accept = 'image/jpeg',
@@ -19,7 +20,7 @@ class Image(Media):
         from Media.Download import Download
         from Media.ByStorageUnit import ByStorageUnit
         from Media.ByPath import ByPath
-        from Media.Images.MakeThumbnail import MakeThumbnail
+        from Media.Images.Thumbnails.ResizeByPercentage import ResizeByPercentage
 
         return [
             Submodule(
@@ -35,8 +36,8 @@ class Image(Media):
                 role = ['media_method', 'wheel']
             ),
             Submodule(
-                item = MakeThumbnail,
-                role = ['thumbnail']
+                item = ResizeByPercentage, # You don't need a thumbnail when all files are stored locally
+                role = ['thumbnail', 'thumbnail_disabled_default']
             )
         ]
 
@@ -67,27 +68,24 @@ class Image(Media):
         self.obj.width = data.size[0]
         self.obj.height = data.size[1]
 
-    def _make_thumbnail(self, data, percentage: float = 0.5):
+    def resize_by_percentage(self, data, percentage: float = 0.5):
         sizes = (data.size[0], data.size[1])
         new_sizes = (int(sizes[0] * percentage), int(sizes[1] * percentage))
         resized_img = data.resize(new_sizes)
         resized_img.convert('RGB')
 
-        _thumb_image = Image()
-        _thumb_image.move(self)
-        _thumb_image._set_dimensions(resized_img)
+        thumb_image = Image()
+        thumb_image.move(self)
+        thumb_image._set_dimensions(resized_img)
 
         filename = Path(data.filename)
         _new_file_name = filename.stem + '_thumb_' + str(percentage) + filename.suffix
         _new_name = filename.with_name(_new_file_name)
         resized_img.save(_new_name)
 
-        _thumb_image.set_insertion_name(_new_file_name)
+        thumb_image.set_insertion_name(_new_file_name)
 
-        return Thumbnail(
-            role = ['image'],
-            obj = _thumb_image
-        )
+        return thumb_image
 
     def save(self):
         if self.obj.has_dimensions() == False:

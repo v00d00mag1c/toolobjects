@@ -100,6 +100,19 @@ class Model(PydanticBaseModel):
         return cls._getNameJoined() == name
 
     @classmethod
+    def is_name_equals(cls, name: str) -> bool:
+        return cls._getNameJoined() == name or cls._getClassNameJoined() == name
+
+    @classmethod
+    def mro_name_check(cls, names: list) -> bool:
+        for item in cls.getMRO():
+            for name in names:
+                if hasattr(item, 'is_name_equals') and item.is_name_equals(name):
+                    return True
+
+        return False
+
+    @classmethod
     def _allowed_views(cls) -> list:
         '''
         Views where object can be executed. If zero > will be available everywhere
