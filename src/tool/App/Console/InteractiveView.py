@@ -15,7 +15,7 @@ class InteractiveView(ConsoleView):
 
         while is_exit != True:
             _args_input = input("")
-            _parsed_argv = app.app._parse_argv(['tool.py'] + _args_input.split(' '))
+            _parsed_argv = app.app._parse_argv(_args_input.split(' '))
             _args = _parsed_argv[0]
             _i = _args.get('i')
             if _i == 'App.Console.Exit':

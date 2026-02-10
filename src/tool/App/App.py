@@ -30,7 +30,7 @@ class App(Object):
     view: Any = None
 
     def constructor(self):
-        _args = self._parse_argv(sys.argv)
+        _args = self._parse_argv(sys.argv[1:])
         self.argv = _args[0]
         self.conf_override = _args[1]
         #self.cwd = Path(os.getcwd())
@@ -115,42 +115,36 @@ class App(Object):
         "--arg1 val1" - argument to config
         '''
 
-        ARGS = {}
-        CONF_VALS = {}
+        vals = {
+            'args': {},
+            'conf': {},
+            'env': {}
+        }
+        delimiters = {
+            'conf': '--',
+            'args': '-',
+            'env': ':)'
+        }
 
-        # sep.2024
-        ARG_DELIMITER = '-'
-        CONF_VAL_DELIMITER = '--'
+        _iterate = 0
+        _key = None
+        _key_dict = None
 
-        key = None
-        key_type = None
+        for arg in args:
+            is_name = _iterate % 2 == 0
+            if is_name:
+                for key, val in delimiters.items():
+                    if arg.startswith(val):
+                        _key = arg[len(val):]
+                        _key_dict = key
 
-        for arg in args[1:]:
-            if arg.startswith(CONF_VAL_DELIMITER):
-                if key:
-                    ARGS[key] = True
-                key = arg[2:]
-                key_type = CONF_VAL_DELIMITER
-                CONF_VALS[key] = True
-            elif arg.startswith(ARG_DELIMITER):
-                if key:
-                    ARGS[key] = True
-                key = arg[1:]
-                key_type = ARG_DELIMITER
-                ARGS[key] = True
+                        break
             else:
-                if key:
-                    if key_type == ARG_DELIMITER:
-                        ARGS[key] = arg
-                    else:
-                        CONF_VALS[key] = arg
+                vals.get(_key_dict)[_key] = arg
 
-                    key = None
-                    key_type = None
-                else:
-                    pass
+            _iterate += 1
 
-        return ARGS, CONF_VALS
+        return vals.get('args'), vals.get('conf')
 
 class HookThread():
     '''

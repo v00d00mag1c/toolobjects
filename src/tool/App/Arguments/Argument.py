@@ -1,7 +1,7 @@
 #from App.Documentation.Documentation import Documentation
 from .Assertions.Assertion import Assertion
 from App.Objects.Object import Object
-from typing import Any, List, Literal
+from typing import Any, List, Literal, Callable
 from pydantic import Field, computed_field
 
 class Argument(Object):
@@ -21,7 +21,7 @@ class Argument(Object):
     Argument can be used not only for validation, but for storing, for example, Queue "prestart"
     '''
     name: str = Field()
-    default: Any = Field(default = None)
+    default: Any | Callable = Field(default = None)
     inputs: str = Field(default = None) # workaround
     is_sensitive: bool = Field(default = False)
     auto_apply: bool = Field(default = False)
@@ -38,7 +38,7 @@ class Argument(Object):
 
     def getValue(self, original_value: Any | str, sets_current: bool = True, *args, **kwargs) -> Any:
         if original_value == None and self.default != None:
-            original_value = self.default
+            original_value = self.getDefault()
 
         result = self.implementation(original_value, *args, **kwargs)
         self.inputs = original_value
@@ -46,6 +46,12 @@ class Argument(Object):
             self.current = result
 
         return result
+
+    def getDefault(self):
+        if callable(self.default):
+            return self.default()
+        else:
+            return self.default
 
     @computed_field
     @property
