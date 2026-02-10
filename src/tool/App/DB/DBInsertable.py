@@ -39,8 +39,11 @@ class DBInsertable():
     def getDbId(self):
         return self._db.uuid
 
+    def getDbName(self):
+        return self._db._adapter._storage_item.name
+
     def getDbIds(self):
-        return '{0}_{1}'.format(self._db._adapter._storage_item.name, self._db.uuid)
+        return '{0}_{1}'.format(self.getDbName(), self.getDbId())
 
     def hasDb(self):
         return self._db != None

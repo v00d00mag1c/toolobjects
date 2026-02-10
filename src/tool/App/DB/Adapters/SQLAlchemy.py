@@ -162,6 +162,13 @@ class SQLAlchemy(ConnectionAdapter):
             def fallback(self):
                 return None
 
+            def deleteFromDB(self, remove_links: bool = True):
+                from sqlalchemy import delete
+
+                self_adapter.getSession().delete(self)
+                if self_adapter.auto_commit == True:
+                    self_adapter.commit()
+
         # a lot of confusing links
         class _ObjectAdapter(ObjectAdapter, Base):
             __tablename__ = self_adapter.objects_table_name
@@ -251,9 +258,20 @@ class SQLAlchemy(ConnectionAdapter):
                 _query.addCondition(Condition(
                     val1 = 'target',
                     operator = '==',
-                    val2 = link.item.uuid
+                    val2 = link.item.getDbId()
                 ))
-                _query.first().toPython().delete()
+                if len(link.role) > 0:
+                    _query.addCondition(Condition(
+                        val1 = 'role',
+                        operator = '==',
+                        val2 = json.dumps(link.role)
+                    ))
+
+                _items = _query.getAll()
+                self_adapter.log('links remover: found {0} items'.format(len(_items)))
+
+                for item in _items:
+                    item.toPython().delete()
 
             def deleteFromDB(self, remove_links: bool = True):
                 from sqlalchemy import delete

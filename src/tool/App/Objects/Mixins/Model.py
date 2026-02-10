@@ -32,6 +32,12 @@ class Model(PydanticBaseModel):
         return self.getClassNameJoined() == object.getClassNameJoined()
 
     @classmethod
+    def isInMRO(cls, object: PydanticBaseModel) -> bool:
+        for item in cls.getMRO():
+            if item.getNameJoined() == object.getNameJoined():
+                return True
+
+    @classmethod
     def isSame(cls, object: PydanticBaseModel) -> bool:
         return cls.getNameJoined() == object.getNameJoined()
 

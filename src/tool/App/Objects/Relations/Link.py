@@ -18,7 +18,7 @@ class Link(BaseModel, DBInsertable):
     '''
 
     item: Any = Field() # : Object
-    role: list[Literal['object', 'thumbnail', 'common', 'revision'] | str] = Field(default = ['object'])
+    role: list[Literal['object', 'thumbnail', 'common', 'revision', 'list_item'] | str] = Field(default = ['object'])
 
     @computed_field
     @property

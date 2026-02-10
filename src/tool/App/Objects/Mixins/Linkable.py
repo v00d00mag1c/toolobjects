@@ -25,10 +25,10 @@ class Linkable():
 
     def unlink(self, item: Link, role: list = []) -> None:
         _link = Link(
-            item = object,
+            item = item,
             role = role
         )
-        return self.addLink(_link)
+        return self.removeLink(_link)
 
     def addLink(self, link: Link) -> Link:
         assert hasattr(link, 'item'), 'link to nothing'
@@ -71,8 +71,23 @@ class Linkable():
         else:
             self.links.remove(link.item)
 
-    def isLinked(self, link: BaseModel) -> bool:
-        return True
+    def isLinked(self, item: BaseModel) -> bool:
+        return self.find_link(item) != None
+
+    def find_link(self, item: BaseModel, role: list = None) -> Link:
+        for link in self.getLinkedItems():
+            if role != None:
+                if ','.join(role) != ','.join(link.role):
+                    continue
+
+            if link.item.hasDb():
+                assert link.item.getDbName() == item.getDbName(), 'cross db'
+
+                if link.item.getDbId() == item.getDbId():
+                    return link
+            else:
+                if link.item == item:
+                    return link
 
     def getLinkedItems(self, ignore_db: bool = False) -> Generator[Link]:
         '''

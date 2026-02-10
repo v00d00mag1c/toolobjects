@@ -1,6 +1,6 @@
-from App.Objects.Client import Client
+from App.Objects.Object import Object
 
-class Collection(Client):
+class Collection(Object):
     def init_hook(self):
         self.obj.collection = True
 

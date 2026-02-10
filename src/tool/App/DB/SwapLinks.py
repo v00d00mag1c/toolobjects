@@ -21,8 +21,6 @@ class SwapLinks(Act):
         ])
 
     async def implementation(self, i):
-        # won't optimize this
-
         id1 = i.get('uuid1')
         id2 = i.get('uuid2')
         id1.model_name = 'link'

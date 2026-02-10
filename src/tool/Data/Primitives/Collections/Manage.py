@@ -40,12 +40,13 @@ class Manage(Act):
 
         for item in items:
             _ids = [item.getDbIds(), collection.getDbIds()]
+            _roles = ['common', 'list_item']
 
             if act == 'add':
-                collection.link(item)
+                collection.link(item, _roles)
 
-                self.log_success('linked item {0} to collection {1}').format(*_ids)
+                self.log_success('linked item {0} to collection {1}'.format(*_ids))
             else:
-                collection.unlink(item)
+                collection.unlink(item, _roles)
 
-                self.log_success('unlinked item {0} from collection {1}').format(*_ids)
+                self.log_success('unlinked item {0} from collection {1}'.format(*_ids))
