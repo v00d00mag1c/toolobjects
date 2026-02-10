@@ -6,16 +6,14 @@ class PostgreSQL(MySQL):
     protocol_name = 'postgresql+pg8000'
 
     class QueryAdapter(MySQL.QueryAdapter):
-        def _getComparement(self, condition: Condition):
+        def _json_value(self, value):
             from sqlalchemy import func
 
-            if condition.json_fields != None:
-                return func.jsonb_extract_path_text(
-                    getattr(self._model, condition.getFirst()), 
-                    *condition.json_fields
-                )
-
-            return getattr(self._model, condition.getFirst())
+            _fields = '.'.join(value.json_fields)
+            return func.jsonb_extract_path_text(
+                getattr(self._model, value.column), 
+                *_fields
+            )
 
     @classmethod
     def _requirements(cls):

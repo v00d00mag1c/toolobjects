@@ -4,6 +4,7 @@ from App.DB.Search.Search import Search
 from App import app
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
+from App.DB.Query.Values.Value import Value
 
 class SearchTest(Test):
     async def _implementation(self, i):
@@ -23,8 +24,10 @@ class SearchTest(Test):
             'sort': [
                 Sort(
                     condition = Condition(
-                        val1 = 'content',
-                        json_fields = ['pubDate']
+                        val1 = Value(
+                            column = 'content',
+                            json_fields = ['pubDate']
+                        )
                     ),
                     descend = False,
                 )

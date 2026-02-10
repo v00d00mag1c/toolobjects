@@ -4,12 +4,14 @@ from App.DB.Representation.LinkAdapter import LinkAdapter
 from App.DB.Query.Query import Query
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
+from App.DB.Query.Values.Value import Value
 from App.Objects.Object import Object
 from App.Objects.Relations.Link import Link as CommonLink
 from App.Objects.Requirements.Requirement import Requirement
 from App.Objects.Misc.UnknownObject import UnknownObject
 from App.Objects.Misc.Increment import Increment
 from App.DB.Query.Operator import Operator
+from App.DB.Query.Function import Function
 from typing import Any, Generator, ClassVar
 from pydantic import Field
 import json
@@ -187,10 +189,14 @@ class SQLAlchemy(ConnectionAdapter):
                 ))
                 if len(link.data.role) > 0:
                     _query.addCondition(Condition(
-                        val1 = 'data',
-                        json_fields = ['role'],
+                        val1 = Value(
+                            column = 'data',
+                            json_fields = ['role']
+                        ),
                         operator = '==',
-                        val2 = json.dumps(link.data)
+                        val2 = Value(
+                            value = json.dumps(link.data.role)
+                        )
                     ))
 
                 _items = _query.getAll()
@@ -221,70 +227,119 @@ class SQLAlchemy(ConnectionAdapter):
 
         @classmethod
         def _init_operators(_cls):
-            class Equals(Operator):
+            # idk how to shrink this
+            class OperatorOverride(Operator):
+                def _condition_get(self, query, db_query, condition):
+                    return self._condition_get(query, db_query, condition) == query._get_part(condition, 1)
+
+                def _implementation(self, query, db_query, condition):
+                    return db_query.filter(self._condition_get(query, db_query, condition))
+
+            class Equals(OperatorOverride):
                 operator = '=='
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) == condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) == query._get_part(condition, 1)
 
-            class NotEquals(Operator):
+            class NotEquals(OperatorOverride):
                 operator = '!='
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) != condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) != query._get_part(condition, 1)
 
-            class In(Operator):
+            class In(OperatorOverride):
                 operator = 'in'
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition).in_(condition.getLast()))
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition).in_(query._get_part(condition, 1))
 
-            class NotIn(Operator):
+            class NotIn(OperatorOverride):
                 operator = 'not_in'
 
-                def _implementation(self, query, condition):
-                    return db_query.filter(query._getComparement(condition).not_in(condition.getLast()))
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition).not_in(query._get_part(condition, 1))
 
-            class Lesser(Operator):
+            class Lesser(OperatorOverride):
                 operator = '<'
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) < condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) < query._get_part(condition, 1)
 
-            class Greater(Operator):
+            class Greater(OperatorOverride):
                 operator = '>'
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) > condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) > query._get_part(condition, 1)
 
-            class LesserOrEqual(Operator):
+            class LesserOrEqual(OperatorOverride):
                 operator = '<='
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) <= condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) <= query._get_part(condition, 1)
 
-            class GreaterOrEqual(Operator):
+            class GreaterOrEqual(OperatorOverride):
                 operator = '>='
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition) >= condition.getLast())
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition) >= query._get_part(condition, 1)
 
-            class Contains(Operator):
+            class Contains(OperatorOverride):
                 operator = 'contains'
 
-                def _implementation(self, query, db_query, condition):
-                    return db_query.filter(query._getComparement(condition).contains(condition.getLast()))
+                def _condition_get(self, query, db_query, condition):
+                    return query._get_part(condition).contains(query._get_part(condition, 1))
+
+            class Mod(Function):
+                operator = '%'
+
+                def _implementation(self, value_item, column, value):
+                    return column % value_item.args[0]
+
+            class Random(Function):
+                operator = 'random'
+
+                def _implementation(self, value_item, column, value):
+                    from sqlalchemy import func
+
+                    return func.random()
 
             _cls.operators = [Equals, NotEquals, In, NotIn, Lesser, Greater, LesserOrEqual, GreaterOrEqual, Contains]
+            _cls.functions = [Mod, Random]
 
-        def _getComparement(self, condition: Condition):
+        # Method that receives part from condition
+        def _get_part(self, condition: Condition, val_num: int = 0):
+            _item = None
+            if val_num == 0:
+                _item = condition.getFirst()
+            elif val_num == 1:
+                _item = condition.getLast()
+
+            if _item == None:
+                return None
+
+            if _item.column != None:
+                _val = None
+                # wont move to function
+                if _item.json_fields != None:
+                    _val = self._json_value(_item)
+                else:
+                    _val = getattr(self._model, _item.column)
+
+                if _item.func:
+                    for _func in self.functions:
+                        if _func.operator == _item.func:
+                            return _func()._implementation(_item, _val, self._get_part(condition, 1))
+
+                return _val
+
+            if _item.value != None:
+                return _item.value
+
+        def _json_value(self, item):
             from sqlalchemy import func
 
-            if condition.json_fields != None:
-                _fields = '.'.join(condition.json_fields)
-                return func.json_extract(getattr(self._model, condition.getFirst()), '$.' + _fields)
-
-            return getattr(self._model, condition.getFirst())
+            _fields = '.'.join(item.json_fields)
+            return func.json_extract(getattr(self._model, item.column), '$.' + _fields)
 
         def _applyCondition(self, condition):
             for val in self.operators:
@@ -293,6 +348,7 @@ class SQLAlchemy(ConnectionAdapter):
 
                     return self
 
+            self.log('error: can\'t find operator function')
             self._query = getattr(self, condition.operator)(condition)
             return self
 
@@ -300,9 +356,9 @@ class SQLAlchemy(ConnectionAdapter):
             from sqlalchemy import desc
 
             if sort.descend == False:
-                self._query = self._query.order_by(self._getComparement(sort.condition))
+                self._query = self._query.order_by(self._get_part(sort.condition))
             else:
-                self._query = self._query.order_by(desc(self._getComparement(sort.condition)))
+                self._query = self._query.order_by(desc(self._get_part(sort.condition)))
 
             return self
 

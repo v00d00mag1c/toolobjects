@@ -6,6 +6,7 @@ from pathlib import Path
 
 class Image(Media):
     default_name = 'image.jpg'
+    mime_type = 'image/jpeg'
     _img = None
 
     @classmethod

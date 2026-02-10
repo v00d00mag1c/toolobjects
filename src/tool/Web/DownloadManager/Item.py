@@ -52,6 +52,7 @@ class Item(Object):
     async def download(self, session, new_headers: dict = {}):
         _headers = self._manager_link.getHeaders().to_minimal_json()
         _headers.update(new_headers)
+        print(_headers)
         async with self._manager_link.semaphore:
             request = session.get(self.url,
                                        allow_redirects=self._manager_link.getOption('download_manager.allow_redirects'), 
@@ -65,7 +66,7 @@ class Item(Object):
 
                 if status == 403:
                     _read = await response.content.read()
-                    self.log_error('access denied, page: {0}'.format(_read.decode("utf8")))
+                    self.log_error('access denied, error: {0}'.format(_read.decode("utf8")))
 
                     raise AccessDeniedError('access denied')
 

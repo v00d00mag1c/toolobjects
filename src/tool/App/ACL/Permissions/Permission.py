@@ -4,6 +4,7 @@ from pydantic import Field
 from typing import Literal, Optional
 from App import app
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 
 class Permission(BaseModel, DBInsertable):
     object_name: str = Field()
@@ -22,10 +23,14 @@ class Permission(BaseModel, DBInsertable):
             for key in ['object_name', 'user', 'action', 'allow', 'uuid']:
                 if getattr(likeness, key, None) != None:
                     _query.addCondition(Condition(
-                        val1 = 'content',
+                        val1 = Value(
+                            column = 'content',
+                            json_fields = [key]
+                        ),
                         operator = '==',
-                        val2 = getattr(likeness, key),
-                        json_fields = [key]
+                        val2 = Value(
+                            value = getattr(likeness, key)
+                        ),
                     ))
 
         return _query

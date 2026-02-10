@@ -1,15 +1,19 @@
 from typing import Any, Generator, Self, ClassVar
 from abc import ABC, abstractmethod
 from App.Objects.Object import Object
+from App.Objects.Responses.ObjectsList import ObjectsList
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
+from App.DB.Query.Values.Value import Value
 from App.DB.Representation.ObjectAdapter import ObjectAdapter
+from App.Objects.Mixins.BaseModel import BaseModel
 
-class Query(ABC):
+class Query(BaseModel, ABC):
     conditions: list[Condition] = []
     sorts: list[Sort] = []
     _limit: int = None
     operators: ClassVar[list] = []
+    functions: ClassVar[list] = []
 
     @abstractmethod
     def _applyCondition(self, condition) -> Self:
@@ -78,6 +82,14 @@ class Query(ABC):
         self._applySorts()
         self._applyLimits()
 
+    def toObjectsList(self) -> ObjectsList:
+        _item = ObjectsList()
+
+        for item in self.getAll():
+            _item.append(item.toPython())
+
+        return _item
+
     def __init_subclass__(cls):
         cls._init_operators()
 
@@ -87,10 +99,14 @@ class Query(ABC):
 
     def where_object(self, obj: Object) -> Self:
         self.addCondition(Condition(
-            val1 = 'content',
-            json_fields = ['obj', 'saved_via', 'object_name'],
+            val1 = Value(
+                column = 'content',
+                json_fields = ['obj', 'saved_via', 'object_name'],
+            ),
             operator = '==',
-            val2 = obj._getClassNameJoined(),
+            val2 = Value(
+                value = obj._getClassNameJoined()
+            ),
         ))
 
         return self

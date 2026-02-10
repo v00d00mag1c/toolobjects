@@ -7,6 +7,7 @@ from App.ACL.User import User
 from App.ACL.Permissions.Permission import Permission
 from App.ACL.Tokens.Token import Token
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from App import app
 from Data.Types.Boolean import Boolean
 from Data.Types.Float import Float
@@ -37,10 +38,14 @@ class AuthLayer(Object):
         _query = _storage.adapter.getQuery()
         _query.where_object(Token)
         _query.addCondition(Condition(
-            val1 = 'content',
+            val1 = Value(
+                column = 'content',
+                json_fields = ['value']
+            ),
             operator = '==',
-            val2 = token,
-            json_fields = ['value']
+            val2 = Value(
+                value = 'content'
+            ),
         ))
 
         _item = _query.first()
@@ -61,9 +66,11 @@ class AuthLayer(Object):
 
     def add_user(self, user: User):
         user.flush(app.Storage.get('users'))
+        user.save()
 
     def add_permission(self, permission: Permission):
         permission.flush(app.Storage.get('users'))
+        permission.save()
 
     @classmethod
     def mount(cls):

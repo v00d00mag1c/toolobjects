@@ -121,16 +121,18 @@ class DBInsertable():
 
         return _db_item
 
-    def delete(self, remove_links: bool = True):
+    def delete(self, remove_links: bool = True, commit: bool = False):
         if self.hasDb() == False:
             return
 
         self.getDb().deleteFromDB(remove_links = remove_links)
         self.deletion_hook()
+        if commit == True and self._db._adapter.auto_commit == False:
+            self._db._adapter.commit()
 
     def save(self) -> bool:
         '''
-        Updates linked db item if exists
+        Updates linked db item if exists (save_hook)
         '''
 
         if self.hasDb() == False:

@@ -4,3 +4,4 @@ from typing import ClassVar
 
 class Media(FileType):
     default_name: ClassVar[str] = ''
+    mime_type: ClassVar[str] = ''

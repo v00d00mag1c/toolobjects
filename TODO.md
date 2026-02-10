@@ -60,17 +60,18 @@ db and storage:
 - [ ] links are not optimized and paginated
 - [ ] multifile config
 - [x] link to storageunit file (StorageUnitLink)
-- [ ] advanced Conditions (val1 % val2 > 0 or smth)
+- [x] advanced Conditions (val1 % val2 > 0 or smth)
 - [x] storage item.commit()
 - [x] remove displayments
 - [x] root_uuid
+- [ ] App.Storage.CreateRoot
 - [x] VirtualPath
 - [x] allow to cancel scripts and run them at once
 
 other with objects:
 
-- [ ] module downloading
-- [ ] autostart items
+- [x] module downloading
+- [x] autostart items
 - [ ] allowed_objects that allowed to link to item
 - [ ] documentation of the fields
 
@@ -110,7 +111,7 @@ web:
 
 - [x] WebServer
 - [ ] websocket connection: set event_index in executable to distinguish variables messages
-- [ ] flutter maybe
+- [ ] hook functions for thread and variables
 - [ ] displaytype=js_module
 - [x] file uploading
 - [ ] file uploading auth

@@ -51,7 +51,7 @@ class Download(Extractor):
 
             item = app.DownloadManager.addURL(_url.value, _unit, filename)
             await item.start({
-                'Content-Type': 'image/jpeg'
+                'Content-Type': _obj.mime_type
             })
 
             _item.set_storage_unit(_unit)

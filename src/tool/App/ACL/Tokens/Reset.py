@@ -5,6 +5,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Types.String import String
 from App import app
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from App.ACL.Tokens.Token import Token
 
 class Reset(Act):
@@ -27,10 +28,14 @@ class Reset(Act):
         _tokens = app.Storage.get('users').adapter.getQuery()
         _tokens.where_object(Token)
         _tokens.addCondition(Condition(
-            val1 = 'content',
-            json_fields = ['user'],
+            val1 = Value(
+                column = 'content',
+                json_fields = ['user'],
+            ),
             operator = '==',
-            val2 = _user.name
+            val2 = Value(
+                value = _user.name
+            )
         ))
 
         for item in _tokens.getAll():
