@@ -59,6 +59,7 @@ class App(Object):
         self.objects = Namespace(
             name = 'common',
             root = str(self.cwd),
+            load_once = False,
             ignore_dirs = ['Custom'],
             load_before = [
                 LoadedObject(
@@ -80,6 +81,9 @@ class App(Object):
                 ),
                 LoadedObject(
                     path = 'App\\Storage\\Storage.py'
+                ),
+                LoadedObject(
+                    path = 'App\\Objects\\Index\\PostRun.py'
                 )
             ]
         )

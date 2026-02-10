@@ -46,7 +46,6 @@ class Config(Object):
             name = 'env.json'
         )
         env.checkFile()
-        #env.appendSettingsOfModule()
 
         app.mount('Env', env)
 
@@ -101,16 +100,6 @@ class Config(Object):
     '''
     def updateCompare(self):
         self.comparer.compare = DictList(items = self.getSettingsOfEveryObject())
-
-    def getSettingsOfEveryObject(self):
-        settings = []
-
-        for item in app.ObjectsList.getItems():
-            for _item in item.getAllSettings():
-                settings.append(_item)
-
-        return settings
-
     '''
 
     def __del__(self):

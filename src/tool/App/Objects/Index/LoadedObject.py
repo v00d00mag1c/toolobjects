@@ -36,7 +36,8 @@ class LoadedObject(Object):
             self.parts.append(part)
 
     def getModule(self):
-        self.setModule(self.loadModule(ignore_modules = True))
+        if self._module == None:
+            self.setModule(self.loadModule(ignore_modules = True))
 
         return self._module
 
@@ -63,7 +64,7 @@ class LoadedObject(Object):
 
         common_object = getattr(module, self.title, None)
         assert common_object != None, f"{module_name}: {self.title} is not found"
-        if ignore_modules == False:
+        if ignore_modules == False and hasattr(common_object, 'getNotInstalledModules') == True:
             _modules = common_object.getNotInstalledModules()
             assert len(_modules) == 0, f"following modules not installed: {', '.join(_modules)}"
 
@@ -92,3 +93,7 @@ class LoadedObject(Object):
             return '.'.join(self.getTitle())
 
         return self._module.getClassNameJoined()
+
+    @property
+    def is_inited(self) -> bool:
+        return self._module != None

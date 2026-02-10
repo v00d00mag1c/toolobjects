@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Objects.Index.LoadedObject import LoadedObject
+from App.Objects.Index.LoadedObject import LoadedObject, NotAnObjectError
 from App.Objects.DictList import DictList
 from typing import Generator
 from pathlib import Path
@@ -15,11 +15,13 @@ class Namespace(Object):
     load_before, load_after: will loaded only before or after any other objects
     '''
 
+    _names: list[str] = []
     name: str = Field()
     root: str = Field()
     load_before: list = Field(default = [])
     load_after: list = Field(default = [])
     ignore_dirs: list = Field(default = [])
+    load_once: bool = Field(default = True)
 
     items: DictList = Field(default = None)
 
@@ -32,13 +34,14 @@ class Namespace(Object):
             sys.path.append(_root)
 
     def load(self):
-        load_all = False
-
         for item in self.scan():
             try:
                 assert self.verify(item)
+                assert self.isAlreadyLoaded(item) == False
 
-                if load_all == True or item.is_prioritized == True:
+                self._names.append(item.name)
+
+                if self.load_once == True or item.is_prioritized == True:
                     _module = item.loadModule()
                     item.setModule(_module)
                     item.integrateModule(_module)
@@ -48,11 +51,13 @@ class Namespace(Object):
                     self.noticeModuleLoaded(item)
                 else:
                     self.log(f"{item.name}: loaded but not imported", role=['module_skipped'])
+            except AssertionError:
+                pass
             except Exception as exception:
                 item.is_success = False
                 self.log_error(exception)
 
-                if isinstance(exception, AssertionError) == False and isinstance(exception, ModuleNotFoundError) == False:
+                if isinstance(exception, AssertionError) == False and isinstance(exception, ModuleNotFoundError) == False and isinstance(exception, NotAnObjectError) == False:
                     raise exception
 
             self.items.append(item)
@@ -87,6 +92,9 @@ class Namespace(Object):
             if plugin.name in _side_names:
                 _skip = True
 
+            for item in self.load_after:
+                if item.path == _str_path:
+                    _skip = True
             if _skip == True:
                 continue
 
@@ -128,6 +136,9 @@ class Namespace(Object):
             _role.append('submodule')
 
         self.log(f"{item.getModule().self_name.lower()} {item.name}: loaded and imported", role=_role)
+
+    def isAlreadyLoaded(self, item: LoadedObject) -> bool:
+        return item.name in self._names
 
     @property
     def append_prefix(self): # -> LogPrefix

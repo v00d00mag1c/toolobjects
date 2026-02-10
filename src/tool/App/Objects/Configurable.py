@@ -22,8 +22,11 @@ class Configurable:
             if hasattr(class_val, "getSettings") == False:
                 continue
 
-            item = class_val.getSettings()
-            if item != None:
+            items = class_val.getSettings()
+            if items == None:
+                continue
+
+            for item in items:
                 if where != None:
                     if where in item.role:
                         continue

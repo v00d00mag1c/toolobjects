@@ -13,7 +13,7 @@ class DaemonList(Object):
             items = []
         )
 
-        for item in cls.get('daemons.autostart'):
+        for item in cls.getOption('daemons.autostart'):
             daemons.append(item)
 
         app.mount('Daemons', daemons)
@@ -21,10 +21,15 @@ class DaemonList(Object):
     @classmethod
     def getSettings(cls):
         from App.Arguments.Objects.List import List
+        from App.Arguments.Objects.Orig import Orig
 
         return [
             List(
                 name = 'daemons.autostart',
-                orig = Daemon
+                default = [],
+                orig = Orig(
+                    name = 'daemons.autostart.item',
+                    orig = Daemon
+                )
             )
         ]

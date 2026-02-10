@@ -52,7 +52,7 @@ class Path(Object):
         else:
             end_is_linked = False
             for part in self.parts:
-                # Means that we want to get linked of this item
+                # it means that we want to get linked of this item
                 if len(part) == 0:
                     end_is_linked = True
                     cursor = cursor.getLinkedItems()
@@ -60,7 +60,7 @@ class Path(Object):
                     continue
 
                 _cursor = db.ObjectUnit.getById(int(part))
-                assert _cursor != None, 'любая цепь может быть разрушена одним движеньем если в ней присутствуют бракованные звенья'
+                assert _cursor != None, f"item with id {int(part)} not found"
 
                 if cursor != None:
                     assert cursor.isLinked(_cursor), 'items are not linked'
