@@ -24,7 +24,7 @@ from typing import Optional, Coroutine, ClassVar
 from aiohttp import web
 from App import app
 
-class Run(View):
+class Server(View):
     ws_connections: list = Field(default = list())
     pre_i: Object = Field(default = None)
     _app: Any = None
@@ -154,12 +154,7 @@ class Run(View):
             """
             <html>
                 <body>
-                    <script type="module">
-                        import { App } from "/static/client/App/App.js"
-
-                        window.app = new App()
-                        await window.app.run()
-                    </script>
+                    <b>v0.1</b>
                 </body>
             </html>
             """,
