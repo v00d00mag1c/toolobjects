@@ -5,7 +5,7 @@ import aiohttp_jinja2
 class ObjectsList(Displayment):
     for_object = 'App.Objects.Index.ObjectsList'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         namespace_name = query.get('name')
         show_only = query.get('show_only')

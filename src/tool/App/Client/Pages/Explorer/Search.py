@@ -7,7 +7,7 @@ from App.DB.Query.Values.Value import Value
 class Search(Displayment):
     for_object = 'App.DB.Search'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         bad = ['', None, 0]
         query = self.request.rel_url.query
         per_page = query.get('per_page', 30)

@@ -2,12 +2,19 @@ from App.Objects.Object import Object
 from App.Storage.StorageUnitLink import StorageUnitLink
 from App.Storage.StorageUnit import StorageUnit
 from pydantic import Field
+import chardet
 
 class HTMLFile(Object):
     main: str = Field(default = 'index.html')
     assets: str = Field(default = 'assets')
     encoding: str = Field(default = 'utf-8')
     file: StorageUnitLink = Field(default = None)
+    assets_links: dict = Field(default = {})
+
+    def set_encoding(self, val: str):
+        self.log('set encoding to {0}'.format(val))
+
+        self.encoding = val
 
     def create(self, storage_unit, link):
         self.file = StorageUnitLink(
@@ -26,8 +33,20 @@ class HTMLFile(Object):
         return self._get('file').get_storage_unit().get_root().joinpath(self.main)
 
     def get_assets_dir(self):
-        return self._get('file').get_storage_unit().get_root().joinpath(self.assets)
+        _path = self._get('file').get_storage_unit().get_root().joinpath(self.assets)
+        _path.mkdir(exist_ok = True)
+        return _path
 
     def write(self, html: str):
-        with open(self.get_main(), 'w', encoding = self.encoding) as file:
-            file.write(html)
+        _detect = chardet.detect(html.encode('utf-8', errors='ignore'))
+
+        self.set_encoding(_detect.get('encoding'))
+
+        try:
+            with open(self.get_main(), 'w', encoding = self.encoding) as file:
+                file.write(html)
+        except Exception as e:
+            self.log_error(e, exception_prefix = "Error when writing file, encoding is {0}, trying UTF-8. ".format(self.encoding))
+
+            with open(self.get_main(), 'w', encoding = 'utf-8') as file:
+                file.write(html)

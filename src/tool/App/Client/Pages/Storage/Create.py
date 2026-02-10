@@ -4,7 +4,7 @@ from App.Storage.Item.Create import Create as RealCreate
 class Create(Displayment):
     for_object = 'App.Storage.Item.Create'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         if self.request.method == 'POST':
             data = await self.request.post()
             name = data.get('name')

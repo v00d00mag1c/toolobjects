@@ -6,7 +6,7 @@ import aiohttp_jinja2
 class Create(Displayment):
     for_object = 'App.DB.Link'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         link_object = query.get('item')
         act = query.get('act', 'with')

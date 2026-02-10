@@ -4,7 +4,7 @@ from App.Storage.Movement.Delete import Delete as RealDelete
 class Delete(Displayment):
     for_object = 'App.Storage.Movement.Delete'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         path_val = query.get('item')
         item = self.get_objs([path_val])[0]

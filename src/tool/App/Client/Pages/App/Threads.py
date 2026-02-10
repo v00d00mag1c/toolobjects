@@ -6,7 +6,7 @@ import aiohttp_jinja2
 class Threads(Displayment):
     for_object = 'App.Objects.Threads.GetList'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         _list = list()
         for item in app.ThreadsList.getAll():
             _list.append(item)

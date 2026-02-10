@@ -6,7 +6,7 @@ import aiohttp_jinja2
 class Namespaces(Displayment):
     for_object = 'App.Objects.Index.GetList'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         items = None
 
         self.context.update({

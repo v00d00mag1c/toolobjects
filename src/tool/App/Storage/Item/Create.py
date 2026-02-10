@@ -10,6 +10,7 @@ from Data.Types.Boolean import Boolean
 from Data.Types.Dict import Dict
 
 from App.Storage.Item.CreateRoot import CreateRoot
+from App import app
 
 class Create(Act):
     @classmethod
@@ -44,6 +45,8 @@ class Create(Act):
         ])
 
     async def _implementation(self, i):
+        assert app.Storage.get(i.get('name')) == None, 'storage item with this name already exists'
+
         new = StorageItem(
             name = i.get('name'),
             db_type = 'App.DB.Adapters.SQLite',

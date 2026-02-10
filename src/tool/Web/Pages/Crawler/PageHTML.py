@@ -1,7 +1,7 @@
 from App.Objects.Object import Object
 from pydantic import Field
 from Web.Pages.Assets.Asset import Asset
-from Web.Pages.Assets.Image import Image
+from Web.Pages.Assets.Media import Media
 from Web.Pages.Assets.Favicon import Favicon
 from Web.Pages.Assets.Meta import Meta
 from Web.Pages.Assets.Script import Script
@@ -14,6 +14,7 @@ from bs4.dammit import EncodingDetector
 from bs4 import BeautifulSoup
 import urllib
 import base64
+import re
 
 class PageHTML(Object):
     bs: Any = None
@@ -30,17 +31,18 @@ class PageHTML(Object):
         if take_default:
             yield Favicon(url = orig_page.base_url + '/favicon.ico')
 
-    def get_images(self, orig_page: Page) -> Generator[Favicon]:
-        for img in self.bs.select("img"):
-            image = Image()
-            image.set_url(img.get('src'), orig_page.relative_url)
-            image.set_node(img)
+    def get_media(self, orig_page: Page) -> Generator[Favicon]:
+        for tag in self.bs.select("[src]"):
+            item = Media()
+            item.set_url(tag.get('src'), orig_page.relative_url)
+            item.set_node(tag)
 
-            yield image
+            yield item
 
     def get_meta(self, orig_page: Page) -> Generator[Meta]:
         for tag in self.bs.select("meta"):
             meta = Meta()
+            meta.set_node(tag)
 
             for key, attr in tag.attrs.items():
                 if key == 'class':
@@ -50,12 +52,31 @@ class PageHTML(Object):
 
             yield meta
 
-    def get_media(self, orig_page: Page, tags: list[str]):
-        pass
+    def get_links(self, orig_page: Page):
+        for tag in self.bs.select("link"):
+            item = Link()
+            item.set_node(tag)
+
+            for key, attr in tag.attrs.items():
+                if key == 'href':
+                    item.set_url(attr, orig_page.relative_url)
+                else:
+                    setattr(item, key, attr)
+
+            yield item
+
+    def get_downloadable_links(self, orig_page: Page):
+        for item in self.get_links(orig_page):
+            print('downloadable link', item)
+            if item.rel in ['alternate']:
+                continue
+
+            yield item
 
     def get_urls(self, orig_page: Page):
         for tag in self.bs.select("a"):
             url = URL()
+            url.set_node(tag)
 
             for key, attr in tag.attrs.items():
                 if key == 'target':
@@ -80,27 +101,13 @@ class PageHTML(Object):
 
             yield url
 
-    def get_links(self, orig_page: Page):
-        for tag in self.bs.select("link"):
-            item = Link()
-
-            for key, attr in tag.attrs.items():
-                if key == 'href':
-                    item.url = attr
-                else:
-                    if key not in ['rel', 'href']:
-                        continue
-
-                    setattr(item, key, attr)
-
-            yield item
-
     def get_scripts(self, orig_page: Page):
         for tag in self.bs.select("script"):
             item = Script()
+            item.set_node(tag)
 
             if tag.get('src') != None:
-                item.url = tag.get('src')
+                item.set_url(tag.get('src'), orig_page.base_url)
             else:
                 pass
                 #for key, attr in tag.attrs.items():
@@ -121,15 +128,52 @@ class PageHTML(Object):
 
         return head_html
 
+    def clear_js(self):
+        self.log('removing all js functions from tags')
+
+        for tag in self.bs.select('*'):
+
+            attrs_to_remove = []
+            for attr in tag.attrs:
+                if re.match(r'^on\w+', attr, re.IGNORECASE):
+                    attrs_to_remove.append(attr)
+                elif isinstance(tag[attr], str) and 'javascript:' in tag[attr].lower():
+                    attrs_to_remove.append(attr)
+
+            for attr in ['href', 'src', 'action']:
+                if tag.has_attr(attr) and tag[attr] and 'javascript:' in str(tag[attr]).lower():
+                    attrs_to_remove.append(tag[attr])
+
+            tag.attrs = {key:value for key,value in tag.attrs.items()
+                    if key not in attrs_to_remove}
+
     def make_correct_links(self, page):
         _s = page.html._get('file').get_storage_unit()
+
+        # replacing assets
         for item in self.bs.select('[data-__to_orig]'):
             _file_url = Asset.encode_url(item['data-__to_orig'])
-            _url = base64.urlsafe_b64encode(('assets/' + _file_url).encode()).decode()
+            #_url = base64.urlsafe_b64encode(('assets/' + _file_url).encode()).decode()
+            _id = page.html.assets_links.get(_file_url)
+            if _id == None:
+                self.log_error('page {0}: element \"{1}\" is missing'.format(page.getDbIds(), _file_url))
+
+                continue
+
             key = item['data-__to_orig_key']
-            item[key] = '/storage/{0}/{1}/{2}?d=1'.format(_s.getDbName(), _s.getDbId(), _url)
+            item[key] = '/storage/{0}/{1}/assets/{2}'.format(_s.getDbName(), _s.getDbId(), _id)
+
+            # removing internal data attributes
             item.attrs = {key:value for key,value in item.attrs.items()
                     if key not in ['data-__to_orig_key', 'data-__to_orig']}
+
+        for item in self.bs.select('meta[http-equiv]'):
+            item.decompose()
+
+        for item in self.bs.select('a[href]'):
+            _href = item.get('href')
+            if _href:
+                item['href'] = '/?i=Web.Pages.Page&item={0}&act=url&url={1}'.format(page.getDbIds(), Asset.encode_url(_href))
 
     def prettify(self) -> str:
         return self.bs.prettify()
@@ -138,5 +182,7 @@ class PageHTML(Object):
     def from_html(cls, html: str):
         _src = cls()
         _src.encoding = EncodingDetector.find_declared_encoding(html, is_html=True)
+        _src.log('detected encoding {0}'.format(_src.encoding))
         _src.bs = BeautifulSoup(html, 'html.parser')
+
         return _src

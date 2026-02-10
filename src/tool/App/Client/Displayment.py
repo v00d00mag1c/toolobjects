@@ -21,7 +21,7 @@ class Displayment(Object):
     self_name = 'ClientDisplayment'
 
     # should return "render_template"
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         ...
 
     # should return "render_string"

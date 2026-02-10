@@ -54,7 +54,7 @@ class ObjectAdapter(AbstractAdapter):
             _class = app.ObjectsList.getByName(_object_name).getModule()
 
             # If found that class is migrated, use class that it references. also there is content passed, it may be used to check types of schema idk
-            if _class == Migrated:
+            if _class.isInMRO(Migrated):
                 _class = _class.get_migrated_to(_content)
 
             _item = _class.model_validate(_content, strict = False)

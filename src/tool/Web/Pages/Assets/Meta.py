@@ -1,9 +1,8 @@
 from Web.Pages.Assets.Asset import Asset
-from App.Objects.Object import Object
 from pydantic import Field
 from typing import Optional
 
-class Meta(Object, Asset):
+class Meta(Asset):
     name: Optional[str] = Field(default = None)
     content: Optional[str] = Field(default = None)
     property: Optional[str] = Field(default = None)

@@ -7,7 +7,7 @@ import aiohttp
 class Explorer(Displayment):
     for_object = 'App.Storage.VirtualPath.Navigate'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         path_val = query.get('path')
 

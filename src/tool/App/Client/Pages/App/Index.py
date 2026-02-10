@@ -5,7 +5,7 @@ import aiohttp_jinja2
 class Index(Displayment):
     for_object = 'App.Client.Client'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         self.context.update({
             'is_index': True,
         })

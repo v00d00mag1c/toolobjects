@@ -68,15 +68,12 @@ python tool.py -i App.ACL.Users.ChangePassword -new [new password]
             "role": ["console.print.returned.nothing"]
         },
         {
-            "unused": false,
             "section": ["App.Console.Console"]
         },
         {
-            "unused": false,
             "role": ["auth.console"]
         },
         {
-            "unused": false,
             "section": ["App.Objects.Operations.DefaultExecutorWheel"]
         },
         {

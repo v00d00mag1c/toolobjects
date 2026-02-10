@@ -5,7 +5,7 @@ from App import app
 class Copy(Displayment):
     for_object = 'App.Storage.Movement.Save'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         items = query.get('items')
 

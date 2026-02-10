@@ -23,39 +23,6 @@ Auth token is passed in `auth`. By default it logs as root.
 
 There is no way to pass JSON in cmd.
 
-#### Logs hiding
-
-Console will show a lot of unnecessary messages. To hide them, set the config value `logger.print.exclude` as shown below.
-
-```json
-"logger.print.exclude": [
-    {
-        "role": ["objects.loading"]
-    },
-    {
-        "role": ["console.print.returned.nothing"]
-    },
-    {
-        "section": ["App.Console.Console"]
-    },
-    {
-        "role": ["auth.console"]
-    },
-    {
-        "section": ["App.Objects.Operations.DefaultExecutorWheel"]
-    },
-    {
-        "role": ["storage.item"]
-    },
-    {
-        "role": ["thread"]
-    },
-    {
-        "role": ["executable.call"]
-    }
-]
-```
-
 #### Config override
 
 Config values can be overriden in runtime with those arguments:

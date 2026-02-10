@@ -9,7 +9,7 @@ import aiohttp
 class Management(Displayment):
     for_object = 'App'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         act = query.get('act')
 

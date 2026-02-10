@@ -50,6 +50,9 @@
         "client.task_manager": "Task manager",
         "client.task_manager.tasks": "Tasks",
         "client.bookmarks": "Bookmarks",
-        "client.bookmarks.add": "Bookmark this page"
+        "client.bookmarks.add": "Bookmark this page",
+
+        "client.web_pages.back": "Back to the page",
+        "client.web_pages.page_url": "Page URL"
     }
 }

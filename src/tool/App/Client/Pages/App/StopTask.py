@@ -4,7 +4,7 @@ from App import app
 class StopTask(Displayment):
     for_object = 'App.Objects.Threads.Stop'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         ids = int(self.request.rel_url.query.get('id'))
         task = app.ThreadsList.getById(ids)
 

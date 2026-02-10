@@ -8,11 +8,11 @@ from Data.Types.String import String
 from App.Objects.Responses.ObjectsList import ObjectsList
 from Web.Pages.Page import Page
 from Web.Pages.Get import Get
+from Web.Pages.Crawler.Original import Original
 from App import app
 
 class FromHTML(Act):
     async def _implementation(self, i):
-        html = i.get('html')
         webdriver = i.get('webdriver')
         do_crawl = i.get('crawl')
         crawler = i.get('mode')
@@ -59,4 +59,4 @@ class FromHTML(Act):
                 allow_commas_fallback = False,
                 assertions = [NotNone()]
             )
-        ]).join_class(Downloader).join_class(Get)
+        ]).join_class(Downloader).join_class(Get).join_class(Original)

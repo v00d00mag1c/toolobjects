@@ -5,7 +5,7 @@ from App import app
 class Create(Displayment):
     for_object = 'Data.Primitives.Collections.Create'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         storage = app.Storage.get(query.get('storage'))
 

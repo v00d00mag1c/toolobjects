@@ -5,7 +5,7 @@ import aiohttp_jinja2
 class Get(Displayment):
     for_object = 'App.Objects.Index.Get'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         obj = app.ObjectsList.getByName(query.get('name'))
 

@@ -7,6 +7,8 @@ from App.Objects.Arguments.ListArgument import ListArgument
 
 from Data.Types.Boolean import Boolean
 from Data.Types.String import String
+from Data.Types.Int import Int
+from App.Objects.Misc.Increment import Increment
 
 from Web.Pages.Page import Page
 from Web.Pages.Assets.Asset import Asset
@@ -19,9 +21,14 @@ import asyncio
 class Original(Object):
     url_override: str = Field(default = None)
     ref: Any = Field(default = None)
+    i: Increment = Field(default = None)
 
     async def register(self, page):
+        _roles = ['crawler.asset.download']
+        self.i = Increment()
+
         self.log('registing page')
+        _orig_dir = page.html.get_assets_dir()
 
         async def _request(request):
             page._page.got_assets.append(GotRequest(
@@ -33,7 +40,7 @@ class Original(Object):
         async def _response(response):
             request = None
             for item in page._page.got_assets:
-                if item.url == response.url:
+                if item.url_matches(response.url):
                     request = item
 
             if request == None:
@@ -42,14 +49,25 @@ class Original(Object):
             #self.log('request {0}, method {1}'.format(response.url, request.request.method))
 
             if request.request.method == 'GET':
-                request.asset = Asset(url=response.url)
-                _dir = page.html.get_assets_dir()
-                _dir = _dir.joinpath(request.asset.get_encoded_url())
+                try:
+                    _url = None                    
+                    if request.request.redirected_from:
+                        _url = request.request.redirected_from.url
+                        self.log('assets: redirected from {0}'.format(_url), role = _roles)
 
-                with open(str(_dir), 'wb') as _file:
-                    _file.write(await response.body())
+                    request.asset = Asset(url=_url)
+                    _i = self.i.getIndex()
+                    #_dir = _orig_dir.joinpath(request.asset.get_encoded_url())
+                    page.html.assets_links[request.asset.get_encoded_url()] = _i
 
-                self.log('downloaded {0}'.format(response.url))
+                    _dir = _orig_dir.joinpath(str(_i))
+                    buffer = await response.body()
+                    with open(str(_dir), 'wb+') as _file:
+                        _file.write(buffer)
+
+                    self.log('assets: downloaded {0}'.format(_url), role = _roles)
+                except Exception as e:
+                    self.log_error(e, exception_prefix = 'error downloading asset {0}: '.format(_url), role = _roles)
 
             request.done = True
 
@@ -57,24 +75,24 @@ class Original(Object):
         page._page._page.on('response', _response)
 
     async def crawl(self, page: Page, i: dict):
+        remove_scripts = i.get('scripts.remove')
+
         await page.set_info()
 
         if i.get('scroll_down'):
             await page._page.scroll_down(i.get('web.crawler.scroll_down.cycles'), i.get('web.crawler.scroll_down.'))
 
-        page.html.encoding = await page.get_encoding()
+        page.html.set_encoding(await page.get_encoding())
 
-        await asyncio.sleep(2)
+        await page._page._page.wait_for_timeout(i.get('crawler.network_timeout'))
+        await asyncio.sleep(i.get('crawler.sleep_time'))
 
         html = PageHTML.from_html(await page._page.get_html())
         if page.html.encoding == None:
-            page.html.encoding = html.encoding
-
-        #if i.get('download.favicon') == True:
-        #self.log('setting favicons...')
+            page.html.set_encoding(html.encoding)
 
         results = dict()
-        for key in ['get_favicons', 'get_images', 'get_links', 'get_scripts']:
+        for key in ['get_favicons', 'get_media', 'get_downloadable_links', 'get_scripts']:
             if results.get(key) == None:
                 results[key] = list()
 
@@ -82,15 +100,22 @@ class Original(Object):
 
             for item in getattr(html, key)(page):
                 found_asset = None
+
+                match (key):
+                    case 'get_scripts':
+                        if remove_scripts:
+                            item.decompose()
+                            continue
+
                 for asset in page._page.got_assets:
-                    if asset.url_matches(item.url):
+                    if item.url and asset.url_matches(item.url):
                         found_asset = asset
 
                 if found_asset == None and item.has_url():
                     try:
                         await item.download_function(page.html.get_assets_dir())
                     except Exception as e:
-                        self.log_error(e, exception_prefix='assets downloading error: ')
+                        self.log_error(e, exception_prefix='assets downloading error: ', role = ['crawler.asset.download'])
 
                 item.replace()
                 results[key].append(item)
@@ -107,30 +132,31 @@ class Original(Object):
 
             page.meta_tags.append(meta)
 
+        if remove_scripts:
+            try:
+                html.clear_js()
+            except Exception as e:
+                self.log_error(e)
+
         page.html.write(html.prettify())
 
     @classmethod
     def getArguments(cls):
         return ArgumentDict(items = [
             Argument(
-                name = 'download.favicon',
+                name = 'scripts.remove',
                 orig = Boolean,
                 default = True
             ),
             Argument(
-                name = 'data.meta',
-                orig = Boolean,
-                default = True
+                name = 'crawler.network_timeout',
+                orig = Int,
+                default = 5000
             ),
             Argument(
-                name = 'download.media',
-                orig = Boolean,
-                default = True
-            ),
-            ListArgument(
-                name = 'download.media.selectors',
-                orig = String,
-                default = True
+                name = 'crawler.sleep_time',
+                orig = Int,
+                default = 10
             ),
             Argument(
                 name = 'data.save_urls',

@@ -8,7 +8,7 @@ import aiohttp
 class Get(Displayment):
     for_object = 'App.Storage.Item.Get'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         item = app.Storage.get(query.get('name'))
 

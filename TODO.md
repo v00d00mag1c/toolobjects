@@ -111,6 +111,7 @@ web crawler:
 - [x] href and src replacer
 - [ ] inline styles mode
 - [ ] relative links replacer
+- [ ] redirected assets
 - [x] tampermonkey script
 
 web:

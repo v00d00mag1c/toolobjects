@@ -7,6 +7,7 @@ from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Web.Pages.Get import Get
+from Web.Pages.Crawler.Original import Original
 from Data.Types.String import String
 from Web.Pages.Page import Page
 from App import app
@@ -58,4 +59,4 @@ class ByURL(Act):
                 orig = Object,
                 assertions = [NotNone()]
             ),
-        ]).join_class(Downloader).join_class(Get)
+        ]).join_class(Downloader).join_class(Get).join_class(Original)

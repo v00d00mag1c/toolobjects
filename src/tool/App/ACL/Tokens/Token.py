@@ -13,6 +13,8 @@ class Token(Object):
     expires_at: datetime = Field()
     infinite: bool = Field(default = False)
 
+    _unserializable_on_output = ['value']
+
     def is_expired(self):
         if self.infinite == True:
             return False

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "toolobjects"
 version = "0.0.1"
-dependencies  = ["pydantic", "sqlalchemy", "asyncio", "aiohttp", "pymysql", "snowflake-id", "requests", "urllib3", "idna", "certifi", "pycryptodomex", "colorama", "json5", "Brotli==1.1.0", "charset-normalizer", "argon2-cffi", "pip-system-certs"]
+dependencies  = ["chardet", "pydantic", "sqlalchemy", "asyncio", "aiohttp", "pymysql", "snowflake-id", "requests", "urllib3", "idna", "certifi", "pycryptodomex", "colorama", "json5", "Brotli==1.1.0", "charset-normalizer", "argon2-cffi", "pip-system-certs"]
 
 [tool.setuptools]
 package-dir = {"" = "tool"}

@@ -16,7 +16,6 @@ from typing import Any
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Values.Value import Value
 from App.Storage.StorageUnit import StorageUnit
-from Web.Pages.Assets.Asset import Asset
 
 import asyncio, traceback
 import socket

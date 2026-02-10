@@ -5,7 +5,7 @@ from App import app
 class Bookmark(Displayment):
     for_object = 'App.Client.Bookmark'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         url = self.request.rel_url.query.get('url')
         title = self.request.rel_url.query.get('title')
         collection = app.app.view._get_bookmarks_collection()

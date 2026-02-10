@@ -6,7 +6,7 @@ import aiohttp
 class Edit(Displayment):
     for_object = 'App.Objects.Operations.Edit.Local'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         vals = await self.request.post()
         path_val = query.get('item')

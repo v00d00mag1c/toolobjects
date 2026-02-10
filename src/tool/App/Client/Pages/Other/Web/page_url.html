@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.web_pages.page_url")}}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{back}}"><<< {{_("client.web_pages.back")}}</a>
+    </div>
+
+    <div>
+
+    <div>
+        <span>URL:</span>
+
+        <p>
+            <span>{{url}}</span>
+        </p>
+
+        <span>Of domain:</span>
+
+        <p>
+            <span>{{item.relative_url}}</span>
+        </p>
+
+        <hr>
+        
+        <div>
+            <a href="{{item.relative_url}}{{url}}">Go</a>
+        </div>
+    </div>
+{% endblock %}

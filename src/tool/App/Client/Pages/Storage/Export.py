@@ -5,7 +5,7 @@ from App import app
 class Export(Displayment):
     for_object = 'App.Storage.Movement.Export'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         act = query.get('act')
         act = 'storage'

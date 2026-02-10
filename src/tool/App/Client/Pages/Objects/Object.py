@@ -5,7 +5,7 @@ import aiohttp_jinja2
 class Object(Displayment):
     for_object = 'App.Objects.Object'
 
-    async def render_as_page(self):
+    async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         act = query.get('act')
         objs = self.get_objs(query.get('uuids', '').split(','))
@@ -43,10 +43,9 @@ class Object(Displayment):
                         if displayment.prefer_object_displayment == 'object':
                             htmls.append((item, await displayment.render_as_object(item)))
                         else:
-                            displayment.context.update({
+                            return await displayment.render_as_page({
                                 'item': item
                             })
-                            return await displayment.render_as_page()
 
                 self.context['htmls'] = htmls
 
