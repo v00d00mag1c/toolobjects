@@ -1,6 +1,7 @@
 from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Int import Int
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.ObjectsList import ObjectsList
@@ -20,9 +21,8 @@ class Save(Act):
                 name = 'items',
                 orig = ObjectsList
             ),
-            Argument(
+            ListArgument(
                 name = 'storage',
-                is_multiple = True,
                 assertions = [NotNoneAssertion()],
                 orig = StorageItem
             ),

@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Daemons.DaemonItem import DaemonItem
-from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from App.Daemons.Daemon import Daemon
 from pydantic import Field
 from App import app
@@ -22,10 +22,9 @@ class DaemonList(Object):
     @classmethod
     def getSettings(cls):
         return [
-            Argument(
+            ListArgument(
                 name = 'daemons.autostart',
                 default = [],
                 orig = DaemonItem,
-                is_multiple = True
             )
         ]

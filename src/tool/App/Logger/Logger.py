@@ -2,6 +2,7 @@ from App.Objects.Object import Object
 from App.Console.PrintLog import PrintLog
 from App.Logger.HideCategory import HideCategory
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Boolean import Boolean
 from .Log import Log
 from .LogFile import LogFile
@@ -101,10 +102,9 @@ class Logger(Object):
     @classmethod
     def getSettings(cls):
         return [
-            Argument(
+            ListArgument(
                 name = 'logger.print.exclude',
                 default = [],
-                is_multiple = True,
                 orig = HideCategory
             ),
             Argument(

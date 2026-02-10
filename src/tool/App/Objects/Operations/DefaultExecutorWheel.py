@@ -3,6 +3,7 @@ from App.Objects.Executable import Executable
 from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
@@ -76,10 +77,9 @@ class DefaultExecutorWheel(Act):
                     )
                 ),
             ),
-            Argument(
+            ListArgument(
                 name = 'save_to',
                 default = [],
-                is_multiple = True,
                 single_recommended = True,
                 documentation = Documentation(
                     name = Key(

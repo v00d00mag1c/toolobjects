@@ -1,6 +1,7 @@
 from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from .Item import Item
 from .OutputItem import OutputItem
 from .Queue import Queue
@@ -14,19 +15,16 @@ class Run(Act):
     @classmethod
     def getArguments(cls) -> ArgumentDict:
         return ArgumentDict(items=[
-            Argument(
+            ListArgument(
                 name = 'prestart',
-                is_multiple = True,
                 orig = Item
             ),
-            Argument(
+            ListArgument(
                 name = 'items',
-                is_multiple = True,
                 orig = Item
             ),
-            Argument(
+            ListArgument(
                 name = 'output',
-                is_multiple = True,
                 orig = OutputItem
             )
         ])

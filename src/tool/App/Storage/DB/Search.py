@@ -3,6 +3,7 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Responses.ObjectsList import ObjectsList
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Int import Int
 from App.Storage.DB.Adapters.Search.Condition import Condition
 from App.Storage.StorageItem import StorageItem
@@ -16,10 +17,9 @@ class Search(Act):
                 orig = StorageItem,
                 assertions = [NotNoneAssertion()]
             ),
-            Argument(
+            ListArgument(
                 name = 'conditions',
                 default = [],
-                is_multiple = True,
                 orig = Condition
             ),
             Argument(
@@ -27,9 +27,8 @@ class Search(Act):
                 orig = Int,
                 default = -1
             ),
-            Argument(
+            ListArgument(
                 name = 'linked_to',
-                is_multiple = True,
                 default = [],
                 orig = Int
             )

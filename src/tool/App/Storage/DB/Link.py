@@ -4,6 +4,7 @@ from Data.String import String
 from Data.Int import Int
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.LiteralArgument import LiteralArgument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.AnyResponse import AnyResponse
 from App.Storage.StorageItem import StorageItem
@@ -26,22 +27,12 @@ class Link(Act):
                 name = 'items',
                 orig = Int,
                 assertions = [NotNoneAssertion()],
-                orig = Int(
-                    name = 'item'
-                ),
                 default = []
             ),
-            Argument(
+            LiteralArgument(
                 name = 'act',
                 default = 'link',
-                values = [
-                    String(
-                        name = 'link'
-                    ),
-                    String(
-                        name = 'unlink'
-                    )
-                ]
+                values = ['link', 'unlink']
             )
         ])
 

@@ -3,6 +3,7 @@ from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject
 from App.Objects.Index.Namespace import Namespace
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from Data.String import String
 from typing import Generator
 from App import app
@@ -79,16 +80,14 @@ class ObjectsList(Object):
     @classmethod
     def getSettings(cls):
         return [
-            Argument(
+            ListArgument(
                 name = 'objects.index.namespaces',
                 default = [],
-                is_multiple = True,
                 orig = Namespace
             ),
-            Argument(
+            ListArgument(
                 name = 'objects.index.namespaces.current',
                 default = ['common'],
-                is_multiple = True,
                 orig = String
             )
         ]

@@ -1,7 +1,7 @@
 from App.Objects.Executable import Executable
 from App.Responses.ObjectsList import ObjectsList
 from App.Objects.Object import Object
-from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 
 class Extractor(Executable):
     '''
@@ -11,10 +11,9 @@ class Extractor(Executable):
     @classmethod
     def getVariables(cls):
         return [
-            Argument(
+            ListArgument(
                 name = 'items',
                 orig = Object,
-                is_multiple = True,
                 default = []
             )
         ]

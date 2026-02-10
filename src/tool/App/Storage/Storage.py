@@ -1,5 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.StorageItem import StorageItem
 from pydantic import Field
 from App import app
@@ -58,10 +59,9 @@ class Storage(Object):
     @classmethod
     def getSettings(cls):
         return [
-            Argument(
+            ListArgument(
                 name = 'storage.dbs',
                 default = [],
-                is_multiple = True,
                 orig = StorageItem
             )
         ]
