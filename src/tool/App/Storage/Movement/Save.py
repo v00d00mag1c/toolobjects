@@ -1,6 +1,7 @@
 from App.Objects.Act import Act
 from App.Arguments.ArgumentDict import ArgumentDict
 from App.Arguments.Objects.Orig import Orig
+from App.Arguments.Objects.List import List
 from App.Arguments.Types.Int import Int
 from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.ObjectsList import ObjectsList
@@ -25,6 +26,12 @@ class Save(Act):
                 name = 'storage',
                 assertions = [NotNoneAssertion()],
             ),
+            List(
+                name = 'link_to',
+                orig = Int(
+                    name = 'link_item'
+                )
+            ),
             Int(
                 name = 'link_max_depth',
                 default = 10 # TODO move to const
@@ -34,6 +41,7 @@ class Save(Act):
     async def implementation(self, i):
         results = 0
         storage = i.get('storage')
+        link_to = i.get('link_to')
 
         assert storage != None, f"storage {storage.name} not found"
         assert storage.hasAdapter(), f"storage {storage.name} does not contains db connection"

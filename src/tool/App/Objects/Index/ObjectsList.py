@@ -37,15 +37,18 @@ class ObjectsList(Object):
 
         app.mount('ObjectsList', _objects)
 
-    def getItems(self) -> DictList:
+    def getItems(self, check_namespaces: bool = True) -> DictList:
         if self._last_current != None and self._last_current == self.current:
             return self._items
 
         self._items = DictList(items=[])
         for item in self.namespaces:
-            if item.name in self.current:
-                for object_item in item.getItems():
-                    self._items.append(object_item)
+            if check_namespaces == True:
+                if item.name not in self.current:
+                    continue
+
+            for object_item in item.getItems():
+                self._items.append(object_item)
 
         self._last_current = self.current
 

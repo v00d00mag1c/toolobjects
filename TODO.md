@@ -56,11 +56,11 @@ db and storage:
 - [ ] storageunit flush_hook and getCommonDir(): pathlib parts are duplicated and its better to move to HashDir class
 - [ ] links order
 - [ ] link with parent=None to link to the db)))
-- [ ] App.Storage.DB.Search
+- [x] App.Storage.DB.Search
 
 auth:
 
-- [ ] App.ACL.Auth ?
+- [ ] App.ACL.Auth
 
 modules:
 

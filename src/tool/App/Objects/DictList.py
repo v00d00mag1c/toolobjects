@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Generator
 from App.Objects.Object import Object
 from pydantic import BaseModel
 
@@ -11,6 +11,10 @@ class DictList(Object):
 
     def toList(self) -> list:
         return self.items
+
+    def iterate(self) -> Generator:
+        for item in self.toList():
+            yield item
 
     def toNames(self) -> list:
         names = []

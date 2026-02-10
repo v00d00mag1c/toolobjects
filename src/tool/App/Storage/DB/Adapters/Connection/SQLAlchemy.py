@@ -10,6 +10,49 @@ from typing import Any, Generator
 import json
 
 class SQLAlchemy(ConnectionAdapter):
+    class QueryAdapter(Query):
+        def _getComparement(self, condition: Condition):
+            return getattr(self._model, condition.getFirst())
+
+        # naaah
+        def _op_equals(self, condition):
+            return self._query.filter(self._getComparement(condition) == condition.getLast())
+
+        def _op_in(self, condition):
+            return self._query.filter(self._getComparement(condition).in_(condition.getLast()))
+
+        def _op_not_in(self, condition):
+            return self._query.filter(self._getComparement(condition).not_in_(condition.getLast()))
+
+        def _op_lesser(self, condition):
+            return self._query.filter(self._getComparement(condition) < condition.getLast())
+
+        def _op_greater(self, condition):
+            return self._query.filter(self._getComparement(condition) > condition.getLast())
+
+        def _op_lesser_or_equal(self, condition):
+            return self._query.filter(self._getComparement(condition) <= condition.getLast())
+
+        def _op_greater_or_equal(self, condition):
+            return self._query.filter(self._getComparement(condition) >= condition.getLast())
+
+        def _op_contains(self, condition):
+            return self._query.filter(self._getComparement(condition).contains(condition.getLast()))
+
+        def addSorting(self, sort: Sort):
+            pass
+
+        def first(self):
+            return self._query.first()
+
+        def getAll(self):
+            for item in self._query:
+                yield item
+
+        def limit(self, limit: int):
+            self._query = self._query.limit(limit)
+            return self
+
     # we have to put this into function(
     def _init_models(self_adapter):
         from sqlalchemy.ext.declarative import declarative_base
@@ -17,23 +60,6 @@ class SQLAlchemy(ConnectionAdapter):
 
         Base = declarative_base()
         _session = self_adapter._session
-
-        # не наглядно..
-        class _QueryAdapter(Query):
-            def addCondition(self, condition: Condition):
-                match(condition.operator):
-                    case '==':
-                        self._query = self._query.filter(condition.getFirst(self._model) == condition.getLast())
-
-            def addSorting(self, sort: Sort):
-                pass
-
-            def first(self):
-                return self._query.first()
-
-            def getAll(self):
-                for item in self._query:
-                    yield item
 
         class _LinkAdapter(LinkAdapter, Base):
             __tablename__ = 'links'
@@ -110,7 +136,7 @@ class SQLAlchemy(ConnectionAdapter):
 
             @classmethod
             def getQuery(cls):
-                _query = _QueryAdapter()
+                _query = self_adapter.QueryAdapter()
                 _query._model = cls
                 _query._query = _session.query(cls)
 

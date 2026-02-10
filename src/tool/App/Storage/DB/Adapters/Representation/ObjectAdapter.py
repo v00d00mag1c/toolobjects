@@ -5,6 +5,8 @@ from typing import Any, Generator
 from App.Objects.Object import Object
 from abc import ABC, abstractmethod
 from App.Storage.DB.Adapters.Representation.AbstractAdapter import AbstractAdapter
+from App.Objects.UnknownObject import UnknownObject
+import json
 
 class ObjectAdapter(AbstractAdapter):
     content: str = None # Encoded json
@@ -31,10 +33,13 @@ class ObjectAdapter(AbstractAdapter):
         ...
 
     def toPython(self):
-        _content = JSON().fromText(self.content)
-        _object_name = _content.data.get('saved_via').get('object_name')
-        _class = app.ObjectsList.getByName(_object_name).getModule()
-        _item = _class.model_validate(_content.data, strict = False)
-        _item.setDb(self)
+        try:
+            _content = JSON().fromText(self.content)
+            _object_name = _content.data.get('obj').get('saved_via').get('object_name')
+            _class = app.ObjectsList.getByName(_object_name).getModule()
+            _item = _class.model_validate(_content.data, strict = False)
+            _item.setDb(self)
 
-        return _item
+            return _item
+        except (AttributeError, json.decoder.JSONDecodeError):
+            return UnknownObject()

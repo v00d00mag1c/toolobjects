@@ -9,13 +9,13 @@ class Saveable():
     '''
     extend them as internal classes and annotate again when extending object
     '''
-    meta: ObjectMeta = Field(default = ObjectMeta(), repr = False)
 
     @computed_field(repr = False)
     @property
-    def saved_via(self) -> SavedVia:
-        _item = SavedVia()
-        _item.object_name = self.getClassNameJoined()
+    def obj(self) -> ObjectMeta:
+        _item = ObjectMeta()
+        _item.saved_via = SavedVia()
+        _item.saved_via.object_name = self.getClassNameJoined()
 
         '''
         if self.call != None and self.call._db != None:

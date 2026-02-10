@@ -6,9 +6,10 @@ class Condition(BaseModel):
     val1: Any = Field()
     operator: str | Any = Field()
     val2: Any = Field()
+    json_fields: str = Field(default = None)
 
-    def getFirst(self, model):
-        return getattr(model, self.val1)
+    def getFirst(self):
+        return self.val1
 
     def getLast(self):
         return self.val2

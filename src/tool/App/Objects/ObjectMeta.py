@@ -2,11 +2,14 @@ from pydantic import BaseModel, Field, field_serializer
 from datetime import datetime
 from typing import Optional
 from .Source import Source
+from .SavedVia import SavedVia
 
 class ObjectMeta(BaseModel):
     '''
     Additional data about object
     '''
+
+    saved_via: SavedVia = Field(default = None)
     name: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     indexation: Optional[str] = Field(default=None)

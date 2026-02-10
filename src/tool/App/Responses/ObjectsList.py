@@ -15,6 +15,9 @@ class ObjectsList(Response):
     def append(self, item: Object):
         self.items.append(item)
 
+    def first(self):
+        return self.items[0]
+
     def getItems(self) -> Generator[Object]:
         for item in self.items:
             yield item
