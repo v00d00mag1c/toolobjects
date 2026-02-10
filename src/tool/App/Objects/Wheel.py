@@ -13,6 +13,7 @@ class Wheel(Executable):
 
     @classmethod
     def _arguments(cls) -> ArgumentDict:
+        # It must pass all arguments
         itms = ArgumentDict(items = [])
         itms.missing_args_inclusion = True
 
@@ -21,7 +22,7 @@ class Wheel(Executable):
     async def _implementation(self, i) -> Response:
         extract = self._get_submodule(i)
         if extract == None:
-            self.log("Suitable submodule not found, calling _not_found_implementation()")
+            self._suitable_not_found_message()
 
             return await self._not_found_implementation(i)
 
@@ -29,6 +30,9 @@ class Wheel(Executable):
 
     async def _not_found_implementation(self, i):
         raise AssertionError("can't find suitable submodule")
+
+    def _suitable_not_found_message(self):
+        self.log("Suitable submodule not found, calling _not_found_implementation()")
 
     def _get_submodule(self, i):
         _submodule = self._wheel(i)

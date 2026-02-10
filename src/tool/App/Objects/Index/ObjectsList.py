@@ -4,6 +4,7 @@ from App.Objects.Index.LoadedObject import LoadedObject
 from App.Objects.Index.Namespaces.Namespace import Namespace
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
+from Data.Types.Dict import Dict
 from Data.Types.String import String
 from typing import Generator
 from App import app
@@ -18,6 +19,7 @@ class ObjectsList(Object):
 
     namespaces: list[Namespace] = Field()
     current: list[str] = Field(default = ['common'])
+    names_redirects: dict[str, str] = Field(default = {})
 
     # cache
     _items: DictList = None
@@ -31,7 +33,8 @@ class ObjectsList(Object):
             namespaces = [
                 app.app.objects
             ],
-            current = cls.getOption("objects.index.namespaces.current")
+            current = cls.getOption("objects.index.namespaces.current"),
+            names_redirects = cls.getOption("objects.index.redirects")
         )
 
         for item in cls.getOption('objects.index.namespaces'):
@@ -81,6 +84,9 @@ class ObjectsList(Object):
                 yield item
 
     def getByName(self, key: str, class_name = None) -> LoadedObject:
+        if key in self.names_redirects:
+            key = self.names_redirects.get(key)
+
         _item = self.getItems().get(key)
         if class_name != None:
             if class_name != _item.self_name:
@@ -143,5 +149,10 @@ class ObjectsList(Object):
                 name = 'objects.index.namespaces.current',
                 default = ['common'],
                 orig = String
+            ),
+            Argument(
+                name = 'objects.index.redirects',
+                default = {},
+                orig = Dict
             )
         ]

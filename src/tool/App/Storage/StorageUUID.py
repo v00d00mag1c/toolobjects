@@ -61,7 +61,6 @@ class StorageUUID(Object):
             return None
 
         _storage = self.getStorage()
-
         assert _storage != None, "storage with name {0} not found".format(self.storage)
         assert self.model_name in ['object', 'link'], 'wrong model'
 

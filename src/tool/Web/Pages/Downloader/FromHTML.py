@@ -1,18 +1,18 @@
-from Web.Pages.Download.Downloader import Downloader
+from App.Objects.Act import Act
+from Web.Pages.Downloader.Downloader import Downloader
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Types.String import String
-from Web.Crawler.Crawler import Crawler
 from App.Objects.Responses.ObjectsList import ObjectsList
 
-class FromHTML(Downloader):
+class FromHTML(Act):
     async def _implementation(self, i):
         html = i.get('html')
         webdriver = i.get('webdriver')
 
-        crawler = Crawler(webdriver = webdriver)
+        crawler = Downloader(webdriver = webdriver)
         crawler.check_global_options()
         crawler.check_requirements()
         items = ObjectsList(items = [])
@@ -41,4 +41,4 @@ class FromHTML(Downloader):
                 orig = String,
                 assertions = [NotNone()]
             )
-        ])
+        ]).join_class(Downloader)

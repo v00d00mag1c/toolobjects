@@ -12,7 +12,7 @@ class Webdriver(Object):
     file: LinkInsertion = Field(default = None)
 
     @abstractmethod
-    async def start(self):
+    async def start(self, i):
         ...
 
     def get_useragent(self) -> str:
