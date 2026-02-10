@@ -26,7 +26,7 @@ class StorageLinkTest(Test):
         _img.flush(storage)
         '''
 
-        _item = storage.adapter.ObjectAdapter.getById(7410302706075697152)
+        _item = storage.getAdapter().ObjectAdapter.getById(7410302706075697152)
 
         _json = JSON(data = _item.toPython().to_json(only_class_fields = False))
 

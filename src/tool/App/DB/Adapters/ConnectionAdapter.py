@@ -27,6 +27,9 @@ class ConnectionAdapter(Object):
         self._id_gen = SnowflakeGenerator(32)
 
     def flush(self, item: Object):
+        if self._storage_item.allowed_objects != None:
+            assert item.getClassNameJoined() in self._storage_item.allowed_objects, 'object is not allowed to flush'
+
         unit = self.ObjectAdapter()
         unit.toDB(item)
 
@@ -41,6 +44,6 @@ class ConnectionAdapter(Object):
     @property
     def append_prefix(self):
         return LogPrefix(
-            name = 'Storage',
+            name = 'storage',
             id = self._storage_item.name
         )

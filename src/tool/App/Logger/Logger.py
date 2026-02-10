@@ -5,11 +5,11 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from Data.Boolean import Boolean
 from .Log import Log
-from .LogFile import LogFile
 from .LogSection import LogSection
 from .LogPrefix import LogPrefix
 import traceback
 from pydantic import Field
+from App import app
 
 class Logger(Object):
     '''
@@ -18,7 +18,6 @@ class Logger(Object):
 
     log_to_console: bool = Field(default = True)
     hidden_categories: list[HideCategory] = Field(default = [])
-    log_file: LogFile = Field(default = None)
 
     @classmethod
     def getClassEventTypes(cls) -> list:
@@ -26,10 +25,8 @@ class Logger(Object):
 
     @classmethod
     def mount(cls):
-        from App import app
-
-        logs_dir = app.app.storage.joinpath("logs")
-        logs_dir.mkdir(exist_ok = True)
+        #logs_dir = app.app.storage.joinpath("logs")
+        #logs_dir.mkdir(exist_ok = True)
 
         if app.Logger != None:
             return
@@ -40,9 +37,9 @@ class Logger(Object):
         logger._constructor()
         logger.log_to_console = logger.getOption('logger.print.console')
 
-        if cls.getOption("logger.print.file") == True:
-            logger.log_file = LogFile.autoName(logs_dir)
-            logger.log_file.open()
+        #if cls.getOption("logger.print.file") == True:
+        #    logger.log_file = LogFile.autoName(logs_dir)
+        #    logger.log_file.open()
 
         app.mount('Logger', logger)
 
@@ -55,6 +52,7 @@ class Logger(Object):
             trigger: bool = True,
             not_log: bool = False):
 
+        # dumbass
         if not_log == True:
             return None
 
@@ -98,14 +96,17 @@ class Logger(Object):
 
         self.addHook('log', print_log)
 
-        async def print_file(to_print, check_categories):
-            if self.log_file == None:
+        async def print_to_db(to_print, check_categories):
+            if self.getOption('logger.print.db') == False:
                 return
 
-            if self._shouldPrint(to_print, check_categories, 'file') == True:
-                self.log_file.log(to_print)
+            if self._shouldPrint(to_print, check_categories, 'db') == True:
+                try:
+                    to_print.flush(app.Storage.get('logs'))
+                except Exception as e:
+                    self.log_raw(e)
 
-        self.addHook('log', print_file)
+        self.addHook('log', print_to_db)
 
     @classmethod
     def _settings(cls):
@@ -116,7 +117,7 @@ class Logger(Object):
                 orig = HideCategory
             ),
             Argument(
-                name = 'logger.print.file',
+                name = 'logger.print.db',
                 default = False,
                 orig = Boolean
             ),

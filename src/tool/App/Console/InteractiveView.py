@@ -34,7 +34,7 @@ class InteractiveView(ConsoleView):
 
                 prev = _i
             except Exception as e:
-                traceback.print_exc()
+                self.log_error(e)
 
             self.log_raw('\n-------\n')
 

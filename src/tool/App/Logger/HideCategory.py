@@ -15,12 +15,12 @@ class HideCategory(Object):
 
     unused: do not count this hidecategory
 
-    where: may be console, web, file or smth
+    where: may be console, web, db
     '''
 
     section: list = Field(default = None)
     role: str = Field(default = None)
-    where: list[Literal['console', 'file']] = Field(default = None)
+    where: list[Literal['console', 'db']] = Field(default = None)
     wildcard: bool = Field(default = False)
     unused: bool = Field(default = False)
 

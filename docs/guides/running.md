@@ -32,7 +32,7 @@ I may recomend set these values in `storage/config/config.json`:
             "section": ["App.Objects.Operations.DefaultExecutorWheel"]
         }
     ],
-    "logger.print.file": false,
+    "logger.print.db": false,
     "logger.print.console.show_time": false,
     "logger.print.console.show_role": true
 ```

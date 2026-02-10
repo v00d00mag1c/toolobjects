@@ -14,6 +14,7 @@ class ObjectsListTest(Test):
                 'auto_commit': False
             }
         )
+        _store._init_hook()
 
         _vals = ObjectsList(items = [])
         for item in range(0, 200):

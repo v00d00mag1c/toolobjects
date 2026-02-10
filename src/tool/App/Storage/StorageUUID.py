@@ -60,9 +60,9 @@ class StorageUUID(Object):
         assert self.model_name in ['object', 'link'], 'wrong model'
 
         if self.model_name == 'object':
-            return _storage.adapter.ObjectAdapter.getById(self.uuid)
+            return _storage.getAdapter().ObjectAdapter.getById(self.uuid)
         elif self.model_name == 'link':
-            return _storage.adapter.LinkAdapter.getById(self.uuid)
+            return _storage.getAdapter().LinkAdapter.getById(self.uuid)
 
     def toPython(self):
         _item = self.getItem()

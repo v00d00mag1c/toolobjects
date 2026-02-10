@@ -49,6 +49,7 @@ class Import(Executable):
             name = mount_name,
             directory = str(path)
         )
+        _mount._init_hook()
 
         app.Storage.append(_mount)
 

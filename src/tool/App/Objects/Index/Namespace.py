@@ -162,6 +162,6 @@ class Namespace(Object):
     @property
     def append_prefix(self) -> LogPrefix:
         return LogPrefix(
-            name = 'Namespace',
+            name = 'namespace',
             id = self.name
         )

@@ -58,6 +58,7 @@ class Export(Act):
                 'adapter': 'sqlite'
             }
         )
+        news._init_hook()
 
         self.log(f"Created new StorageItem {export_name}, dir is {str(i.get('dir'))}")
 

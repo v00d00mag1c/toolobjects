@@ -10,7 +10,7 @@ class StorageItem(Object):
     '''
     Implements storage with DB and storageunits.
 
-    Notice: path is taking literally and does not creates additional dirs.
+    Notice: path is takes literally and does not creates additional dirs.
     path=f:/dir, name='dir' will use dir f:/dir.
 
     If 'path' not passed, it will use storage/dbs/{name} dir
@@ -21,6 +21,7 @@ class StorageItem(Object):
     db_type: str = Field(default = None)
     db: dict = Field(default = None)
     root_uuid: int = Field(default = None)
+    allowed_objects: list[str] = Field(default = None)
 
     # display_name: str = Field(default = None)
 
@@ -44,7 +45,7 @@ class StorageItem(Object):
 
         return _item
 
-    def getAdapter(self):
+    def getAdapter(self) -> ConnectionAdapter:
         assert self.hasAdapter(), "storage item does not has db connection"
 
         return self.adapter
@@ -52,12 +53,12 @@ class StorageItem(Object):
     def hasAdapter(self) -> bool:
         return self.adapter != None
 
-    def init_hook(self):
-        self._initStorage()
+    def _init_hook(self):
+        self._init_storage()
         if self.db_type != None:
             self.adapter = self.getDBAdapterByName(self.db_type)
 
-    def _initStorage(self):
+    def _init_storage(self):
         if self.directory != None:
             self._path = Path(self.directory)
             if self._path.is_file() == True:

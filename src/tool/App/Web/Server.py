@@ -81,7 +81,7 @@ class Server(View):
 
             storage = app.Storage.get(_storage)
 
-            _query = storage.adapter.getQuery()
+            _query = storage.getAdapter().getQuery()
             _query.addCondition(Condition(
                 val1 = 'uuid',
                 operator = '==',

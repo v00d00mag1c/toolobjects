@@ -20,10 +20,14 @@ class Storage(Object):
         app.mount('Storage', storage)
 
     def init_hook(self):
+        _names = []
         dbs_dir = app.app.storage.joinpath('dbs')
         dbs_dir.mkdir(exist_ok=True)
 
         for item in self.getOption('storage.items'):
+            _names.append(item.name)
+
+            item._init_hook()
             self.append(item)
 
         default_items = [
@@ -40,12 +44,20 @@ class Storage(Object):
                 }
             ),
             StorageItem(
-                name = 'instance'
+                name = 'logs',
+                allowed_objects = ['App.Logger.Log'],
+                db_type = 'sqlite',
+                db = {
+                    #'auto_commit': False
+                    'auto_commit': True
+                }
             )
         ]
 
         for item in default_items:
-            self.append(item)
+            if item.name not in _names:
+                item._init_hook()
+                self.append(item)
 
     def append(self, item: StorageItem):
         self.items.append(item)
