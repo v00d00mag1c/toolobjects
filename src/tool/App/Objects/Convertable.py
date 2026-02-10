@@ -14,7 +14,7 @@ class Convertable(BaseModel):
     def getAllConverters(cls) -> list:
         _all = []
 
-        for item in cls.meta.mro:
+        for item in cls.getMRO():
             if hasattr(item, 'getConverters') == True:
                 _list = item.getConverters()
                 if _list == None:

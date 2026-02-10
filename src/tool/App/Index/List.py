@@ -39,17 +39,17 @@ class List(Object):
 
             # Loading submodules
             if plugin.module != None:
-                _cached_names.append(plugin.module.meta.class_name_joined)
+                _cached_names.append(plugin.module.getClassNameJoined())
 
                 submodules = plugin.module.getAllSubmodules()
                 for submodule in submodules:
-                    name = submodule.module.meta.class_name_joined
+                    name = submodule.module.getClassNameJoined()
                     if name in _cached_names:
                         continue
 
                     _obj = LoadedObject()
                     _obj.is_submodule = True
-                    _obj.category = submodule.module.meta.class_name
+                    _obj.category = submodule.module.getClassName()
                     _obj.title = submodule.module.__name__
                     _obj.module = submodule.module
 

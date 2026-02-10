@@ -1,6 +1,6 @@
 from pydantic import Field
 from datetime import datetime
-from pydantic import BaseModel as PydanticBaseModel
+from pydantic import BaseModel as PydanticBaseModel, computed_field
 from .Object import Object
 from .SavedVia import SavedVia
 from .Source import Source
@@ -33,7 +33,17 @@ class Saveable(Object, Linkable, AllowExtraFields):
     '''
     source: Source = Field(default = Source())
     object_meta: ObjectMeta = Field(default = ObjectMeta())
-    saved_via: SavedVia = Field(default = SavedVia())
+
+    @computed_field
+    @property
+    def saved_via(self) -> SavedVia:
+        _item = SavedVia()
+        _item.object_name = self.getClassNameJoined()
+
+        if self.call != None and self.call._db != None:
+            _item.call_id = self.call._db.uuid
+
+        return _item
 
     # set by user
     display_name: str = Field(default=None)

@@ -4,7 +4,7 @@ from App.Executables.Call import Call
 from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Responses.Response import Response
 from App.Objects.Variableable import Variableable
-from typing import ClassVar
+from typing import ClassVar, Optional
 from pydantic import Field
 import asyncio
 
@@ -13,10 +13,13 @@ class Executable(Variableable, Validable, Object):
     Object that has "execute()" interface, single entrypoint.
     
     getArguments(): validation
+
+    common_object: another object that executable can represent
     '''
 
     self_name: ClassVar[str] = 'Executable'
     call: Call = Field(default = None)
+    common_object: ClassVar[Optional[list]] = None
 
     @classmethod
     def getClassEventsTypes(cls) -> list:
@@ -55,7 +58,7 @@ class Executable(Variableable, Validable, Object):
         )
 
         self.call = Call()
-        self.call.predicate = self.meta.class_name_joined
+        self.call.predicate = self.getClassNameJoined()
 
         if hasattr(i, 'toOriginalDict') == False:
             self.call.arguments = i

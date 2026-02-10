@@ -40,7 +40,7 @@ class Wheel(Executable):
 
             return await self.implementation(i)
 
-        self.log(f"Using submodule: {submodule.meta.class_name_joined}", section = ['Execute'])
+        self.log(f"Using submodule: {submodule.getClassNameJoined()}", section = ['Execute'])
 
         extract = _submodule.module()
 

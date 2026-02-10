@@ -25,7 +25,7 @@ class LoadedObject(Object):
         if self.module == None:
             return '_____' + self.title
 
-        return self.module.meta.class_name_joined
+        return self.module.getClassNameJoined()
 
     @staticmethod
     def from_path(path: Path):
@@ -47,9 +47,9 @@ class LoadedObject(Object):
         self.is_success = True
 
         if self.is_submodule:
-            self.log(f"(submodule) Loaded {self.module.self_name.lower()} {self.module.meta.class_name_joined}")
+            self.log(f"(submodule) Loaded {self.module.self_name.lower()} {self.module.getClassNameJoined()}")
         else:
-            self.log(f"Loaded {self.module.self_name.lower()} {self.module.meta.class_name_joined}")
+            self.log(f"Loaded {self.module.self_name.lower()} {self.module.getClassNameJoined()}")
 
     def failed_load(self, exception: Exception):
         self.is_success = False

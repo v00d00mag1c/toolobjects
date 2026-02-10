@@ -23,7 +23,7 @@ class Variableable:
     def getAllVariables(cls) -> list:
         alls = []
 
-        for class_val in cls.meta.mro:
+        for class_val in cls.getMRO():
             if hasattr(class_val, "getVariables") == False:
                 continue
             _vars = class_val.getVariables()

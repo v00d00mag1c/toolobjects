@@ -14,13 +14,13 @@ class Console(View):
 
     async def implementation(self, i: dict = {}):
         executable = i.get('i')
-        assert executable.meta.can_be_executed, 'cannot be executed'
+        assert executable.canBeExecuted(), 'cannot be executed'
         results = await executable().execute(i = i)
 
         if results == None:
             self.log('nothing returned')
         else:
-            self.log(f'{executable.meta.class_name_joined} returned:')
+            self.log(f'{executable.getClassNameJoined()} returned:')
             _json = JSON(data = results.to_json())
             print(_json.dump(indent = 4))
 

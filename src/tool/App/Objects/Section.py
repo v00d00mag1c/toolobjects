@@ -3,7 +3,7 @@ from App import app, ViewNotLoadedYetError
 class Section:
     @property
     def section_name(self) -> list:
-        return self.meta.name
+        return self.getName()
 
     @property
     def append_prefix(self): # -> dict[str, int]

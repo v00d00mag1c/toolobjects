@@ -5,7 +5,7 @@ from Data.XML import XML
 import xmltodict
 
 class XMLToJson(Convertation):
-    converts_from = XML
+    common_object = XML
     converts_to = JSON
 
     def implementation(self, i) -> ObjectsList:

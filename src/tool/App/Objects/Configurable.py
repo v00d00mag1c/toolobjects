@@ -18,7 +18,7 @@ class Configurable:
         '''
         alls = []
 
-        for class_val in cls.meta.mro:
+        for class_val in cls.getMRO():
             if hasattr(class_val, "getSettings") == False:
                 continue
 

@@ -7,7 +7,6 @@ import json
 
 class SQLAlchemyAdapter(ConnectionAdapter):
     _engine: Any = None
-    ObjectUnit: Any = None
 
     def _init_models(self):
         Base = declarative_base()
@@ -16,7 +15,7 @@ class SQLAlchemyAdapter(ConnectionAdapter):
             uuid = Column(Integer(), primary_key=True)
             content = Column(String(), nullable=False)
 
-        self.ObjectUnit = ObjectUnit
+        self.ObjectAdapter = ObjectUnit
 
         @event.listens_for(ObjectUnit, 'before_insert', propagate=True)
         def receive_before_insert(mapper, connection, target):

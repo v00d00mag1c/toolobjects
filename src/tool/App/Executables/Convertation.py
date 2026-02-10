@@ -12,13 +12,12 @@ class Convertation(Executable):
     To get "X" in implementation:
     
     i.get("orig")
-    self.converts_from
+    self.common_object
 
     To get "Y" class in implementation:
 
     self.converts_to
     '''
-    converts_from: ClassVar = None
     converts_to: ClassVar = None
 
     @classmethod
@@ -26,7 +25,7 @@ class Convertation(Executable):
         return ArgumentsDict.fromList([
             Orig(
                 name = "orig",
-                orig = cls.converts_from,
+                orig = cls.common_object,
                 assertions = [
                     NotNoneAssertion()
                 ]

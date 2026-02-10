@@ -16,7 +16,7 @@ class Submodules:
     def getAllSubmodules(cls) -> list[Submodule]:
         modules = []
 
-        for item in cls.meta.mro:
+        for item in cls.getMRO():
             if hasattr(item, 'getSubmodules') == False:
                 continue
 

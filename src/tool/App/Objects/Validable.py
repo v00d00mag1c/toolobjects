@@ -18,7 +18,7 @@ class Validable:
         _list = cls.getArguments()
 
         # Slicing 1 because first arguments already got
-        for _class in cls.meta.mro[1:]:
+        for _class in cls.getMRO()[1:]:
             if hasattr(_class, 'getArguments') == True:
                 new_arguments = _class.getArguments()
                 if new_arguments == None:
