@@ -58,7 +58,7 @@ class ExecutionThread(Object):
             app.ThreadsList.remove(self)
 
     async def get(self):
-        self.log('running thread')
+        self.log('running thread', role = ['thread'])
 
         if self.task is None:
             raise RuntimeError("Task is not set")

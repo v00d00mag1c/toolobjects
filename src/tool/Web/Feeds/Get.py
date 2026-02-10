@@ -25,7 +25,6 @@ class Get(Extractor):
         self.log(f"downloading feed url: {url}")
 
         response_xml = await Feed.download(url)
-        print(response_xml)
         root = ET.fromstring(response_xml)
         _type = Feed.detect_type(root)
 

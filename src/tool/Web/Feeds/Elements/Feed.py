@@ -17,7 +17,11 @@ class Feed(Object):
 
     @classmethod
     def detect_type(cls, data: ET):
-        _type = data.tag.split('}', 1)[1]
+        _type = data.tag.split('}', 1)
+        if len(_type) < 2:
+            _type = _type[0]
+        else:
+            _type = _type[1]
 
         if _type == 'feed':
             return Atom

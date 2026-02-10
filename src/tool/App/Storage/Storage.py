@@ -29,14 +29,14 @@ class Storage(Object):
         for item in self.getOption('storage.items'):
             try:
                 if item.unused == True:
-                    self.log('storage item {0} is disabled'.format(item.name), role = ['storage.item.loading'])
+                    self.log('storage item {0} is disabled'.format(item.name), role = ['storage.item', 'storage.item.loading'])
                     continue
 
                 _names.append(item.name)
 
                 item._init_hook()
                 self.append(item)
-                self.log('loaded custom storage {0}'.format(item.name), role = ['storage.item.loading'])
+                self.log('loaded custom storage {0}'.format(item.name), role = ['storage.item', 'storage.item.loading'])
             except Exception as e:
                 self.log_error(e)
 
@@ -83,7 +83,7 @@ class Storage(Object):
                 self.log_error(e)
 
     def append(self, item: StorageItem):
-        self.log('Mounted {0}'.format(item.name), role = ['storage.item.mount'])
+        self.log('Mounted {0}'.format(item.name), role = ['storage.item', 'storage.item.mount'])
 
         self.items.append(item)
 

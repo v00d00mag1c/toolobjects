@@ -33,7 +33,7 @@ class ThreadsList(Object):
 
     def add(self, item: ExecutionThread):
         item.global_id = app.app.threads_id.getIndex()
-        self.log('new thread: {0}'.format(item.global_id))
+        self.log('new thread: {0}'.format(item.global_id), role = ['thread.created', 'thread'])
 
         self.items.append(item)
 

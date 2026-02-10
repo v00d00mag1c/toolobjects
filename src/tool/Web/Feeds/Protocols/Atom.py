@@ -37,7 +37,11 @@ class Atom(FeedProtocol):
     def _get_link(self, data):
         _self = Link()
         for key in ['href', 'rel', 'type', 'hreflang', 'title', 'length']:
-            setattr(_self, key, data.get(key))
+            set_key = key
+            if key == 'href':
+                set_key = 'value'
+
+            setattr(_self, set_key, data.get(key))
 
         return _self
 
