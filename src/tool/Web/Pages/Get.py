@@ -5,6 +5,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.AllowedValues import AllowedValues
 from App.Objects.Relations.Submodule import Submodule
+from App.Objects.Responses.ObjectsList import ObjectsList
 from Data.Types.Boolean import Boolean
 
 class Get(Wheel):
@@ -53,12 +54,12 @@ class Get(Wheel):
 
         pages = await extract.execute(i)
 
-        crawler = i.get('mode')
+        crawler = i.get('mode')()
         do_crawl = i.get('crawl')
         for page in pages.getItems():
             if do_crawl:
                 await crawler.process_page(page, i)
 
-            page.clear()
+            await page.clear()
 
-        return 
+        return pages

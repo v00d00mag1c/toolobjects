@@ -60,10 +60,10 @@ class Chromedriver(Webdriver):
 
         return page
 
-    def clear(self):
-        self._context.close()
-        self._browser.close()
-        self._playwright.stop()
+    async def clear(self):
+        await self._context.close()
+        await self._browser.close()
+        await self._playwright.stop()
 
     def get_shell(self):
         return self._get('file').get_root().joinpath('chrome').joinpath('chrome-headless-shell.exe')

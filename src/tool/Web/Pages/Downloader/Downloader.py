@@ -49,41 +49,6 @@ class Downloader(Object):
             orig = Cookies
         ),'''
 
-    async def _create_page(self, crawler, i):
-        html = crawler.get_parsed_html()
-
-        if i.get('download_favicon') == True:
-            for ico in html.get_favicons(page):
-                self.log('downloading icon {0}'.format(ico.get_url()))
-
-                await ico.download(page.html.get_assets_dir())
-                ico.replace()
-
-                page.favicons.append(ico)
-
-        if i.get('parse_meta') == True:
-            for meta in html.get_meta(page):
-                _name = meta.get_name()
-                if _name == None:
-                    self.log('metatag {0} = {1}'.format(_name, meta.get_content()))
-                else:
-                    self.log('metatag: without name')
-
-                page.meta_tags.append(meta)
-
-        if i.get('download_media') == True:
-            pass
-
-        if i.get('find_urls') == True:
-            for url in html.get_urls(page):
-                self.log('find url {0}'.format(url.get_url()))
-
-                page.page_links.append(url)
-
-        page.html.write(html.prettify())
-
-        return page
-
     @classmethod
     def getArguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [

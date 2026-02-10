@@ -7,10 +7,11 @@ from Web.Pages.Assets.Meta import Meta
 from typing import Any
 from pydantic import Field
 from App.Objects.Requirements.Requirement import Requirement
+from Web.Pages.Crawler.Webdrivers.WebdriverPage import WebdriverPage
 
 class Page(Object):
     _downloader: Any = None
-    _page: Any = None
+    _page: WebdriverPage = None
 
     html: HTMLFile = Field(default = None)
     assets: list[Asset] = Field(default = None)
@@ -23,13 +24,16 @@ class Page(Object):
 
     _unserializable = ['_downloader', '_page']
 
+    def get_html(self):
+        return self.html
+
     def create_file(self, storage: StorageItem):
         storage_unit = storage.storage_adapter.get_storage_unit()
-        self.link(storage_unit)
+        link = self.link(storage_unit)
 
         self.html = HTMLFile()
 
-        return self.html.create(storage_unit)
+        return self.html.create(storage_unit, link)
 
     def set_title(self, title: str):
         self.obj.name = title
@@ -47,7 +51,7 @@ class Page(Object):
 
     async def set_info(self):
         self.set_title(await self._page.get_title())
-        self.url = self._page.get_url()
+        self.url = self._page.get_url(True)
         self.base_url = self._page.get_base_url()
         self.relative_url = await self._page.get_relative_url()
 
@@ -56,12 +60,12 @@ class Page(Object):
     def set_downloader(self, downloader):
         self._downloader = downloader
 
-    def clear(self):
+    async def clear(self):
         if self._page:
-            self._page.close()
+            await self._page.close()
 
         if self._downloader:
-            self._downloader.clear()
+            await self._downloader.webdriver.clear()
             self._downloader = None
 
     @classmethod

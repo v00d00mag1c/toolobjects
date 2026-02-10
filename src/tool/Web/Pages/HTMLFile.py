@@ -9,10 +9,10 @@ class HTMLFile(Object):
     encoding: str = Field(default = 'utf-8')
     file: StorageUnitLink = Field(default = None)
 
-    def create(self, storage_unit):
+    def create(self, storage_unit, link):
         self.file = StorageUnitLink(
             path = self.main,
-            insertion = self.link(storage_unit).toInsert()
+            insertion = link.toInsert()
         )
 
         index_file = open(self.get_main(), 'w', encoding = self.encoding)

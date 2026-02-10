@@ -25,10 +25,6 @@ class ByURL(Act):
             new_page = Page()
             new_page.set_downloader(downloader)
             await new_page.from_url(url)
-            await new_page.set_info()
-
-            if i.get('scroll_down'):
-                await new_page._page.scroll_down()
 
             items.append(new_page)
 

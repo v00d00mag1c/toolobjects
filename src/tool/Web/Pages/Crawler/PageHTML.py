@@ -10,7 +10,7 @@ from bs4.dammit import EncodingDetector
 from bs4 import BeautifulSoup
 
 class PageHTML(Object):
-    bs: Any = Field()
+    bs: Any = None
 
     def get_favicons(self, orig_page: Page, take_default: bool = True) -> Generator[Favicon]:
         for icon in self.bs.select("link[rel*='icon']"):
@@ -77,6 +77,6 @@ class PageHTML(Object):
     @classmethod
     def from_html(cls, html: str):
         html_encoding = EncodingDetector.find_declared_encoding(html, is_html=True)
-        _src = cls(bs = BeautifulSoup(html, 'html.parser', from_encoding = html_encoding))
-
+        _src = cls()
+        _src.bs = BeautifulSoup(html, 'html.parser', from_encoding = html_encoding)
         return _src

@@ -15,22 +15,25 @@ class WebdriverPage(Object):
         await self._page.goto(url, wait_until = wait_until)
         #page.wait_for_load_state('networkidle')
 
-    def close(self):
-        self._page.close()
+    async def close(self):
+        await self._page.close()
 
     async def get_title(self):
         return await self._page.title()
 
     async def get_html(self):
-        return await self._page.html()
+        return await self._page.content()
 
     async def get_parsed_html(self):
         return None
 
-    def get_url(self):
+    def get_url(self, orig: bool = False):
         _url = self.url_override
         if _url == None:
             _url = self._page.url
+
+        if orig is True:
+            return _url
 
         return urlparse(_url)
 

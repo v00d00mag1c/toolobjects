@@ -22,7 +22,7 @@ class List(Valueable):
                     val = val.split(',')
 
         if type(val) != list:
-            self.log("list argument but not list passed")
+            self.log("list argument but not list passed", role = ['validation.not_list'])
             val = [val]
 
         for item in val:

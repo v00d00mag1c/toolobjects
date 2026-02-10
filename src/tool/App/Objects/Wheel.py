@@ -53,6 +53,11 @@ class Wheel(Executable):
 
             modules.append(submodule)
 
+        if i.get('__wheel_select'):
+            for item in modules:
+                if item.item._getNameJoined() == i.get('__wheel_select'):
+                    return item
+
         _submodule = self.__class__.compareAndGetFirstSuitableSubmodule(modules, i)
         if _submodule != None:
             return _submodule

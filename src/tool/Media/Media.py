@@ -28,10 +28,11 @@ class Media(FileType):
         from Media.ByStorageUnit import ByStorageUnit
         from Media.ByPath import ByPath
         from Media.ByDir import ByDir
+        from Media.FromPage import FromPage
 
         returns = list()
 
-        for item in [Download, ByStorageUnit, ByPath, ByDir]:
+        for item in [Download, ByStorageUnit, ByPath, ByDir, FromPage]:
             returns.append(Submodule(
                 item = item,
                 role = ['media_method', 'wheel']
