@@ -60,5 +60,8 @@ class Section:
         '''
         print(anything)
 
+    def log_diff(self, diff: int):
+        self.log(f"difference is {diff}", role = ['diff'])
+
     def fatal(self, exception):
         raise exception

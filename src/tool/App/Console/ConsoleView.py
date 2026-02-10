@@ -12,8 +12,13 @@ from App import app
 
 class ConsoleView(View):
     '''
-    View that represents CMD. Runs executable from "i"
+    View that represents CMD
     '''
+
+    async def byString(self, argv_str: str):
+        _parsed_argv = app.app._parse_argv(argv_str.split(' '))
+
+        return await self.execute(_parsed_argv[0])
 
     async def implementation(self, i: ArgumentValues = {}):
         pre_i = i.get('pre_i')()

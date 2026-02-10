@@ -18,6 +18,9 @@ class ObjectsList(Response):
     def first(self):
         return self.items[0]
 
+    def getCount(self) -> int:
+        return len(self.items)
+
     def getItems(self) -> Generator[Object]:
         for item in self.items:
             yield item

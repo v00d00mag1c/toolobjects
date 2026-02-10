@@ -3,8 +3,8 @@ from Data.RSS.ChannelImage import ChannelImage
 from Data.RSS.ChannelItem import ChannelItem
 from pydantic import Field
 from typing import Optional
-from dateutil import parser, tz
 import xml
+import xml.etree.ElementTree as ET
 
 class Channel(Object):
     title: str = Field(default = None)
@@ -25,18 +25,11 @@ class Channel(Object):
         self.copyright = channel.get('copyright')
         self.language = channel.get('language')
 
-    async def download(self):
-        import aiohttp, xmltodict
+    @classmethod
+    def fromElement(cls, element: ET):
+        channel = cls()
+        for key in ['title', 'description', 'link', 'generator', 'copyright', 'language']:
+            if element.find(key) != None:
+                setattr(channel, key, element.find(key).text)
 
-        response_xml = None
-        async with aiohttp.ClientSession() as session:
-            async with session.get(self.url) as response:
-                response_xml = await response.text()
-
-        rss_response = xmltodict.parse(response_xml)
-        rss = rss_response.get('rss')
-
-        return rss.get('channel')
-
-    def addItem(self, item: dict):
-        return ChannelItem.model_validate(item, by_alias = True)
+        return channel

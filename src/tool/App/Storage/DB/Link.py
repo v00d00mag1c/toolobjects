@@ -8,19 +8,15 @@ from App.Objects.Arguments.LiteralArgument import LiteralArgument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.AnyResponse import AnyResponse
 from App.Storage.StorageItem import StorageItem
+from App.Storage.StorageUUID import StorageUUID
 
 class Link(Act):
     @classmethod
     def getArguments(cls):
         return ArgumentDict(items = [
             Argument(
-                name = 'storage',
-                orig = StorageItem,
-                assertions = [NotNoneAssertion()]
-            ),
-            Argument(
                 name = 'owner',
-                orig = Int,
+                orig = StorageUUID,
                 assertions = [NotNoneAssertion()]
             ),
             Argument(
@@ -43,7 +39,7 @@ class Link(Act):
         assert _storage.hasAdapter(), f"storage {_storage.name} does not contains db connection"
 
         # TODO Fix
-        link_to = _storage.adapter.ObjectAdapter.getById(i.get('owner'))
+        link_to = i.get('owner').getItem()
         items = _storage.adapter.ObjectAdapter.getByIds(i.get('items'))
 
         for item in items:

@@ -9,9 +9,9 @@ class ExportTest(Test):
     async def implementation(self, i):
         return await Export().execute({
             'items': ObjectsList(items = [
-                Text(text = ';/'),
-                Text(text = ';)'),
-                Text(text = ';()'),
+                Text(value = ';/'),
+                Text(value = ';)'),
+                Text(value = ';()'),
                 self.log(';;( ;;)')
             ]),
             'dir': str(app.app.storage.joinpath('tmpstrg')),

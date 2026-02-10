@@ -4,8 +4,8 @@ from App.Objects.Relations.Link import Link
 
 class LinksTest(Test):
     async def implementation(self, i):
-        txt = Text(text='abcdefg')
-        txt2 = Text(text='hijklmnopqrs')
+        txt = Text(value='abcdefg')
+        txt2 = Text(value='hijklmnopqrs')
 
         txt.addLink(Link(
             item = txt2,

@@ -10,7 +10,7 @@ class ContentLinksTest(Test):
     async def implementation(self, i):
         _storage: StorageItem = app.Storage.get('tmp')
 
-        _text = Text(text = '7777')
+        _text = Text(value = '7777')
         _another_obj = _storage.getStorageUnit()
         __name = _another_obj.getDir().joinpath('tmp.txt')
         _file = open(__name, 'w', encoding='utf-8')

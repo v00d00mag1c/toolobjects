@@ -4,7 +4,7 @@ from App import app
 
 class FlushWithLinksTest(Test):
     async def implementation(self, i):
-        items = [Text(text='123456'),Text(text='asdfghjkl')]
+        items = [Text(value='123456'),Text(value='asdfghjkl')]
         lnk = self.log('linking test')
         for item in items:
             lnk.link(item)

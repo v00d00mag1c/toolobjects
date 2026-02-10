@@ -1,19 +1,22 @@
 from App.Objects.Extractor import Extractor
-from App.Objects.Arguments.ArgumentDict import ArgumentDict
-from App.Objects.Arguments.Argument import Argument
+from App.Objects.Misc.LinkInsertion import LinkInsertion
 from Data.String import String
-from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.ObjectsList import ObjectsList
 from Data.RSS.Channel import Channel
 from Data.RSS.ChannelItem import ChannelItem
 from pydantic import Field
-from typing import Optional
+from typing import Optional, Self
 import datetime
+import xml.etree.ElementTree as ET
+from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
+from Data.RSS.Response import Response
 
 # Should it be in Web category or in Data? i dont know
 class GetFeed(Extractor):
-    channel: Optional[Channel] = Field(default = None)
-    last_time: datetime.datetime = Field(default = 0)
+    channel: Optional[Channel | LinkInsertion] = Field(default = None)
+    last_time: float = Field(default = 0)
 
     @classmethod
     def getArguments(cls) -> ArgumentDict:
@@ -26,40 +29,38 @@ class GetFeed(Extractor):
         ])
 
     async def implementation(self, i):
-        import aiohttp, xmltodict
-
         url = i.get('url')
-        response_xml = None
+        response_xml = await Response.download(url)
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                response_xml = await response.text()
+        self.log(f"downloaded url: {url}")
 
-        self.log(f"url: {url}")
-        rss_response = xmltodict.parse(response_xml)
-        rss = rss_response.get('rss')
-        _channel = rss.get('channel')
-        self.channel = Channel(
-            title = _channel.get('title'),
-            description = _channel.get('description'),
-            channel_link = _channel.get('link'),
-            generator = _channel.get('generator'),
-            copyright = _channel.get('copyright'),
-            language = _channel.get('language'),
-        )
-        self.link(self.channel)
+        root = ET.fromstring(response_xml)
+        channels = list()
 
-        for item in _channel.get('item'):
-            channel_item = self.channel.addItem(item)
-            if channel_item.pubDate.timestamp() > self.last_time:
-                self.last_time = channel_item.pubDate
+        for channel in root.findall('.//channel'):
+            _channel = Channel.fromElement(channel)
+            channels.append(_channel)
+            self.channel = _channel
 
-            self.channel.link(channel_item)
-            self.append(channel_item)
+            for channel_item in channel.findall('.//item'):
+                item = ChannelItem.fromElement(channel_item)
+                if item.pubDate.timestamp() > self.last_time:
+                    self.last_time = item.pubDate.timestamp()
 
-    async def update(self, response: ObjectsList) -> ObjectsList:
+                # _channel.link(item)
+                self.append(item)
+
+            _link = self.link(_channel)
+            self.channel = _link.toInsert()
+
+    async def update(self, old: Self, response: ObjectsList) -> ObjectsList:
         _new = ObjectsList()
+
+        self.log(f'old last time is {old.last_time}')
         for item in response.getItems():
-            _new.append(item)
+            if item.pubDate.timestamp() > old.last_time:
+                _new.append(item)
+
+        self.log_diff(_new.getCount())
 
         return _new

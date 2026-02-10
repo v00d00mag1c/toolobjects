@@ -19,6 +19,7 @@ class StorageItem(Object):
     name: str = Field()
     directory: str = Field(default = None)
     db: dict = Field(default = None)
+    root_uuid: int = Field(default = None)
 
     # display_name: str = Field(default = None)
 

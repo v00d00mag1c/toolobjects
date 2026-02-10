@@ -8,7 +8,7 @@ class FlushTest(Test):
         self.log('creating models')
         _id = Random().randomInt(0,1)
 
-        items = [Text(text='123456'),Text(text='asdfghjkl')]
+        items = [Text(value='123456'),Text(value='asdfghjkl')]
 
         _storage = app.Storage.get('tmp')
         _item = items[_id].flush(_storage)
@@ -19,7 +19,7 @@ class FlushTest(Test):
         self.log_raw(_item.toPython())
         self.log_raw(_item.toPython().to_json())
 
-        _lnked = Text(text='888')
+        _lnked = Text(value='888')
         #_lnked.flush(_storage)
 
         try:

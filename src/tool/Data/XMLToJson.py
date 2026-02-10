@@ -4,10 +4,11 @@ from App.Objects.Relations.Submodule import Submodule
 from App.Objects.Requirements.Requirement import Requirement
 from Data.JSON import JSON
 from Data.XML import XML
-import xmltodict
 
 class XMLToJson(Convertation):
     def implementation(self, i) -> ObjectsList:
+        import xmltodict
+
         _item = JSON()
         _item.data = xmltodict.parse(i.get('orig').xml)
 

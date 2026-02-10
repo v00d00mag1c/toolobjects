@@ -28,7 +28,7 @@ class Linkable(BaseModel):
             link.item.flush(self.getDb()._adapter._storage_item)
             self.getDb().addLink(link)
 
-            return self
+            return link
 
         self.links.append(link)
 

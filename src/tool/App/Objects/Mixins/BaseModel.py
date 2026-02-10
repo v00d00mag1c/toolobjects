@@ -1,6 +1,7 @@
-from pydantic import BaseModel as PydanticBaseModel, computed_field, model_serializer
+from pydantic import BaseModel as PydanticBaseModel, computed_field, model_serializer, field_validator
 from App.Objects.Misc.LinkInsertion import LinkInsertion
 from typing import Literal, ClassVar, Any
+from datetime import datetime
 
 class BaseModel(PydanticBaseModel):
     '''
@@ -141,6 +142,12 @@ class BaseModel(PydanticBaseModel):
             if isinstance(item, PydanticBaseModel):
                 item.__init_subclass__()
 
+    def _serializer(self, value: Any):
+        if isinstance(value, datetime):
+            return value.timestamp()
+
+        return value
+
     @model_serializer
     def serialize_model_with_links(self) -> dict:
         result = dict()
@@ -173,7 +180,7 @@ class BaseModel(PydanticBaseModel):
                     if PydanticBaseModel._convert_links == True:
                         result.get('field_name').append(item.unwrap())
             else:
-                result[field_name] = value
+                result[field_name] = self._serializer(value)
 
         if PydanticBaseModel._include_extra == True:
             for key, val in self.model_extra.items():

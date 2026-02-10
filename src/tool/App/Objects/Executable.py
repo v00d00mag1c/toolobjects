@@ -3,7 +3,6 @@ from .Mixins.Validable import Validable
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Responses.Response import Response
 from App.Objects.Mixins.Variableable import Variableable
-from App.Objects.Mixins.Updateable import Updateable
 from App.Logger.LogPrefix import LogPrefix
 from typing import ClassVar, Optional
 from pydantic import Field
@@ -11,7 +10,7 @@ from App import app
 from abc import abstractmethod
 import asyncio
 
-class Executable(Object, Updateable, Variableable, Validable):
+class Executable(Object, Variableable, Validable):
     id: int = 0
     self_name: ClassVar[str] = 'Executable'
     #internal_use: bool = Field(default = True)
