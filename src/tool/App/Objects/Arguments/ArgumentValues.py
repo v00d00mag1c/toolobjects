@@ -57,12 +57,12 @@ class ArgumentValues(Object):
         return True
 
     def get(self, name: str, default: Any = None, same: bool = False):
-        if self.compare == None:
-            return default
-
         inputs = self.values.get(name)
         if same == True:
             return inputs
+
+        if self.compare == None:
+            return default
 
         argument: Argument = self.compare.get(name)
         if argument == None:

@@ -7,15 +7,18 @@ class BaseModel(PydanticBaseModel):
     '''
     Pydantic BaseModel with some functions
     '''
-    _unserializable: ClassVar[list[str]] = ['_only_class_fields', '_exclude_none', '_convert_links', '_include_extra', '_excludes', '_internal_fields', '_unserializable']
+    _unserializable: ClassVar[list[str]] = ['_dump_options', '_unserializable']
 
-    # TODO remove
-    _convert_links: ClassVar[bool] = False
-    _include_extra: ClassVar[bool] = True
-    _excludes: ClassVar[list[str]] = None
-    _internal_fields: ClassVar[list[str]] = ['meta', 'saved_via', 'links', 'db_info']
-    _only_class_fields: ClassVar[bool] = False
-    _exclude_none: ClassVar[bool] = False
+    # model_dump does not checks this params, so doing workaround. TODO remove
+    _dump_options: ClassVar[dict] = {
+        'convert_links': False,
+        'include_extra': True,
+        'excludes': None,
+        'internal_fields': ['meta', 'saved_via', 'links', 'db_info'],
+        'only_class_fields': False,
+        'exclude_none': False,
+        'exclude_defaults': False
+    }
 
     @computed_field
     @property
@@ -37,6 +40,7 @@ class BaseModel(PydanticBaseModel):
                 exclude_internal: bool = False,
                 exclude_none: bool = False,
                 exclude: list[str] = [],
+                exclude_defaults: bool = False,
                 by_alias: bool = True,
                 include_extra: bool = True,
                 only_class_fields: bool = True):
@@ -60,14 +64,16 @@ class BaseModel(PydanticBaseModel):
         for item in exclude:
             excludes.append(item)
 
-        BaseModel._include_extra = include_extra
-        BaseModel._excludes = excludes
-        BaseModel._convert_links = convert_links == 'unwrap'
-        BaseModel._only_class_fields = only_class_fields
-        BaseModel._exclude_none = exclude_none
+        BaseModel._dump_options['include_extra'] = include_extra
+        BaseModel._dump_options['excludes'] = excludes
+        BaseModel._dump_options['convert_links'] = convert_links == 'unwrap'
+        BaseModel._dump_options['only_class_fields'] = only_class_fields
+        BaseModel._dump_options['exclude_none'] = exclude_none
+        BaseModel._dump_options['exclude_defaults'] = exclude_defaults
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none,
+                exclude_defaults = exclude_defaults,
                 by_alias = by_alias)
 
         return results
@@ -155,19 +161,26 @@ class BaseModel(PydanticBaseModel):
         return value
 
     @model_serializer
-    def serialize_model_with_links(self) -> dict:
+    def serialize_model_with_links(self, **kwargs) -> dict:
+        '''
+        Function for json convertation. It exists because we need to convert LinkInsertions
+        '''
+
+        # ???
         result = dict()
         _field_names = list()
-        for field_name in self.__class__.model_fields:
-            _field_names.append(field_name)
-        for field_name in self.__class__.model_computed_fields:
-            _field_names.append(field_name)
+        _defaults = dict()
 
-        if self.__class__._only_class_fields == True:
+        for _item in [self.__class__.model_fields, self.__class__.model_computed_fields]:
+            for field_name, val in _item.items():
+                _field_names.append(field_name)
+                _defaults[field_name] = getattr(val, 'default', None)
+
+        if self.__class__._dump_options['only_class_fields'] == True:
             _field_names = self.__class__.__annotations__
 
         for field_name in _field_names:
-            if BaseModel._excludes != None and field_name in BaseModel._excludes:
+            if BaseModel._dump_options['excludes'] != None and field_name in BaseModel._dump_options['excludes']:
                 continue
 
             if field_name in self.__class__._unserializable:
@@ -177,7 +190,7 @@ class BaseModel(PydanticBaseModel):
 
             if isinstance(value, LinkInsertion):
                 value.setDb(self.getDb())
-                if BaseModel._convert_links == True:
+                if BaseModel._dump_options['convert_links'] == True:
                     result[field_name] = value.unwrap()
                 else:
                     result[field_name] = value
@@ -186,16 +199,20 @@ class BaseModel(PydanticBaseModel):
                 for item in value:
                     item.setDb(self.getDb())
 
-                    if BaseModel._convert_links == True:
+                    if BaseModel._dump_options['convert_links'] == True:
                         result.get('field_name').append(item.unwrap())
             else:
                 _val = self._serializer(value)
-                if _val == None and self._exclude_none == True:
+                if _val == None and self._dump_options.get('exclude_none') == True:
                     continue
+
+                if self._dump_options.get('exclude_defaults') == True:
+                    if _val == _defaults.get(field_name, None):
+                        continue
 
                 result[field_name] = _val
 
-        if BaseModel._include_extra == True and self.model_extra != None:
+        if BaseModel._dump_options['include_extra'] == True and self.model_extra != None:
             for key, val in self.model_extra.items():
                 result[key] = val
 

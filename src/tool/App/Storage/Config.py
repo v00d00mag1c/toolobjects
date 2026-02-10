@@ -5,7 +5,7 @@ from App.Storage.ConfigItem import ConfigItem
 
 from pathlib import Path
 from pydantic import Field
-from typing import Literal
+from typing import Literal, Any
 from App import app
 
 class Config(Object):
@@ -38,6 +38,10 @@ class Config(Object):
             item.check_file()
 
         _pre[0].values.values.update(app.app.conf_override)
+
+    # 2many arguments cycles
+    def get(self, name: str, default: Any = None, role: str = 'config'):
+        return self.getItem(role = role).get(name, default)
 
     def getItem(self, role: Literal['config', 'env'] = 'config'):
         if role == 'config':

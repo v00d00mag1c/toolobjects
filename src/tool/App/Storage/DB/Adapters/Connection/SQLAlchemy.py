@@ -118,6 +118,7 @@ class SQLAlchemy(ConnectionAdapter):
                     exclude = ['links', 'db_info', 'class_name'],
                     convert_links = False,
                     exclude_none = True,
+                    exclude_defaults = True,
                     only_class_fields = False
                 )
                 self.content = json.dumps(_data)

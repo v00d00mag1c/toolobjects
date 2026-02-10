@@ -37,4 +37,4 @@ class Configurable:
 
     @classmethod
     def getOption(cls, name: str, default: Any = None, where: Literal['env', 'config'] = 'config'):
-        return app.Config.getItem(role = where).get(name, default)
+        return app.Config.get(name, default, role = where)

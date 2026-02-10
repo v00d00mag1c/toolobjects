@@ -53,16 +53,19 @@ db and storage:
 - [ ] objectlist adapter
 - [ ] link after save
 - [ ] search in linked
-- [ ] Web.DownloadManager.Manager
+- [x] Web.DownloadManager.Manager
 - [ ] storageunit generates hash randomly but maybe hash the common file?
 - [ ] storageunit flush_hook and getCommonDir(): pathlib parts are duplicated and its better to move to HashDir class
 - [ ] links order
 - [ ] link with parent=None to link to the db
 - [ ] VirtualPath pagination (adapter pagination also)
+- [ ] multifile config
+
+- [ ] ItemPermission for dbs
 
 auth:
 
-- [ ] App.ACL.Auth
+- [x] App.ACL.AuthLayer
 
 modules:
 
@@ -105,4 +108,4 @@ others:
 - [ ] App.Storage.Movement.Save and App.Storage.Movement.Export are the same
 - [ ] App.Objects.View can be imagined as App.Objects.Displayment
 - [ ] App.Object.Paginable
-- [ ] storage unit password
+- [ ] storage unit password & encryption)

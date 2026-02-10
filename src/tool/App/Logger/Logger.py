@@ -32,11 +32,11 @@ class Logger(Object):
         logs_dir.mkdir(exist_ok = True)
 
         logger = cls(
-            hidden_categories = app.Config.getItem().get("logger.print.exclude"),
+            hidden_categories = app.Config.get("logger.print.exclude"),
         )
         logger.log_to_console = logger.getOption('logger.print.console')
 
-        if app.Config.getItem().get("logger.print.file") == True:
+        if app.Config.get("logger.print.file") == True:
             logger.log_file = LogFile.autoName(logs_dir)
             logger.log_file.open()
 

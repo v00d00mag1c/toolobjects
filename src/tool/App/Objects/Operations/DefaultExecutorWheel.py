@@ -26,7 +26,7 @@ class DefaultExecutorWheel(Act):
 
         assert executable != None, 'not found object'
         assert app.app.view.canUseObject(executable), 'object cannot be used at this view'
-        assert executable.canBeUsedBy(i.get('auth')), 'access denied'
+        assert executable.canBeUsedBy(i.get('auth')), 'access denied to executable {0}'.format(executable.getClassNameJoined())
 
         results = None
         if force_flush == False:
@@ -51,11 +51,12 @@ class DefaultExecutorWheel(Act):
 
         if isinstance(results, ObjectsList):
             save_to = i.get('save_to')
-            if save_to != None:
+            if save_to != None and len(save_to) > 0:
                 _save = Save()
                 await _save.execute({
                     'items': results,
-                    'storage': save_to
+                    'storage': save_to,
+                    'auth': i.get('auth')
                 })
 
         return results

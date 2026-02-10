@@ -1,7 +1,19 @@
+from App import app
+from App.ACL.Permissions.ObjectPermission import ObjectPermission
+
 class Limitable():
     @classmethod
-    def canBeUsedBy(self, token):
-        if token == None:
-            return False
+    def canBeUsedBy(self, user):
+        if user == None:
+            return app.AuthLayer.compare_permissions(ObjectPermission(
+                object_name = self.getClassNameJoined(),
+                user = None,
+                action = 'call',
+                allow = True
+            ))
 
-        return token.check_rights(self)
+        # ???
+        if user.name == 'root':
+            return True
+
+        return user.can('call', self)

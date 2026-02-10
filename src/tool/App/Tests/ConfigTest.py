@@ -5,12 +5,12 @@ class ConfigTest(Test):
     async def implementation(self, i):
         self.log('running test!')
 
-        val_test = app.Config.getItem().get("test")
+        val_test = app.Config.get("test")
         self.log(f"the key with name 'test' is {val_test}")
         self.log(f"changing 'test' value to 121212")
 
         app.Config.set("test", "121212")
-        val_test_2 = app.Config.getItem().get("test")
+        val_test_2 = app.Config.get("test")
         self.log(f"the key with name 'test' is now {val_test_2}")
 
         self.log(f"updating compare of config")

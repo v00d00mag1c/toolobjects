@@ -49,7 +49,8 @@ class Executable(Object, Variableable, Validable):
     async def execute(self, 
                       i: ArgumentValues | dict, 
                       check_arguments: bool = True, 
-                      raise_on_assertions: bool = True) -> Response:
+                      raise_on_assertions: bool = True,
+                      skip_user_check: bool = False) -> Response:
         '''
         Internal method. Calls module-defined implementation() and returns what it returns
         '''
@@ -60,8 +61,18 @@ class Executable(Object, Variableable, Validable):
         else:
             i.modified = True
 
+        self.log(f"Calling {self.getClassNameJoined()}")
+
         if app.ExecutablesList != None:
             app.ExecutablesList.add(self)
+
+        if app.AuthLayer.getOption('app.auth.every_call_permission_check') == True and skip_user_check == False:
+            _name = ''
+            _auth = i.get('auth', same=True)
+            if _auth != None:
+                _name = _auth.name
+
+            assert self.canBeUsedBy(_auth), "access denied (executable={0}, every_call_permission_check=true, user={1})".format(self.getClassNameJoined(), _name)
 
         args = self.getAllArguments()
         vals = i.toDict()

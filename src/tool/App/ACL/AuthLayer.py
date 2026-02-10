@@ -2,7 +2,10 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Argument import Argument
 from pydantic import Field
+from typing import Generator
+from Data.Boolean import Boolean
 from App.ACL.User import User
+from App.ACL.Permissions.ObjectPermission import ObjectPermission
 from App.ACL.GetHash import GetHash
 from App import app
 
@@ -26,7 +29,7 @@ class AuthLayer(Object):
 
         self.log(f"logged as {name}")
 
-        return _usr
+        return user
 
     @classmethod
     def mount(cls):
@@ -44,23 +47,47 @@ class AuthLayer(Object):
             _layer.addUser(User(
                     name = 'root',
                     # 2manywraps
-                    password_hash = GetHash().implementation({'string': default_root_password}).data
+                    password_hash = GetHash().implementation({'string': default_root_password}).items[0].value
                 )
             )
 
         app.mount('AuthLayer', _layer)
+
+    def getPermissions(self, likeness: ObjectPermission) -> Generator[ObjectPermission]:
+        for item in self.getOption('app.auth.permissions'):
+            if item.object_name != likeness.object_name:
+                continue
+
+            if item.user != likeness.user:# and item.user != None:
+                continue
+
+            if item.action != likeness.action:
+                continue
+
+            if item.allow != likeness.allow:
+                continue
+
+            yield item
+
+    def compare_permissions(self, likeness: ObjectPermission):
+        return len(list(app.AuthLayer.getPermissions(likeness))) > 0
 
     @classmethod
     def getSettings(cls):
         return [
             ListArgument(
                 name = 'app.auth.users',
-                default = [
-                    {
-                        'name': 'root',
-                        'password_hash': '123'
-                    }
-                ],
+                default = [],
                 orig = User
+            ),
+            ListArgument(
+                name = 'app.auth.permissions',
+                default = [],
+                orig = ObjectPermission
+            ),
+            Argument(
+                name = 'app.auth.every_call_permission_check',
+                default = False,
+                orig = Boolean
             )
         ]

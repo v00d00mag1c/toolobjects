@@ -110,7 +110,7 @@ class App(Object):
         self.objects.load()
 
     async def runView(self, view) -> None:
-        await view.execute(ArgumentValues(values = self.argv))
+        await view.execute(ArgumentValues(values = self.argv), skip_user_check = True)
 
     def _parse_argv(self, args):
         '''
