@@ -37,6 +37,12 @@ class StorageUnit(Object):
             if _common != None and item.getPath() == _common:
                 return item
 
+    def getFiles(self) -> Generator[File]:
+        for file in self.files:
+            _file = file.model_copy()
+            _file.path = self.getDir()
+            yield _file
+
     def getFirstFile(self) -> File:
         for item in self.files:
             return item

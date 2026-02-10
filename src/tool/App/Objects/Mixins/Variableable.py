@@ -30,7 +30,7 @@ class Variableable:
                 continue
 
             for var in _vars:
-                _new = var.copy()
+                _new = var.model_copy()
                 _new.autoApply()
                 alls.append(_new)
 

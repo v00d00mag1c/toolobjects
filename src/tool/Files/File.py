@@ -47,6 +47,9 @@ class File(Object):
     def getPath(self) -> Path:
         return Path(self.path).joinpath(self.name)
 
+    def get_name_only(self) -> str:
+        return self.name.replace('.'+self.ext, '')
+
     def getContent(self):
         return [self.to_json()]
 
