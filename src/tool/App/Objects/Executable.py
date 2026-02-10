@@ -1,10 +1,11 @@
 from .Object import Object
+from .Validable import Validable
 from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Responses.Response import Response
 from App.Objects.Variableable import Variableable
 from typing import ClassVar
 
-class Executable(Variableable, Object):
+class Executable(Variableable, Validable, Object):
     '''
     Object that has "execute()" interface, single entrypoint.
     
@@ -17,32 +18,6 @@ class Executable(Variableable, Object):
         @property
         def events(self) -> list:
             return ['before_execute', 'after_execute']
-
-    @classmethod
-    def getArguments(cls) -> ArgumentsDict:
-        '''
-        Arguments for validation
-        '''
-        return ArgumentsDict(items = {})
-
-    def getRecursiveArguments(self) -> ArgumentsDict:
-        '''
-        Joins ArgumentDicts from all extended classes
-        '''
-
-        # Takes current ArgumentsDict cuz it can contain properties
-        _list = self.getArguments()
-
-        # Slicing 1 because first arguments already got
-        for _class in self.meta.mro[1:]:
-            if hasattr(_class, 'getArguments') == True:
-                new_arguments = _class.getArguments()
-                if new_arguments == None:
-                    continue
-
-                _list.join(new_arguments)
-
-        return _list
 
     async def implementation(self, i: ArgumentsDict) -> Response:
         '''
@@ -65,7 +40,7 @@ class Executable(Variableable, Object):
         (No, it calls implementation_wrap())
         '''
 
-        args = self.getRecursiveArguments()
+        args = self.getAllArguments()
         passing = args.compareWith(
             inputs = i,
             check_arguments = check_arguments,

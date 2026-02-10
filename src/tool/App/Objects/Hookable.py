@@ -51,7 +51,7 @@ class Hookable():
         def run(self, hook_func: Callable, *args, **kwargs) -> None:
             if asyncio.iscoroutinefunction(hook_func):
                 loop = asyncio.get_running_loop()
-                return loop.create_task(hook_func(*args, **kwargs))
+                task = loop.create_task(hook_func(*args, **kwargs))
 
             return hook_func(*args, **kwargs)
 

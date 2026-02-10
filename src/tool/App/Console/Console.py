@@ -12,20 +12,16 @@ class Console(View):
     View that represents CMD. Runs executable from "i"
     '''
 
-    @staticmethod
-    def printLog(to_print: Log = None):
-        try:
-            print(to_print.toStr())
-        except Exception as e:
-            print(e)
-
     async def implementation(self, i: dict = {}):
         executable = i.get('i')
         assert executable.meta.can_be_executed, 'cannot be executed'
         results = await executable().execute(i = i)
 
-        _json = JSON(data = results.to_json())
-        print(_json.dump(indent = 4))
+        if results == None:
+            self.log('nothing returned')
+        else:
+            _json = JSON(data = results.to_json())
+            print(_json.dump(indent = 4))
 
     @classmethod
     def getArguments(cls) -> ArgumentsDict:

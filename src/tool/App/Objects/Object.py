@@ -8,6 +8,9 @@ class Object(BaseModel, Section, Hookable, Configurable):
     '''
     The base class of app, extended pydantic BaseModel.
     Fields can be flushed to json, also there is Section (log) functions and hooks.
+
+    MRO's:
+    Validable, Configurable, Submodules, Variableable
     '''
 
     self_name: ClassVar[str] = 'Object'

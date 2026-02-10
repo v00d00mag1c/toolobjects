@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Console.Console import Console
+from App.Console.PrintLog import PrintLog
 from .Log import Log
 from .LogKind import LogKind, LogKindEnum
 from .LogSection import LogSection
@@ -30,7 +30,11 @@ class Logger(Object):
 
     def constructor(self):
         if True:
-            self.hooks.add('log', Console.printLog)
+            async def print_log(to_print):
+                items = PrintLog()
+                await items.implementation({'log': to_print})
+
+            self.hooks.add('log', print_log)
 
     def log(self, 
             message: str | Exception, 

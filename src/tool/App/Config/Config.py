@@ -14,14 +14,16 @@ class Config(Object):
     def constructor(self):
         self.comparer = Comparer(
             raise_on_assertions = False,
-            default_on_none = True
+            default_on_none = True,
+            missing_args_inclusion = True
         )
 
     def getSettingsOfEveryObject(self):
         settings = []
 
         for item in app.app.objects.getList():
-            settings.append(item.getAllSettings())
+            for _item in item.getAllSettings():
+                settings.append(_item)
 
         return settings
 
@@ -67,7 +69,9 @@ class Config(Object):
     def updateFile(self) -> None:
         self._stream.seek(0)
 
-        json.dump(self.comparer.toDict(), self._stream, indent=4)
+        # double "toDict()" cuz firstly we get ArgumentsDict and then getting actual dict
+
+        json.dump(self.comparer.toDict().toDict(), self._stream, indent=4)
 
         self._stream.truncate()
 
@@ -82,7 +86,7 @@ class Config(Object):
         self.comparer.values = {}
 
     def get(self, option: str, default: str = None):
-        got = self.comparer.byName(option)
+        got = self.comparer.getByName(option)
         if got == None:
             return default
 
@@ -97,8 +101,6 @@ class Config(Object):
         self.updateFile()
 
     def updateCompare(self):
-        from App import app
-
         self.comparer.compare = DictList(items = self.getSettingsOfEveryObject())
 
     def __del__(self):

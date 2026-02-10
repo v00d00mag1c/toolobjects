@@ -48,8 +48,8 @@ class List(Object):
 
         # adding priority and plugins that are not in priority. Maybe its better to do sort there*?
         for plugin in priority + items:
-            # hardcoded check
-            if plugin.name in ['', '__pycache__', 'Base.py', 'cli.py']:
+            # Hardcoded check. should be changed
+            if plugin.name in ['', '__pycache__', 'Base.py', 'tool.py']:
                 continue
 
             yield plugin.relative_to(path)

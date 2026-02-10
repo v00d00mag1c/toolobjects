@@ -4,7 +4,8 @@ from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Arguments.Objects.Same import Same
 
 class Equate(Act):
-    def getArguments(self) -> ArgumentsDict:
+    @classmethod
+    def getArguments(cls) -> ArgumentsDict:
         return ArgumentsDict.fromList([
             Same(
                 name = 'equate_this'
