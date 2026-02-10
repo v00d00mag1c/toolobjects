@@ -63,14 +63,23 @@ db and storage:
 - [ ] advanced Conditions (val1 % val2 > 0 or smth)
 - [x] storage item.commit()
 - [x] remove displayments
-
+- [x] root_uuid
 - [x] VirtualPath
+- [x] allow to cancel scripts and run them at once
+
+other with objects:
+
+- [ ] module downloading
+- [ ] autostart items
+- [ ] allowed_objects that allowed to link to item
+- [ ] documentation of the fields
 
 auth:
 
 - [x] App.ACL.AuthLayer
 - [x] ItemPermission for dbs
-- [ ] ~~tokens~~
+- [ ] permissions for uuids
+- [x] tokens
 
 modules:
 
@@ -82,6 +91,7 @@ modules:
 - [ ] ~~App.Logger.List~~
 - [ ] ~~App.Logger.GetFile~~
 - [x] Web.RSS.GetFeed
+- [x] Web.RSS Atom support
 - [x] Media.Text.Text
 - [x] Abstract.TODO or Abstract.Checkmarks
 
@@ -102,6 +112,8 @@ web:
 - [ ] websocket connection: set event_index in executable to distinguish variables messages
 - [ ] flutter maybe
 - [ ] displaytype=js_module
+- [x] file uploading
+- [ ] file uploading auth
 
 others:
 
@@ -115,12 +127,9 @@ others:
 - [ ] safety: permissions per every class
 - [ ] restrictedpython when importing
 - [ ] Example: App.Storage.Movement.Import. mount_name is None by default, and if its not, its sets that the name from last part. and maybe its better to set default as lambda function?
-- [ ] App.Storage.Movement.Save and App.Storage.Movement.Export are the same
-- [ ] App.Objects.View can be imagined as App.Objects.Displayment
 - [ ] App.Object.Paginable
-- [ ] storage unit password & encryption)
-- [ ] App.Storage.Movement* acts logically should belong to App.DB*
-- [ ] link with parent=None to link to the db (there is `root_uuid` anyway, this solution is ненаглядно)
+- [ ] storage unit password & encryption
+- [x] App.Storage.Movement* acts logically should belong to App.DB*
 - [ ] LinkInsertion must be changed after flushing from db (but i did workaround with self._get() function)
 - [ ] remove console and to_json differences
 - [ ] storageunit generates hash randomly but maybe hash the common file?

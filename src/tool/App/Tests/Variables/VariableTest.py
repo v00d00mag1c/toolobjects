@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from App.Tests.ExtractorTest import ExtractorTest
+from App.Tests.Variables.ExtractorTest import ExtractorTest
 
 class VariableTest(Test):
     async def _implementation(self, i):
