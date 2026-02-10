@@ -2,6 +2,13 @@
 - [x] App
 - [x] Objects list
 - [x] Views
-- [ ] Arguments
-- [ ] ArgumentsDict
+- [x] Arguments
+- [x] ArgumentsDict
 - [ ] hooks need to be refactored (невозможно дебажить)
+- [ ] submodules
+- [ ] switchextractor
+- [ ] db flushing
+- [ ] queue
+- [ ] storage
+- [ ] storageunit
+- [ ] config

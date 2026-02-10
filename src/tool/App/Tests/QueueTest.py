@@ -13,7 +13,7 @@ class QueueTest(Test):
         args = ArgumentsDict(items = {
             'prestart': '''
             [{
-            "predicate": "App.Arguments.Types.Int", 
+            "predicate": "App.Arguments.Types.Int.Int", 
             "build": {"name": "random", "current": 0}
             }]
             ''',
@@ -29,21 +29,23 @@ class QueueTest(Test):
                 "predicate": "App.Operations.Equate.Equate",
                 "arguments": {
                     "link": {
-                        "direct_value": "$0",
+                        "direct_value": "$0"
                     },
                     "to": {
-                        "direct_value": "#0.data.0.content.number",
+                        "direct_value": "#0.data.0.content.number"
                     }
                 }
-            },
-            {
+            }]'''
+        })
+        '''
+                    {
                 "predicate": "Web.URL.URL",
                 "arguments": {
                     "db": "content",
                     "url": {
                         "value": "https://otvet.imgsmail.ru/download/21918917_b3d8927e6c78d2446cb2b924c1a5815f_800.jpg?r=x",
                         "replacements": [{
-                            "position": (87, 88),
+                            "position": [87, 88],
                             "value": "#0.current"
                         }]
                     }
@@ -57,7 +59,6 @@ class QueueTest(Test):
                         "direct_value": "$2.data.0"
                     }
                 }
-            }]
-            '''
-        })
+            }
+        '''
         return await runs.execute(args)

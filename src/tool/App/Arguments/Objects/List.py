@@ -21,9 +21,11 @@ class List(Argument):
             if JSON.isStringValidJson(original_value) == True:
                 original_value = JSON.fromText(original_value).data
 
-        print(original_value)
         if self.orig == None:
             return original_value
+
+        if original_value == None:
+            return None
 
         for item in original_value:
             _orig = self.orig

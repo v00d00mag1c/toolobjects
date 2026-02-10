@@ -1,8 +1,9 @@
 from .Object import Object
 from App.Arguments.ArgumentsDict import ArgumentsDict
 from App.Responses.Response import Response
+from App.Objects.Variableable import Variableable
 
-class Executable(Object):
+class Executable(Variableable, Object):
     '''
     Object that has "execute()" interface, single entrypoint.
     

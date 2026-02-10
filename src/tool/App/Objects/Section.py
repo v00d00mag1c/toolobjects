@@ -6,7 +6,7 @@ class Section:
         return self.meta.name
 
     @property
-    def append_prefix(self): # -> LogPrefix
+    def append_prefix(self): # -> dict[str, int]
         return None
 
     def log(self, *args, **kwargs):

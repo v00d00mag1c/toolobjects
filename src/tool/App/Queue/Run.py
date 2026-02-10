@@ -38,23 +38,9 @@ class Run(Act):
         ])
 
     async def implementation(self, i: ArgumentsDict):
-        prestart = i.get('prestart')
-        items = i.get('items')
-        output = i.get('output')
+        queue = Queue()
+        queue.output = i.get('output')
 
-        queue = Queue(output = output)
-        iterator = 0
-        for i in range(0, len(prestart)):
-            item = items[i]
-            predicate = item.getPredicate(**item.getArguments())
-
-            queue.prestart.append(predicate)
-
-        for i in range(0, len(items)):
-            item = items[i]
-            predicate = item.getPredicate()
-            arguments = item.getArguments()
-
-            queue.items.append(item.execute())
+        await queue.run(i.get('prestart'), i.get('items'))
 
         return queue.getOutput()

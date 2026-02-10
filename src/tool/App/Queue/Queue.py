@@ -22,3 +22,17 @@ class Queue(Object):
 
     def getOutput(self):
         pass
+
+    async def run(self, prestart: list, items: list):
+        for item in prestart:
+            _item = item.getPredicate()
+            self.prestart.append(_item(**item.getBuildArguments()))
+
+        iterator = 0
+        for item in items:
+            item._queue = self
+            item._id = iterator
+
+            self.items.append(await item.run())
+
+            iterator += 1
