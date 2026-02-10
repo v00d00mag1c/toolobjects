@@ -22,7 +22,12 @@
                 {% if item.root_uuid %}
                     <tr>
                         <td>Root</td>
-                        <td>{{ item.root_uuid }}</td>
+                        <td><a href="?i=App.Objects.Object&uuids={{ item.root_uuid }}">{{ item.root_uuid }}</a></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td></td>
+                        <td><a href="/?i=App.Storage.Item.Get&create_root=1&name={{item.name}}">Create root collection</a></td>
                     </tr>
                 {% endif %}
                 {% if item.allowed_objects %}

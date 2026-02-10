@@ -18,7 +18,8 @@ class Search(Displayment):
         operator = '>'
         params = {'q': query.get('q'), 
                   'storage': storage,
-                  'only_public': query.get('public') == 'on',
+                  'only_public': query.get('only_public') == 'on',
+                  'q.in_description': query.get('q.in_description') == 'on',
                   'limit': per_page,
                   'conditions': [],
                   'offset_conditions': [],
@@ -30,6 +31,7 @@ class Search(Displayment):
 
         if invert:
             operator = '<'
+            params['invert'] = True
 
         if after not in bad:
             params['offset_conditions'].append(Condition(
@@ -75,7 +77,8 @@ class Search(Displayment):
             'items': objs,
             'last_uuid': last_uuid,
             'after_url': self._to_url(_url2),
-            'per_page': per_page
+            'per_page': per_page,
+            'params': params
         })
 
         if after != None:

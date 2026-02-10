@@ -66,7 +66,7 @@ db and storage:
 - [x] storage item.commit()
 - [x] remove displayments
 - [x] root_uuid
-- [ ] App.Storage.CreateRoot
+- [x] App.Storage.CreateRoot
 - [x] VirtualPath
 - [x] allow to cancel scripts and run them at once
 

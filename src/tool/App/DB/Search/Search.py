@@ -27,6 +27,11 @@ class Search(Act):
                 orig = String,
                 default = None
             ),
+            Argument(
+                name = 'q.in_description',
+                orig = Boolean,
+                default = False
+            ),
             ListArgument(
                 name = 'conditions', # Conditions that will be applied before count()
                 default = [],
@@ -93,8 +98,9 @@ class Search(Act):
                 _item = link.getItem()
                 if _item == None:
                     self.log(f"{link.getId()}: not exists in this db")
+                    continue
 
-                for linked_item in link.getItem().toPython().getLinked():
+                for linked_item in _item.toPython().getLinked():
                     if linked_item.item.hasDb() == False:
                         continue
 
@@ -139,7 +145,7 @@ class Search(Act):
 
         q = i.get('q')
         if q and len(q) > 0:
-            _query.addCondition([Condition(
+            _conditions = [Condition(
                 val1 = Value(
                     column = 'content',
                     json_fields = ['local_obj', 'name']
@@ -158,8 +164,23 @@ class Search(Act):
                 val2 = Value(
                     value = q
                 )
-            )
-            ])
+            )]
+
+            if i.get('q.in_description'):
+                for key in ['local_obj', 'obj']:
+                    _conditions.append(Condition(
+                        val1 = Value(
+                            column = 'content',
+                            json_fields = ['local_' + key, 'description']
+                        ),
+                        operator = 'contains',
+                        val2 = Value(
+                            value = q
+                        )
+                    ))
+
+            # "OR"
+            _query.addCondition(_conditions)
 
         only_objects = i.get('only_object')
         if only_objects and len(only_objects) > 0:

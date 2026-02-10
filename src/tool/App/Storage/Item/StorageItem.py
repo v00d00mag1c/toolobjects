@@ -27,7 +27,7 @@ class StorageItem(Object):
     db: dict = Field(default = {}, repr = False)
     # /input
 
-    root_uuid: Optional[int] = Field(default = None)
+    root_uuid: Optional[int | str] = Field(default = None)
     allowed_objects: Optional[list[str]] = Field(default = None)
     forbidden_objects: Optional[list[str]] = Field(default = None)
 

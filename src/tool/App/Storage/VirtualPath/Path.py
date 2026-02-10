@@ -61,8 +61,14 @@ class Path(Object):
         if len(self.parts) == 0:
             _root_uuid = root.root_uuid
             if _root_uuid != None:
+                _item = ''
+                if root_name in _root_uuid:
+                    _item = _root_uuid
+                else:
+                    _item = root_name + '_' + _root_uuid
+
                 return self.get_dict({
-                    'linked_to': root_name + '_' + _root_uuid
+                    'linked_to': _item
                 })
             else:
                 self.log('root_uuid is None, so returning everything')

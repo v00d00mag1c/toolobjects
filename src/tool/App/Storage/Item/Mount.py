@@ -18,7 +18,7 @@ class Mount(Act):
             Argument(
                 name = 'to_config',
                 orig = Boolean,
-                default = False
+                default = True
             )
         ])
 
@@ -31,5 +31,8 @@ class Mount(Act):
         app.Storage.append(_item)
 
         if i.get('to_config'):
-            # TODO
-            app.Config.get('storage.items')
+            _conf_val = app.Config.getItem().get('storage.items', raw = True)
+            if _conf_val == None:
+                _conf_val = []
+            _conf_val.append(_item.to_minimal_json())
+            app.Config.getItem().set('storage.items', _conf_val)

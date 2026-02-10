@@ -11,14 +11,14 @@ Search
                 <tr>
                     <td></td>
                     <td>
-                        <input placeholder="Query" type="text" name="q" value="{{current_url.query.get('q') or ''}}">
+                        <input placeholder="Query" type="text" name="q" value="{{params.get('q') or ''}}">
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                         <label>
-                            <input type="checkbox" name="search_in_description">
+                            <input type="checkbox" name="q.in_description" {% if params.get('q.in_description') %}checked{%endif%}>
                             in description
                         </label>
                     </td>
@@ -26,19 +26,19 @@ Search
                 <tr>
                     <td>In storage</td>
                     <td>
-                        <input type="text" name="storage" value="{{current_url.query.get('storage') or ''}}">
+                        <input type="text" name="storage" value="{{params.get('storage') or ''}}">
                     </td>
                 </tr>
                 <tr>
                     <td>Public only</td>
                     <td>
-                        <input type="checkbox" name="public" {% if current_url.query.get('public') == 'on' %}checked{% endif %}>
+                        <input type="checkbox" name="only_public" {% if params.get('only_public') %}checked{% endif %}>
                     </td>
                 </tr>
                 <tr>
                     <td>Descend</td>
                     <td>
-                        <input type="checkbox" name="invert" {% if current_url.query.get('invert') == 'on' %}checked{% endif %}>
+                        <input type="checkbox" name="invert" {% if params.get('invert') %}checked{% endif %}>
                     </td>
                 </tr>
                 <tr>
@@ -50,13 +50,13 @@ Search
                 <tr>
                     <td>Object name</td>
                     <td>
-                        <input type="text" name="only_object" value="{{current_url.query.get('only_object') or ''}}">
+                        <input type="text" name="only_object" value="{{params.get('only_object') or ''}}">
                     </td>
                 </tr>
             </tbody>
         </table>
         <input type="hidden" name="i" value="App.DB.Search">
-        <input type="hidden" name="linked_to" value="{{current_url.query.get('linked_to') or ''}}">
+        <input type="hidden" name="linked_to" value="{{params.get('linked_to') or ''}}">
         <input type="hidden" name="after" value="{{after}}">
 
         <input type="submit" value="Search">  

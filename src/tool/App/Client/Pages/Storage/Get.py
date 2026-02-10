@@ -2,6 +2,7 @@ from App.Client.Displayment import Displayment
 from Media.Files.FileSize import FileSize
 from App import app
 from Data.Types.JSON import JSON
+from App.Storage.Item.CreateRoot import CreateRoot
 import aiohttp
 
 class Get(Displayment):
@@ -23,6 +24,12 @@ class Get(Displayment):
             'item': item,
             'FileSize': FileSize,
         })
+
+        if query.get('create_root') == '1':
+            if item.root_uuid == None:
+                await CreateRoot().execute({
+                    'item': item
+                })
 
         if query.get('calculate_db') == '1':
             self.context.update({
