@@ -2,7 +2,7 @@ from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Misc.Increment import Increment
-from App.Objects.Index.Namespace import Namespace
+from App.Objects.Index.Namespaces.Namespace import Namespace
 from App.Objects.Arguments.Argument import Argument
 from pathlib import Path
 from pydantic import ConfigDict

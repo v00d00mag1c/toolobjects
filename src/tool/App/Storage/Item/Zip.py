@@ -36,6 +36,11 @@ class Zip(Act):
                 orig = String,
                 default = None
             ),
+            Argument(
+                name = 'zip_password',
+                default = None,
+                orig = String
+            ),
             LiteralArgument(
                 name = 'compression',
                 values = ['ZIP_DEFLATED', 'ZIP_STORED', 'ZIP_BZIP2', 'ZIP_LZMA'],
@@ -73,6 +78,9 @@ class Zip(Act):
                 compression = zipfile.ZIP_LZMA
 
         zf = zipfile.ZipFile(save_file_path, "w", compression=compression)
+        if i.get('zip_password') != None:
+            zf.setpassword(bytes(i.get('zip_password')))
+
         with zf as zip_file:
             for file in storage.storage_adapter.get_all_files():
                 zip_file.write(file, storage.storage_adapter.get_relative_path(file))

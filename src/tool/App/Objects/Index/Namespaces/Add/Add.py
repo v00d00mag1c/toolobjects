@@ -6,7 +6,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Types.Boolean import Boolean
 from Data.Types.String import String
 
-from App.Objects.Index.Namespace import Namespace
+from App.Objects.Index.Namespaces.Namespace import Namespace
 from App import app
 
 class Add(Act):
@@ -15,13 +15,11 @@ class Add(Act):
         return ArgumentDict(items = [
             Argument(
                 name = 'name',
-                orig = String,
-                assertions = [NotNone()]
+                orig = String
             ),
             Argument(
                 name = 'add_path',
-                orig = String,
-                assertions = [NotNone()]
+                orig = String
             ),
             Argument(
                 name = 'to_config',
@@ -40,18 +38,27 @@ class Add(Act):
             )
         ])
 
+    @staticmethod
+    def check_confirm(val: bool):
+        assert val == True, 'The installed plugins will have full access to your system. If you trust these files, set the \'confirm\' as true'
+
     def _implementation(self, i):
+        assert True, 'FromDir or FromZip'
+
+    def _install(self, i):
         _name = i.get('name')
-        assert i.get('confirm') == True, 'The installed plugins will have full access to your system. If you trust this URL, set the \'confirm\''
+
         assert app.ObjectsList.has_namespace_with_name(_name) == False, 'Namespace with name {0} already exists'.format(_name)
 
         _new = Namespace(
-            root = i.get('add_path') + '\\objects',
+            root = i.get('add_path'),
             name = _name
         )
         _new.load()
 
         app.ObjectsList.namespaces.append(_new)
+
+        self.log('added namespace {0}'.format(_name))
 
         if i.get('to_config') == True:
             _conf_val = app.Config.getItem().get('objects.index.namespaces', raw = True)

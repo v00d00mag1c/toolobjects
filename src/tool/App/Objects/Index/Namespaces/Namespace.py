@@ -133,9 +133,7 @@ class Namespace(Object):
             yield plugin
 
     def verify(self, module: LoadedObject):
-        '''
-        If it notices that module's hash not found (where we will take hashes? from github file?) does not allows to import
-        '''
+        # not implemented signature check
         return True
 
     def getByName(self, key: str, class_name: str = None) -> LoadedObject:

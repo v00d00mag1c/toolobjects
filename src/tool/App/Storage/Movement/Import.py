@@ -10,7 +10,6 @@ from App.Objects.Responses.AnyResponse import AnyResponse
 from App import app
 from pathlib import Path
 import zipfile
-import datetime
 
 class Import(Executable):
     '''
@@ -28,6 +27,11 @@ class Import(Executable):
             ),
             Argument(
                 name = 'mount_name',
+                default = None,
+                orig = String
+            ),
+            Argument(
+                name = 'zip_password',
                 default = None,
                 orig = String
             ),
@@ -61,7 +65,10 @@ class Import(Executable):
             if _tmp.exists() == False:
                 _tmp.mkdir(exist_ok = True)
                 with zipfile.ZipFile(path, "r") as zip_ref:
-                    zip_ref.extractall(_tmp)
+                    if i.get('zip_password') == None:
+                        zip_ref.extractall(_tmp)
+                    else:
+                        zip_ref.extractall(_tmp, pwd = i.get('zip_password'))
             else:
                 self.log('tmp export dir with this name is already exists')
 
