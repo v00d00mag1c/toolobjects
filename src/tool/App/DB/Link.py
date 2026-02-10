@@ -28,7 +28,13 @@ class Link(Act):
                 default = 'link',
                 orig = String,
                 values = ['link', 'unlink']
-            )
+            ),
+            ListArgument(
+                name = 'role',
+                orig = String,
+                assertions = [NotNoneAssertion()],
+                default = []
+            ),
         ])
 
     async def implementation(self, i):
@@ -40,6 +46,7 @@ class Link(Act):
             _items.append(item.uuid)
 
         items = link_to._adapter.ObjectAdapter.getByIds(_items)
+        _role = i.get('role')
 
         for item in items:
             _f = link_to.toPython()
@@ -47,8 +54,8 @@ class Link(Act):
 
             match (i.get('act')):
                 case 'link':
-                    _f.link(_s)
+                    _f.link(_s, _role)
                 case 'unlink':
-                    _f.unlink(_s)
+                    _f.unlink(_s, _role)
 
             self.log("{0}ed {1} and {2}".format(i.get('act'), _f.getDbId(), _s.getDbId()))

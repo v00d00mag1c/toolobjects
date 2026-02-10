@@ -19,5 +19,8 @@ class Increment(Object):
     def getCount(self):
         return self.value
 
+    def move(self, new: int):
+        self.value = new
+
     def null(self):
         self.value = 0

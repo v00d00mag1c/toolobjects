@@ -13,8 +13,6 @@ from typing import Any, Generator
 import json
 
 class SQLAlchemy(ConnectionAdapter):
-    _links_count: int = 0
-
     class QueryAdapter(Query):
         _model: Any = None
         _query: Any = None
@@ -131,13 +129,13 @@ class SQLAlchemy(ConnectionAdapter):
 
                 return _query
 
-            def toDB(self, owner, link: CommonLink):
+            def toDB(self, owner, link: CommonLink, order: Increment):
                 assert link.item.hasDb(), 'link item is not flushed'
                 assert self.getStorageItemName() == link.item._db.getStorageItemName(), 'cross db'
 
                 self.owner = owner.uuid
                 self.target = link.item.getDbId()
-                self.order = self_adapter._links_count.getIndex()
+                self.order = order.getIndex()
                 if len(link.role) > 0:
                     self.role = json.dumps(link.role)
 
@@ -157,9 +155,19 @@ class SQLAlchemy(ConnectionAdapter):
             __tablename__ = 'objects'
             _adapter = self_adapter
             _orig = None
+            order_index = None
 
             uuid = Column(Integer(), primary_key=True)
             content = Column(String(), nullable=False)
+
+            def get_order_index(self):
+                if self.order_index == None:
+                    self.order_index = Increment(value = 0)
+
+                    if self.uuid != None:
+                        self.order_index.move(_session.query(_LinkAdapter).filter(_LinkAdapter.owner == self.uuid).count())
+
+                return self.order_index
 
             def toDB(self, obj: Object):
                 _session.add(self)
@@ -199,7 +207,7 @@ class SQLAlchemy(ConnectionAdapter):
 
             def addLink(self, link: CommonLink):
                 _link = _LinkAdapter()
-                _link.toDB(self, link)
+                _link.toDB(self, link, self.get_order_index())
 
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
@@ -247,7 +255,7 @@ class SQLAlchemy(ConnectionAdapter):
         self._set_id_gen()
         self._get_engine(connection_string)
         self._init_models()
-        self._links_count = Increment(value = self._session.query(self.LinkAdapter).count())
+        # self._links_count = Increment(value = self._session.query(self.LinkAdapter).count())
 
     def _get_engine(self, connection_str: str):
         from sqlalchemy import create_engine
