@@ -41,6 +41,7 @@ class BaseModel(Model, Section):
 
         _field = getattr(self, field, default)
         if hasattr(_field, '_link_insertion_type') == True:
+            _field.setDb(self.getDb())
             return _field.unwrap()
 
         return _field

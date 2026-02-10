@@ -4,7 +4,7 @@ from App.Objects.Arguments.Argument import Argument
 from Data.String import String
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.VirtualPath.Path import Path as VirtualPath
-from App.DB.Search import Search
+from App.DB.Search.Search import Search
 from App import app
 
 class Navigate(ExplorerProtocol):

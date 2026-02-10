@@ -1,4 +1,5 @@
 from App.Objects.Object import Object
+from App.Objects.Misc.NameContainable import NameContainable
 from pydantic import Field, computed_field
 from typing import Any
 from pathlib import Path
@@ -10,7 +11,7 @@ import importlib, sys
 class NotAnObjectError(Exception):
     pass
 
-class LoadedObject(Object):
+class LoadedObject(NameContainable):
     '''
     Filepath that may contain module
     '''
@@ -110,16 +111,19 @@ class LoadedObject(Object):
         for _item in _settings:
             app.Config.getItem(role = _item.role).append_compare(_item)
 
-    @computed_field
-    @property
-    def name(self) -> str:
-        '''
-        property to get DictList working
-        '''
+    def is_name_equals(self, name: str) -> str:
+        _parts = self.getTitleWithClass()
+        _name_parts = name.split('.')
+        _common = name == '.'.join(_parts)
 
+        # If the directory of plugin is equals to its name, return it like main plugin of this dir (__init__.py or something)
+        if self.title == _parts[-2]:
+            return name == '.'.join(_parts[:-1]) or _common
+
+        return _common
+
+    def get_name_for_dictlist(self):
         return '.'.join(self.getTitleWithClass())
-
-        return self._module.getClassNameJoined()
 
     @property
     def is_inited(self) -> bool:

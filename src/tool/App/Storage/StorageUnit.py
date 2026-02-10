@@ -33,7 +33,7 @@ class StorageUnit(Object):
     def getCommonFile(self) -> File:
         _common = Path(self.common)
         for item in self.files:
-            if _common != None and item.getPath() == _common:
+            if _common != None and item.getPath(self.get_root()) == _common:
                 return item
 
     def getFiles(self) -> Generator[File]:

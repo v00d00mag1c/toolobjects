@@ -38,10 +38,11 @@ class Namespace(Object):
     def load(self):
         for item in self.scan():
             try:
+                _name = item.get_name_for_dictlist()
                 assert self.verify(item)
                 assert self.isAlreadyLoaded(item) == False
 
-                self._names.append(item.name)
+                self._names.append(_name)
 
                 if self.load_once == True or item.is_prioritized == True:
                     _module = item.loadModule()
@@ -52,12 +53,12 @@ class Namespace(Object):
 
                     self.noticeModuleLoaded(item)
                 else:
-                    self.log(f"{item.name}: loaded but not imported", role=['objects_loading', 'module_skipped'])
+                    self.log(f"{_name}: loaded but not imported", role=['objects_loading', 'module_skipped'])
             except AssertionError as exception:
                 self.log_error(exception, role=['objects_loading'])
             except Exception as exception:
                 item.is_success = False
-                self.log_error(f"{item.name} not imported", role=['objects_loading'])
+                self.log_error(f"{_name} not imported", role=['objects_loading'])
                 self.log_error(exception, role=['objects_loading'])
 
                 if isinstance(exception, AssertionError) == False and isinstance(exception, ModuleNotFoundError) == False and isinstance(exception, NotAnObjectError) == False:
@@ -74,9 +75,8 @@ class Namespace(Object):
         Scans self.root and returns as Generator
         '''
 
-        # Wont output because Logger is not loaded at this moment
-        # TODO not load from Custom
-        self.log(f"Namespace {self.name}, loading objects from dir {self.root}", role = ['objects_loading'])
+        # wont output because Logger is not loaded at this moment
+        self.log("Namespace {0}, loading objects from dir {1}".format(self.name, self.root), role = ['objects_loading'])
 
         global_path = Path(self.root)
         _side_names = ['', '__init__.py', '__pycache__', 'Base.py', 'tool.py', '.gitkeep']
@@ -92,6 +92,7 @@ class Namespace(Object):
             _path = plugin.relative_to(global_path)
             _str_path = str(_path)
             _skip = False
+            # "ignore_dirs" param
             for _ignore in self.ignore_dirs:
                 if _str_path.startswith(_ignore):
                     _skip = True
@@ -105,12 +106,11 @@ class Namespace(Object):
             if _skip == True:
                 continue
 
-            # "ignore_dirs" param
-
             _obj = LoadedObject(
                 path = _str_path,
                 root = self.root
             )
+
             yield _obj
 
             if self.load_submodules == True and _obj.hasModuleLoaded():
@@ -144,8 +144,9 @@ class Namespace(Object):
 
         return _item
 
-    def getItems(self) -> list:
-        return self.items.items
+    def getItems(self) -> Generator[LoadedObject]:
+        for item in self.items.iterate():
+            yield item
 
     def noticeModuleLoaded(self, item: LoadedObject):
         _role = ['objects_loading']
@@ -154,10 +155,10 @@ class Namespace(Object):
         if item.is_submodule:
             _role.append('submodule')
 
-        self.log(f"{item.getModule().self_name.lower()} {item.name}: loaded and imported", role=_role)
+        self.log(f"{item.getModule().self_name.lower()} {item.get_name_for_dictlist()}: loaded and imported", role=_role)
 
     def isAlreadyLoaded(self, item: LoadedObject) -> bool:
-        return item.name in self._names
+        return item.get_name_for_dictlist() in self._names
 
     @property
     def append_prefix(self) -> LogPrefix:

@@ -1,5 +1,6 @@
 from .Assertions.Assertion import Assertion
 from App.Objects.Object import Object
+from App.Objects.Misc.NameContainable import NameContainable
 from typing import Any, List, Literal, Callable, Generator
 from pydantic import Field, computed_field, field_serializer
 from App.Objects.Locale.Documentation import Documentation
@@ -7,7 +8,7 @@ from App.Storage.StorageUUID import StorageUUID
 from Data.JSON import JSON
 from App.Objects.Index.ModuleData import ModuleData
 
-class Argument(Object):
+class Argument(NameContainable):
     name: str = Field()
     orig: list[Any] | Any = Field(default = None)
     default: Any | Callable = Field(default = None)
@@ -24,6 +25,9 @@ class Argument(Object):
     documentation: Documentation = Field(default = None)
 
     current: Any = Field(default=None)
+
+    def get_name_for_dictlist(self) -> str:
+        return self.name
 
     def getValue(self, original_value: Any | str) -> Any:
         if original_value == None and self.default != None:

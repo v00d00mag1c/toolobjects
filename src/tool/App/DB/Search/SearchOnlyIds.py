@@ -1,5 +1,5 @@
 from App.Objects.Act import Act
-from App.DB.Search import Search
+from App.DB.Search.Search import Search
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.StorageUUID import StorageUUID

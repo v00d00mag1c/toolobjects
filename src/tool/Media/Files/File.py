@@ -44,7 +44,10 @@ class File(Object):
 
         return _upper.parent
 
-    def getPath(self) -> Path:
+    def getPath(self, path_override: str = None) -> Path:
+        if path_override != None:
+            return Path(path_override).joinpath(self.name)
+
         return Path(self.path).joinpath(self.name)
 
     def get_name_only(self) -> str:

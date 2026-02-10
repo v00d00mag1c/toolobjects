@@ -1,6 +1,6 @@
 from App.Objects.Test import Test
 from Data.Random.GetRandomInt import GetRandomInt
-from App.DB.Search import Search
+from App.DB.Search.Search import Search
 from App import app
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
