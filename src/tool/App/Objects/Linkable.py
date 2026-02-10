@@ -1,11 +1,20 @@
 from pydantic import Field
 from App.Objects.Object import Object
+from App.Objects.Link import Link
 
 class Linkable:
     '''
-    Object that can contain links to other objects (?)
+    Object that can contain links to other objects
     '''
-    class Links(Object):
-        items: list = Field()
 
-    links: Links = Field(default=None)
+    links: list[Link] = Field(default=[])
+
+    def addLink(self, item: Link) -> None:
+        #self.links.append(item)
+        pass
+
+    def addCommonLink(self, item: Link) -> None:
+        pass
+
+    def unlink(self, item: Link, type: int) -> None:
+        pass

@@ -7,7 +7,7 @@
 - [ ] hooks need to be refactored (its impossible to debug this)
 - [ ] switchextractor
 - [x] queue
-- [ ] queue: repeat
+- [ ] queue: repeat (or Queue: settings)
 - [ ] App.DB.Flush
 - [ ] App.Storage.ObjectsStorage
 - [ ] App.Storage.StorageUnit
@@ -19,3 +19,4 @@
 - [ ] App.Queue.ValueWithReplaces
 - [ ] Data.Text
 - [ ] App.Console.PrintLog
+- [ ] App.Objects.Submodules.Submodule, App.Objects.Configurable.Configurable: MROThing

@@ -2,7 +2,7 @@ from typing import Generator
 
 class Configurable:
     '''
-    Allows to define settings of Object (App.Arguments.Argument*)
+    Allows to define settings of Object (that are App.Arguments.Argument)
     '''
 
     @classmethod

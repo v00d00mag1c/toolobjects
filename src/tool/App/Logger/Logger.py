@@ -7,6 +7,10 @@ from .LogPrefix import LogPrefix
 import traceback
 
 class Logger(Object):
+    '''
+    Class that prints messages (Log's) into hooked functions
+    '''
+ 
     class _Hooks(Object._Hooks):
         @property
         def events(self) -> list:

@@ -3,14 +3,10 @@ from typing import Any
 
 class Response(Object):
     '''
+    Object for wrapping responses from Executable. Must be extended with unique field
+
     class fields must not be used directly
     '''
-
-    def toDict(self) -> Any:
-        '''
-        Returns data in json serializable format
-        '''
-        return self.data
 
     def toData(self) -> Any:
         pass
