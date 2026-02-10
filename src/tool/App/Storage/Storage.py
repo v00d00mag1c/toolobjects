@@ -50,7 +50,8 @@ class Storage(Object):
                 name = 'tmp',
                 db_type = 'App.DB.Adapters.SQLite',
                 db = {
-                    'content': ':memory:'
+                    'content': ':memory:',
+                    'check_same_thread': False
                 }
             ),
             StorageItem(

@@ -92,7 +92,7 @@ class App(Object):
                     path = 'App\\Objects\\Index\\ObjectsList.py'
                 ),
                 LoadedObject(
-                    path = 'App\\Objects\\Index\\ExecutablesList.py'
+                    path = 'App\\Objects\\Threads\\ThreadsList.py'
                 ),
                 LoadedObject(
                     path = 'App\\Storage\\Storage.py'
@@ -107,7 +107,7 @@ class App(Object):
                     path = 'App\\Objects\\Index\\PostRun.py'
                 ),
                 LoadedObject(
-                    path = 'App\\Daemons\\List\\List.py'
+                    path = 'App\\Objects\\Daemons\\List.py'
                 )
             ]
         )

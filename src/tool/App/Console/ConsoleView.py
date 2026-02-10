@@ -4,6 +4,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Executable import Executable
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Responses.NoneResponse import NoneResponse
+from App.Objects.Threads.ExecutionThread import ExecutionThread
 from Data.JSON import JSON
 from Data.Boolean import Boolean
 from Data.String import String
@@ -25,7 +26,12 @@ class ConsoleView(View):
 
         self._auth(i)
         pre_i = i.get('pre_i')()
-        results = await pre_i.execute(i)
+
+        thread = ExecutionThread(id = 0)
+        thread.set(pre_i.execute(i))
+        results = await thread.get()
+        thread.end()
+        #results = await pre_i.execute(i)
 
         self._print_call(results, i)
 

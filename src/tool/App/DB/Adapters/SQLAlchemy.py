@@ -286,6 +286,7 @@ class SQLAlchemy(ConnectionAdapter):
     def _init_hook(self):
         self._set_id_gen()
         self._get_engine(self._get_sqlalchemy_connection_string_with_protocol())
+        self._create_session()
         self._before_init_models()
         self._init_models()
         # self._links_count = Increment(value = self._session.query(self.LinkAdapter).count())
@@ -298,9 +299,12 @@ class SQLAlchemy(ConnectionAdapter):
 
     def _get_engine(self, connection_str: str):
         from sqlalchemy import create_engine
-        from sqlalchemy.orm import Session
 
         self._engine = create_engine(connection_str)
+
+    def _create_session(self):
+        from sqlalchemy.orm import Session
+
         self._session = Session(self._engine, expire_on_commit=False)
 
     def getSession(self):

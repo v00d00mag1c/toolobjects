@@ -22,6 +22,5 @@ Experimental framework with object organization
 - [Validation](docs/objects/validation.md)
 - [Auth](docs/auth/acl.md)
 - [Queue](docs/other/queue.md)
-- [Daemons](docs/other/daemons.md)
 - [Download manager](docs/other/download_manager.md)
 - [Objects](docs/api)

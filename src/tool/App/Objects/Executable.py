@@ -4,6 +4,7 @@ from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Responses.Response import Response
 from App.Objects.Responses.NoneResponse import NoneResponse
 from App.Objects.Mixins.Variableable import Variableable
+from App.Objects.Threads.ExecutionThread import ExecutionThread
 from App.Logger.LogPrefix import LogPrefix
 from typing import ClassVar, Optional
 from pydantic import Field
@@ -13,10 +14,10 @@ import asyncio
 
 class Executable(Object, Variableable, Validable):
     id: int = 0
-    event_index: int = Field(default = None)
     self_name: ClassVar[str] = 'Executable'
-    #internal_use: bool = Field(default = True)
+    thread: Optional[ExecutionThread] = Field(default = None)
     args: Optional[dict] = Field(default = {})
+
     _unserializable = ['id', 'variables', 'self_name', 'event_index']
 
     @classmethod
@@ -64,9 +65,6 @@ class Executable(Object, Variableable, Validable):
 
         self.log(f"Calling {self.getClassNameJoined()}", role = ['executable.call'])
 
-        if app.ExecutablesList != None:
-            app.ExecutablesList.add(self)
-
         if skip_user_check == False:
             if app.AuthLayer.getOption('app.auth.every_call_permission_check') == True:
                 _name = ''
@@ -85,9 +83,6 @@ class Executable(Object, Variableable, Validable):
         # assert response != None, 'implementation() returned nothing'
 
         await self.awaitTriggerHooks('after_execute', i = passing)
-
-        if app.ExecutablesList != None:
-            app.ExecutablesList.remove(self)
 
         if response == None:
             return NoneResponse()
