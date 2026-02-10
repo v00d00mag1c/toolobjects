@@ -49,6 +49,10 @@ class SQLAlchemyAdapter(ConnectionAdapter):
             def getById(cls, id: int):
                 return session.query(cls).filter(cls.uuid == id).first()
 
+            @classmethod
+            def getQuery(cls):
+                return session.query(cls)
+
             def getLinks(self) -> Generator[CommonLink]:
                 links = session.query(self.Link).filter(self.Link.owner == self.uuid)
                 for link in links:

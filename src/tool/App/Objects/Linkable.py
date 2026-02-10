@@ -1,14 +1,15 @@
 from pydantic import Field, model_serializer, BaseModel
 from App.Objects.Link import Link
 from App.Objects.LinkInsertion import LinkInsertion
+from collections import deque
 
 class Linkable(BaseModel):
     '''
     Object that can contain links to other objects
     '''
 
-    #links: list[Link] = Field(default=[], exclude = True, repr = False)
-    links: list[Link] = []
+    links: list[Link] = Field(default=[], exclude = True, repr = False)
+    #links: deque[Link] = Field(deque(), exclude = True)
 
     def link(self, object, role: list = []):
         _link = Link(
@@ -30,6 +31,9 @@ class Linkable(BaseModel):
         self.links.append(link)
 
         return link
+
+    def isLinked(self, link: BaseModel) -> bool:
+        return True
 
     def getLinkedItems(self) -> list[Link]:
         '''

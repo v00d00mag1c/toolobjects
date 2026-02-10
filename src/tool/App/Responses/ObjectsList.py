@@ -6,6 +6,10 @@ from typing import Generator
 
 class ObjectsList(Response):
     items: list[Object] = Field(default = [])
+    supposed_to_be_single: bool = Field(default = False)
+
+    def append(self, item: Object):
+        self.items.append(item)
 
     def getItems(self) -> Generator[Object]:
         for item in self.items:

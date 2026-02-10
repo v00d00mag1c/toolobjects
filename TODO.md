@@ -40,7 +40,9 @@
 - [ ] Configurable: role to argument 'env' or 'config'
 - [ ] db flush: export between dbs
 - [ ] objectlist adapter
-- [ ] pathes like {db name}:/{object}/{object id or name}
+- [x] VirtualPath
+- [ ] VirtualPath pagination (adapter navigation also)
+- [ ] DisplayType (?) submodule=displayment
 - [x] Data.XML
 - [x] Files.FileManager.Navigate
 - [ ] File.FileTypes.Image
@@ -51,5 +53,4 @@
 - [ ] App.ACL.Auth ?
 - [ ] Web.RSS.GetFeed
 - [ ] Web.DownloadManager.Manager
-- [ ] DisplayType (?) submodule=displayment
 - [ ] Data.Text

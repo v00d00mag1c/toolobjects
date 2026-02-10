@@ -44,6 +44,15 @@ class ArgumentValues(Object):
 
         return table
 
+    def check(self) -> bool:
+        '''
+        check assertions or something
+        '''
+
+        self.toDict()
+
+        return True
+
     def get(self, name: str, default: Any = None, same: bool = False):
         if self.compare == None:
             return default

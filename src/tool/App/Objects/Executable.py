@@ -65,6 +65,7 @@ class Executable(Object, Variableable, Validable):
             check_arguments = check_arguments,
             raise_on_assertions = raise_on_assertions,
         )
+        passing.check()
 
         await self.awaitTriggerHooks('before_execute', i = passing)
 

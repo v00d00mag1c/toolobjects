@@ -10,7 +10,7 @@ class SQLiteAdapter(SQLAlchemyAdapter):
         if self.content != None:
             return str(self.content)
         else:
-            return str(storage_item.getDir().joinpath(self._name + '.db'))
+            return str(storage_item.getDir().joinpath(self.name + '.db'))
 
     def _constructor(self, storage_item: Any = None):
         protocol = 'sqlite'
