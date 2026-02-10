@@ -50,9 +50,7 @@ class Download(Extractor):
             _unit = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
 
             item = app.DownloadManager.addURL(_url.value, _unit, filename)
-            await item.start({
-                'Content-Type': _obj.mime_type
-            })
+            await item.start(_obj.headers)
 
             _item.set_storage_unit(_unit)
 

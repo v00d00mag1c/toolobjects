@@ -7,6 +7,7 @@ from App.Storage.Item.Mount import Mount
 from App.Objects.Responses.ObjectsList import ObjectsList
 from Data.Types.String import String
 from Data.Types.Boolean import Boolean
+from Data.Types.Dict import Dict
 
 class Create(Act):
     @classmethod
@@ -25,6 +26,13 @@ class Create(Act):
                 name = 'mount',
                 orig = Boolean,
                 default = False
+            ),
+            Argument(
+                name = 'db_args',
+                orig = Dict,
+                default = {
+                    'auto_commit': True
+                }
             )
         ])
 
@@ -35,9 +43,7 @@ class Create(Act):
             storage = {
                 'directory': i.get('dir')
             },
-            db = {
-                'auto_commit': True
-            }
+            db = i.get('db_args')
         )
         news._init_hook()
 

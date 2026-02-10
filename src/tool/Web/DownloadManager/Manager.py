@@ -3,7 +3,7 @@ from App.Objects.Misc.Increment import Increment
 from App.Objects.Arguments.Argument import Argument
 from Web.DownloadManager.Item import Item
 from App.Storage.StorageUnit import StorageUnit
-from Web.HTTP.Headers import Headers
+from Web.HTTP.RequestHeaders import RequestHeaders
 from Data.Types.Int import Int
 from Data.Types.Boolean import Boolean
 from Data.Types.String import String
@@ -95,7 +95,7 @@ class Manager(Object):
         app.mount('DownloadManager', manager)
 
     def getHeaders(self) -> dict:
-        _headers = Headers()
+        _headers = RequestHeaders()
         _headers.user_agent = UserAgent.get_or_generate()
         _headers.accept = self.getOption('download_manager.headers.accept')
         _headers.accept_encoding = self.getOption('download_manager.headers.accept-encoding')
@@ -128,7 +128,7 @@ class Manager(Object):
             ),
             Argument(
                 name = "download_manager.headers.user-agent", # pass '' to randomize
-                default = 'to/0.1 (Linux; x86_64)',
+                default = 'toolobjects/0.1',
                 orig = String
             ),
             Argument(

@@ -50,7 +50,7 @@ class DefaultExecutorWheel(Act):
             results = ObjectsList(items = [], unsaveable = False)
 
             # isinstance(executable, Executable wont work with cls (
-            if hasattr(item_class, 'integrate') and i.get('as_args'):
+            if hasattr(item_class, 'integrate') and i.get('force_flush.as_args'):
                 if callable(item_class):
                     item_that_executed = item_class(args = _vals)
                 else:
@@ -137,7 +137,7 @@ class DefaultExecutorWheel(Act):
                 default = False
             ),
             Argument(
-                name = 'as_args',
+                name = 'force_flush.as_args',
                 orig = Boolean,
                 default = True,
                 documentation = Documentation(

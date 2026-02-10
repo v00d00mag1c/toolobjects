@@ -2,10 +2,15 @@ from Media.Media import Media
 from App.Objects.Requirements.Requirement import Requirement
 from App.Objects.Misc.Thumbnail import Thumbnail
 from App.Objects.Relations.Submodule import Submodule
+from Web.HTTP.RequestHeaders import RequestHeaders
 from pathlib import Path
 
 class Image(Media):
     default_name = 'image.jpg'
+    headers = RequestHeaders(
+        accept = 'image/jpeg',
+        content_type = 'image/jpeg'
+    )
     mime_type = 'image/jpeg'
     _img = None
 

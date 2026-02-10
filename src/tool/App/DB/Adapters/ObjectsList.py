@@ -5,9 +5,11 @@ from pydantic import Field
 from App.Objects.Object import Object
 from typing import Generator, Any
 from App.Objects.Relations.Link import Link as CommonLink
+from App.Objects.Relations.LinkData import LinkData
 from App.Objects.Misc.UnknownObject import UnknownObject
 from pathlib import Path
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from App.DB.Query.Sort import Sort
 from App.DB.Query.Query import Query
 from App.DB.Query.Operator import Operator
@@ -20,6 +22,7 @@ class ObjectsList(ConnectionAdapter):
 
     protocol_name = 'objects_list'
     file: str = Field(default = None)
+    indent: int = Field(default = None)
 
     data: dict = Field(default = None, repr = False)
     _stream: Any = None
@@ -110,7 +113,7 @@ class ObjectsList(ConnectionAdapter):
             uuid: int = None
             owner: int = None
             target: int = None
-            data: dict[str] = []
+            data: dict[str] = {}
             order: int = None
 
             def reorder(self, order: int = 0):
@@ -138,6 +141,7 @@ class ObjectsList(ConnectionAdapter):
 
                 self.owner = owner.uuid
                 self.target = link.item.getDbId()
+                self.uuid = next(self_adapter._id_gen)
                 if link.data != None:
                     self.data = link.data
 
@@ -161,7 +165,7 @@ class ObjectsList(ConnectionAdapter):
                 _obj.uuid = data.get('uuid')
                 _obj.owner = data.get('owner')
                 _obj.target = data.get('target')
-                _obj.data = data.get('data')
+                _obj.data = LinkData(**data.get('data'))
                 _obj.order = data.get('order')
 
                 return _obj
@@ -171,7 +175,7 @@ class ObjectsList(ConnectionAdapter):
                     'uuid': self.uuid,
                     'owner': self.owner,
                     'target': self.target,
-                    'data': self.data,
+                    'data': self.data.to_minimal_json(),
                     'order': self.order,
                 }
 
@@ -220,9 +224,13 @@ class ObjectsList(ConnectionAdapter):
                 _query._model = _LinkAdapter
                 _query._list_name = 'links'
                 _query.addCondition(Condition(
-                    val1 = 'owner',
+                    val1 = Value(
+                        column = 'owner'
+                    ),
                     operator = '==',
-                    val2 = self.uuid
+                    val2 = Value(
+                        value = self.uuid
+                    )
                 ))
 
                 for link in _query.getAll():
@@ -268,11 +276,14 @@ class ObjectsList(ConnectionAdapter):
         self._stream = open(str(_path), 'r+', encoding='utf-8')
 
     def commit(self):
-        _indent = None
 
-        self._stream.truncate(0)
-        self._stream.seek(0)
-        self._stream.write(json.dumps(self.data, indent=_indent) + '\n')
+        if self._stream != None:
+            self._stream.truncate(0)
+            self._stream.seek(0)
+            self._stream.write(json.dumps(self.data, indent = self.indent) + '\n')
+            self._stream.flush()
+        else:
+            self.log('this objectslist is fileless')
 
     def _init_hook(self):
         self._set_id_gen()
@@ -293,3 +304,6 @@ class ObjectsList(ConnectionAdapter):
                 self.data['links'] = _json.get('links')
             except:
                 pass
+
+    def destroy(self):
+        self._stream.close()

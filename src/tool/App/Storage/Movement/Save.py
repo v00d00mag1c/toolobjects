@@ -68,7 +68,7 @@ class Save(Act):
                     self.log(f"saving: linked {item.getDbId()} to {link_item.getDbId()}")
 
             if storage.adapter.auto_commit == False:
-                self.log('{0}: commit'.format(_storage_name))
+                #self.log('{0}: commit'.format(_storage_name))
                 storage.adapter.commit()
 
             _i += 1

@@ -429,6 +429,8 @@ class SQLAlchemy(ConnectionAdapter):
         return self._session
 
     def commit(self):
+        self.log('commit...')
+
         self.getSession().commit()
 
     def destroy(self):

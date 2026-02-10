@@ -3,6 +3,7 @@ from pydantic import Field
 from typing import Any
 import asyncio, datetime
 from App.Logger.LogPrefix import LogPrefix
+from Web.HTTP.RequestHeaders import RequestHeaders
 from pathlib import Path
 
 class NotFoundError(Exception):
@@ -49,10 +50,12 @@ class Item(Object):
 
             return self._task
 
-    async def download(self, session, new_headers: dict = {}):
+    async def download(self, session, new_headers: RequestHeaders = {}):
         _headers = self._manager_link.getHeaders().to_minimal_json()
-        _headers.update(new_headers)
-        print(_headers)
+        _headers.update(new_headers.to_minimal_json())
+
+        self.log('making call to {0} with headers {1}'.format(self.url, _headers))
+
         async with self._manager_link.semaphore:
             request = session.get(self.url,
                                        allow_redirects=self._manager_link.getOption('download_manager.allow_redirects'), 
