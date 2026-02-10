@@ -41,7 +41,7 @@ class ExecuteById(Act):
         _args.update(i.getValues(exclude = ['storage', 'uuid', 'link', 'is_update']))
 
         assert _exec != None, 'not found object'
-        assert _exec.canBeExecuted(), 'object does not contains execute interface'
+        assert _exec.canBeExecuted(), 'object does not contains execution interface'
 
         _res = await _exec.execute(i = _args)
 

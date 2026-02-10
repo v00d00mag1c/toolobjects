@@ -1,6 +1,7 @@
 from App.Objects.Object import Object
 from App.Objects.Displayment import Displayment
 from Data.Checkmarks.Checkmark import Checkmark
+from App.Objects.Act import Act
 from typing import Generator
 
 class List(Object):
@@ -12,7 +13,7 @@ class List(Object):
 
     @classmethod
     def getDisplayments(cls):
-        class DisplayAsString(Displayment):
+        class DisplayAsString(Act):
             role = ['str']
 
             def implementation(self, i):
@@ -27,4 +28,9 @@ class List(Object):
 
                 return _out
 
-        return [DisplayAsString()]
+        return [
+            Displayment( 
+                role = ['str'],
+                value = DisplayAsString
+            )
+        ]

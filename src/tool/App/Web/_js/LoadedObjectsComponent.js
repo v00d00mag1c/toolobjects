@@ -1,1 +1,0 @@
-import {Component} from "/static/Components/Component.js"

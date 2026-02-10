@@ -44,10 +44,10 @@ class Convertable(BaseModel):
     def displayAs(self, as_type: str) -> str | Any:
         for displayment_probaly in self.getAllDisplayments():
             if as_type in displayment_probaly.role:
-                return displayment_probaly.implementation(i = {'orig': self})
+                return displayment_probaly.value().implementation(i = {'orig': self})
 
     def displayAsString(self) -> str:
-        def getIdSign(self):
+        def getIdSign():
             if self.hasDb():
                 return f"[{self._db._adapter._storage_item.name}_{self._db.uuid}]"
 

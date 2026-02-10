@@ -1,6 +1,7 @@
 from App.Objects.Object import Object
 from pydantic import Field
 from App.Objects.Displayment import Displayment
+from App.Objects.Act import Act
 
 class String(Object):
     value: str = Field()
@@ -14,11 +15,12 @@ class String(Object):
 
     @classmethod
     def getDisplayments(cls):
-        class DisplayAsString(Displayment):
-            role = ['str']
-
+        class DisplayAsString(Act):
             def implementation(self, i):
                 orig = i.get('orig')
                 return str(orig.value)
 
-        return [DisplayAsString()]
+        return [Displayment(
+            role = ['str'],
+            value = DisplayAsString
+        )]

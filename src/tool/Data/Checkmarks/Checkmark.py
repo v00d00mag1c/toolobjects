@@ -1,5 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Displayment import Displayment
+from App.Objects.Act import Act
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 from Data.String import String
 from pydantic import Field
@@ -10,9 +11,7 @@ class Checkmark(Object):
 
     @classmethod
     def getDisplayments(cls):
-        class DisplayAsString(Displayment):
-            role = ['str']
-
+        class DisplayAsString(Act):
             def implementation(self, i):
                 orig = i.get('orig')
                 _mark = "[ ]"
@@ -21,6 +20,10 @@ class Checkmark(Object):
 
                 # TODO remove
                 _i = orig.to_json()
-                return _mark + " " + _i.get('label').get('value') + ' ' # :((
+                return _mark + " " + _i.get('label').get('value') + ' '
 
-        return [DisplayAsString()]
+        return [
+            Displayment(
+                role = ['str'],
+                value = DisplayAsString
+            )]

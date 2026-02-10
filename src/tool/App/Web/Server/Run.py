@@ -50,7 +50,19 @@ class Run(View):
             static_file = _client.joinpath(asset_path)
             try:
                 assert static_file.exists() == True and static_file.is_file() == True
-                static_file.resolve().relative_to(static_file.resolve())
+                static_file.resolve().relative_to(_client.resolve())
+            except (ValueError, RuntimeError, AssertionError):
+                raise web.HTTPForbidden(reason="Not found / Access denied")
+
+            return web.FileResponse(static_file)
+
+        def _get_js_lib(request):
+            asset_path  = request.match_info.get('path', '')
+            static_file = app.app.src.joinpath(asset_path)
+            try:
+                assert static_file.exists() == True and static_file.is_file() == True
+                assert static_file.suffix == '.js'
+                static_file.resolve().relative_to(app.app.src.resolve())
             except (ValueError, RuntimeError, AssertionError):
                 raise web.HTTPForbidden(reason="Not found / Access denied")
 
@@ -186,6 +198,7 @@ class Run(View):
             ('/', _spa, 'get'),
             ('/static/{path:.*}', _get_asset, 'get'),
             ('/storage/{storage}/{uuid}/{path:.*}', _get_storage_unit, 'get'),
+            ('/storage/js/', _get_js_lib, 'post')
             ('/api', _single_call, 'get'),
             ('/rpc', _ws, 'get'),
             ('/api/upload/{storage}', _upload_storage_unit, 'post'),

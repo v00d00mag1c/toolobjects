@@ -29,7 +29,7 @@ class DefaultExecutorWheel(Act):
 
         results = None
         if force_flush == False:
-            assert executable.canBeExecuted(), 'object does not contains execute interface'
+            assert executable.canBeExecuted(), 'object does not contains execution interface'
 
             _item = executable()
             _item.integrate(i.values)
