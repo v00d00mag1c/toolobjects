@@ -81,7 +81,7 @@ class ExecuteById(Act):
                         value = 'Update'
                     ),
                     description = Key(
-                        value = 'Check old version of object and compare it with results of new'
+                        value = 'Checks old version of object and compare it with results of new'
                     )
                 ),
             )

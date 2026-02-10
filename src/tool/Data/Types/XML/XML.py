@@ -3,8 +3,6 @@ from pydantic import Field
 from App.Objects.Relations.Submodule import Submodule
 
 class XML(Object):
-    # Using JSON to store XML string, huh?
-
     xml: str = Field()
 
     @classmethod

@@ -15,6 +15,7 @@ class Item(Object):
 
     def run(self, pre_i: Object, name: str = 'autostart_item', as_root: bool = False):
         _copied = self.args.copy()
+        _copied['run_item'] = self
         if _copied.get('auth') == 'root' and as_root:
             _copied['auth'] = app.AuthLayer.getUserByName('root')
         else:

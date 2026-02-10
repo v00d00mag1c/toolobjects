@@ -3,7 +3,7 @@ from App.Objects.Mixins.Model import Model
 from App.Objects.Misc.SavedVia import SavedVia
 from App.Objects.Misc.Thumbnail import Thumbnail
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from App.Objects.Relations.Link import Link
 from App.Objects.Misc.Geo import Geo
 
@@ -16,7 +16,7 @@ class LocalObjectMeta(Model):
     description: Optional[str] = Field(default=None)
     collection: Optional[bool] = Field(default=False)
 
-    created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
+    created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
     edited_at: Optional[datetime] = Field(default=None)
     updated_at: Optional[datetime] = Field(default=None)
     # accessed_at: Optional[datetime] = Field(default=None)

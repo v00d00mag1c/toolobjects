@@ -1,11 +1,6 @@
 from pydantic import BaseModel
-from typing import Any, Callable, Generator
 
 class Convertable(BaseModel):
-    '''
-    Convertable and Displayable
-    '''
-
     @classmethod
     def findConvertationsForClass(cls, for_class: BaseModel) -> list:
         converters = []
