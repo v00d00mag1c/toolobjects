@@ -1,0 +1,14 @@
+*__pycache__
+*.egg-info/
+*.egg
+dist/
+build/
+env/
+venv/
+src/venv/
+storage/*
+src/storage/*
+*/Custom/*
+*/Secret/*
+*node_modules*
+*package-lock.json
