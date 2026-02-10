@@ -16,39 +16,39 @@
             <tbody>
                 {% if item.is_export %}
                     <tr>
-                        <td>Is created via export</td>
-                        <td>True</td>
+                        <td>{{_("client.storage.via_export")}}</td>
+                        <td>+</td>
                     </tr>
                 {% endif %}
                 {% if item.root_uuid %}
                     <tr>
-                        <td>Root</td>
+                        <td>{{_("client.storage.root")}}</td>
                         <td><a href="?i=App.Objects.Object&uuids={{ item.root_uuid }}">{{ item.root_uuid }}</a></td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td>Root</td>
+                        <td>{{_("client.storage.root")}}</td>
                         <td><a href="/?i=App.Storage.Item.Get&create_root=1&name={{item.name}}">Create</a></td>
                     </tr>
                 {% endif %}
                 {% if item.allowed_objects %}
                     <tr>
-                        <td>Allowed objects:</td>
+                        <td>{{_("client.storage.allowed_objects")}}:</td>
                         <td>{{ ", ".join(item.allowed_objects) }}</td>
                     </tr>
                 {% endif %}
                 {% if item.forbidden_objects %}
                     <tr>
-                        <td>Forbidden objects:</td>
+                        <td>{{_("client.storage.forbidden_objects")}}:</td>
                         <td>{{ ", ".join(item.forbidden_objects) }}</td>
                     </tr>
                 {% endif %}
                 <tr>
-                    <td>Sizes</td>
+                    <td>{{_("client.storage.sizes")}}</td>
                     {% if storage_size %}
-                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}">Back</a></td>
+                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}">{{_("client.index.back")}}</a></td>
                     {% else %}
-                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}&calculate=1&calculate_db=1">Calculate</a></td>
+                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}&calculate=1&calculate_db=1">{{_("client.index.calculate")}}</a></td>
                     {% endif %}
                 </tr>
                 
@@ -57,7 +57,7 @@
     </div>
 
     <div>
-        <b>Storage</b>
+        <b>{{_("client.storage.name")}}</b>
 
         <table>
             <tbody>
@@ -68,7 +68,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Size</td>
+                    <td>{{_("client.storage.size")}}</td>
                     <td>
                         {% if storage_size and storage_size > -1 %}
                             <b>{{ FileSize.convert_from(storage_size, 'b', 'mb') }} Mb</b>
@@ -133,10 +133,23 @@
 
     <div>
         <div>
-            <a href="?i=App.Storage.VirtualPath.Navigate&path={{item.name}}:/">Explorer</a>
+            <a href="/?i=App.Storage.VirtualPath.Navigate&path={{item.name}}:/">Explorer</a>
         </div>
         <div>
-            <a href="?i=App.DB.Search&storage={{item.name}}">Search</a>
+            <a href="/?i=App.DB.Search&storage={{item.name}}">Search</a>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <a href="/?i=App.Storage.Movement.Export&act=storage&storage={{item.name}}&ref={{current_url_encoded}}">{{_("client.index.export")}}</a>
+        </div>
+    </div>
+    <hr>
+
+    <div>
+        <div>
+            <a href="?i=Data.Primitives.Collections.Create&storage={{item.name}}&ref={{current_url_encoded}}">+ {{_("client.storages.create_collection")}}</a>
         </div>
     </div>
 {% endblock %}

@@ -8,7 +8,7 @@
     <div>
         <h2>{{ obj.get_name_for_dictlist() }}</h2>
         {% if obj.is_inited == False %}
-            <a href="?i=App.Objects.Index.Get&name={{ obj.get_name_for_dictlist() }}&load=1">{{ tr('objects.do_load') }}</a>
+            <a href="?i=App.Objects.Index.Get&name={{ obj.get_name_for_dictlist() }}&load=1">{{ _('objects.do_load') }}</a>
         {% else %}
             {% set obj_module = obj.getModule() %}
             {% set documentation = obj_module._documentation() %}

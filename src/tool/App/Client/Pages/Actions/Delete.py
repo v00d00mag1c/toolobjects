@@ -1,4 +1,5 @@
 from App.Client.Displayment import Displayment
+from App.Storage.Movement.Delete import Delete as RealDelete
 
 class Delete(Displayment):
     for_object = 'App.Storage.Movement.Delete'
@@ -19,7 +20,11 @@ class Delete(Displayment):
 
         if self.request.method == 'POST':
             _info = await self.request.post()
-            item.delete(_info.get('remove_links') == 'on')
+
+            await RealDelete().execute({
+                'items': _info.get('uuids'),
+                'remove_links': _info.get('remove_links') == 'on'
+            })
 
             return self.redirect('/?i=App.DB.Search&storage=' + item.getDbName())
 

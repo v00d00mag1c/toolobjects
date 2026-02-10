@@ -49,9 +49,15 @@
 #floating_menu {
     position: fixed;
     right: 0;
-    top: 25px;
     opacity: 0.05;
     transition: opacity 200ms ease-in-out;
+    padding: 25px 5px 0px 0px;
+    text-align: right;
+
+    overflow-y: auto;
+    max-height: 96vh;
+
+    background: white;
 }
 
 #floating_menu:hover {
@@ -77,4 +83,9 @@ textarea.heighted {
 
 .gallery_item img {
     max-height: 50vh;
+}
+
+body {
+    word-break: break-word;
+    word-wrap: break-word;
 }

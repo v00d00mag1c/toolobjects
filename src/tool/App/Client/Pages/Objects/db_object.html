@@ -6,6 +6,7 @@
 
 {% block body %}
     {% for item in objects %}
+        <b>{{ item.getDbIds() }}</b>
         <div class="db_item">
             <div>
                 <table>
@@ -123,6 +124,9 @@
                 <hr>
 
                 <div>
+                    <div>
+                        <a href="/?i=App.Storage.Movement.Save&items={{item.getDbIds()}}&ref={{current_url_encoded}}">{{_("client.objects.copy")}}</a>
+                    </div>
                     <div>
                         <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}">Edit</a>
                     </div>

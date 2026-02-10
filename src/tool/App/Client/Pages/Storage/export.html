@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.index.export")}}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        <table>
+            <tbody>
+                <tr>
+                    <td>{{_("client.storage.name")}}</td>
+                    <td>
+                        <input type="text" name="name" value="{{name}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="as_zip">
+                            {{_("client.storage.export.as_zip")}}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="{{_('client.index.export')}}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

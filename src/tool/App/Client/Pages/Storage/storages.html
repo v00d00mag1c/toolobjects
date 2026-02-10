@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ tr("client.storages") }}
+{{ _("client.storages") }}
 {% endblock %}
 
 {% block body %}
-    <b>{{ tr("client.storages") }}</b>
+    <b>{{ _("client.storages") }}</b>
     {% if show_internal %}
         <b></b>
     {% else %}
@@ -15,8 +15,12 @@
     <div id='storages'>
         {% for item in storages %}
             <div>
-                <a href="?i=App.Storage.Item.Get&name={{ item.name }}">{{ item.name }}</a>
+                <a href="?i=App.Storage.Item.Get&name={{ item.name }}">{{ item.any_name }}</a>
             </div>
         {% endfor %}
+    </div>
+    <hr>
+    <div>
+        <a href="?i=App.Storage.Item.Create">+ {{_("client.storages.add")}}</a>
     </div>
 {% endblock %}

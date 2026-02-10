@@ -9,6 +9,8 @@ from Data.Types.String import String
 from Data.Types.Boolean import Boolean
 from Data.Types.Dict import Dict
 
+from App.Storage.Item.CreateRoot import CreateRoot
+
 class Create(Act):
     @classmethod
     def _arguments(cls) -> ArgumentDict:
@@ -33,11 +35,16 @@ class Create(Act):
                 default = {
                     'auto_commit': True
                 }
+            ),
+            Argument(
+                name = 'create_root',
+                orig = Boolean,
+                default = True
             )
         ])
 
     async def _implementation(self, i):
-        news = StorageItem(
+        new = StorageItem(
             name = i.get('name'),
             db_type = 'App.DB.Adapters.SQLite',
             storage = {
@@ -45,11 +52,16 @@ class Create(Act):
             },
             db = i.get('db_args')
         )
-        news._init_hook()
+        new._init_hook()
 
         if i.get('mount') == True:
             await Mount().execute({
-                'item': news
+                'item': new
             })
 
-        return ObjectsList(items = [news], unsaveable = True, supposed_to_be_single = True)
+        if i.get('create_root') == True:
+            await CreateRoot().execute({
+                'item': new
+            })
+
+        return ObjectsList(items = [new], unsaveable = True, supposed_to_be_single = True)

@@ -39,6 +39,11 @@ class Save(Act):
                 orig = Int,
             ),
             Argument(
+                name = 'just_copy',
+                orig = Boolean,
+                default = False
+            ),
+            Argument(
                 name = 'ignore_flush_hooks',
                 default = False,
                 orig = Boolean
@@ -52,6 +57,7 @@ class Save(Act):
 
     async def _implementation(self, i):
         results = 0
+        just_copy = i.get('just_copy')
         link_to = list()
 
         for item in i.get('link_to'):
@@ -65,8 +71,9 @@ class Save(Act):
 
             try:
                 for item in i.get('items').getItems():
-                    if i.get('public'):
-                        item.local_obj.make_public()
+                    if just_copy == False:
+                        if i.get('public'):
+                            item.local_obj.make_public()
 
                     item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'))
                     item.save(do_commit = False)

@@ -1,13 +1,42 @@
-{% for _key_, _category_item_list in global_app_categories.items() %}
-    {% if len(_category_item_list) > 0 %}
-        <b>{{ tr(_key_) }}</b>
+<div id="menu">
+    {% for _key_, _category_item_list in global_app_categories.items() %}
+        {% if len(_category_item_list) > 0 %}
+            <b>{{ _(_key_) }}</b>
 
-        <div>
-            {% for _category_item in _category_item_list %}
-                <div>
-                    <a href="{{ _category_item.get_url() }}">{{ _category_item.get_name() }}</a>
-                </div>
-            {% endfor %}
-        </div>
+            <div>
+                {% for _category_item in _category_item_list %}
+                    <div>
+                        <a href="{{ _category_item.get_url() }}">{{ _category_item.get_name() }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if is_index and len(_app_bookmarks) == 0 %}
+        <span></span>
+    {% else %}
+        <a href="?i=App.DB.Search&storage={{_app_bookmarks_collection.getDbName()}}&linked_to={{_app_bookmarks_collection.getDbIds()}}&show_unlisted=on">
+            <b>Bookmarks</b>
+        </a>
     {% endif %}
-{% endfor %}
+
+    <div>
+        {% for item in _app_bookmarks %}
+            <div>
+                <a href="{{item.url}}">{{String.cut(item.any_name, 20)}}</a>
+            </div>
+        {% endfor %}
+
+        {% if is_index %}
+            <span></span>
+        {% else %}
+            {% if len(_app_bookmarks) > 0 %}
+                <hr>
+            {% endif %}
+
+            <a href="javascript:bookmark_this_page()">{{_("client.bookmarks.add")}}</a>
+        {% endif %}
+    </div>
+</div>

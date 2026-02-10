@@ -80,7 +80,7 @@ class Zip(Act):
 
         zf = zipfile.ZipFile(save_file_path, "w", compression=compression)
         if i.get('zip_password') != None:
-            zf.setpassword(bytes(i.get('zip_password')))
+            zf.setpassword(bytes(i.get('zip_password'), 'utf-8'))
 
         with zf as zip_file:
             for file in storage.storage_adapter.get_all_files():

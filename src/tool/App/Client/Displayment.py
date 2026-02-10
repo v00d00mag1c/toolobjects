@@ -72,3 +72,6 @@ class Displayment(Object):
 
     def redirect(self, url: str):
         return aiohttp.web.HTTPFound(url)
+
+    def is_post(self):
+        return self.request.method == 'POST'

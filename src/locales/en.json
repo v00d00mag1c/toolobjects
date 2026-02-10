@@ -2,82 +2,52 @@
     "name": "English",
     "native_name": "English",
     "id": "en_US",
-    "keys": [
-        {
-            "id": "client.index.title",
-            "value": "Index"
-        },
-        {
-            "id": "client.index.logged_as",
-            "value": "Logged as <span>{0}</span>."
-        },
-        {
-            "id": "client.index.logout",
-            "value": "Logout"
-        },
-        {
-            "id": "client.index.content",
-            "value": "Objects"
-        },
-        {
-            "id": "client.index.custom",
-            "value": "Custom"
-        },
-        {
-            "id": "client.app",
-            "value": "App"
-        },
-        {
-            "id": "client.namespaces",
-            "value": "Namespaces"
-        },
-        {
-            "id": "client.storages",
-            "value": "Storages"
-        },
-        {
-            "id": "client.displayments",
-            "value": "Displayments"
-        },
-        {
-            "id": "client.config",
-            "value": "Config"
-        },
-        {
-            "id": "client.management",
-            "value": "Management"
-        },
-        {
-            "id": "client.management.reload_modules",
-            "value": "Reload modules"
-        },
-        {
-            "id": "client.management.reload_locales",
-            "value": "Reload locales"
-        },
-        {
-            "id": "client.management.turn_off",
-            "value": "Turn off"
-        },
-        {
-            "id": "client.user.current",
-            "value": "Current user"
-        },
-        {
-            "id": "objects.do_load",
-            "value": "Load this object"
-        },
-        {
-            "id": "client.index.total_count",
-            "value": "Total {0} items"
-        },
-        {
-            "id": "client.task_manager",
-            "value": "Task manager"
-        },
-        {
-            "id": "client.task_manager.tasks",
-            "value": "Tasks"
-        }
-    ]
+    "keys_dict": {
+        "client.create": "Create",
+        "client.app": "App",
+        "client.index.title": "Index",
+        "client.index.back": "back",
+        "client.index.calculate": "Calculate",
+        "client.index.export": "Export",
+        "client.storages": "Storages",
+        "client.storages.add": "Create new storage",
+        "client.storages.add.tip": "You can define any other db connection in config, but now a new SQLite DB will be created.",
+        "client.storages.create_collection": "Create new collection",
+        "client.storages.create_collection.title": "Create collection",
+        "client.storage.root": "Root",
+        "client.storage.name": "Storage",
+        "client.storage.via_export": "Is created via export",
+        "client.storage.allowed_objects": "Allowed objects",
+        "client.storage.forbidden_objects": "Forbidden objects",
+        "client.storage.size": "Size",
+        "client.storage.sizes": "Sizes",
+        "client.storage.move.to": "Copy to storage",
+        "client.storage.move.errors.no_storage": "No storage passed",
+        "client.storage.export.as_zip": "as zip",
+        "client.collections.name": "Name",
+        "client.collections.type": "Prototype",
+        "client.objects.copy": "Copy",
+        "client.objects.copy.title": "Copy to another storage",
+        "client.objects.uuids": "UUIDs",
+        "client.index.logged_as": "Logged as <span>{0}</span>.",
+        "client.index.logout": "Logout",
+        "client.index.content": "Objects",
+        "client.index.custom": "Custom",
+        "client.namespaces.all": "All",
+        "client.namespaces.path": "Path",
+        "client.namespaces": "Namespaces",
+        "client.displayments": "Displayments",
+        "client.config": "Config",
+        "client.management": "Management",
+        "client.management.reload_modules": "Reload modules",
+        "client.management.reload_locales": "Reload locales",
+        "client.management.turn_off": "Turn off",
+        "client.user.current": "Current user",
+        "objects.do_load": "Load this object",
+        "client.index.total_count": "Total {0} items",
+        "client.task_manager": "Task manager",
+        "client.task_manager.tasks": "Tasks",
+        "client.bookmarks": "Bookmarks",
+        "client.bookmarks.add": "Bookmark this page"
+    }
 }

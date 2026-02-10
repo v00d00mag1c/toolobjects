@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.storages.create_collection.title")}}
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        <table>
+            <tbody>
+                <tr>
+                    <td>{{_("client.collections.name")}}</td>
+                    <td>
+                        <input type="text" name="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{_("client.collections.type")}}</td>
+                    <td>
+                        <input value="Data.Primitives.Collections.Collection" type="text" name="prototype">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="{{_('client.create')}}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

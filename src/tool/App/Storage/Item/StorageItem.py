@@ -1,6 +1,7 @@
 from App.Objects.Object import Object
 from App.DB.ConnectionAdapter import ConnectionAdapter
 from App.Storage.StorageAdapter import StorageAdapter
+from App.Storage.StorageUUID import StorageUUID
 from pydantic import Field
 from typing import Optional
 from pathlib import Path
@@ -50,6 +51,9 @@ class StorageItem(Object):
 
         return self.storage_adapter
 
+    def _get_name(self) -> str:
+        return self.name
+
     def has_db_adapter(self) -> bool:
         return self.adapter != None
 
@@ -62,6 +66,14 @@ class StorageItem(Object):
 
     def path_matches(self, path: Path):
         return path.resolve().relative_to(self.storage_adapter.getStorageDir())
+
+    def get_root_collection(self):
+        if self.root_uuid != None:
+            if self.name in self.root_uuid:
+                _ids = self.root_uuid.split('_')
+                return StorageUUID(storage = self.name, uuid = int(_ids[1])).toPython()
+            else:
+                return StorageUUID(storage = self.name, uuid = self.root_uuid).toPython()
 
     def _init_hook(self):
         if self.storage_type != None:

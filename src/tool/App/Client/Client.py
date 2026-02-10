@@ -1,6 +1,7 @@
 from App.Server import Server
 from App.Objects.Requirements.Requirement import Requirement
 from Data.Types.JSON import JSON
+from Data.Types.String import String
 from App.ACL.Tokens.Get import Get as TokensGet
 from App import app
 import aiohttp
@@ -9,6 +10,10 @@ import jinja2
 from urllib.parse import quote
 
 from App.Client.Pages.App.Index import Index as PageIndex
+from App.Objects.Arguments.Argument import Argument
+from App.Storage.StorageUUID import StorageUUID
+from Data.Primitives.Collections.Collection import Collection
+from App.Client.Bookmark import Bookmark
 
 class Client(Server):
     displayments: dict = {}
@@ -41,6 +46,31 @@ class Client(Server):
 
         return users
 
+    def _get_bookmarks_collection(self):
+        option_id = 'web.bookmarks.collection_id'
+        collection_id = self.getOption(option_id)
+        collection = None
+
+        if collection_id != None:
+            collection = collection_id.toPython()
+        else:
+            common = app.Storage.get('common')
+            collection = Collection()
+            collection.flush(common)
+            collection.save()
+
+            app.Config.getItem().set(option_id, collection.getDbIds())
+
+        return collection
+
+    def _check_bookmarks(self, collection):
+        try:
+            for link in collection.getLinked():
+                if link.item.isInstance(Bookmark):
+                    yield link.item
+        except Exception as e:
+            self.log_error(e, exception_prefix="You've Fucked up")
+
     def _get_template_context(self, request):
         categories = {
             'client.index.content': [],
@@ -55,16 +85,21 @@ class Client(Server):
 
                 categories[menu.category_name].append(menu)
 
+        bookmarks_collection = self._get_bookmarks_collection()
+
         return {
             'app_name': self.getOption('app.name'),
             'user': self._get_current_user(request),
-            'tr': app.Locales.get,
+            '_': app.Locales.get,
             'request': request,
-            'current_url': request.rel_url,
             'global_app_categories': categories,
             'len': len,
+            'String': String,
             'url_for_object': '?i=App.Objects.Object&uuids=',
-            'current_url_encoded': quote(str(request.rel_url))
+            'current_url': request.rel_url,
+            'current_url_encoded': quote(str(request.rel_url)),
+            '_app_bookmarks_collection': bookmarks_collection,
+            '_app_bookmarks': list(self._check_bookmarks(bookmarks_collection))
         }
 
     def _auth(self, args: dict, request):
@@ -176,3 +211,13 @@ class Client(Server):
 
             self.log_error(e)
             return await PageIndex().render_as_error(request, _context)
+
+    @classmethod
+    def _settings(cls) -> list:
+        return [
+            Argument(
+                name = 'web.bookmarks.collection_id',
+                default = None,
+                orig = StorageUUID
+            ),
+        ]

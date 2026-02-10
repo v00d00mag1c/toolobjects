@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ tr("client.user.current") }}
+{{ _("client.user.current") }}
 {% endblock %}
 
 {% block body %}
-    {{ tr("client.index.logged_as", user.name) | safe }}
-    <a href="/logout">{{ tr("client.index.logout") }}</a>
+    {{ _("client.index.logged_as", user.name) | safe }}
+    <a href="/logout">{{ _("client.index.logout") }}</a>
 {% endblock %}

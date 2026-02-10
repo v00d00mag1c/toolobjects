@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+New storage
+{% endblock %}
+
+{% block body %}
+    <a href="/?i=App.Storage.Item.List"><<< {{_("client.index.back")}}</a>
+    <hr>
+    <form method="POST">
+        <div>
+            <input type="text" name="name" placeholder="Name of new storage">
+        </div>
+
+        <span>{{_("client.storages.add.tip")}}</span>
+
+        <div>
+            <input type="submit" value="{{_('client.create')}}">
+        </div>
+    </form>
+{% endblock %}

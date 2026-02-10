@@ -33,11 +33,6 @@ class Export(Act):
                 name = 'as_zip',
                 default = False,
                 orig = Boolean
-            ),
-            Argument(
-                name = 'remove',
-                default = True,
-                orig = Boolean
             )
         ])
 
@@ -56,6 +51,7 @@ class Export(Act):
 
     async def _implementation(self, i):
         export_name = i.get("name")
+        remove = i.get('as_zip')
         if export_name == None:
             export_name = f"{int(datetime.now().timestamp())}_export"
 
@@ -79,7 +75,7 @@ class Export(Act):
             }).getValues())
 
         try:
-            if i.get('remove'):
+            if remove:
                 export_storage.destroy()
         except Exception as e:
             self.log_error(e)

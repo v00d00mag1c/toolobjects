@@ -86,8 +86,7 @@ class Storage(Object):
 
         for item in default_items:
             try:
-                if item.name not in ['common']:
-                    item.is_internal = True
+                item.is_internal = True
 
                 self.default_names.append(item.name)
                 if item.name not in _names:

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.objects.copy.title")}}
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <div>
+            <span>{{_("client.objects.uuids")}}</span>
+            <div>
+                <textarea name="uuids">{{items}}</textarea>
+            </div>
+        </div>
+        <div>
+            <span>{{_("client.storage.move.to")}}: </span>
+            <input type="text" name="to">
+        </div>
+        <input type="submit" value="{{_('client.objects.copy')}}">
+    </form>
+{% endblock %}
