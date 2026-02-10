@@ -5,6 +5,7 @@ Namespaces
 {% endblock %}
 
 {% block body %}
+    <a href="/?i=App.Objects.Index.GetList"><<< All</a>
     <div>
         <h2>{{ namespace.name }}</h2>
     </div>
@@ -12,4 +13,16 @@ Namespaces
     <div>
         <a href="?i=App.Objects.Index.ObjectsList&name={{ namespace.name }}">Objects</a>
     </div>
+
+    <div>
+        <hr>
+    </div>
+    <div>
+        <b>Path:</b>
+
+        <div>
+            {{ namespace.root }}
+        </div>
+    </div>
+
 {% endblock %}

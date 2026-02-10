@@ -88,6 +88,47 @@ class ObjectsList(Object):
 
         return _item
 
+    def sort(self, items: list[str]) -> dict:
+        _items = dict()
+        names = list()
+        for item in items:
+            _items[item.get_name_for_dictlist()] = item
+            names.append(item.get_name_for_dictlist())
+
+        categories = dict()
+
+        # maybe it should be in xml?
+        for _name in sorted(names):
+            obj = _items.get(_name)
+            name = obj.getTitle()
+
+            cursor_link = categories
+            ind = 0
+            ind_max = len(name)
+
+            # Yes, it would be better if it was written with xml, but ok. 
+            # It creates hash table -> creates empty dicts in each category in name in common categories dict
+            # , then if it the last part of the name - puts dict with last part of name and full name
+            for item in name:
+                if ind == ind_max - 1:
+                    if cursor_link.get('_items') == None:
+                        cursor_link['_items'] = []
+
+                    cursor_link.get('_items').append({
+                        'part': item,
+                        'obj': obj
+                    })
+
+                    continue
+
+                if cursor_link.get(item) == None:
+                    cursor_link[item] = {}
+                cursor_link = cursor_link[item]
+
+                ind += 1
+
+        return categories
+
     @classmethod
     def _settings(cls):
         return [

@@ -1,4 +1,5 @@
 from App.Objects.Object import Object
+from App.Client.Menu.Item import Item
 from typing import ClassVar
 from abc import abstractmethod
 
@@ -13,3 +14,7 @@ class Displayment(Object):
     @abstractmethod
     def render_as_page(self, request, context):
         ...
+
+    @classmethod
+    def get_menu(self) -> Item:
+        return None

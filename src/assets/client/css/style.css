@@ -1,5 +1,6 @@
 #content {
-    padding: 0px 30px;
+    background: #fcfcfc;
+    padding: 10px 30px;
 }
 
 #upper {
@@ -10,6 +11,11 @@
     min-width: 136px;
     background: #dfdddd;
     padding: 3px 7px;
+}
+
+#upper #upper_menu {
+    display: flex;
+    justify-content: space-between;
 }
 
 #upper .divider {

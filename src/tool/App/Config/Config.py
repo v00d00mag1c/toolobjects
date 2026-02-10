@@ -55,9 +55,12 @@ class Config(Object):
             return None
 
     def appendModule(self, module):
-        _settings = module.getSettings()
-        for _item in _settings:
-            self.getItem(role = _item.role).append_compare(_item)
+        try:
+            _settings = module.getSettings()
+            for _item in _settings:
+                self.getItem(role = _item.role).append_compare(_item)
+        except Exception as e:
+            self.log_error(e)
 
     @classmethod
     def _settings(cls):

@@ -4,14 +4,40 @@
 Objects list
 {% endblock %}
 
+{% macro recursive_list(items) %}
+    {% for key, item in items.items() %}
+        {% if key != "_items" and key != None %}
+            <ul>
+                <li>
+                    {{ key }}
+                </li>
+
+                {% if hasattr(item, 'items') %}
+                    {{ recursive_list(item) }}
+                {% endif %}
+
+                {% if item.get('_items') %}
+                    <ul>
+                        {% for val in item.get('_items') %}
+                            <li>
+                                <a href="?i=App.Objects.Index.Get&name={{ val.get('obj').get_name_for_dictlist() }}">{{ val.get('part') }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
 {% block body %}
-    <span>list of objects:</span>
+    {% if namespace %}
+        <a href="/?i=App.Objects.Index.Namespaces.Get&name={{ namespace.name }}"><<< Namespace</a>
+    {% else %}
+        <a href="/?i=App.Objects.Index.GetList"><<< Namespaces</a>
+    {% endif %}
 
     <div id='objects'>
-        {% for item in objects %}
-            <div>
-                <a href="?i=App.Objects.Operations.DefaultExecutorWheel&name={{ item.get_name_for_dictlist() }}">{{ item.get_name_for_dictlist() }}</a>
-            </div>
-        {% endfor %}
+        {{ recursive_list(categories) }}
     </div>
 {% endblock %}

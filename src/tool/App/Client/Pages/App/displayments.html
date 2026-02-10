@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ tr("client.displayments") }}
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% for key, item in displayments %}
+            <div>
+                <a href="/?i={{ key }}"><span>{{ item[0]._getNameJoined() }}</span></a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -6,22 +6,18 @@
 
 {% block body %}
     <div>
-        <b>{{ tr("client.index.content") }}</b>
+        {% for key, item in categories.items() %}
+            {% if len(item) > 0 %}
+                <b>{{ tr(key) }}</b>
 
-        <div>
-            <a href="/?i=App.Objects.Index.GetList">{{ tr("client.namespaces") }}</a>
-        </div>
-        <div>
-            <a href="/?i=App.Storage.Item.List">{{ tr("client.storages") }}</a>
-        </div>
-
-        <b>{{ tr("client.app") }}</b>
-
-        <div>
-            <a href="/?i=App.Config">{{ tr("client.config") }}</a>
-        </div>
-        <div>
-            <a href="/?i=App">{{ tr("client.management") }}</a>
-        </div>
+                <div>
+                    {% for category_item in item %}
+                        <div>
+                            <a href="{{ category_item.get_url() }}">{{ category_item.get_name() }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}

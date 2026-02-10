@@ -32,6 +32,7 @@ core:
 - [x] App.Objects.Operations.Edit
 - [x] App.ReloadModules
 - [x] advanced arguments
+- [ ] fix submodules dups
 
 db and storage:
 

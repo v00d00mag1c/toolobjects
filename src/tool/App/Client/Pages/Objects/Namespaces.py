@@ -1,4 +1,5 @@
 from App.Client.Displayment import Displayment
+from App.Client.Menu.Item import Item
 from App import app
 import aiohttp_jinja2
 
@@ -14,3 +15,11 @@ class Namespaces(Displayment):
         })
 
         return aiohttp_jinja2.render_template('Objects/namespaces.html', request, context)
+
+    @classmethod
+    def get_menu(cls) -> Item:
+        return Item(
+            url = cls.for_object,
+            name = "client.namespaces",
+            category_name = 'client.index.content'
+        )
