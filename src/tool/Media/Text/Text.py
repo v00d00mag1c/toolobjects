@@ -9,10 +9,15 @@ class Text(Object):
     @classmethod
     def _submodules(cls) -> list:
         from Media.Text.TextToFile import TextToFile
+        from Media.Text.Get import Get
 
         return [
             Submodule(
                 item = TextToFile,
                 role = ['convertation']
+            ),
+            Submodule(
+                item = Get,
+                role = ['wheel']
             )
         ]

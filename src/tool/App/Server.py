@@ -161,7 +161,7 @@ class Server(View):
         return ip
 
     def _getCustomRoutes(self):
-        pass
+        return []
 
     def _register_routes(self, i):
         for route in self._getCustomRoutes():
