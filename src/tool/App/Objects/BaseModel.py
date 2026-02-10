@@ -1,6 +1,14 @@
 from pydantic import BaseModel as PydanticBaseModel, computed_field, Field
+from App.Objects.LinkInsertion import LinkInsertion
 
 class BaseModel(PydanticBaseModel):
+    '''
+    Pydantic BaseModel with some functions
+    '''
+
+    # Workaround to add model_serializer (that is in Linkable) check
+    _convert_links: bool = False
+
     @computed_field
     @property
     def class_name(self) -> str:
@@ -16,11 +24,18 @@ class BaseModel(PydanticBaseModel):
     def constructor(self):
         pass
 
-    # model_dump alias
-    def to_json(self, exclude_internal: bool = True):
-        excludes = []
+    def to_json(self, convert_links: bool = True, exclude_internal: bool = True):
+        '''
+        convert_links: replace LinkInsertions with their "unwrap()" function results
+
+        exclude_internal: exclude fields from "self._internal_fields"
+        '''
+        excludes = set()
+
         if exclude_internal == True:
             excludes = self._internal_fields
+
+        self._convert_links = convert_links
 
         return self.model_dump(mode='json', exclude=excludes)
 

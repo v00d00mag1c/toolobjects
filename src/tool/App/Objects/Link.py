@@ -1,5 +1,6 @@
 from App.Objects.BaseModel import BaseModel, computed_field
 from App.Storage.DB.DBInsertable import DBInsertable
+from App.Objects.LinkInsertion import LinkInsertion
 from pydantic import Field
 from typing import Any, Literal
 from enum import Enum
@@ -33,3 +34,9 @@ class Link(BaseModel, DBInsertable):
     @property
     def is_external(self) -> bool:
         return 'external' in self.role
+
+    def toInsert(self, field: list[str] = []) -> LinkInsertion:
+        return LinkInsertion(
+            link = self,
+            field = field
+        )

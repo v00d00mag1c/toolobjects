@@ -28,6 +28,10 @@ class Section:
             kwargs["prefix"] = self.append_prefix
         if kwargs.get('section') != None:
             _sections += kwargs.get('section')
+        if kwargs.get('role') == None:
+            kwargs['role'] = []
+        for role in _role:
+            kwargs['role'].append(role)
 
         kwargs["section"] = _sections
         try:

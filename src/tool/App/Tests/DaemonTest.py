@@ -16,4 +16,4 @@ class DaemonTest(Test):
             max_iterations = 100
         )
         await daemon.start()
-        print(daemon.getModule())
+        self.log_raw(daemon.getModule())

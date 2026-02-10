@@ -1,7 +1,8 @@
-from pydantic import Field, BaseModel
+from pydantic import Field, model_serializer, BaseModel
 from App.Objects.Link import Link
+from App.Objects.LinkInsertion import LinkInsertion
 
-class Linkable:
+class Linkable(BaseModel):
     '''
     Object that can contain links to other objects
     '''
@@ -9,10 +10,11 @@ class Linkable:
     links: list[Link] = Field(default=[], exclude = True, repr = False)
 
     def link(self, object, role: list = []):
-        self.addLink(Link(
+        _link = Link(
             item = object,
             role = role
-        ))
+        )
+        return self.addLink(_link)
 
     def unlink(self, item: Link, type: int) -> None:
         pass
@@ -25,6 +27,8 @@ class Linkable:
             return self
 
         self.links.append(link)
+
+        return link
 
     def getLinkedItems(self) -> list[Link]:
         '''
@@ -55,3 +59,21 @@ class Linkable:
                 _items.append(item)
 
         return _items
+
+    @model_serializer
+    def serialize_model_with_links(self) -> dict:
+        result = dict()
+        for field_name in self.__class__.model_fields:
+            value = getattr(self, field_name)
+
+            if self._convert_links == True:
+                if isinstance(value, LinkInsertion):
+                    result[field_name] = value.unwrap()
+                elif isinstance(value, list) and value and isinstance(value[0], LinkInsertion):
+                    result[field_name] = [item.unwrap() for item in value]
+                else:
+                    result[field_name] = value
+            else:
+                result[field_name] = value
+
+        return result

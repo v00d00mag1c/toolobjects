@@ -61,7 +61,10 @@ class SQLAlchemyAdapter(ConnectionAdapter):
                       max_depth: int = 10):
 
                 self.content = json.dumps(
-                    obj.to_json(exclude_internal = False)
+                    obj.to_json(
+                        exclude_internal = False,
+                        convert_links = False
+                    )
                 )
 
                 session.add(self)
