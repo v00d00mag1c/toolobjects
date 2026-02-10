@@ -269,11 +269,10 @@ class ObjectsList(ConnectionAdapter):
         self._stream = open(str(_path), 'r+', encoding='utf-8')
 
     def commit(self):
-
         if self._stream != None:
             self._stream.truncate(0)
             self._stream.seek(0)
-            self._stream.write(json.dumps(self.data, indent = self.indent) + '\n')
+            self._stream.write(json.dumps(self.data, indent = self.indent, ensure_ascii=False) + '\n')
             self._stream.flush()
         else:
             self.log('this objectslist is fileless')

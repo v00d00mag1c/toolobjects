@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Any
 from App.DB.Query.Condition import Condition
 from App.DB.Query.Values.Value import Value
+from App.Objects.Misc.UnknownObject import UnknownObject
 
 class AbstractAdapter():
     _adapter: Any = None
@@ -50,3 +51,9 @@ class AbstractAdapter():
     @abstractmethod
     def deleteFromDB(self):
         ...
+
+    def toUnknown(self, reason: str = None):
+        unknown = UnknownObject(reason = reason)
+        unknown.setDb(self)
+
+        return unknown

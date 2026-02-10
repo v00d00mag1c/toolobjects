@@ -53,6 +53,7 @@ class Save(Act):
     async def _implementation(self, i):
         results = 0
         link_to = list()
+
         for item in i.get('link_to'):
             link_to.append(item.toPython())
 
@@ -73,9 +74,12 @@ class Save(Act):
                     results += 1
 
                     for link_item in link_to:
-                        link_item.link(item)
+                        if link_item != None:
+                            link_item.link(item)
 
-                        self.log(f"saving: linked {item.getDbId()} to {link_item.getDbId()}")
+                            self.log(f"saving: linked {item.getDbId()} to {link_item.getDbId()}")
+                        else:
+                            self.log('link item doesnt exists')
 
                 if storage.adapter.auto_commit == False:
                     #self.log('{0}: commit'.format(_storage_name))

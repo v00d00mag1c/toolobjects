@@ -5,9 +5,9 @@ from typing import Any, Generator
 from App.Objects.Object import Object
 from abc import ABC, abstractmethod
 from App.DB.Representation.AbstractAdapter import AbstractAdapter
-from App.Objects.Misc.UnknownObject import UnknownObject
 from App.Objects.Misc.Migrated import Migrated
 import json
+from pydantic import ValidationError
 
 class ObjectAdapter(AbstractAdapter):
     content: str = None # Encoded json
@@ -61,20 +61,21 @@ class ObjectAdapter(AbstractAdapter):
             _item.setDb(self)
 
             return _item
-        except (AttributeError, json.decoder.JSONDecodeError) as e:
+        except (AttributeError, json.decoder.JSONDecodeError, ValidationError) as e:
             _msg = f"Object with uuid {self.uuid} was tried to be loaded, "
+            _msg2 = ''
 
             if _object_name == None:
-                _msg += f"obj.saved_via.object_name is not accesible"
+                _msg2 = f"obj.saved_via.object_name is not accesible"
             else:
-                _msg += f"type is {_object_name}, {str(e)}"
+                _msg2 = f"type is {_object_name}, {str(e)}"
 
-            _msg += ". UnknownObject returned"
+            _msg += _msg2 + ". UnknownObject returned"
 
             app.Logger.log(message = _msg, role = ['error', 'storage.adapter.db.import'])
 
-            return UnknownObject()
+            return self.toUnknown(reason = _msg2)
         except Exception as e:
             app.Logger.log(e, role = ['error'])
 
-            return UnknownObject()
+            return self.toUnknown(reason = str(e))

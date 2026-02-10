@@ -316,3 +316,16 @@ class Model(PydanticBaseModel):
                 raise _e
 
         return result
+
+    def _get(self, field, default = None):
+        # If field is link insertion, unwrapping it and getting as normal value
+
+        _field = getattr(self, field, default)
+        if hasattr(_field, '_link_insertion_type') == True:
+            _field.setDb(self.getDb())
+            return _field.unwrap()
+
+        return _field
+
+    def _set(self, field, value = None):
+        setattr(self, field, value)

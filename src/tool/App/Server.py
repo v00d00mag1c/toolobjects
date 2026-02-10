@@ -356,10 +356,12 @@ class Server(View):
         }).dump())
 
     async def _upload_storage_unit(self, request):
-        _just_url = request.rel_url.query.get('just_url')
-        _old_auth = request.rel_url.query.get('auth')
-        _save_name = request.rel_url.query.get('save_name')
-        _i_after = request.rel_url.query.get('i_after')
+        _query = request.rel_url.query
+        _just_url = _query.get('return_url')
+        _old_auth = _query.get('auth')
+        _save_name = _query.get('save_name')
+        _i_after = _query.get('i_after', None)
+        _i_after_key = _query.get('i_after_key', 'storage_unit')
         _user = self._auth(dict(request.rel_url.query), request)
 
         if _user == None:
@@ -383,16 +385,24 @@ class Server(View):
             filename = _save_name
 
         file_path = storage_unit.getDir().joinpath(filename)
-
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
 
+        storage_unit.setCommonFile(file_path)
         storage_unit.flush(storage)
         storage_unit.save()
 
-        self.log('uploaded storage unit {0}'.format(storage_unit.getDbIds()))
+        self.log('uploaded storage unit, id {0}'.format(storage_unit.getDbIds()), role = ['server.upload'])
 
-        # for sharex
+        if _i_after != None:
+            try:
+                after_action = JSON.fromText(_i_after).data
+                after_action[_i_after_key] = storage_unit
+                after_action['auth'] = _user
+
+                await self._pre_i().execute(after_action)
+            except Exception as e:
+                self.log_error(e, exception_prefix = 'Error when uploading file: ')
 
         if _just_url == '1':
             return web.Response(

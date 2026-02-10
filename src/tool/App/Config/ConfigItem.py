@@ -32,7 +32,7 @@ class ConfigItem(Object):
     def updateFile(self) -> None:
         self._stream.seek(0)
 
-        json.dump(self.values.values, self._stream, indent=4)
+        json.dump(self.values.values, self._stream, indent=4, ensure_ascii=False)
 
         self._stream.truncate()
 

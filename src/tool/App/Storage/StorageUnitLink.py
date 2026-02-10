@@ -1,10 +1,10 @@
-from App.Objects.Mixins.BaseModel import BaseModel
+from App.Objects.Mixins.Model import Model
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 from App.DB.DBInsertable import DBInsertable
 from App.Objects.Mixins.Section import Section
 from pydantic import Field, model_serializer
 
-class StorageUnitLink(BaseModel, DBInsertable, Section):
+class StorageUnitLink(Model, DBInsertable, Section):
     path: str = Field()
     insertion: LinkInsertion = Field()
 

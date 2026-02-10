@@ -4,7 +4,7 @@ from App.Objects.Misc.LocalObjectMeta import LocalObjectMeta
 from App.Objects.Misc.SavedVia import SavedVia
 from App.Objects.Mixins.Section import Section
 from App.Objects.Mixins.Model import Model
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator, computed_field
 
 class BaseModel(Model, Section):
     obj: ObjectMeta = Field(default = ObjectMeta())
@@ -38,19 +38,19 @@ class BaseModel(Model, Section):
         '''
         pass
 
-    def _get(self, field, default = None):
-        # If field is link insertion, unwrapping it and getting as normal value
-
-        _field = getattr(self, field, default)
-        if hasattr(_field, '_link_insertion_type') == True:
-            _field.setDb(self.getDb())
-            return _field.unwrap()
-
-        return _field
-
-    def _set(self, field, value = None):
-        setattr(self, field, value)
-
     @classmethod
     def _get_locale_key(self, data: str):
         return self._getClassNameJoined() + '.' + data
+
+    def _get_name(self) -> str:
+        return self._getNameJoined()
+
+    @computed_field
+    @property
+    def any_name(self) -> str:
+        if self.local_obj.name:
+            return self.local_obj.name
+        if self.obj.name:
+            return self.obj.name
+
+        return self._get_name()

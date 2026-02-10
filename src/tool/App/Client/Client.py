@@ -65,7 +65,10 @@ class Client(Server):
         }
 
     def _auth(self, args: dict, request):
-        args['auth'] = self._get_current_user(request)
+        if args.get('auth') == None:
+            args['auth'] = self._get_current_user(request)
+        else:
+            args['auth'] = self._auth_middleware(args.get('auth'))
 
         if args.get('auth') != None:
             # self.log('auth as {0}'.format(args.get('auth').name))

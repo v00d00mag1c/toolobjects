@@ -23,7 +23,9 @@ class ByStorageUnit(Extractor):
         ])
 
     async def _implementation(self, i):
+        _storage_unit = i.get('storage_unit')
         _new = i.get('object')()
-        _new.set_storage_unit(i.get('storage_unit'))
+        _new.set_storage_unit(_storage_unit)
+        _new.save()
 
         self.append(_new)

@@ -88,22 +88,21 @@ class DBInsertable():
         if flush_linked == True and link_current_depth < link_max_depth and hasattr(self, 'getLinkedItems'):
             for link in self.getLinkedItems():
                 try:
-                    if link.item.hasDb():
-                        self.log('flush, links: the link item is already flushed')
+                    # If link item exists, but the link is not exists in db.
+                    if link.item.hasDb() and link.item.getDbName() != into.name:
+                        self.log('flush: links: the link item is already flushed')
+                    else:
+                        link.item.flush(into,
+                                        flush_linked,
+                                        link_current_depth = link_current_depth,
+                                        link_max_depth = link_max_depth,
+                                        set_db = set_db,
+                                        ignore_flush_hooks = ignore_flush_hooks)
 
-                        continue
-
-                    link.item.flush(into,
-                                    flush_linked,
-                                    link_current_depth = link_current_depth,
-                                    link_max_depth = link_max_depth,
-                                    set_db = set_db,
-                                    ignore_flush_hooks = ignore_flush_hooks)
-
-                    if _set_db == True:
+                    if link.hasDb() == False or _set_db == True:
                         link.setDb(_db_item.addLink(link = link))
 
-                    self.log('flushed link with id {0}, order {1}'.format(link.getDbId(), _id), role = ['flushed', 'flushing.link'])
+                    self.log('flush: links: flushed link with id {0}, order {1}'.format(link.getDbId(), _id), role = ['flushed', 'flushing.link'])
 
                     _id += 1
                 except Exception as e:

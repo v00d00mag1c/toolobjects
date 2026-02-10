@@ -13,12 +13,24 @@ class Search(Displayment):
         per_page = query.get('per_page', 30)
         storage = query.get('storage')
         linked_to = query.get('linked_to')
-        after = query.get('after')
+        after = query.get('after', 0)
+        prev = query.get('prev', 0)
+        try:
+            after = int(after)
+        except:
+            after = 0
+
+        try:
+            prev = int(prev)
+        except:
+            prev = 0
+
         invert = query.get('invert') == 'on'
         operator = '>'
         params = {'q': query.get('q'), 
                   'storage': storage,
-                  'only_public': query.get('only_public') == 'on',
+                  'show_unlisted': query.get('show_unlisted'),
+                  'only_public': query.get('show_unlisted') != 'on',
                   'q.in_description': query.get('q.in_description') == 'on',
                   'limit': per_page,
                   'conditions': [],
@@ -63,25 +75,34 @@ class Search(Displayment):
 
         if len(objs) > 0:
             if invert:
-                last_uuid = objs[0].getDbId()
+                #last_uuid = objs[0].getDbId()
+                last_uuid = objs[-1].getDbId()
             else:
                 last_uuid = objs[-1].getDbId()
-
-        _url = dict(query)
-        _url['after'] = after
-        _url2 = dict(query)
-        _url2['after'] = last_uuid
 
         self.context.update({
             'total_count': _val.getTotalCount(),
             'items': objs,
             'last_uuid': last_uuid,
-            'after_url': self._to_url(_url2),
             'per_page': per_page,
             'params': params
         })
 
-        if after != None:
+        _url2 = dict(query)
+        _url2['prev'] = prev
+        _url2['after'] = last_uuid
+
+        self.context['after_url'] = self._to_url(_url2)
+
+        if after != None and after != 0:
+            _url = dict(query)
+            if prev != 0:
+                _url['prev'] = last_uuid
+                _url['after'] = prev
+            else:
+                del _url['prev']
+                del _url['after']
+
             self.context['before_url'] = self._to_url(_url)
 
         return self.render_template('Explorer/search.html')

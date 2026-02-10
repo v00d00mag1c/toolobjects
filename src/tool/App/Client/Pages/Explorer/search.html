@@ -30,9 +30,9 @@ Search
                     </td>
                 </tr>
                 <tr>
-                    <td>Public only</td>
+                    <td>Show unlisted</td>
                     <td>
-                        <input type="checkbox" name="only_public" {% if params.get('only_public') %}checked{% endif %}>
+                        <input type="checkbox" name="show_unlisted" {% if params.get('show_unlisted') == 'on' %}checked{% endif %}>
                     </td>
                 </tr>
                 <tr>
@@ -68,7 +68,7 @@ Search
         <div>
             {% for item in items %}
                 <div>
-                    <span>{{ item.obj.name or item._getNameJoined() }}</span>
+                    <span>{{ item.any_name }}</span>
 
                     {% if item.hasDb() %}
                         <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}">

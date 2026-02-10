@@ -23,7 +23,7 @@ class StorageUUID(Object):
 
             assert len(vals) > 1, 'only id passed, storage name is not'
 
-            _storage_uuid = StorageUUID(storage = vals[0], uuid = vals[1])
+            _storage_uuid = StorageUUID(storage = vals[0], uuid = int(vals[1]))
         if type(val) == dict:
             _storage_uuid = StorageUUID(storage = val.get('storage'), uuid = val.get('uuid'))
 
