@@ -63,7 +63,7 @@ class Executable(Object, Variableable, Validable):
         else:
             i.modified = True
 
-        self.log(f"Calling {self.getClassNameJoined()}", role = ['executable.call'])
+        self.log(f"calling self", role = ['executable.call'])
 
         if skip_user_check == False:
             if app.AuthLayer.getOption('app.auth.every_call_permission_check') == True:

@@ -63,7 +63,7 @@ class SetChecked(Act):
         return ArgumentDict(items = [
             Argument(
                 name = 'item',
-                id_allow = True,
+                by_id = True,
                 orig = Checkmark
             ),
             Argument(

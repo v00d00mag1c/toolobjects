@@ -16,7 +16,7 @@ Argument can be used not only for validation, but for storing (queue prestart, v
 
 `assertions`: List of App.Objects.Arguments.Assertions.*; post-getValue() checks. it saves "inputs" and "current" for this
 
-`id_allow`: shortcut to get item by [uuid](App.Storage.StorageUUID)
+`by_id`: shortcut to get item by [uuid](App.Storage.StorageUUID)
 
 `current`: what was got after "getValue()"
 

@@ -61,7 +61,7 @@ class Downloader(Act):
             Argument(
                 name = 'webdriver',
                 orig = Webdriver,
-                id_allow = True,
+                by_id = True,
                 assertions = [NotNone()]
             )
         ])

@@ -22,7 +22,7 @@ class Download(Extractor):
             ),
             Argument(
                 name = 'list',
-                id_allow = True,
+                by_id = True,
                 orig = List
             ),
             Argument(

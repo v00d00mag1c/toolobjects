@@ -18,13 +18,17 @@ class Linkable():
         )
         return self.addLink(_link)
 
-    def __add__(self, object):
+    '''def __add__(self, object):
         self.link(object)
 
-        return self
+        return self'''
 
-    def unlink(self, item: Link) -> None:
-        pass
+    def unlink(self, item: Link, role: list = []) -> None:
+        _link = Link(
+            item = object,
+            role = role
+        )
+        return self.addLink(_link)
 
     def addLink(self, link: Link) -> Link:
         assert hasattr(link, 'item'), 'link to nothing'
@@ -53,6 +57,19 @@ class Linkable():
         self.links.append(link)
 
         return link
+
+    def removeLink(self, link: Link) -> bool:
+        assert hasattr(link, 'item'), 'unlink from nothing'
+
+        if self.hasDb() == True:
+            if link.item.hasDb() == False:
+                self.log('can\'t unlink local object and db item')
+
+            self.getDb().removeLink(link)
+
+            return True
+        else:
+            self.links.remove(link.item)
 
     def isLinked(self, link: BaseModel) -> bool:
         return True

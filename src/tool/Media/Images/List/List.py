@@ -4,7 +4,7 @@ from App.Objects.Relations.Submodule import Submodule
 class List(Collection):
     @classmethod
     def _submodules(cls) -> list:
-        from Media.Images.List.Add import Add
+        from Media.Images.List.Manage import Manage
         from Media.Images.Image import Image
 
         return [
@@ -13,7 +13,7 @@ class List(Collection):
                 role = ['object']
             ),
             Submodule(
-                item = Add,
+                item = Manage,
                 role = ['action']
             )
         ]

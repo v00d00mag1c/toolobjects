@@ -11,7 +11,7 @@ class Show(Act):
         return ArgumentDict(items = [
             Argument(
                 name = 'from',
-                id_allow = True,
+                by_id = True,
                 orig = Object,
                 assertions = [NotNone()]
             )

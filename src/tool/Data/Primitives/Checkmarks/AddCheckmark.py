@@ -12,7 +12,7 @@ class AddCheckmark(Act):
         return ArgumentDict(items = [
             Argument(
                 name = 'list',
-                id_allow = True,
+                by_id = True,
                 orig = List
             ),
             Argument(

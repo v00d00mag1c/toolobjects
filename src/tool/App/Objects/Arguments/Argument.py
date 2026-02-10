@@ -16,7 +16,7 @@ class Argument(NameContainable):
 
     literally: bool = Field(default = False)
     is_sensitive: bool = Field(default = False)
-    id_allow: bool = Field(default = False) # workaround + hardcode
+    by_id: bool = Field(default = False) # workaround + hardcode
     auto_apply: bool = Field(default = False)
     check_json: bool = Field(default = True)
 
@@ -41,10 +41,6 @@ class Argument(NameContainable):
         if self.orig == None:
             return original_value
 
-        if self.id_allow == True:
-            if StorageUUID.validate(original_value):
-                return StorageUUID.fromString(original_value).toPython()
-
         return self.getImplementation(original_value)
 
     def getImplementation(self, original_value: Any | str):
@@ -58,6 +54,10 @@ class Argument(NameContainable):
         return self.implementation(original_value)
 
     def implementation(self, val: Any | str) -> Any:
+        if self.by_id == True:
+            if StorageUUID.validate(val):
+                return StorageUUID.fromString(val).toPython()
+
         if self.literally:
             return self.getOrig().asClass(val)
 

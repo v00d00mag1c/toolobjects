@@ -240,7 +240,20 @@ class SQLAlchemy(ConnectionAdapter):
                 return _link
 
             def removeLink(self, link: CommonLink):
-                link.delete()
+                _query = self_adapter.QueryAdapter()
+                _query._query = self_adapter.getSession().query(_LinkAdapter)
+                _query._model = _LinkAdapter
+                _query.addCondition(Condition(
+                    val1 = 'owner',
+                    operator = '==',
+                    val2 = self.uuid
+                ))
+                _query.addCondition(Condition(
+                    val1 = 'target',
+                    operator = '==',
+                    val2 = link.item.uuid
+                ))
+                _query.first().toPython().delete()
 
             def deleteFromDB(self, remove_links: bool = True):
                 from sqlalchemy import delete

@@ -36,4 +36,8 @@ class AbstractAdapter():
 
     @abstractmethod
     def toDB(self, object):
-        pass
+        ...
+
+    @abstractmethod
+    def deleteFromDB(self):
+        ...
