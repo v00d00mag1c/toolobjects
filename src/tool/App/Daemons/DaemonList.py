@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Daemons.DaemonItem import DaemonItem
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.Argument import Argument
 from App.Daemons.Daemon import Daemon
 from pydantic import Field
 from App import app

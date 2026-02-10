@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Executable import Executable
-from App.Arguments.ArgumentValues import ArgumentValues
+from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Daemons.DaemonItem import DaemonItem
 from pydantic import Field
 import asyncio

@@ -1,7 +1,7 @@
 from App.Objects.Executable import Executable
-from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
 from Data.String import String
 
 from App.Storage.VirtualPath.Path import Path as VirtualPath

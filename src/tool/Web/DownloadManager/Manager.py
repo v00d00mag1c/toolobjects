@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Misc.Increment import Increment
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.Argument import Argument
 from Web.DownloadManager.Item import Item as DownloadManagerItem
 from Web.HTTP.Headers import Headers
 from Data.Int import Int

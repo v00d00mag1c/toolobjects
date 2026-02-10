@@ -1,8 +1,8 @@
 from App.Objects.Executable import Executable
 from App.Responses.ObjectsList import ObjectsList
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Argument import Argument
-from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 
 class Convertation(Executable):
     '''

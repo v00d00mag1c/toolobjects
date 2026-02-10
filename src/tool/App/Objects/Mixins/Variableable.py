@@ -4,7 +4,7 @@ class Variableable:
     '''
     Allows to define class variables. They will be created in every class instance.
     What they can do? maybe progressbar or preview result
-    Variables are just DictList with App.Arguments.Argument. They are copying from prototype that already was inited
+    Variables are just DictList with App.Objects.Arguments.Argument. They are copying from prototype that already was inited
     '''
     variables: DictList | None = None
 

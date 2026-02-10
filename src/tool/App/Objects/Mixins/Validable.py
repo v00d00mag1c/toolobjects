@@ -1,4 +1,4 @@
-from App.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from pydantic import Field
 
 class Validable:

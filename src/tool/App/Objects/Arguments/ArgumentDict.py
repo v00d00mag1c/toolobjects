@@ -1,11 +1,11 @@
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.Argument import Argument
 from App.Objects.Misc.DictList import DictList
 from pydantic import Field
 from typing import Any
 
 class ArgumentDict(DictList):
     '''
-    Dict with App.Arguments.Argument items
+    Dict with App.Objects.Arguments.Argument items
     '''
 
     missing_args_inclusion: bool = Field(default = False)
@@ -51,7 +51,7 @@ class ArgumentDict(DictList):
         Checks passed dict and runs it over every Argument's "implementation()" and returns computed arguments
         '''
         
-        from App.Arguments.ArgumentValues import ArgumentValues
+        from App.Objects.Arguments.ArgumentValues import ArgumentValues
 
         if check_arguments == True:
             _c = ArgumentValues(

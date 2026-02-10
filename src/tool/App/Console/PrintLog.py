@@ -1,7 +1,7 @@
 from App.Objects.Executable import Executable
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Arguments.Argument import Argument
 from App.Logger.Log import Log
 from App import app
 

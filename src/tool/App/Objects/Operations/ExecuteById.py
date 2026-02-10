@@ -1,10 +1,10 @@
 from App.Objects.Act import Act
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
 from Data.Int import Int
 from Data.Boolean import Boolean
 from App.Storage.StorageItem import StorageItem
-from App.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
+from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.ObjectsList import ObjectsList
 
 class ExecuteById(Act):

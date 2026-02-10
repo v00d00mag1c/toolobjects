@@ -3,7 +3,7 @@ from typing import Any, Literal
 
 class Configurable:
     '''
-    Allows to define settings of Object (that are App.Arguments.Argument)
+    Allows to define settings of Object (that are App.Objects.Arguments.Argument)
     '''
 
     @classmethod

@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
 from pydantic import Field
 from typing import Any
 

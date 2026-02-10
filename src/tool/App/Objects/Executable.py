@@ -1,6 +1,6 @@
 from .Object import Object
 from .Mixins.Validable import Validable
-from App.Arguments.ArgumentValues import ArgumentValues
+from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Responses.Response import Response
 from App.Objects.Mixins.Variableable import Variableable
 from App.Objects.Mixins.Updateable import Updateable

@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Objects.Index.LoadedObject import LoadedObject
-from App.Arguments.ArgumentValues import ArgumentValues
+from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Misc.Increment import Increment
 from App.Objects.Index.Namespace import Namespace
 from pathlib import Path

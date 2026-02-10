@@ -14,7 +14,7 @@ class Argument(Object):
     Passes in App.Data.DictList for convenience. So it relays on "name" field
 
     default: What value will be set if nothing passed
-    assertions: List of App.Arguments.Assertions.*; post-getValue() checks. So it saves "inputs" and "current" for this
+    assertions: List of App.Objects.Arguments.Assertions.*; post-getValue() checks. So it saves "inputs" and "current" for this
     current: what was got after "getValue()"
     auto_apply: current will be set after constructor()
 

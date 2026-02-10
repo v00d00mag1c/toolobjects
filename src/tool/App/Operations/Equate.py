@@ -1,7 +1,7 @@
 from App.Objects.Act import Act
 from App.Objects.Misc.DictList import DictList
-from App.Arguments.ArgumentDict import ArgumentDict
-from App.Arguments.Argument import Argument
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
 
 class Equate(Act):
     @classmethod
