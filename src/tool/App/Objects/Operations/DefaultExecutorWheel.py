@@ -35,7 +35,7 @@ class DefaultExecutorWheel(Act):
             _item.integrate(i.values)
             results = await _item.execute(i = i)
         else:
-            _vals = i.getValues(exclude = app.app.view.getCompareKeys() + self.getCompareKeys())
+            _vals = i.getValues(exclude = app.app.view.getCompareKeys() + self.getCompareKeys() + ['auth'])
             results = ObjectsList(items = [])
             _item = executable()
 
@@ -44,7 +44,15 @@ class DefaultExecutorWheel(Act):
             if hasattr(executable, 'integrate') and i.get('as_args'):
                 _item = executable(args = _vals)
             else:
-                _item = executable(**_vals)
+                _keys = dict()
+                # outside arguments can get there, so saving only values from fields
+                for key in _item.getFieldsNames():
+                    if _vals.get(key) == None:
+                        continue
+
+                    _keys[key] = _vals.get(key)
+
+                _item = executable(**_keys)
 
             results.append(_item)
 

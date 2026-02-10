@@ -61,6 +61,7 @@ db and storage:
 - [ ] link with parent=None to link to the db
 - [ ] VirtualPath pagination (adapter pagination also)
 - [ ] multifile config
+- [ ] link to storageunit file
 
 - [ ] ItemPermission for dbs
 

@@ -160,6 +160,17 @@ class BaseModel(PydanticBaseModel):
 
         return value
 
+    @classmethod
+    def getFieldsNames(cls, include_computed: bool = True) -> list[str]:
+        names = list()
+        for name in cls.model_fields:
+            names.append(name)
+        if include_computed == True:
+            for name in cls.model_computed_fields:
+                names.append(name)
+
+        return names
+
     @model_serializer
     def serialize_model_with_links(self, **kwargs) -> dict:
         '''
