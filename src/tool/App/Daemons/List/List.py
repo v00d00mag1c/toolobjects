@@ -1,11 +1,11 @@
 from App.Objects.Object import Object
 from App.Storage.StorageUUID import StorageUUID
 from App.Objects.Arguments.ListArgument import ListArgument
-from App.Daemons.Daemon import Daemon
+from App.Daemons.Daemon.Daemon import Daemon
 from pydantic import Field
 from App import app
 
-class DaemonList(Object):
+class List(Object):
     items: list[Daemon] = Field(default = [])
 
     @classmethod

@@ -4,12 +4,12 @@ from App.Tests.ConsoleLogTest import ConsoleLogTest
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
-from App.Daemons.Daemon import Daemon
+from App.Daemons.Daemon.Daemon import Daemon
 from Data.Int import Int
 from Data.Float import Float
 from App import app
 
-class RunAsDaemon(Test):
+class RunScript(Test):
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [

@@ -107,7 +107,7 @@ class App(Object):
                     path = 'App\\Objects\\Index\\PostRun.py'
                 ),
                 LoadedObject(
-                    path = 'App\\Daemons\\DaemonList.py'
+                    path = 'App\\Daemons\\List\\List.py'
                 )
             ]
         )
