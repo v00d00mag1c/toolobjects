@@ -26,13 +26,13 @@ class Section:
                 print(args[0])
 
     def log_error(self, *args, **kwargs):
-        from Plugins.App.Logger.LogParts.LogKind import LogKindEnum
+        # from Plugins.App.Logger.LogParts.LogKind import LogKindEnum
 
-        kwargs["kind"] = LogKindEnum.error.value
+        # kwargs["kind"] = LogKindEnum.error.value
         return self.log(*args, **kwargs)
 
     def log_success(self, *args, **kwargs):
-        from Plugins.App.Logger.LogParts.LogKind import LogKindEnum
+        #from Plugins.App.Logger.LogParts.LogKind import LogKindEnum
 
-        kwargs["kind"] = LogKindEnum.success.value
+        # kwargs["kind"] = LogKindEnum.success.value
         return self.log(*args, **kwargs)

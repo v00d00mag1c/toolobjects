@@ -1,2 +1,3 @@
-- [ ] Object
-- [ ] App
+- [x] Object
+- [x] App
+- [x] Objects list

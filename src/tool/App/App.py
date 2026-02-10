@@ -39,8 +39,8 @@ class App(Object):
 
         return parsed_args
 
-    def load_plugins(self):
-        from .Index.List import List
+    def load_plugins(self, search_dir: Path):
+        from .Index.List import List as ObjectsList
 
-        self.objects = List()
-        self.objects.load()
+        self.objects = ObjectsList()
+        self.objects.load(search_dir)

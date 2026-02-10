@@ -1,4 +1,5 @@
 from App.App import App
 
 current = App()
-current.load_plugins()
+current._constructor()
+current.load_plugins(current.cwd)

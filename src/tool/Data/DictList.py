@@ -1,5 +1,5 @@
 from pydantic.dataclasses import dataclass
-from typing import Any, List
+from typing import Any
 from App.Objects.Object import Object
 
 @dataclass
@@ -9,7 +9,7 @@ class DictList:
     Must provide 'name' field in each element at 'items'
     '''
 
-    items: List[Object] # name-field-containing
+    items: list[Object] # name-field-containing
 
     def toList(self) -> list:
         return self.items
