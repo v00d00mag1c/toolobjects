@@ -27,10 +27,11 @@ core:
 - [x] Configurable: role of the argument 'env' or 'config'
 - [x] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
 - [x] name of object required twice
-- [ ] App.ReloadModules
 - [x] namespace: load submodules
 - [ ] remove Optional required by model_validate
-- [ ] keep spaces in brackets in _parse_argv
+- [ ] keep spaces in brackets in _parse_argv, choose another argparser
+- [ ] App.Objects.Operations.Edit
+- [ ] App.ReloadModules
 
 db and storage:
 
@@ -70,6 +71,7 @@ db and storage:
 auth:
 
 - [x] App.ACL.AuthLayer
+- [ ] tokens
 
 modules:
 
@@ -92,7 +94,7 @@ documentation:
 
 web:
 
-- [ ] WebServer
+- [x] WebServer
 - [ ] main blocks
 - [ ] displaytype=js_module
 - [ ] svelte modules
