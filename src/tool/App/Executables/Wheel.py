@@ -2,6 +2,7 @@ from App.Arguments.Comparer import Comparer
 from App.Responses.Response import Response
 from App.Objects.Executable import Executable
 from App.Objects.Submodule import Submodule
+from App.Arguments.ArgumentsDict import ArgumentsDict
 
 class Wheel(Executable):
     '''
@@ -9,6 +10,13 @@ class Wheel(Executable):
     Does not contains implementations and is just wheel between extractors with role=act
     firstly was names as Representation and that class was needed to represent an object
     '''
+
+    @classmethod
+    def getArguments(cls) -> ArgumentsDict:
+        itms = ArgumentsDict()
+        itms.missing_args_inclusion = True
+
+        return itms
 
     async def implementation_wrap(self, i) -> Response:
         '''
@@ -18,7 +26,7 @@ class Wheel(Executable):
 
         modules = []
         for submodule in self.getAllSubmodules():
-            if submodule.value != Submodule.ConnectionEnum.INTERNAL:
+            if submodule.value != Submodule.ConnectionEnum.INTERNAL.value:
                 continue
 
             if 'wheel' not in submodule.role:
@@ -26,15 +34,15 @@ class Wheel(Executable):
 
             modules.append(submodule)
 
-        _submodule = self.compareAndGetFirstSuitableSubmodule(modules, i)
+        _submodule = self.__class__.compareAndGetFirstSuitableSubmodule(modules, i)
         if _submodule == None:
             self.log("Suitable submodule not found, calling implementation()")
 
             return await self.implementation(i)
 
-        self.log(f"Using submodule: {submodule.meta.class_name_str}")
+        self.log(f"Using submodule: {submodule.meta.class_name_joined}")
 
-        extract = _submodule()
+        extract = _submodule.module()
 
         return await extract.execute(i)
 
@@ -47,7 +55,7 @@ class Wheel(Executable):
         Iterates got submodules (internal, role=wheel), calling comparer with each submodule, and if at least one (common?) arg is presented in dict, returning it
         '''
         for item in items:
-            decl = Comparer(compare = item.arguments.recursive_args, values = values)
+            decl = Comparer(compare = item.module.getAllArguments(), values = values)
 
             if decl.diff():
                 return item

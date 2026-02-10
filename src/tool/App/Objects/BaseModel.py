@@ -1,9 +1,12 @@
 from importlib.metadata import distributions
-from pydantic import BaseModel as PydanticBaseModel, computed_field
+from pydantic import BaseModel as PydanticBaseModel, computed_field, Field
+from typing import ClassVar
 from .classproperty import classproperty
 from .Outer import Outer
 
 class BaseModel(PydanticBaseModel):
+    class_name: str = Field(default = '', alias = '__class_name__')
+
     # we can't use __init__ because of fields initialization, so we creating second constructor
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -16,10 +19,12 @@ class BaseModel(PydanticBaseModel):
 
     # model_dump alias
     def to_json(self):
-        return self.model_dump(mode='json')
+        return self.model_dump(mode='json',by_alias=True)
 
     def init_subclass(cls):
         cls.meta = cls.Meta(cls)
+        cls.class_name = cls.meta.class_name_joined
+
         # cls.submodules = cls.Submodules(cls)
 
     @classmethod

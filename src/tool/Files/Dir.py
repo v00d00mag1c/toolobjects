@@ -1,11 +1,9 @@
-from App.Objects.Object import Object
-from App.Executables.Act import Act
-from App.Objects.Submodule import Submodule
+from Files.File import File
 from pydantic import Field
 from pathlib import Path
 
-class Dir(Object):
-    path: str = Field(default = None)
+class Dir(File):
+    is_dir: bool = Field(default = True)
 
     def getContent(self) -> list:
         from Files.File import File
@@ -14,9 +12,13 @@ class Dir(Object):
         files = []
 
         for item in path.iterdir():
-            files.append(File(
-                directory = self,
-                name = Path(item).name
-            ))
+            if item.is_dir():
+                files.append(Dir(
+                    path = str(item)
+                ))
+            else:
+                files.append(File(
+                    path = str(item),
+                ))
 
         return files

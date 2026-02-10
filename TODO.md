@@ -12,12 +12,14 @@
 - [ ] App.Storage.ObjectsStorage
 - [ ] App.Storage.StorageUnit
 - [ ] App.Storage.StorageUnitStorage
-- [ ] App.Objects.Client
+- [x] App.Objects.Client
 - [x] App.Objects.Submodules
 - [x] App.Objects.Linkable
 - [x] App.Config.Config
 - [ ] App.Queue.ValueWithReplaces
 - [ ] Data.Text
-- [ ] App.Console.PrintLog
-- [ ] App.Objects.Submodules.Submodule, App.Objects.Configurable.Configurable: MROThing
-- [ ] move App.Data.DictList to App.Objects.DictList
+- [x] App.Console.PrintLog
+- [ ] ~~App.Objects.Submodules.Submodule, App.Objects.Configurable.Configurable: MROThing~~
+- [ ] ~~move App.Data.DictList to App.Objects.DictList~~
+- [ ] object that can contain self subtypes (?)
+- [ ] Files.FileManager.Navigate

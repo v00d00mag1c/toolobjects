@@ -16,7 +16,7 @@ class Submodule(BaseModel):
     value: ConnectionEnum = Field(default = ConnectionEnum.INTERNAL.value)
     role: list[Literal['object', 'wheel']] = Field(default = ['object'])
     '''
-    what roles are exist?
+    what roles are exists?
     
     object - part of common objec
     wheel - will be used in Client or Wheel
