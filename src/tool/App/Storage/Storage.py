@@ -46,6 +46,10 @@ class Storage(Object):
         self.items.append(item)
 
     def get(self, name: str) -> StorageItem:
+        '''
+        Gets StorageItem by name
+        '''
+
         for item in self.items:
             if item.name == name:
                 return item

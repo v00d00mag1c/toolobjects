@@ -24,6 +24,22 @@ class Wheel(Executable):
         You shouldn't override this. it's better to create single extractor
         '''
 
+        _submodule = self._wheel(i)
+        if _submodule == None:
+            self.log("Suitable submodule not found, calling implementation()")
+
+            return await self.implementation(i)
+
+        self.log(f"Using submodule: {_submodule.getClassNameJoined()}", section = ['Execute'])
+
+        extract = _submodule.item()
+
+        return await extract.execute(i)
+
+    async def implementation(self, i):
+        raise AssertionError("can't find suitable submodule")
+
+    def _wheel(self, i):
         modules = []
         for submodule in self.getAllSubmodules():
             if 'wheel' not in submodule.role:
@@ -32,19 +48,10 @@ class Wheel(Executable):
             modules.append(submodule)
 
         _submodule = self.__class__.compareAndGetFirstSuitableSubmodule(modules, i)
-        if _submodule == None:
-            self.log("Suitable submodule not found, calling implementation()")
+        if _submodule != None:
+            return _submodule
 
-            return await self.implementation(i)
-
-        self.log(f"Using submodule: {submodule.getClassNameJoined()}", section = ['Execute'])
-
-        extract = _submodule.item()
-
-        return await extract.execute(i)
-
-    async def implementation(self, i):
-        raise AssertionError("can't find suitable submodule")
+        return _submodule.item()
 
     @classmethod
     def compareAndGetFirstSuitableSubmodule(cls, items: list, values: dict):

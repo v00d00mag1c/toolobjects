@@ -9,6 +9,6 @@ class DaemonItem(Object):
 
     def getModule(self):
         _storage = app.Storage.get(self.db)
-        _item = _storage.adapter.getById(self.uuid)
+        _item = _storage.getAdapter().getById(self.uuid)
 
         return _item

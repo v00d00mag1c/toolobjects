@@ -55,7 +55,7 @@ class Section:
 
     def log_raw(self, anything: str):
         '''
-        Just an alias for "print()". XD!!!!!!!!!
+        Just an alias for "print()".
         Everything (except ObjectAdapters) is an objects, so this function will be available everywhere.
         '''
         print(anything)

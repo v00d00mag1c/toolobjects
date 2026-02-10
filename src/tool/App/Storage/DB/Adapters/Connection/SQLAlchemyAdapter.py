@@ -49,9 +49,10 @@ class SQLAlchemyAdapter(ConnectionAdapter):
                 _adapter = self_adapter
 
                 uuid = Column(Integer(), primary_key=True)
-                owner = Column(Integer())
+                owner = Column(Integer(), nullable = True) # if null its link to db
                 target = Column(Integer())
                 role = Column(String(), nullable = True)
+                order = Column(Integer())
 
                 def getTarget(self):
                     return _ObjectAdapter.getById(self.target)

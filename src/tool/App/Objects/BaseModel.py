@@ -53,10 +53,10 @@ class BaseModel(PydanticBaseModel):
         for item in exclude:
             excludes.append(item)
 
-        self.__class__._convert_links = False
-        self.__class__._include_extra = include_extra
-        self.__class__._excludes = excludes
-        self.__class__._convert_links = convert_links == 'unwrap'
+        PydanticBaseModel._convert_links = False
+        PydanticBaseModel._include_extra = include_extra
+        PydanticBaseModel._excludes = excludes
+        PydanticBaseModel._convert_links = convert_links == 'unwrap'
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none)
@@ -136,14 +136,14 @@ class BaseModel(PydanticBaseModel):
             _field_names.append(field_name)
 
         for field_name in _field_names:
-            if self.__class__._excludes != None and field_name in self.__class__._excludes:
+            if PydanticBaseModel._excludes != None and field_name in PydanticBaseModel._excludes:
                 continue
 
             value = getattr(self, field_name)
 
             if isinstance(value, LinkInsertion):
                 value.setDb(self.getDb())
-                if self.__class__._convert_links == True:
+                if PydanticBaseModel._convert_links == True:
                     result[field_name] = value.unwrap()
                 else:
                     result[field_name] = value
@@ -152,12 +152,12 @@ class BaseModel(PydanticBaseModel):
                 for item in value:
                     item.setDb(self.getDb())
 
-                    if self.__class__._convert_links == True:
+                    if PydanticBaseModel._convert_links == True:
                         result.get('field_name').append(item.unwrap())
             else:
                 result[field_name] = value
 
-        if self.__class__._include_extra == True:
+        if PydanticBaseModel._include_extra == True:
             for key, val in self.model_extra.items():
                 result[key] = val
 

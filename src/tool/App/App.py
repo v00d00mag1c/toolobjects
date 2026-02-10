@@ -13,11 +13,17 @@ import sys
 import os
 
 class App(Object):
-    argv: dict = None
-    conf_override: dict = None
+    # Pathes
     cwd: str = None
     src: str = None
     storage: str = None
+    acl: str = None
+
+    # Args
+    argv: dict = None
+    conf_override: dict = None
+
+    # Internal
     loop: Any = None
     hook_thread: Any = None
     executables_id: Increment = None
@@ -29,6 +35,7 @@ class App(Object):
         #self.cwd = Path(os.getcwd())
         self.cwd = Path(__file__).parent.parent # objects dir
         self.src = self.cwd.parent # "tool", "storage", "venv" and update scripts
+        self.acl = self.src.joinpath('acl')
         self.storage = self.src.joinpath('storage') # default storage
         self.storage.mkdir(exist_ok = True)
         self.loop = asyncio.new_event_loop()

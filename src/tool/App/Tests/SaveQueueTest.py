@@ -1,7 +1,7 @@
 from App.Objects.Test import Test
 from Data.Random import Random
 from App.Queue.Run import Run
-from App.Storage.Save import Save
+from App.Storage.Movement.Save import Save
 
 class SaveQueueTest(Test):
     async def implementation(self, i):
@@ -30,5 +30,8 @@ class SaveQueueTest(Test):
         rnd = Random()
         val = await rnd.execute({'min': 99, 'max': 8888})
         _sav = Save()
-        
-        return _sav.execute({'items': val})
+
+        self.log_raw(await _sav.execute({
+            'storage': 'tmp',
+            'items': val
+        }))

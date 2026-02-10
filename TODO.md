@@ -26,6 +26,7 @@ core:
 - [x] ~~add collections?~~ allow to override getLinks
 - [x] Configurable: role of the argument 'env' or 'config'
 - [x] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
+- [ ] name of object required twice
 
 db and storage:
 
@@ -48,6 +49,8 @@ db and storage:
 - [ ] Web.DownloadManager.Manager
 - [ ] storageunit generates hash randomly but maybe hash the common file?
 - [ ] storageunit flush_hook and getCommonDir(): pathlib parts are duplicated and its better to move to HashDir class
+- [ ] links order
+- [ ] link with parent=None to link to the db)))
 
 auth:
 
@@ -76,6 +79,7 @@ web:
 
 - [ ] main blocks
 - [ ] displaytype=js_module
+- [ ] svelte modules
 
 others:
 

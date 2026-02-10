@@ -48,7 +48,7 @@ class DBInsertable():
 
         # We cant annotate this class here, so probaly the StorageItem should have this method? But we have StorageUnit that need to take its files to another dir
 
-        _common = into.adapter.flush(self)
+        _common = into.getAdapter().flush(self)
         _set_db = True
         if set_db == False:
             _set_db = False

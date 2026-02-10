@@ -20,11 +20,11 @@ class StorageItem(Object):
     directory: str = Field(default = None)
     db: dict = Field(default = None)
 
-    display_name: str = Field(default = None)
+    # display_name: str = Field(default = None)
 
     _storage_dir_name = 'storage'
 
-    adapter: ConnectionAdapter = None
+    adapter: ConnectionAdapter = Field(default = None, exclude = True)
     _path: str = None
 
     def getDir(self):
@@ -42,6 +42,14 @@ class StorageItem(Object):
 
         return _item
 
+    def getAdapter(self):
+        assert self.hasAdapter(), "storage item does not has db connection"
+
+        return self.adapter
+
+    def hasAdapter(self) -> bool:
+        return self.adapter != None
+
     def constructor(self):
         self._initStorage()
         if self.db != None:
@@ -54,17 +62,18 @@ class StorageItem(Object):
                 self.log_error(f"storage item {self.name}: path is file")
             if self._path.exists() == False:
                 self._path.mkdir()
+        else:
+            dbs_dir = app.app.storage.joinpath('dbs')
+            self._path = dbs_dir.joinpath(self.name)
+            self._path.mkdir(exist_ok=True)
 
-        dbs_dir = app.app.storage.joinpath('dbs')
-        self._path = dbs_dir.joinpath(self.name)
-        self._path.mkdir(exist_ok=True)
         self.getStorageDir().mkdir(exist_ok=True)
 
     def getDBAdapterByName(self, adapter_name: str):
         for adapter in app.ObjectsList.getObjectsByGroup(['App', 'Storage', 'DB', 'Adapters', 'Connection']):
             _module = adapter.getModule()
             if _module.protocol_name == adapter_name:
-                item = _module()
+                item = _module(**self.db)
                 item._storage_item = self
                 item._constructor()
 
