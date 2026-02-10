@@ -1,9 +1,8 @@
 from App.Objects.Act import Act
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
-from App.Queue.Queue import Queue
+from App.Objects.Queue.Queue import Queue
 from App.ACL.User import User
-from Data.Int import Int
 
 class Run(Act):
     @classmethod
@@ -11,11 +10,12 @@ class Run(Act):
         return ArgumentDict(items=[
             Argument(
                 name = 'queue',
+                by_id = True,
                 orig = Queue
             ),
             Argument(
                 name = 'auth',
-                orit = User
+                orig = User
             )
         ])
 

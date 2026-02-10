@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from pydantic import Field
-from App.Queue.LinkValue import LinkValue
+from App.Objects.Queue.LinkValue import LinkValue
 
 class Replacement(Object):
     position: list[int] = Field(default = None)

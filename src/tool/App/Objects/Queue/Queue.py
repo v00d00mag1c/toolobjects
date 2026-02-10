@@ -1,8 +1,8 @@
 from App.Objects.Object import Object
 from App.ACL.User import User
 from App.Objects.Responses.Responses import Responses
-from App.Queue.Item import Item
-from App.Queue.OutputItem import OutputItem
+from App.Objects.Queue.Item import Item
+from App.Objects.Queue.OutputItem import OutputItem
 from App.Objects.Operations.DefaultExecutorWheel import DefaultExecutorWheel
 from Data.Increment import Increment
 from pydantic import Field
@@ -11,7 +11,7 @@ class Queue(Object):
     '''
     Class that allows to run multiple executables with his context
 
-    Uses App.Queue.Item for "prestart" and "items".
+    Uses App.Objects.Queue.Item for "prestart" and "items".
 
     prestart - Items that will be executed before the "items". You can pass variables there. Things that does not has "execute()"
     items - Items that will be executed as main process

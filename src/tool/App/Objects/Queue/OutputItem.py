@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Queue.LinkValue import LinkValue
+from App.Objects.Queue.LinkValue import LinkValue
 from pydantic import Field
 from App import app
 

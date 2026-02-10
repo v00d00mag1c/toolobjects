@@ -10,7 +10,7 @@ core:
 - [x] switchextractor
 - [x] queue
 - [x] queue: repeat (or Queue's settings)
-- [x] App.Queue.ValueWithReplaces
+- [x] App.Objects.Queue.ValueWithReplaces
 - [x] App.Storage.StorageUnit
 - [x] App.Storage.StorageUnitStorage
 - [x] App.Objects.Client

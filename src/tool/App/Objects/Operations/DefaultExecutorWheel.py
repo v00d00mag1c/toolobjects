@@ -97,7 +97,7 @@ class DefaultExecutorWheel(Act):
         return ArgumentDict(items = [
             Argument(
                 name = 'i',
-                # default = 'App.Queue.Run',
+                # default = 'App.Objects.Queue.Run',
                 orig = Object,
                 assertions = [
                     NotNone(),

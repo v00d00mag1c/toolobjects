@@ -1,6 +1,6 @@
 from App.Objects.Test import Test
-from App.Queue.Run import Run
-from App.Queue.Queue import Queue
+from App.Objects.Queue.Run import Run
+from App.Objects.Queue.Queue import Queue
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 
 class ValueReplace(Test):
@@ -28,7 +28,7 @@ class ValueReplace(Test):
                     }
                 },
                 {
-                    'predicate': 'App.Queue.Operations.Equate',
+                    'predicate': 'App.Objects.Queue.Operations.Equate',
                     'arguments': {
                         'equate_this': {
                             'direct_value': '$0'
