@@ -41,16 +41,16 @@ class Check(Act):
             try:
                 self.log('time for {0} ({1})'.format(task.getDbIds(), task.run_at), role = ['scheduled_tasks'])
 
+                if i.get('delete_after'):
+                    task.delete(commit = True)
+
+                    self.log('task {0} is deleted'.format(task.getDbIds()), role = ['scheduled_tasks', 'scheduled_tasks.deleted'])
+
                 task.run(pre_i, 'scheduled_item ' + str(_iterator), self.getOption('app.scheduled_tasks.as_root'))
 
                 _iterator += 1
 
                 self.log('task {0} is succeed'.format(task.getDbIds()), role = ['scheduled_tasks'])
-
-                if i.get('delete_after'):
-                    task.delete(commit = True)
-
-                    self.log('task {0} is deleted'.format(task.getDbIds()), role = ['scheduled_tasks', 'scheduled_tasks.deleted'])
             except Exception as e:
                 self.log_error(e)
 

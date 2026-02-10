@@ -1,4 +1,4 @@
-from App.Objects.Test import Test
+from App.Objects.Act import Act
 from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
@@ -11,7 +11,7 @@ from pydantic import Field
 from App import app
 import asyncio
 
-class ExecuteIterative(Test):
+class ExecuteIterative(Act):
     total_iterations: int = Field(default = 0)
 
     @classmethod
@@ -87,6 +87,6 @@ class ExecuteIterative(Test):
                 await _object().execute(_dict_args)
 
             if is_infinite == False:
-                reached_end = current_iterator > max_iterations
+                reached_end = current_iterator >= max_iterations
 
             await asyncio.sleep(interval)
