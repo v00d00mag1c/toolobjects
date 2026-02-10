@@ -7,13 +7,16 @@ from App.Storage.StorageUUID import StorageUUID
 
 class ObjectsList(Response):
     '''
-    The best Response type
+    The best Response type; represents list of objects.
+
+    unsaveable - means that objects in list are already flushed, and they shouldn't be written again
     '''
 
     items: list[Object] = Field(default = [])
     total_count: int = Field(default = 0)
     supposed_to_be_single: bool = Field(default = False)
-    unsaveable: bool = Field(default = True)
+    unsaveable: bool = Field(default = False)
+    ignore_flush_hooks: bool = Field(default = False)
     # If your Executable returns something that should be saved, "unsaveable" should be False. But if it searches something, it should be True because it will be re-flushed in DefaultExtractorWheel
 
     def append(self, item: Object):

@@ -18,10 +18,10 @@ class StorageItem(Object):
 
     # input
     storage_type: str = Field(default = 'App.Storage.Adapters.DoubleDividedHashDirs')
-    storage: dict = Field(default = {})
+    storage: dict = Field(default = {}, repr = False)
 
     db_type: str = Field(default = None)
-    db: dict = Field(default = {})
+    db: dict = Field(default = {}, repr = False)
     # /input
 
     root_uuid: int = Field(default = None)

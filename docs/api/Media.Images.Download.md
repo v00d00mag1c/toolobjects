@@ -2,7 +2,7 @@
 
 Type: `Extractor`
 
-Downloads image from `url`, saves it as `StorageUnit` and `Files.FileTypes.Image`.
+Downloads image from `url`, saves it as `StorageUnit` and `Media.Files.FileTypes.Image`.
 
 #### Arguments
 

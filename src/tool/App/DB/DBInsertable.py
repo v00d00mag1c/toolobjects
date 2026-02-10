@@ -51,7 +51,8 @@ class DBInsertable():
               link_current_depth: int = 0,
               link_max_depth: int = 10,
               set_db: bool = True,
-              set_db_if_set: bool = False):
+              set_db_if_set: bool = False,
+              ignore_flush_hooks: bool = False):
         '''
         Flushes object to some StorageItem.
 
@@ -85,9 +86,10 @@ class DBInsertable():
 
                     link.item.flush(into,
                                     flush_linked,
-                                    link_current_depth,
-                                    link_max_depth,
-                                    set_db)
+                                    link_current_depth = link_current_depth,
+                                    link_max_depth = link_max_depth,
+                                    set_db = set_db,
+                                    ignore_flush_hooks = ignore_flush_hooks)
 
                     self.log('flushed link with index {0}'.format(_id))
                     if _set_db == True:
@@ -101,7 +103,8 @@ class DBInsertable():
         if _set_db == True:
             self.setDb(_db_item)
 
-        self.flush_hook(into)
+        if ignore_flush_hooks == False:
+            self.flush_hook(into)
 
         return _db_item
 

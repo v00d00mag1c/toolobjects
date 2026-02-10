@@ -76,7 +76,7 @@ auth:
 modules:
 
 - [x] Data.XML
-- [x] Files.FileManager.Navigate
+- [x] Media.Files.FileManager.Navigate
 - [ ] move File.FileTypes.Image
 - [ ] App.Config.Set
 - [ ] App.Config.Get

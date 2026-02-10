@@ -1,4 +1,4 @@
-from Files.FileType import FileType
+from Media.Files.FileType import FileType
 from pydantic import Field
 from App.Objects.Requirements.Requirement import Requirement
 from App.Objects.Misc.Thumbnail import Thumbnail

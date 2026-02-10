@@ -1,7 +1,7 @@
 from App.Objects.Convertation import Convertation
 from App.Objects.Relations.Submodule import Submodule
 from App.Objects.Responses.ObjectsList import ObjectsList
-from Files.File import File
+from Media.Files.File import File
 from Media.Text.Text import Text
 from App import app
 

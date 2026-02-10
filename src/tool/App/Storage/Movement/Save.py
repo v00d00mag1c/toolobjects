@@ -8,6 +8,7 @@ from App.Objects.Responses.AnyResponse import AnyResponse
 from App.Storage.StorageItem import StorageItem
 from App.Storage.StorageUUID import StorageUUID
 from Data.Int import Int
+from Data.Boolean import Boolean
 from App import app
 
 class Save(Act):
@@ -35,6 +36,11 @@ class Save(Act):
                 name = 'link_max_depth',
                 orig = Int,
                 default = cls.getOption('app.db.linking.depth.default')
+            ),
+            Argument(
+                name = 'ignore_flush_hooks',
+                default = False,
+                orig = Boolean
             )
         ])
 
@@ -51,7 +57,7 @@ class Save(Act):
             assert storage.has_db_adapter(), f"storage {storage.name} does not contains db connection"
 
             for item in i.get('items').getItems():
-                item.flush(storage, link_max_depth = i.get('link_max_depth'))
+                item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'))
 
                 self.log(f"flushed item to db {storage.name}, uuid: {item.getDbId()}")
                 results += 1

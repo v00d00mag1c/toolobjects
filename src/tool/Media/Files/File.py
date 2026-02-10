@@ -12,7 +12,7 @@ class File(Object):
     stat: dict = Field(default = {})
     # is_common: bool = Field(default = True)
 
-    def countStats(self):
+    def _count_stats(self):
         path = Path(self.path)
         stat = path.stat()
 
@@ -21,9 +21,9 @@ class File(Object):
         # self.stat = dict(stat)
 
     @staticmethod
-    def fromPath(path: Path):
-        from Files.Dir import Dir
-        from Files.FileType import FileType
+    def from_path(path: Path):
+        from Media.Files.Dir import Dir
+        from Media.Files.FileType import FileType
 
         item = FileType()
         if path.is_dir() == True:
@@ -35,7 +35,7 @@ class File(Object):
                 path = str(path)
             )
 
-        item.file.countStats()
+        item.file._count_stats()
 
         return item
 
@@ -50,7 +50,7 @@ class File(Object):
     def get_name_only(self) -> str:
         return self.name.replace('.'+self.ext, '')
 
-    def getContent(self):
+    def get_content(self):
         return [self.to_json()]
 
     def toStorageUnit(self):

@@ -47,4 +47,3 @@ class Object(BaseModel,
             return val
 
         return super().asArgument(val)
-

@@ -59,6 +59,7 @@ class DefaultExecutorWheel(Act):
                 await _save.execute({
                     'items': results,
                     'storage': save_to,
+                    'ignore_flush_hooks': i.get('ignore_flush_hooks', results.ignore_flush_hooks),
                     'link_to': i.get('link_to'),
                     'auth': i.get('auth')
                 })

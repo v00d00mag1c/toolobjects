@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from Files.File import File
+from Media.Files.File import File
 from pydantic import Field
 from pathlib import Path
 from typing import Type, Generator

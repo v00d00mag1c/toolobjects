@@ -3,7 +3,7 @@ from App.Objects.Object import Object
 from App.Storage.StorageUnit import StorageUnit
 from App.Storage.StorageUnitLink import StorageUnitLink
 from App.Objects.Displayment import Displayment
-from Files.File import File
+from Media.Files.File import File
 from Web.URL import URL
 from pydantic import Field
 

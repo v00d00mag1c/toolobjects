@@ -15,22 +15,14 @@ class Path(Object):
     connection_divider: ClassVar[str] = ':/'
 
     @staticmethod
-    def fromStr(str: str):
-        _itms = str.split(Path.connection_divider)
-        _res = Path(root = _itms[0])
-        _res.setParts(_itms[1])
+    def from_str(str: str):
+        _root_and_other = str.split(Path.connection_divider)
+        _path = Path(root = _root_and_other[0])
 
-        return _res
+        for item in _root_and_other[1].split(_path.divider):
+            _path.parts.append(item)
 
-    def setParts(self, items: str | list):
-        if type(items) == str:
-            if len(items) == 0:
-                return
-
-            for item in items.split(self.divider):
-                self.parts.append(item)
-        else:
-            self.parts = items
+        return _path
 
     def getRoot(self):
         _root_parts = self.root.split(':')

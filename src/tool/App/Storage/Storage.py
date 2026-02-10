@@ -3,6 +3,7 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.StorageItem import StorageItem
 from pydantic import Field
+from typing import Generator
 from Data.Int import Int
 from App import app
 
@@ -61,6 +62,10 @@ class Storage(Object):
 
     def append(self, item: StorageItem):
         self.items.append(item)
+
+    def getAll(self) -> Generator[StorageItem]:
+        for item in self.items:
+            yield item
 
     def get(self, name: str) -> StorageItem:
         '''

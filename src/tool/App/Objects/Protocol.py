@@ -1,5 +1,4 @@
-from App.Objects.Object import Object
 from typing import ClassVar
 
-class Protocol(Object):
+class Protocol():
     protocol_name: ClassVar[str] = ''

@@ -1,3 +1,4 @@
+from App.Objects.Object import Object
 from App.Objects.Protocol import Protocol
 from App.Objects.Object import Object
 from pydantic import Field
@@ -5,7 +6,7 @@ from typing import Any, ClassVar
 from snowflake import SnowflakeGenerator
 from App.Logger.LogPrefix import LogPrefix
 
-class ConnectionAdapter(Protocol):
+class ConnectionAdapter(Object, Protocol):
     '''
     Adapter for some object info storage (e.g. db)
     '''

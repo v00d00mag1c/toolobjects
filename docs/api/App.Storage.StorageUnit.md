@@ -4,7 +4,7 @@ File or many files in separated directory, must contain common file
 
 `hash`: randomly-generated hash (not relies on file)
 
-`files`: list of [Files.File](Files.File.md)
+`files`: list of [Media.Files.File](Media.Files.File.md)
 
 `name`: name of common file, `ext`: extension
 
