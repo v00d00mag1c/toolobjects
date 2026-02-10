@@ -3,6 +3,7 @@ from App.Objects.Displayments.StringDisplayment import StringDisplayment
 from App.Objects.Act import Act
 
 class Int(Object):
+    # It should be named "Integer"
     value: int = None
 
     @classmethod

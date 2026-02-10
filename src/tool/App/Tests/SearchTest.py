@@ -34,7 +34,7 @@ class SearchTest(Test):
                     val1 = 'content',
                     json_fields = ['obj', 'saved_via', 'object_name'],
                     operator = '==',
-                    val2 = 'Media.RSS.ChannelItem',
+                    val2 = 'Web.RSS.ChannelItem',
                 )
             ],'''
             'limit': 9

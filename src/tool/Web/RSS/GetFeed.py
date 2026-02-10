@@ -2,9 +2,9 @@ from App.Objects.Extractor import Extractor
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 from Data.String import String
 from App.Objects.Responses.ObjectsList import ObjectsList
-from Media.RSS.Channel import Channel
-from Media.RSS.Response import Response
-from Media.RSS.ChannelItem import ChannelItem
+from Web.RSS.Channel import Channel
+from Web.RSS.Response import Response
+from Web.RSS.ChannelItem import ChannelItem
 from pydantic import Field
 from typing import Optional, Self
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion

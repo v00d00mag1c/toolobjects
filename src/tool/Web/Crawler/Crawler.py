@@ -1,12 +1,18 @@
 from App.Objects.Object import Object
+from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Arguments.Argument import Argument
 from Data.String import String
 from Data.Int import Int
 from Data.Float import Float
 from Web.Crawler.Webdrivers.Webdriver import Webdriver
 from App.Objects.Requirements.Requirement import Requirement
+from Web.HTTP.Cookies import Cookies
+from Web.Crawler.PageHTML import PageHTML
+from urllib.parse import urlparse
 from pydantic import Field
 import asyncio
+
+from bs4 import BeautifulSoup
 
 class Crawler(Object):
     webdriver: Webdriver = Field(default = None)
@@ -14,7 +20,7 @@ class Crawler(Object):
     async def start_webdriver(self):
         await self.webdriver.start()
 
-    async def get_url(self, url: str):
+    async def set_url(self, url: str):
         self.webdriver._driver.get(url)
 
         self.log('opened url {0}'.format(url))
@@ -46,6 +52,33 @@ class Crawler(Object):
             last_height = new_height
             scroll_iter += 1
 
+    def get_html(self):
+        return self.webdriver._driver.page_source
+
+    def get_parsed_html(self):
+        return PageHTML(bs = BeautifulSoup(self.webdriver._driver.page_source, 'html.parser'))
+
+    def get_title(self):
+        return self.webdriver._driver.title
+
+    def get_url(self):
+        return urlparse(self.webdriver._driver.current_url)
+
+    def get_base_url(self):
+        _url = self.get_url()
+        return _url.scheme + '://' + _url.netloc
+
+    def get_relative_url(self):
+        _base_url = self.webdriver._driver.execute_script(f"return document.querySelector(\"base\") ? document.querySelector(\"base\").href : null")
+        if _base_url == None:
+            return self.get_base_url()
+
+        return _base_url
+
+    def set_cookies(self, items: list[Cookies] = []):
+        for item in items:
+            self.webdriver._driver.add_cookie(item.value)
+
     @classmethod
     def _settings(cls):
         return [
@@ -68,7 +101,12 @@ class Crawler(Object):
                 name = 'web.crawler.implicitly_wait',
                 default = 5,
                 orig = Int
-            )
+            ),
+            ListArgument(
+                name = 'web.crawler.cookies',
+                default = [],
+                orig = Cookies
+            ),
         ]
 
     @classmethod
