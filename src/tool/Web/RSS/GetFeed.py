@@ -28,7 +28,7 @@ class GetFeed(Extractor):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         url = i.get('url')
         response_xml = await Response.download(url)
 

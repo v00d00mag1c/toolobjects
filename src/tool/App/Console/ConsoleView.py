@@ -21,7 +21,7 @@ class ConsoleView(View):
 
         return await self.execute(_parsed_argv[0])
 
-    async def implementation(self, i: ArgumentValues = {}):
+    async def _implementation(self, i: ArgumentValues = {}):
         self.log("Some arguments cannot be passed in console.")
 
         self._auth(i)

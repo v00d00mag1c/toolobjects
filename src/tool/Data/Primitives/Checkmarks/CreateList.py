@@ -18,7 +18,7 @@ class CreateList(Extractor):
             ]
         )
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _list = List()
         _list.obj.original_name = i.get('name')
 

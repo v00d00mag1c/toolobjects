@@ -22,7 +22,7 @@ class Navigate(Act):
         ],
         missing_args_inclusion = True)
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _item = i.get('with')
 
         assert hasattr(_item, 'protocol_name'), "class is not a protocol"

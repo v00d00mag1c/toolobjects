@@ -16,7 +16,7 @@ class PrintLog(Executable):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         self.log_raw(Log.toStr(i.get('log').toParts(
             show_time = app.Config.get('logger.print.console.show_time'),
             show_role = app.Config.get('logger.print.console.show_role')

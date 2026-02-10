@@ -12,7 +12,7 @@ class StringDisplayment(Displayment):
 
     value: str | Any = None # probaly module
 
-    def implementation(self, i: dict) -> Any:
+    def _implementation(self, i: dict) -> Any:
         '''
         The object to display is passed in i.get("object")
         '''

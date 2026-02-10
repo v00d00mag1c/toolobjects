@@ -23,7 +23,7 @@ class AddCheckmark(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _label = i.get('label')
         checkmarks = i.get('list')
 

@@ -32,7 +32,7 @@ class Reorder(Act):
             ]
         )
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         collection = i.get('collection')
         item_1 = i.get('item_1')
         item_2 = i.get('item_2')

@@ -49,11 +49,11 @@ class Argument(NameContainable):
         if self.check_json == True and JSON.isStringValidJson(original_value) == True:
             val = JSON.fromText(original_value).data
 
-            return self.implementation(val)
+            return self._implementation(val)
 
-        return self.implementation(original_value)
+        return self._implementation(original_value)
 
-    def implementation(self, val: Any | str) -> Any:
+    def _implementation(self, val: Any | str) -> Any:
         if self.by_id == True:
             if StorageUUID.validate(val):
                 return StorageUUID.fromString(val).toPython()

@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from App import app
 
 class Storage(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         self.log('storage test')
 
         self.log('content db:' + str(app.Storage.get('common')))

@@ -9,7 +9,7 @@ class Int(Object):
     @classmethod
     def _displayments(cls):
         class DisplayAsString(Act):
-            def implementation(self, i):
+            def _implementation(self, i):
                 orig = i.get('orig')
                 return str(orig.value)
 

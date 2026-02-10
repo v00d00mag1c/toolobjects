@@ -6,7 +6,7 @@ from App import app
 from Data.JSON import JSON
 
 class StorageLinkTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         storage = app.Storage.get('content')
         '''
 

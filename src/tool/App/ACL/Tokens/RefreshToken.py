@@ -19,7 +19,7 @@ class RefreshToken(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _token = i.get('token')
         _tokens = app.Storage.get('users').adapter.getQuery()
         _tokens.where_object(Token)

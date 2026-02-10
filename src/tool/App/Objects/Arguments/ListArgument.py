@@ -26,8 +26,8 @@ class ListArgument(Argument):
             val = [val]
 
         for item in val:
-            #yield self.implementation(val = item)
-            results.append(self.implementation(val = item))
+            #yield self._implementation(val = item)
+            results.append(self._implementation(val = item))
 
         return results
 

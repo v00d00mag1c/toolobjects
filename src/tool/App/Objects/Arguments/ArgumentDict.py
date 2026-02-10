@@ -48,7 +48,7 @@ class ArgumentDict(DictList):
 
     def compareWith(self, inputs: dict, check_arguments: bool = True, raise_on_assertions: bool = True):
         '''
-        Checks passed dict and runs it over every Argument's "implementation()" and returns computed arguments
+        Checks passed dict and runs it over every Argument's "_implementation()" and returns computed arguments
         '''
         
         from App.Objects.Arguments.ArgumentValues import ArgumentValues

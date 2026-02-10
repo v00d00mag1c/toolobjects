@@ -6,7 +6,7 @@ from App.DB.Query.Condition import Condition
 from App.DB.Query.Sort import Sort
 
 class SearchTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _storage = app.Storage.get('common')
         '''
         _ids = list()

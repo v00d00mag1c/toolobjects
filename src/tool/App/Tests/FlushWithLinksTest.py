@@ -3,7 +3,7 @@ from Media.Text.Text import Text
 from App import app
 
 class FlushWithLinksTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         items = [Text(value='123456'),Text(value='asdfghjkl')]
         lnk = self.log('linking test')
         for item in items:

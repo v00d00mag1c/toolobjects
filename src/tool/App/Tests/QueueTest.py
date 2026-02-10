@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from App.Queue.Run import Run
 
 class QueueTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         self.log('queue test')
 
         runs = Run()

@@ -6,7 +6,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 
 class Convertation(Executable):
     '''
-    Executable that converts X model to Y model. Convertation logic needs to be writed in "implementation()"
+    Executable that converts X model to Y model. Convertation logic needs to be writed in "_implementation()"
     '''
 
     @classmethod
@@ -30,5 +30,5 @@ class Convertation(Executable):
             )
         ])
 
-    async def implementation(self, i) -> ObjectsList:
+    async def _implementation(self, i) -> ObjectsList:
         pass

@@ -5,5 +5,5 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 
 class ExplorerProtocol(Act, Protocol):
     @abstractmethod
-    def implementation(self, i) -> ObjectsList:
+    def _implementation(self, i) -> ObjectsList:
         ...

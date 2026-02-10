@@ -20,7 +20,7 @@ class Download(Act):
             missing_argument_inclusion = True
         )
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _driver = i.get('driver')
 
         return await _driver().execute(i)

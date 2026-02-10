@@ -24,6 +24,6 @@ class PostRun(Object):
             app.AuthLayer.add_user(User(
                     name = 'root',
                     # 2manywraps
-                    password_hash = GetHash().implementation({'string': default_root_password}).items[0].value
+                    password_hash = GetHash()._implementation({'string': default_root_password}).items[0].value
                 )
             )

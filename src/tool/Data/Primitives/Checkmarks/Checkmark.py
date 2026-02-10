@@ -12,7 +12,7 @@ class Checkmark(Object):
     @classmethod
     def _displayments(cls):
         class DisplayAsString(Act):
-            def implementation(self, i):
+            def _implementation(self, i):
                 orig = i.get('orig')
                 _mark = "[ ]"
                 if orig.state:

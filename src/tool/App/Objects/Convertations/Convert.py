@@ -21,7 +21,7 @@ class Convert(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _variant = 0
         _from = i.get('from')
         _to = i.get('to')

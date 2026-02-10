@@ -21,7 +21,7 @@ class ModuleMetainfo(Test):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         if i.get('1') == False:
             self.log('♥')
             return

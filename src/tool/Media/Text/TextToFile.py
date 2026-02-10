@@ -19,7 +19,7 @@ class TextToFile(Convertation):
             )
         ]
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _orig = i.get('orig')
         _storage = app.Storage.get('tmp')
         _unit = _storage.get_storage_adapter().get_storage_unit()

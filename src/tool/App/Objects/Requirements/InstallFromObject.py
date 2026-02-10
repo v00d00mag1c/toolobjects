@@ -16,7 +16,7 @@ class InstallFromObject(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _object = i.get('object')
         _requirements = _object.getNotInstalledModules()
         if len(_requirements) < 1:

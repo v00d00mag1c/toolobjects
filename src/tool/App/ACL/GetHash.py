@@ -17,7 +17,7 @@ class GetHash(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         hasher = PasswordHasher()
 
         return ObjectsList(items = [String(value = hasher.hash(i.get('string')))])

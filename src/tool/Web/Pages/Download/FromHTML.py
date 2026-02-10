@@ -8,7 +8,7 @@ from Web.Crawler.Crawler import Crawler
 from App.Objects.Responses.ObjectsList import ObjectsList
 
 class FromHTML(Downloader):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         html = i.get('html')
         webdriver = i.get('webdriver')
 

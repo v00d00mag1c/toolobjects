@@ -17,7 +17,7 @@ class Show(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _list = ObjectsList()
         for submodule in i.get('from').getSubmodules(with_role=['convertation']):
             _list.append(submodule)

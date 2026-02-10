@@ -26,9 +26,9 @@ class Wheel(Executable):
 
         _submodule = self._wheel(i)
         if _submodule == None:
-            self.log("Suitable submodule not found, calling implementation()")
+            self.log("Suitable submodule not found, calling _implementation()")
 
-            return await self.implementation(i)
+            return await self._implementation(i)
 
         self.log(f"Using submodule: {_submodule.getClassNameJoined()}", section = ['Execute'])
 
@@ -36,7 +36,7 @@ class Wheel(Executable):
 
         return await extract.execute(i)
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         raise AssertionError("can't find suitable submodule")
 
     def _wheel(self, i):

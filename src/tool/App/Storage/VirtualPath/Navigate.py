@@ -22,7 +22,7 @@ class Navigate(ExplorerProtocol):
         ],
         missing_args_inclusion=True)
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _path = i.get('path')
         if _path == None:
             _list = ObjectsList()

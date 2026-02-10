@@ -20,7 +20,7 @@ class Create(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         name = i.get('name')
 
         _obj = app.ObjectsList.getByName(self.type_that_creates)

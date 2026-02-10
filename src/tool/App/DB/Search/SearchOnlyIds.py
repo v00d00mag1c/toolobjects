@@ -9,7 +9,7 @@ class SearchOnlyIds(Act):
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(missing_args_inclusion=True)
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _list = ObjectsList()
         _search = Search()
         _items = await _search.execute(i)

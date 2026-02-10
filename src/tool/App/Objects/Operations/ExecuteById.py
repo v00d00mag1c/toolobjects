@@ -11,7 +11,7 @@ from App.Locale.ObjectDocumentation import ObjectDocumentation
 from App.Locale.Key import Key
 
 class ExecuteById(Act):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _obj = i.get('item')
         obj = _obj.getItem()
 

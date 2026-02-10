@@ -14,5 +14,5 @@ class AddPermission(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         app.AuthLayer.add_permission(i.get('permission'))

@@ -5,7 +5,7 @@ class LiteralArgument(Argument):
     values: list = Field(default = [])
     strict: bool = Field(default = True)
     
-    def implementation(self, val: str):
+    def _implementation(self, val: str):
         is_in = False
 
         if self.strict == True:

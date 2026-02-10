@@ -4,7 +4,7 @@ from Data.Random.GetRandomInt import GetRandomInt
 from App import app
 
 class Flush(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         self.log('creating models')
         _id = GetRandomInt().randomInt(0,1)
 

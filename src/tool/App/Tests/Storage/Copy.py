@@ -3,7 +3,7 @@ from App.Storage.Movement.Copy.Files import Files
 from App import app
 
 class Copy(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _files = Files()
         _storage = app.app.storage.joinpath('test')
         _storage.mkdir(exist_ok = True)

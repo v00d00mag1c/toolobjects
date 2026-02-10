@@ -32,7 +32,7 @@ class Executable(Object, Variableable, Validable):
         )
 
     @abstractmethod
-    async def implementation(self, i: dict) -> Response:
+    async def _implementation(self, i: dict) -> Response:
         '''
         Entry point, must be overriden in your class
         '''
@@ -40,13 +40,13 @@ class Executable(Object, Variableable, Validable):
 
     async def implementation_wrap(self, i: dict) -> Response:
         '''
-        another checks before implementation(). Can be overriden
+        another checks before _implementation(). Can be overriden
         '''
 
-        if asyncio.iscoroutinefunction(self.implementation):
-            return await self.implementation(i)
+        if asyncio.iscoroutinefunction(self._implementation):
+            return await self._implementation(i)
         else:
-            return self.implementation(i)
+            return self._implementation(i)
 
     async def execute(self, 
                       i: ArgumentValues | dict, 
@@ -54,7 +54,7 @@ class Executable(Object, Variableable, Validable):
                       raise_on_assertions: bool = True,
                       skip_user_check: bool = False) -> Response:
         '''
-        Internal method. Calls module-defined implementation() and returns what it returns
+        Internal method. Calls module-defined _implementation() and returns what it returns
         '''
 
         self.id = app.app.executables_id.getIndex()
@@ -80,7 +80,7 @@ class Executable(Object, Variableable, Validable):
 
         response = await self.implementation_wrap(i = passing)
 
-        # assert response != None, 'implementation() returned nothing'
+        # assert response != None, '_implementation() returned nothing'
 
         await self.awaitTriggerHooks('after_execute', i = passing)
 

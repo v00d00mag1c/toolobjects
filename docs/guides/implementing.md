@@ -14,16 +14,16 @@ def _arguments(cls) -> ArgumentsDict:
 
 **Entry point**
 
-Logic of the class must be in `implementation()` method:
+Logic of the class must be in `_implementation()` method:
 
 ```
-    async def implementation(self, i) -> Response:
+    async def _implementation(self, i) -> Response:
         ...
 ```
 
-All validated items will be returned as [`App.Objects.Arguments.ArgumentValues`](../api/App.Objects.Arguments.ArgumentValues.md) in `i` param. `implementation()` is internal-only, to call another [`App.Objects.Executable`](../api/App.Objects.Executable.md) use `await execute({})`: it will automatically validate arguments and run hooks.
+All validated items will be returned as [`App.Objects.Arguments.ArgumentValues`](../api/App.Objects.Arguments.ArgumentValues.md) in `i` param. `_implementation()` is internal-only, to call another [`App.Objects.Executable`](../api/App.Objects.Executable.md) use `await execute({})`: it will automatically validate arguments and run hooks.
 
-`implementation()` should return [`Response`](../api/App.Objects.Responses.Response.md) (except `Extractor`) or return nothing.
+`_implementation()` should return [`Response`](../api/App.Objects.Responses.Response.md) (except `Extractor`) or return nothing.
 
 **Settings**
 

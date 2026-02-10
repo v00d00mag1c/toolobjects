@@ -17,7 +17,7 @@ class LongWait(Test):
             ]
         )
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         self.log('sleeping')
 
         await asyncio.sleep(i.get('time'))

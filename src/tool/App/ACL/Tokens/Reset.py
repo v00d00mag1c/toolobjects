@@ -18,7 +18,7 @@ class Reset(Act):
             ),
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         user = i.get('user')
         _user = app.AuthLayer.getUserByName(user)
 

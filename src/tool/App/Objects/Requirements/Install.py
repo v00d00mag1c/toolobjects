@@ -15,7 +15,7 @@ class Install(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         import subprocess, sys
 
         requirements = i.get('requirements')

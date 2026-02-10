@@ -6,7 +6,7 @@ from App.Storage.Item.StorageItem import StorageItem
 from Media.Text.Text import Text
 
 class Export(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         return await RealExport().execute({
             'items': ObjectsList(items = [
                 Text(value = ';/'),

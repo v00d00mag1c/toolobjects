@@ -17,7 +17,7 @@ class Get(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _vals = dict()
         for key in i.get('key'):
             _vals[key] = app.Config.get(key)

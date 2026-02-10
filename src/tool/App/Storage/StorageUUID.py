@@ -74,7 +74,7 @@ class StorageUUID(Object):
         return _item.toPython()
 
     class DisplayAsString():
-        def implementation(self, i):
+        def _implementation(self, i):
             orig = i.get('orig')
             return str(orig.getId())
 

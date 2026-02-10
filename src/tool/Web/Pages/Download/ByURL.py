@@ -7,7 +7,7 @@ from Data.String import String
 from Web.Crawler.Crawler import Crawler
 
 class ByURL(Downloader):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         urls = i.get('url')
         webdriver = i.get('webdriver')
 

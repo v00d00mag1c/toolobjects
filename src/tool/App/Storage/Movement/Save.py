@@ -45,7 +45,7 @@ class Save(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         results = 0
         link_to = list()
         for item in i.get('link_to'):

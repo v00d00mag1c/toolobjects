@@ -33,7 +33,7 @@ class Manage(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         collection = i.get('collection')
         items = i.get('items')
         act = i.get('act')

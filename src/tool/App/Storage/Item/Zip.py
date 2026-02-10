@@ -44,7 +44,7 @@ class Zip(Act):
 
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         storage = i.get('item')
 
         assert storage != None

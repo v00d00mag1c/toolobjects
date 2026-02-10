@@ -22,7 +22,7 @@ class MakeImageThumbnail(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         image = i.get('image')
         thumb = image._make_thumbnail(self._read_file(), i.get('percentage'))
 

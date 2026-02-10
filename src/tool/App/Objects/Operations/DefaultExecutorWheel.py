@@ -19,7 +19,7 @@ from App import app
 class DefaultExecutorWheel(Act):
     ev_hooks: list = Field(default = [])
 
-    async def implementation(self, i: ArgumentValues):
+    async def _implementation(self, i: ArgumentValues):
         force_flush = i.get('force_flush')
         executable = i.get('i')
 

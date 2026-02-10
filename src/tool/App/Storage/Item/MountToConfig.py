@@ -20,7 +20,7 @@ class MountToConfig(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _item = i.get('item')
         _conf_name = 'storage.items'
         _conf_val = app.Config.getItem().get(_conf_name, raw = True)

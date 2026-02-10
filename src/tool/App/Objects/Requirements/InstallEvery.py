@@ -3,7 +3,7 @@ from App.Objects.Requirements.Install import Install
 from App import app
 
 class InstallEvery(Act):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         import subprocess, sys
 
         self.log('This act will load every object.')

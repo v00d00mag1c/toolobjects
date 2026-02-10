@@ -41,7 +41,7 @@ class Download(Extractor):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _url = URL(
             value = i.get('url')
         )

@@ -4,7 +4,7 @@ from App.Objects.Responses.AnyResponse import AnyResponse
 from App import app
 
 class ReloadModules(Act):
-    def implementation(self, i):
+    def _implementation(self, i):
         for namespace in app.ObjectsList.namespaces:
             namespace.unload()
 

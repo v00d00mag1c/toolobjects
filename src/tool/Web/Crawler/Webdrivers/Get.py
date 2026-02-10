@@ -5,7 +5,7 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from Web.Crawler.Webdrivers.Webdriver import Webdriver
 
 class Get(Act):
-    def implementation(self, i):
+    def _implementation(self, i):
         _query = app.Storage.get('bin').adapter.getQuery()
         _query.addCondition(Condition(
             val1 = 'content',

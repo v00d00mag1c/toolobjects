@@ -16,7 +16,7 @@ class Stop(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _id = i.get('id')
         _item = app.ThreadsList.getById(_id)
 

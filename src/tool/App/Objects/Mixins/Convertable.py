@@ -45,7 +45,7 @@ class Convertable(BaseModel):
         # It would'nt work with JSComponentDisplayment (change later)
         for displayment_probaly in self.getDisplayments():
             if as_type in displayment_probaly.display_type:
-                return displayment_probaly.value().implementation(i = {'orig': self})
+                return displayment_probaly.value()._implementation(i = {'orig': self})
 
     def displayAsString(self, show_id: bool = True) -> str:
         def getIdSign():

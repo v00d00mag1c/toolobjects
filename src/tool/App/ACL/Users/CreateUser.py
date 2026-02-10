@@ -20,8 +20,8 @@ class CreateUser(Act):
             )
         ])
 
-    async def implementation(self, i):
-        _hash = GetHash().implementation({'string': i.get('password')})
+    async def _implementation(self, i):
+        _hash = GetHash()._implementation({'string': i.get('password')})
         _user = User(name = i.get('name'), password_hash = _hash.items[0].value)
 
         app.AuthLayer.add_user(_user)

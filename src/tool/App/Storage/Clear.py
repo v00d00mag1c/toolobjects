@@ -14,6 +14,6 @@ class Clear(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _storage = i.get('storage')
         _storage.storage_adapter.clear()

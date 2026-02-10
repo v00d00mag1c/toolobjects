@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from App.Tests.ExtractorTest import ExtractorTest
 
 class VariableTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         def _test(variable):
             self.log_success("UPDATE {0}".format(variable.name))
 

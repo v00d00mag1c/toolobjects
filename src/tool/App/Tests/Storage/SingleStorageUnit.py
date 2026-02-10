@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
 
 class SingleStorageUnit(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         pass

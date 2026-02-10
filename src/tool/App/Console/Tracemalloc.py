@@ -3,7 +3,7 @@ from App.Objects.Responses.AnyResponse import AnyResponse
 import tracemalloc
 
 class Tracemalloc(Act):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         stats = []
 
         snapshot = tracemalloc.take_snapshot()

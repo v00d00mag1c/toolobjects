@@ -18,7 +18,7 @@ class Get(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _list = ObjectsList(items = [], unsaveable = True)
 
         for key in i.get('key'):

@@ -49,7 +49,7 @@ class ExecuteIterative(Test):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _object = i.get('i_2')
 
         assert _object != None

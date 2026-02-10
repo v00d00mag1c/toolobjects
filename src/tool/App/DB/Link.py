@@ -37,7 +37,7 @@ class Link(Act):
             ),
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         # TODO Fix
         link_to = i.get('owner').getItem()
         _items = list()

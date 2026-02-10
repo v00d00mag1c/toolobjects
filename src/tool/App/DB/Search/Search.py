@@ -51,7 +51,7 @@ class Search(Act):
             ),
         ])
 
-    async def implementation(self, i) -> ObjectsList:
+    async def _implementation(self, i) -> ObjectsList:
         _objects = ObjectsList(items = [], unsaveable = True)
         _storage = i.get('storage')
 

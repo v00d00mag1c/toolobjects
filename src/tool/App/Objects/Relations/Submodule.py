@@ -9,7 +9,7 @@ class Submodule(Link):
 
     roles:
 
-    usage: This object is used in implementation() and the all arguments should take from this too
+    usage: This object is used in _implementation() and the all arguments should take from this too
 
     object: Object class related to current Object
 

@@ -1,4 +1,4 @@
-every executable has execute() and implementation() methods. You can call them outside program using View. 
+every executable has execute() and _implementation() methods. You can call them outside program using View. 
 
 also it has proxy executable App.Objects.Operations.DefaultExecutorWheel
 

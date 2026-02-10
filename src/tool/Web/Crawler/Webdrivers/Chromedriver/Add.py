@@ -35,7 +35,7 @@ class Add(Act):
             ),
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         bin = app.Storage.get('bin')
 
         driver = i.get('driver')

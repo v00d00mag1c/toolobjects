@@ -4,7 +4,7 @@ from App.Queue.Run import Run
 from App.Storage.Movement.Save import Save
 
 class SaveQueueTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         '''
         runs = Run()
         args = {

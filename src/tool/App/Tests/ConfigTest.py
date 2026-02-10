@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from App import app
 
 class ConfigTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         self.log('running test!')
 
         val_test = app.Config.get("test")

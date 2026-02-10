@@ -21,7 +21,7 @@ class Download(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _bin = app.Storage.get('bin')
 
         channels = await self._get_versions()

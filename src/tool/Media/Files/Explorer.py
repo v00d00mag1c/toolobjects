@@ -34,7 +34,7 @@ class Explorer(ExplorerProtocol):
             missing_args_inclusion = True
         )
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _list = ObjectsList(items = [])
 
         _path = Path(str(i.get('path')))

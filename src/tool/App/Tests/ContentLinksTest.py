@@ -7,7 +7,7 @@ from App import app
 from App.Objects.Responses.ObjectsList import ObjectsList
 
 class ContentLinksTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _storage: StorageItem = app.Storage.get('tmp')
 
         _text = Text(value = '7777')

@@ -27,7 +27,7 @@ class View(Executable):
 
         app.setView(self)
 
-    def implementation(self, i: dict = {}):
+    def _implementation(self, i: dict = {}):
         pass
 
     def canUseObject(self, obj) -> bool:

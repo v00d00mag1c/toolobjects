@@ -3,7 +3,7 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from App import app
 
 class List(Act):
-    def implementation(self, i):
+    def _implementation(self, i):
         _list = ObjectsList(items = [], unsaveable = True)
 
         for item in app.Storage.getAll():

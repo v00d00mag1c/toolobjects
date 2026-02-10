@@ -3,7 +3,7 @@ from Media.Text.Text import Text
 from App.Objects.Relations.Link import Link
 
 class LinksTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         txt = Text(value='abcdefg')
         txt2 = Text(value='hijklmnopqrs')
 

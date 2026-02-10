@@ -21,7 +21,7 @@ class Delete(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _items = i.get('items')
         _index = 0
         for item in _items.getItems():

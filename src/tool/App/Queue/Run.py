@@ -29,7 +29,7 @@ class Run(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         queue = Queue()
         queue.output = i.get('output')
 

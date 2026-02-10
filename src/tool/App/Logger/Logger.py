@@ -92,7 +92,7 @@ class Logger(Object):
 
             if self._shouldPrint(to_print, check_categories, 'console') == True:
                 items = PrintLog()
-                items.implementation({'log': to_print})
+                items._implementation({'log': to_print})
 
         self.addHook('log', print_log)
 

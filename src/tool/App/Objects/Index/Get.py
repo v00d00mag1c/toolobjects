@@ -23,7 +23,7 @@ class Get(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _items = ObjectsList(unsaveable = True, supposed_to_be_single = True)
         _obj = app.ObjectsList.getByName(i.get('name'))
 

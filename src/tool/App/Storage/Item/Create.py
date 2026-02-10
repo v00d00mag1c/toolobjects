@@ -28,7 +28,7 @@ class Create(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         news = StorageItem(
             name = i.get('name'),
             db_type = 'App.DB.Adapters.SQLite',

@@ -26,7 +26,7 @@ class Extractor(Executable):
         self._instance_variables.get('items').value.append(out)
         self.trigger_variables()
 
-    async def implementation(self, i = {}) -> None:
+    async def _implementation(self, i = {}) -> None:
         '''
         Not supposed to return something.
         '''
@@ -36,9 +36,9 @@ class Extractor(Executable):
     async def implementation_wrap(self, i = {}) -> ObjectsList:
         self.init_vars()
 
-        if asyncio.iscoroutinefunction(self.implementation):
-            await self.implementation(i)
+        if asyncio.iscoroutinefunction(self._implementation):
+            await self._implementation(i)
         else:
-            self.implementation(i)
+            self._implementation(i)
 
         return self._instance_variables.get("items").value

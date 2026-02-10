@@ -5,7 +5,7 @@ from App.Objects.Responses.ObjectsList import ObjectsList
 from App import app
 
 class ObjectsListTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _store = StorageItem(
             name = 'objs',
             db_type = 'objects_list',

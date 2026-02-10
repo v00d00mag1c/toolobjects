@@ -29,7 +29,7 @@ class Server(View):
     ws_connections: list = Field(default = list())
     pre_i: Object = Field(default = None)
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _host = self.getOption("web.options.host")
         _port = self.getOption("web.options.port")
         _app = web.Application()

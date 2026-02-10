@@ -43,7 +43,7 @@ class Import(Executable):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         path = Path(i.get('path'))
         _dir = path
         _tmp = i.get('tmp_extract')

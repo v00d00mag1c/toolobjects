@@ -54,7 +54,7 @@ class Export(Act):
             )
         ]
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         export_name = i.get("name")
         if export_name == None:
             export_name = f"{int(datetime.now().timestamp())}_export"

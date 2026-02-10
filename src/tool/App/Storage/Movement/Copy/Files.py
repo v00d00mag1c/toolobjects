@@ -31,7 +31,7 @@ class Files(Act):
             )
         ])
 
-    async def implementation(self, i):
+    async def _implementation(self, i):
         _items = i.get('items')
         _directory = Path(i.get('directory'))
 

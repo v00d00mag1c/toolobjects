@@ -21,7 +21,7 @@ class SetChecked(Act):
             )
         ])
     
-    def implementation(self, i):
+    def _implementation(self, i):
         item = i.get('item')
         item.state = i.get('state')
         item.save()

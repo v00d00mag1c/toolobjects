@@ -2,7 +2,7 @@ from App.Objects.Test import Test
 from App.Console.PrintLog import PrintLog
 
 class ConsoleLogTest(Test):
-    async def implementation(self, i):
+    async def _implementation(self, i):
         prints = PrintLog()
         await prints.execute(i = {
             'log': {

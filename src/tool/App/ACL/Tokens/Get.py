@@ -24,7 +24,7 @@ class Get(Act):
             )
         ])
 
-    def implementation(self, i):
+    def _implementation(self, i):
         _user = app.AuthLayer.login(
             name = i.get('username'),
             password = i.get('password')
