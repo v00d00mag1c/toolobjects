@@ -31,6 +31,7 @@ class ConnectionAdapter(Object, Protocol):
     def _set_id_gen(self):
         self._id_gen = SnowflakeGenerator(32)
 
+    # you MUST flush content column later!
     def flush(self, item: Object):
         unit = self.ObjectAdapter()
         unit.toDB(item)

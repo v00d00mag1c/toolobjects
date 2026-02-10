@@ -39,4 +39,4 @@ class Convertable(BaseModel):
         return _ret
 
     def _display_as_string(self) -> str:
-        return ''
+        return self.any_name

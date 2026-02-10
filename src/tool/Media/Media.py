@@ -2,6 +2,7 @@ from Media.Files.FileType import FileType
 from typing import ClassVar
 from Web.HTTP.RequestHeaders import RequestHeaders
 from App.Objects.Relations.Submodule import Submodule
+from App import app
 
 class Media(FileType):
     '''
@@ -101,3 +102,15 @@ class Media(FileType):
         _vals['url'] = urls
 
         return await Download().execute(_vals)
+
+    @classmethod
+    async def from_url(cls, url: str):
+        new = cls()
+        _unit = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
+        item = app.DownloadManager.addURL(url, _unit, cls.default_name)
+        await item.start()
+
+        new.set_storage_unit(_unit)
+        new.save()
+
+        return new

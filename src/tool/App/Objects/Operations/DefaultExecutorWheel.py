@@ -83,6 +83,7 @@ class DefaultExecutorWheel(Act):
                             'items': results,
                             'storage': save_to,
                             'auth': i.get('auth'),
+                            'ignore_errors': i.get('ignore_errors'),
                             'ignore_flush_hooks': i.get('ignore_flush_hooks', results.ignore_flush_hooks)
                         })
 

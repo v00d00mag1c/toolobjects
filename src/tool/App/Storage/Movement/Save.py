@@ -49,6 +49,11 @@ class Save(Act):
                 orig = Boolean
             ),
             Argument(
+                name = 'ignore_errors',
+                default = True,
+                orig = Boolean
+            ),
+            Argument(
                 name = 'public',
                 orig = Boolean,
                 default = True
@@ -58,6 +63,7 @@ class Save(Act):
     async def _implementation(self, i):
         results = 0
         just_copy = i.get('just_copy')
+        ignore_errors = i.get('ignore_errors')
         link_to = list()
 
         for item in i.get('link_to'):
@@ -75,7 +81,7 @@ class Save(Act):
                         if i.get('public'):
                             item.local_obj.make_public()
 
-                    item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'))
+                    item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'), ignore_errors = ignore_errors)
                     item.save(do_commit = False)
 
                     results += 1
@@ -94,4 +100,7 @@ class Save(Act):
 
                 _i += 1
             except Exception as e:
+                if ignore_errors == False:
+                    raise e
+
                 self.log_error(e, exception_prefix = 'Error when saving to {0}: '.format(_storage_name))

@@ -64,8 +64,11 @@ class BaseModel(Model):
 
         return ''
 
-    def get_thumbnails(self):
+    def get_thumbnails(self, include_linked: bool = True):
         for thumb in self.local_obj.thumbnail:
             thumb.setDb(self.getDb())
 
+            yield thumb
+
+        for thumb in self.getLinked(with_role = 'thumbnail'):
             yield thumb

@@ -1,8 +1,9 @@
+from App.Objects.Object import Object
 from App.Objects.Protocol import Protocol
 import xml.etree.ElementTree as ET
 from abc import abstractmethod
 
-class FeedProtocol(Protocol):
+class FeedProtocol(Object, Protocol):
     @abstractmethod
-    async def parse(self, data: ET):
+    async def _get_channels(self, data: ET):
         ...

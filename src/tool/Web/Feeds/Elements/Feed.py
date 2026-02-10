@@ -2,6 +2,9 @@ from App.Objects.Object import Object
 from Web.Feeds.Protocols.RSS import RSS
 from Web.Feeds.Protocols.Atom import Atom
 import xml.etree.ElementTree as ET
+from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Argument import Argument
+from Data.Types.Boolean import Boolean
 
 class Feed(Object):
     @classmethod
@@ -17,13 +20,18 @@ class Feed(Object):
 
     @classmethod
     def detect_type(cls, data: ET):
-        _type = data.tag.split('}', 1)
-        if len(_type) < 2:
-            _type = _type[0]
-        else:
-            _type = _type[1]
-
-        if _type == 'feed':
-            return Atom
-        elif _type == 'rss' or _type == 'RDF':
+        if data.find('rss'):
             return RSS
+
+        if data.find('feed'):
+            return Atom
+
+    @classmethod
+    def getArguments(cls):
+        return ArgumentDict(items = [
+            Argument(
+                name = 'download.thumbnails',
+                orig = Boolean,
+                default = True
+            )
+        ])

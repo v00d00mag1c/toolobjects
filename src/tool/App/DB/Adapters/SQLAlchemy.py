@@ -113,14 +113,15 @@ class SQLAlchemy(ConnectionAdapter):
 
                 return self.order_index
 
-            def toDB(self, obj: Object):
+            def toDB(self, obj: Object, ignore_content: bool = True):
                 if self.uuid is None:
                     self.uuid = next(self_adapter._id_gen)
 
                 self_adapter.getSession().add(self)
                 self.get_permission_to_flush(obj)
                 self._orig = obj
-                self.flush_content(self._orig)
+
+                self.content = json.dumps({'flush': 'notflushed'})
 
             def flush_content(self, obj: Object = None):
                 if obj == None:
@@ -131,7 +132,7 @@ class SQLAlchemy(ConnectionAdapter):
                     self_adapter.commit()
 
             # Link functions
-            def getLinks(self) -> Generator[CommonLink]:
+            def getLinks(self, with_role: str = None) -> Generator[CommonLink]:
                 _query = self_adapter.QueryAdapter()
                 _query._query = self_adapter.getSession().query(_LinkAdapter)
                 _query._model = _LinkAdapter
@@ -144,6 +145,18 @@ class SQLAlchemy(ConnectionAdapter):
                         value = self.uuid
                     )
                 ))
+                if with_role:
+                    _query.addCondition(Condition(
+                        val1 = Value(
+                            column = 'data',
+                            json_fields = ['role']
+                        ),
+                        operator = 'in',
+                        val2 = Value(
+                            value = with_role
+                        )
+                    ))
+
                 _query.addSort(Sort(
                     condition = Condition(
                         val1 = Value(
@@ -151,7 +164,6 @@ class SQLAlchemy(ConnectionAdapter):
                         )
                     )
                 ))
-
                 for link in _query.getAll():
                     _res = link.toPython()
                     if link == None or _res == None:

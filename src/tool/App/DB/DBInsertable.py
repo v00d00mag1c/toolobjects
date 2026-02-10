@@ -61,7 +61,8 @@ class DBInsertable():
               link_max_depth: int = 10,
               set_db: bool = True,
               set_db_if_set: bool = False,
-              ignore_flush_hooks: bool = False):
+              ignore_flush_hooks: bool = False,
+              ignore_errors: bool = True):
         '''
         Flushes object to some StorageItem.
 
@@ -106,11 +107,15 @@ class DBInsertable():
 
                     _id += 1
                 except Exception as e:
-                    self.log_error(e)
+                    if ignore_errors:
+                        self.log_error(e)
+                    else:
+                        raise e
 
-        _db_item.flush_content(self)
         if _set_db == True:
             self.setDb(_db_item)
+
+        _db_item.flush_content(self)
 
         if ignore_flush_hooks == False:
             self.flush_hook(into)
@@ -119,7 +124,7 @@ class DBInsertable():
         if into.name == 'tmp':
             _role.append('storage.flushing.tmp')
 
-        self.log(f"flushed item", role = _role)
+        self.log("flushed item ({0}|{1})".format(link_current_depth, link_max_depth), role = _role)
 
         return _db_item
 

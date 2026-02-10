@@ -181,7 +181,7 @@ class PageHTML(Object):
     def from_html(cls, html: str):
         _src = cls()
         _src.encoding = EncodingDetector.find_declared_encoding(html, is_html=True)
-        _src.log('detected encoding {0}'.format(_src.encoding))
+        #_src.log('detected encoding {0}'.format(_src.encoding))
         _src.bs = BeautifulSoup(html, 'html.parser')
 
         return _src

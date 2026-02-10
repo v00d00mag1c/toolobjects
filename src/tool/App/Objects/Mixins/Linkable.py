@@ -33,14 +33,14 @@ class Linkable():
 
         if self.hasDb() == True:
             if link.item.hasDb() == False:
-                self.log('addLink: {0} {1} item is flushed, {2} is not, so we will flush item that we link'.format(self._getClassNameJoined(), self.getDbId(), link.item._getClassNameJoined()))
+                self.log('addLink: {0} {1} item is flushed, {2} is not, so we will flush item that we link'.format(self._getClassNameJoined(), self.getDbId(), link.item._getClassNameJoined()), role = ['flushed'])
 
                 link.item.setDb(link.item.flush(self.getDb()._adapter._storage_item))
-            else:
-                self.log('addLink: both items are flushed')
+            #else:
+                #self.log('addLink: both items are flushed')
 
             if self.sameDbWith(link.item) == False:
-                self.log('OK, link item and current item has db, but they are not same, so changing linking item db to current item db')
+                self.log('OK, link item and current item has db, but they are not same, so changing linking item db to current item db', role = ['flushed'])
 
                 link.item.setDb(link.item.flush(self.getDb()._adapter._storage_item))                
 
@@ -53,7 +53,7 @@ class Linkable():
 
         self.log('linked items with classes {0}, {1}'.
                  format(self._getClassNameJoined(), link.item._getClassNameJoined()), 
-                 role = ['linked_items'])
+                 role = ['flushed', 'linked_items'])
 
         self.local_obj.links.append(link)
 
@@ -90,17 +90,21 @@ class Linkable():
                 if link.item == item:
                     return link
 
-    def getLinkedItems(self, ignore_db: bool = False) -> Generator[Link]:
+    def getLinkedItems(self, ignore_db: bool = False, with_role: list[str] = None) -> Generator[Link]:
         '''
         Returns linked items.
         Non-overridable!
         '''
 
         if self.getDb() != None and ignore_db == False:
-            for item in self.getDb().getLinks():
+            for item in self.getDb().getLinks(with_role = with_role):
                 yield item
 
         for item in self.local_obj.links:
+            if with_role:
+                if with_role not in item.data.role:
+                    continue
+
             yield item
 
     def _get_virtual_linked(self) -> Generator[Link]:

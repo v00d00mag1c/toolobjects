@@ -6,10 +6,23 @@ from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Misc.Source import Source
 from Web.URL import URL
+from App.Objects.Relations.Submodule import Submodule
+from Web.Feeds.Elements.Channel import Channel
+from Web.Feeds.Elements.Feed import Feed
 
-import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
+
 
 class Get(Extractor):
+    @classmethod
+    def _submodules(cls):
+        return [
+            Submodule(
+                item = Channel,
+                role = ['returns']
+            )
+        ]
+
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
@@ -18,14 +31,14 @@ class Get(Extractor):
                 orig = String,
                 assertions = [NotNone()]
             )
-        ])
+        ]).join_class(Feed)
 
     async def _implementation(self, i):
         url = i.get('url')
         self.log(f"downloading feed url: {url}")
 
         response_xml = await Feed.download(url)
-        root = ET.fromstring(response_xml)
+        root = BeautifulSoup(response_xml, 'xml')
         _type = Feed.detect_type(root)
 
         assert _type != None, 'unknown type of feed'
@@ -35,7 +48,7 @@ class Get(Extractor):
 
         for channel in channels:
             _new_time = None
-            async for entry in protocol._get_entries(channel, root):
+            async for entry in protocol._get_entries(channel, root, i):
                 if _new_time == None:
                     _new_time = entry.obj.created_at
                 else: 

@@ -278,6 +278,11 @@ class Model(PydanticBaseModel, Section):
                         if Model._dump_options['convert_links'] == True:
                             _res = value.unwrap()
                         else:
+                            # self.log('not converting links')
+
+                            assert value.link != None and value.field != None, 'broken link insertion'
+                            assert value.link.hasDb() == True, 'broken link insertion: it did not flushed'
+
                             _res = value
                     elif (isinstance(value, list) and value and isinstance(value[0], LinkInsertion)):
                         _res = []
@@ -299,6 +304,8 @@ class Model(PydanticBaseModel, Section):
                             _val.setDb(self.getDb())
 
                         _res = _val
+                except AssertionError as e:
+                    raise e
                 except Exception as e:
                     self.log_error(e, exception_prefix = 'Can\'t include field {0}: '.format(field_name))
                     _res = None
@@ -311,6 +318,8 @@ class Model(PydanticBaseModel, Section):
                         result[key] = val
                     except Exception as e:
                         self.log_error(e, exception_prefix = 'Can\'t include field {0}: '.format(key))
+        except AssertionError as e:
+            raise e
         except Exception as _e:
             self.log_error(e, exception_prefix='Error loading model {0}: '.format(self._getClassNameJoined()))
 

@@ -9,7 +9,7 @@ class EntryContent(Object):
 
     async def update(self):
         html = PageHTML.from_html(self.content)
-        html.clear_js()
+        #html.clear_js()
 
         # TODO download images
         #for image in html.bs.select('img'):

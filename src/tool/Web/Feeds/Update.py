@@ -5,6 +5,7 @@ from App.Objects.Arguments.Argument import Argument
 from Web.Feeds.Elements.Channel import Channel
 from Web.Feeds.Elements.Feed import Feed
 import xml.etree.ElementTree as ET
+from Web.Feeds.Elements.Feed import Feed
 
 class Update(Act):
     @classmethod
@@ -16,7 +17,7 @@ class Update(Act):
                 orig = Channel,
                 assertions = [NotNone()]
             )
-        ])
+        ]).join_class(Feed)
 
     async def _implementation(self, i):
         _channel = i.get('channel')
@@ -30,7 +31,8 @@ class Update(Act):
         _old_time = _channel.local_obj.updated_at
         _new_time = _old_time
         protocol = _type()
-        async for entry in protocol._get_entries(_channel, root):
+
+        async for entry in protocol._get_entries(_channel, root, i):
             # If found newer items
             if entry.obj.created_at > _old_time:
                 entry.local_obj.make_public()
