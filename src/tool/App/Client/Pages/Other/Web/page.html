@@ -1,9 +1,40 @@
-<style>
-    #page_block {
-        position: absolute;
-    }
-</style>
+<html>
+    <head>
+        <title>{{item.obj.name}}</title>
+    </head>
+    <body>
+        <div>
+            <style>
+                #banner {
+                    position: absolute;
+                    z-index: 9999;
+                    width: 100%;
+                    height: 34px;
+                    padding-left: 20px;
+                    top: 0;
+                    left: 0;
+                    display: flex;
+                    align-items: center;
+                    box-sizing: border-box;
+                    background: #00000085;
+                }
 
-<div id="page_block">
-    {{html|safe}}
-</div>
+                #page_block {
+                    padding-top: 30px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+            </style>
+
+            <div id="banner">
+                <a href="{{url_for_object}}{{item.getDbIds()}}">
+                    <<< back
+                </a>
+            </div>
+            <div id="page_block">
+                {{html|safe}}
+            </div>
+        </div>
+    </body>
+</html>

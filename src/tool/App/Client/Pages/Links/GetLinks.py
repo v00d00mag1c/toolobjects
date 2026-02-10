@@ -5,13 +5,13 @@ import aiohttp_jinja2
 class GetLinks(Displayment):
     for_object = 'App.Objects.Operations.GetLinks'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         search_from = query.get('from')
         item = None
 
-        context.update({
+        self.context.update({
             'item': item
         })
 
-        return aiohttp_jinja2.render_template('Links/get_links.html', request, context)
+        return self.render_template('Links/get_links.html')

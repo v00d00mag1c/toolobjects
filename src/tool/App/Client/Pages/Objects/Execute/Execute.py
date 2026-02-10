@@ -9,8 +9,8 @@ import aiohttp_jinja2
 class Execute(Displayment):
     for_object = 'App.Objects.Operations.DefaultExecutorWheel'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         name = query.get('name')
 
         _obj = app.ObjectsList.getByName(name)
@@ -24,8 +24,8 @@ class Execute(Displayment):
             'post_data': {}
         })
 
-        if request.method == 'POST':
-            _params = dict(await request.post())
+        if self.request.method == 'POST':
+            _params = dict(await self.request.post())
             _vals = {
                 'i': obj._getNameJoined(),
                 'auth': self.auth

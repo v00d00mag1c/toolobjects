@@ -6,8 +6,8 @@ import aiohttp_jinja2
 class Storages(Displayment):
     for_object = 'App.Storage.Item.List'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         show_internal = query.get('show_internal') == 'on'
 
         items = list()
@@ -18,12 +18,12 @@ class Storages(Displayment):
 
             items.append(item)
 
-        context.update({
+        self.context.update({
             'storages': items,
             'show_internal': show_internal
         })
 
-        return aiohttp_jinja2.render_template('Storage/storages.html', request, context)
+        return self.render_template('Storage/storages.html')
 
     @classmethod
     def get_menu(cls) -> Item:

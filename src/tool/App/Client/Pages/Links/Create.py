@@ -6,8 +6,8 @@ import aiohttp_jinja2
 class Create(Displayment):
     for_object = 'App.DB.Link'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         link_object = query.get('item')
         act = query.get('act', 'with')
 
@@ -16,13 +16,13 @@ class Create(Displayment):
         main_item = StorageUUID.fromString(link_object)
         main_item = main_item.toPython()
 
-        context.update({
+        self.context.update({
             'item': main_item,
             'act': act
         })
 
-        if request.method == 'POST':
-            _query = await request.post()
+        if self.request.method == 'POST':
+            _query = await self.request.post()
             _unlink = _query.get('unlink') == 'on'
             _to_link = _query.get('with').split(',')
             _role = _query.get('role').split(',')
@@ -53,4 +53,4 @@ class Create(Displayment):
 
                 return self.redirect('/?i=App.Objects.Object&uuids='+link_object)
 
-        return aiohttp_jinja2.render_template('Links/create.html', request, context)
+        return self.render_template('Links/create.html')

@@ -29,6 +29,42 @@ class Image(Media):
             )
         ]
 
+    # or document.images
+    @classmethod
+    def get_page_js_function(cls):
+        return '''
+        document.querySelectorAll("img[src]").forEach(element => {
+            elements.push(element)
+        })
+        document.querySelectorAll("*").forEach(element => {
+            if (element.style.backgroundImage) {
+                elements.push(element)
+            }
+        })'''
+
+    @classmethod
+    def get_page_js_insert_function(cls):
+        return '''
+        if (element.style.backgroundImage) {
+            let _bg = element.style.backgroundImage;
+            const matches = _bg.match(/url\\(['"]?([^'"()]+)['"]?\\)/);
+            if (matches && matches[1]) {
+                src = matches[1];
+            } else {
+                if (_bg.includes(',')) {
+                    const urls = [];
+                    const urlPattern = /url\\(['"]?([^'"()]+)['"]?\\)/g;
+                    let match;
+                    while ((match = urlPattern.exec(_bg)) !== null) {
+                        urls.push(match[1]);
+                    }
+                }
+
+                src = urls[0];
+            }
+        }
+        '''
+
     def _read_file(self):
         from PIL import Image
 

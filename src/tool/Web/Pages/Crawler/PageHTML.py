@@ -74,6 +74,9 @@ class PageHTML(Object):
     def prettify(self) -> str:
         return self.bs.prettify()
 
+    def read_self(self):
+        html = html_path.read_text()
+        
     @classmethod
     def from_html(cls, html: str):
         html_encoding = EncodingDetector.find_declared_encoding(html, is_html=True)

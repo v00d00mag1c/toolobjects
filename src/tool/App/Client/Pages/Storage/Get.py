@@ -8,8 +8,8 @@ import aiohttp
 class Get(Displayment):
     for_object = 'App.Storage.Item.Get'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         item = app.Storage.get(query.get('name'))
 
         assert item != None, 'not found namespace'
@@ -17,7 +17,7 @@ class Get(Displayment):
         if query.get('get_settings') == '1':
             return self.return_json(item.db)
 
-        if request.method == 'POST' and query.get('clear') == '1':
+        if self.request.method == 'POST' and query.get('clear') == '1':
             item.storage_adapter.clear()
 
         self.context.update({

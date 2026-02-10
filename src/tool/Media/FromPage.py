@@ -5,6 +5,10 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Objects.Responses.ObjectsList import ObjectsList
+from Web.Pages.Crawler.Webdrivers.Webdriver import Webdriver
+from Web.Pages.Downloader.Downloader import Downloader
+from Media.Download import Download
+from Web.URL import URL
 from Data.Types.String import String
 from Web.Pages.Page import Page
 
@@ -18,25 +22,100 @@ class FromPage(Extractor):
                 assertions = [NotNone()]
             ),
             ListArgument(
-                name = 'page',
-                orig = Page,
-                by_id = True,
+                name = 'page_url',
+                orig = URL,
+                allow_comma_fallback = False,
                 assertions = [NotNone()]
             ),
             ListArgument(
                 name = 'selector',
                 orig = String,
-            )
+            ),
+            ListArgument(
+                name = 'allowed_selector',
+                orig = String,
+            ),
+            Argument(
+                name = 'webdriver',
+                orig = Webdriver,
+                by_id = True,
+                assertions = [NotNone()]
+            ),
         ],
-        missing_args_inclusion=True)
+        missing_args_inclusion=True).join_class(Downloader).join_class(Download, only = ['filename', 'download'])
 
     async def _implementation(self, i):
-        objs = ObjectsList(items = [])
-        for page in i.get('page'):
-            html = page.get_html()
-            if html == None:
-                self.log('page {0} does not contains html'.format(html.getDbIds()))
+        webdriver = i.get('webdriver')
+        selectors = i.get('selector')
+        allowed_selectors = i.get('allowed_selector')
+        object_type = i.get('object')
+        for selector in object_type.get_page_js_selectors():
+            selectors.append(selector)
 
-                continue
+        downloader = None
 
-        return objs
+        if webdriver != None:
+            downloader = Downloader(webdriver = webdriver)
+            downloader.check_global_options()
+            downloader.check_requirements()
+            await downloader.start_webdriver(i)
+
+        for page_url in i.get('page_url'):
+            new_page = Page()
+            new_page.set_downloader(downloader)
+            await new_page.from_url(page_url)
+
+            if i.get('web.crawler.scroll_down'):
+                await new_page._page.scroll_down(i.get('web.crawler.scroll_down.cycles'))
+
+            media_urls = await new_page._page.get().evaluate("""
+                (i) => {
+                    selectors = i[0]
+                    allowed_selectors = i[1]
+                    const urls = [];
+                    const elements = [];
+
+                    if (selectors.length > 0) {
+                        document.querySelectorAll(selectors).forEach(element => {
+                            elements.push(element);
+                        });                                    
+                    }
+
+                    """+object_type.get_page_js_function()+"""
+
+                    for (let i = 0; i < elements.length; i++) {
+                        element = elements[i];
+                        let src = '';
+                        let tagName = element.tagName;
+                        if (element.src) {
+                            if (element.src.startsWith('data:')) {
+                                continue;
+                            }
+
+                            src = element.src;
+                        }
+                        """+object_type.get_page_js_insert_function()+"""
+                        if (!src || src == '') {
+                            continue;
+                        }
+
+                        urls.push({
+                            'src': src,
+                            'tagName': tagName
+                        });
+                    }
+
+                    return urls;
+                }
+            """, [selectors, allowed_selectors])
+
+            urls = list()
+            for item in media_urls:
+                urls.append(item.get('src'))
+
+            _vals = i.getValues()
+            _vals['url'] = urls
+            _res = await Download().execute(_vals)
+
+            for _res_item in _res.getItems():
+                self.append(_res_item)

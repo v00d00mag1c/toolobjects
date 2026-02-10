@@ -9,8 +9,8 @@ import aiohttp
 class Management(Displayment):
     for_object = 'App'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         act = query.get('act')
 
         match(act):
@@ -21,14 +21,14 @@ class Management(Displayment):
             case 'turn_off':
                 exit(-1)
             case 'self_user':
-                return aiohttp_jinja2.render_template('Users/user.html', request, context)
+                return self.render_template('Users/user.html')
             case 'displayments':
-                context.update({
+                self.context.update({
                     'displayments': app.app.view.displayments.items()
                 })
-                return aiohttp_jinja2.render_template('App/displayments.html', request, context)
+                return self.render_template('App/displayments.html')
             case _:
-                return aiohttp_jinja2.render_template('App/management.html', request, context)
+                return self.render_template('App/management.html')
 
         return aiohttp.web.HTTPFound('/?i=App')
 

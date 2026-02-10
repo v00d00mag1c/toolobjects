@@ -5,15 +5,15 @@ import aiohttp_jinja2
 class Object(Displayment):
     for_object = 'App.Objects.Object'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         act = query.get('act')
         objs = self.get_objs(query.get('uuids', '').split(','))
         include_nones = query.get('include_none') == '1'
 
         assert len(objs) > 0, 'objects not found'
 
-        context.update({
+        self.context.update({
             'objects': objs,
             'ref': query.get('ref')
         })
@@ -37,14 +37,22 @@ class Object(Displayment):
                         continue
                     else:
                         displayment = _class()
-                        displayment.request = request
-                        htmls.append((item, await displayment.render_as_object(item)))
+                        displayment.request = self.request
+                        displayment.context = self.context
 
-                context['htmls'] = htmls
+                        if displayment.prefer_object_displayment == 'object':
+                            htmls.append((item, await displayment.render_as_object(item)))
+                        else:
+                            displayment.context.update({
+                                'item': item
+                            })
+                            return await displayment.render_as_page()
 
-                return aiohttp_jinja2.render_template('Objects/displayments.html', request, context)
+                self.context['htmls'] = htmls
 
-        return aiohttp_jinja2.render_template('Objects/db_object.html', request, context)
+                return self.render_template('Objects/displayments.html')
+
+        return self.render_template('Objects/db_object.html')
 
     async def render_as_list_item(self, item, args):
         self.context.update({

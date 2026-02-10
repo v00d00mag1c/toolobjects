@@ -170,7 +170,7 @@ class Client(Server):
             item.request = request
             item.context = _context
             item.auth = self._get_current_user(request)
-            return await item.render_as_page(request, _context)
+            return await item.render_as_page()
         except Exception as e:
             _context.update({'error_message': str(e)})
 

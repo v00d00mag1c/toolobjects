@@ -12,7 +12,7 @@ class Original(Object):
         await page.set_info()
 
         if i.get('scroll_down'):
-            await page._page.scroll_down()
+            await page._page.scroll_down(i.get('web.crawler.scroll_down.cycles'), i.get('web.crawler.scroll_down.'))
 
         page.create_file(app.Storage.get('tmp'))
         # TODO rewrite to js scripts

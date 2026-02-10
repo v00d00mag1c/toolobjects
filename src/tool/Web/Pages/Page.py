@@ -43,11 +43,9 @@ class Page(Object):
 
     async def from_url(self, url: str):
         self._page = await self._downloader.webdriver.new_page()
-        self.log('opened page, going to {0}'.format(url))
+        self.log('going to {0}'.format(url))
 
         await self._page.goto(url)
-
-        self.log('opened url {0}'.format(url))
 
     async def set_info(self):
         self.set_title(await self._page.get_title())

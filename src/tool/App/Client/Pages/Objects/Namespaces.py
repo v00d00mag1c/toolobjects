@@ -6,15 +6,15 @@ import aiohttp_jinja2
 class Namespaces(Displayment):
     for_object = 'App.Objects.Index.GetList'
 
-    async def render_as_page(self, request, context):
+    async def render_as_page(self):
         items = None
 
-        context.update({
+        self.context.update({
             'namespaces': app.ObjectsList.namespaces,
             'objects': items
         })
 
-        return aiohttp_jinja2.render_template('Objects/namespaces.html', request, context)
+        return self.render_template('Objects/namespaces.html')
 
     @classmethod
     def get_menu(cls) -> Item:

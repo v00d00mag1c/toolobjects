@@ -5,8 +5,8 @@ import aiohttp_jinja2
 class ObjectsList(Displayment):
     for_object = 'App.Objects.Index.ObjectsList'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         namespace_name = query.get('name')
         show_only = query.get('show_only')
         categories = dict()
@@ -22,7 +22,7 @@ class ObjectsList(Displayment):
 
         categories, total_count = app.ObjectsList.sort(_items, show_only)
 
-        context.update({
+        self.context.update({
             'namespace': namespace,
             'categories': categories,
             'total_count': total_count,
@@ -30,4 +30,4 @@ class ObjectsList(Displayment):
             'type': type
         })
 
-        return aiohttp_jinja2.render_template('Objects/objects_list.html', request, context)
+        return self.render_template('Objects/objects_list.html')

@@ -28,19 +28,14 @@ class Downloader(Object):
                 orig = String
             ),
             Argument(
-                name = 'web.crawler.scroll_cycles',
+                name = 'web.crawler.scroll_down.cycles',
                 default = None,
                 orig = Int
             ),
             Argument(
-                name = 'web.crawler.scroll_timeout',
+                name = 'web.crawler.scroll_down.timeout',
                 default = 1,
                 orig = Float
-            ),
-            Argument(
-                name = 'web.crawler.implicitly_wait',
-                default = 5,
-                orig = Int
             ),
         ]
         '''ListArgument(
@@ -53,7 +48,18 @@ class Downloader(Object):
     def getArguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [
             Argument(
-                name = 'scroll_down',
+                name = 'web.crawler.scroll_down.timeout',
+                default = 1,
+                orig = Float,
+                config_fallback = ('web.crawler.scroll_down.timeout', False)
+            ),
+            Argument(
+                name = 'web.crawler.scroll_down.cycles',
+                orig = Int,
+                config_fallback = ('web.crawler.scroll_down.cycles', False)
+            ),
+            Argument(
+                name = 'web.crawler.scroll_down',
                 orig = Boolean,
                 default = True
             ),

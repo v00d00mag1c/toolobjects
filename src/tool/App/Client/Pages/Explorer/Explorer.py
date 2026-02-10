@@ -7,8 +7,8 @@ import aiohttp
 class Explorer(Displayment):
     for_object = 'App.Storage.VirtualPath.Navigate'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_page(self):
+        query = self.request.rel_url.query
         path_val = query.get('path')
 
         if path_val == '':
@@ -19,7 +19,7 @@ class Explorer(Displayment):
         except IndexError as e:
             self.log_error(e)
 
-        context.update({
+        self.context.update({
             'path': path,
             'items': await Navigate().execute({
                 'path': path,
@@ -28,4 +28,4 @@ class Explorer(Displayment):
             }),
         })
 
-        return aiohttp_jinja2.render_template('Explorer/virtual_path.html', request, context)
+        return self.render_template('Explorer/virtual_path.html')

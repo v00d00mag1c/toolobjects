@@ -23,10 +23,10 @@ class HTMLFile(Object):
         return self.file
 
     def get_main(self):
-        return self.file.get_storage_unit().get_root().joinpath(self.main)
+        return self._get('file').get_storage_unit().get_root().joinpath(self.main)
 
     def get_assets_dir(self):
-        return self.file.get_storage_unit().get_root().joinpath(self.assets)
+        return self._get('file').get_storage_unit().get_root().joinpath(self.assets)
 
     def write(self, html: str):
         with open(self.get_main(), 'w', encoding = self.encoding) as file:

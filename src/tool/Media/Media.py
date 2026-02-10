@@ -23,6 +23,18 @@ class Media(FileType):
         return headers
 
     @classmethod
+    def get_page_js_selectors(cls):
+        return []
+
+    @classmethod
+    def get_page_js_function(cls):
+        return ''
+
+    @classmethod
+    def get_page_js_insert_function(cls):
+        return ''
+
+    @classmethod
     def _submodules(cls) -> list:
         from Media.Download import Download
         from Media.ByStorageUnit import ByStorageUnit

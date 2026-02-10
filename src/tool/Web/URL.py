@@ -5,6 +5,13 @@ from urllib.parse import urlparse
 class URL(Object):
     value: str = Field()
 
+    @classmethod
+    def asArgument(cls, val):
+        if val == None:
+            return None
+
+        return str(val)
+
     def get_path(self):
         return urlparse(self.value).path
 

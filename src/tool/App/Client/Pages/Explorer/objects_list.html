@@ -2,11 +2,5 @@
     <div class="search_item">
         {{item[1]|safe}}
     </div>
-
-    {% if item[0].hasDb() %}
-        <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}&ref={{current_url_encoded}}">
-            <sup>{{ item[0].getDbIds() }}</sup>
-        </a>
-    {% endif %}
     <hr>
 {% endfor %}

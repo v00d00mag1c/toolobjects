@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Client.Menu.Item import Item
-from typing import ClassVar, Any
+from typing import ClassVar, Any, Literal
 from abc import abstractmethod
 from App.Storage.StorageUUID import StorageUUID
 from Data.Types.JSON import JSON
@@ -14,13 +14,14 @@ class Displayment(Object):
     '''
 
     for_object: ClassVar[str | list[str]] = ''
+    prefer_object_displayment: ClassVar[Literal['object', 'page']] = 'object'
     request: Any = None
     context: Any = {}
     auth: Any = None
     self_name = 'ClientDisplayment'
 
     # should return "render_template"
-    async def render_as_page(self, request, context):
+    async def render_as_page(self):
         ...
 
     # should return "render_string"

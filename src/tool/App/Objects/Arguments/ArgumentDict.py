@@ -82,7 +82,7 @@ class ArgumentDict(DictList):
 
         return self
 
-    def join_class(self, another_object: Object, only: Optional[list[str]] = None) -> Self:
+    def join_class(self, another_object: Object, only: Optional[list[str]] = None, exclude: Optional[list[str]] = None) -> Self:
         '''
         Appends arguments from another executable to current list.
 
@@ -92,6 +92,9 @@ class ArgumentDict(DictList):
 
         for item in another_object.getArguments().toList():
             if only != None and item.name not in only:
+                continue
+
+            if exclude != None and item.name in exclude:
                 continue
 
             self.items.append(item)

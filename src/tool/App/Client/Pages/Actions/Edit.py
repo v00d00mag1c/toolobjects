@@ -6,9 +6,9 @@ import aiohttp
 class Edit(Displayment):
     for_object = 'App.Objects.Operations.Edit.Local'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
-        vals = await request.post()
+    async def render_as_page(self):
+        query = self.request.rel_url.query
+        vals = await self.request.post()
         path_val = query.get('item')
         item = self.get_objs([path_val])[0]
 
@@ -18,7 +18,7 @@ class Edit(Displayment):
         for object_name in item.local_obj.saved_via:
             custom_saved_via.append(object_name.object_name)
 
-        context.update({
+        self.context.update({
             'item': item,
             'custom_saved_via': custom_saved_via
         })

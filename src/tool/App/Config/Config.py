@@ -9,6 +9,7 @@ from typing import Literal, Any
 from App import app
 
 class Config(Object):
+    loaded_module_names: list[str] = Field(default = [])
     items: list[ConfigItem] = Field(default = [])
     common: int = 0
     common_env: int = 1
@@ -55,7 +56,13 @@ class Config(Object):
             return None
 
     def appendModule(self, module):
+        if module._getNameJoined() in self.loaded_module_names:
+            pass
+            #self.log('{0} already loaded'.format(module._getNameJoined()))
+
         try:
+            self.loaded_module_names.append(module._getNameJoined())
+
             _settings = module.getSettings()
             for _item in _settings:
                 self.getItem(role = _item.role).append_compare(_item)

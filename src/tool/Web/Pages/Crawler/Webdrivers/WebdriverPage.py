@@ -53,9 +53,8 @@ class WebdriverPage(Object):
     def override_url(self, url: str):
         self.url_override = url
 
-    async def scroll_down(self):
+    async def scroll_down(self, scroll_cycles: int = 10, scroll_timeout: int = 0):
         last_height = await self._page.evaluate('() => {return document.body.scrollHeight}')
-        scroll_cycles = self.getOption('web.crawler.scroll_cycles')
         scroll_iter = 0
 
         while True:
@@ -67,7 +66,7 @@ class WebdriverPage(Object):
 
             self.log('scrolling down: {0}'.format(scroll_iter))
 
-            await asyncio.sleep(self.getOption('web.crawler.scroll_timeout'))
+            await asyncio.sleep(scroll_timeout)
 
             new_height = await self._page.evaluate('() => {return document.body.scrollHeight}')
             if new_height == last_height:
@@ -77,3 +76,6 @@ class WebdriverPage(Object):
 
             last_height = new_height
             scroll_iter += 1
+
+    def get(self):
+        return self._page
