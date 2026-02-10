@@ -13,6 +13,9 @@ import json
 
 class SQLAlchemy(ConnectionAdapter):
     class QueryAdapter(Query):
+        _model: Any = None
+        _query: Any = None
+
         def _getComparement(self, condition: Condition):
             return getattr(self._model, condition.getFirst())
 
@@ -41,7 +44,17 @@ class SQLAlchemy(ConnectionAdapter):
         def _op_contains(self, condition):
             return self._query.filter(self._getComparement(condition).contains(condition.getLast()))
 
-        def addSorting(self, sort: Sort):
+        def _applyCondition(self, condition):
+            for key, val in self.operators.items():
+                if condition.operator == key:
+                    self._query = getattr(self, val)(condition)
+
+                    return self
+
+            self._query = getattr(self, condition.operator)(condition)
+            return self
+
+        def _applySort(self, sort: Sort):
             from sqlalchemy import desc
 
             if sort.descend == True:
@@ -52,9 +65,13 @@ class SQLAlchemy(ConnectionAdapter):
             return self
 
         def first(self):
+            self._apply()
+
             return self._query.first()
 
         def getAll(self):
+            self._apply()
+
             for item in self._query:
                 yield item
 

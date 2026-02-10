@@ -94,7 +94,7 @@ class Search(Act):
             ))
 
         for condition in i.get('sort'):
-            _query.addSorting(condition)
+            _query.addSort(condition)
 
         if i.get('limit') > 0:
             _query.limit(i.get('limit'))

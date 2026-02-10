@@ -10,7 +10,6 @@ from .Mixins.Saveable import Saveable
 from .Mixins.Updateable import Updateable
 from App.ACL.Limitable import Limitable
 from App.Storage.DB.DBInsertable import DBInsertable
-from App.Daemons.Daemonable import Daemonable
 from typing import ClassVar
 from pydantic import ConfigDict
 from App import app
@@ -24,14 +23,9 @@ class Object(BaseModel,
              Hookable, 
              Configurable, 
              Convertable, 
-             DBInsertable, 
-             Daemonable, 
+             DBInsertable,
              Limitable,
              Updateable):
-    '''
-    Class of everything
-    '''
-
     self_name: ClassVar[str] = 'Object'
 
     @classmethod
@@ -48,5 +42,9 @@ class Object(BaseModel,
             return val
 
         return super().asArgument(val)
+
+    @classmethod
+    def _documentation(cls):
+        return None
 
     model_config = ConfigDict(extra='allow')

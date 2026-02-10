@@ -63,8 +63,8 @@ db and storage:
 - [ ] VirtualPath pagination (adapter pagination also)
 - [ ] multifile config
 - [ ] link to storageunit file
-- [ ] LinkInsertion must be changed after flushing from db
 - [ ] remove console and to_json differences
+- [ ] advanced Conditions (val1 % val2 > 0 or smth)
 
 - [ ] ItemPermission for dbs
 
@@ -84,7 +84,7 @@ modules:
 - [ ] App.Logger.GetFile
 - [ ] Web.RSS.GetFeed
 - [x] Data.Text
-- [ ] Abstract.TODO or Abstract.Checkmarks
+- [x] Abstract.TODO or Abstract.Checkmarks
 
 documentation:
 
@@ -116,5 +116,6 @@ others:
 - [ ] App.Objects.View can be imagined as App.Objects.Displayment
 - [ ] App.Object.Paginable
 - [ ] storage unit password & encryption)
-- [ ] App.Storage.Movement* acts are logically should belong to App.Storage.DB*
-- [ ] link with parent=None to link to the db
+- [ ] App.Storage.Movement* acts logically should belong to App.Storage.DB*
+- [ ] link with parent=None to link to the db (there is `root_uuid` anyway, this solution is ненаглядно)
+- [ ] LinkInsertion must be changed after flushing from db (but i did workaround with self._get() function)

@@ -264,3 +264,7 @@ class BaseModel(PydanticBaseModel):
 
     def _set(self, field, value = None):
         setattr(self, field, value)
+
+    @classmethod
+    def _get_locale_key(self, data: str):
+        return self.getClassNameJoined() + '.' + data

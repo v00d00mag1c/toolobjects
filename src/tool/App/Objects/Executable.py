@@ -13,9 +13,10 @@ import asyncio
 class Executable(Object, Variableable, Validable):
     id: int = 0
     self_name: ClassVar[str] = 'Executable'
+    event_index: ClassVar[int] = None
     #internal_use: bool = Field(default = True)
     args: Optional[dict] = Field(default = {})
-    _unserializable = ['id', 'variables', 'self_name']
+    _unserializable = ['id', 'variables', 'self_name', 'event_index']
 
     @classmethod
     def getClassEventTypes(cls) -> list:

@@ -5,6 +5,19 @@ from App.Storage.DB.DBInfo import DBInfo
 class DBInsertable():
     _db: Any = None  # : ObjectAdapter
 
+    @computed_field
+    @property
+    def db_info(self) -> DBInfo:
+        if self.hasDb():
+            _db = self.getDb()
+
+            return DBInfo(
+                uuid = _db.uuid,
+                db_name = _db._adapter._storage_item.name
+            )
+
+        return None
+
     def setDb(self, db):
         self._db = db
 
@@ -89,6 +102,7 @@ class DBInsertable():
             return
 
         self.getDb().deleteFromDB(remove_links = remove_links)
+        self.deletion_hook()
 
     def save(self) -> bool:
         '''
@@ -102,18 +116,9 @@ class DBInsertable():
 
         return True
 
+    # hookable and hooks system are too complicated so just declaring functions ^_^
     def flush_hook(self, into: Type) -> None:
         pass
 
-    @computed_field
-    @property
-    def db_info(self) -> DBInfo:
-        if self.hasDb():
-            _db = self.getDb()
-
-            return DBInfo(
-                uuid = _db.uuid,
-                db_name = _db._adapter._storage_item.name
-            )
-
-        return None
+    def deletion_hook(self) -> None:
+        pass
