@@ -80,3 +80,10 @@ class StorageUnit(Object):
 
         shutil.copytree(str(self.getDir()), str(new_path), dirs_exist_ok = True)
         self.log(f"copied storageunit from {str(self.getDir())} to {str(new_path)}")
+
+    def toFile(self):
+        return File(
+            path = str(self.getDir()),
+            name = self.getCommonPath().name,
+            ext = self.getCommonPath().suffix[1:]
+        )

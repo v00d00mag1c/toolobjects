@@ -66,4 +66,7 @@ class Export(Act):
 
             self.log(f"flushed item to db {export_name}, uuid: {item.getDbId()}")
 
+        if i.get('as_zip') == True:
+            self.log('not implemented')
+
         return AnyResponse.fromItems(news)

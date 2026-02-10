@@ -49,7 +49,7 @@ db and storage:
 - [x] VirtualPath
 - [x] DisplayType (?) submodule=displayment
 - [x] App.Storage.DB.Search
-- [ ] App.Storage.Movement.ExportAsZip, App.Storage.Movement.ImportZip
+- [ ] App.Storage.Movement.Export and App.Storage.Movement.Import with zip
 - [ ] App.Storage.Movement.ExportAsFiles
 - [ ] objectlist adapter
 - [x] link after save

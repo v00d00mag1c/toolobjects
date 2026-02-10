@@ -36,14 +36,14 @@ class BaseModel(PydanticBaseModel):
         pass
 
     def to_json(self, 
-                convert_links: Literal['unwrap', 'none'] = 'none', 
+                convert_links: Literal['unwrap', 'none'] = 'unwrap', 
                 exclude_internal: bool = False,
                 exclude_none: bool = False,
                 exclude: list[str] = [],
                 exclude_defaults: bool = False,
                 by_alias: bool = True,
                 include_extra: bool = True,
-                only_class_fields: bool = True):
+                only_class_fields: bool = False):
         '''
         convert_links: replace LinkInsertions with their "unwrap()" function results
 
@@ -172,7 +172,7 @@ class BaseModel(PydanticBaseModel):
         return names
 
     @model_serializer
-    def serialize_model_with_links(self, **kwargs) -> dict:
+    def serialize_model_with_links(self) -> dict:
         '''
         Function for json convertation. It exists because we need to convert LinkInsertions
         '''
@@ -187,7 +187,7 @@ class BaseModel(PydanticBaseModel):
                 _field_names.append(field_name)
                 _defaults[field_name] = getattr(val, 'default', None)
 
-        if self.__class__._dump_options['only_class_fields'] == True:
+        if BaseModel._dump_options['only_class_fields'] == True:
             _field_names = self.__class__.__annotations__
 
         for field_name in _field_names:
@@ -220,6 +220,9 @@ class BaseModel(PydanticBaseModel):
                 if self._dump_options.get('exclude_defaults') == True:
                     if _val == _defaults.get(field_name, None):
                         continue
+
+                if hasattr(_val, 'setDb'):
+                    _val.setDb(self.getDb())
 
                 result[field_name] = _val
 

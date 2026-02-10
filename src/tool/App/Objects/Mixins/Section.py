@@ -57,6 +57,7 @@ class Section:
         '''
         Just an alias for "print()".
         Everything (except ObjectAdapters) is an objects, so this function will be available everywhere.
+        Its an official way to print something to console because i use print() for debug
         '''
         print(anything)
 

@@ -6,14 +6,15 @@ from App.Objects.Mixins.Section import Section
 class LinkInsertion(BaseModel, DBInsertable, Section):
     link: int | Any = Field()
     field: list[str] = Field(default = [])
+    #additional: dict = Field(default = {})
 
     def _getLink(self):
         if type(self.link) == int:
-            _lnk = self.getDb().Link.getById(self.link)
+            _lnk = self.getDb()._adapter.LinkAdapter.getById(self.link)
             if _lnk == None:
                 return None
 
-            return _lnk.getLink()
+            return _lnk.toPython()
 
         return self.link
 

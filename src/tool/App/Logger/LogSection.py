@@ -5,7 +5,7 @@ class LogSection(Object):
     value: list = Field(repr=True, default = ['N/A'])
 
     def join(self) -> str:
-        return "!".join(self.value)
+        return ".".join(self.value)
 
     def toString(self) -> str:
-        return f"[{self.join()}]"
+        return self.join()
