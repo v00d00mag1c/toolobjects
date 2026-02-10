@@ -23,7 +23,7 @@ class ConsoleView(View):
     async def implementation(self, i: ArgumentValues = {}):
         self.log("Some arguments cannot be passed in console.")
 
-        i.set('auth', self._auth(i.get('username'), i.get('password')))
+        i.set('auth', self._auth(i.get('auth_username'), i.get('auth_password')))
 
         pre_i = i.get('pre_i')()
         results = await pre_i.execute(i)
@@ -67,12 +67,12 @@ class ConsoleView(View):
                 default = 'str'
             ),
             Argument(
-                name = 'username',
+                name = 'auth_username',
                 orig = String,
                 default = 'root'
             ),
             Argument(
-                name = 'password',
+                name = 'auth_password',
                 orig = String,
                 default = 'root'
             ),

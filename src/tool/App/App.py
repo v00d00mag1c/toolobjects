@@ -39,8 +39,6 @@ class App(Object):
         self.src = self.cwd.parent # "tool", "storage", "venv" and update scripts
         self.storage = self.src.joinpath('storage') # default storage
         self.storage.mkdir(exist_ok = True)
-        self.acl = self.storage.joinpath('acl')
-        # self.acl.mkdir(exist_ok = True)
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
 
@@ -84,9 +82,6 @@ class App(Object):
                     path = 'App\\Config\\Config.py'
                 ),
                 LoadedObject(
-                    path = 'App\\ACL\\AuthLayer.py'
-                ),
-                LoadedObject(
                     path = 'App\\Logger\\Logger.py'
                 )
             ],
@@ -99,6 +94,9 @@ class App(Object):
                 ),
                 LoadedObject(
                     path = 'App\\Storage\\Storage.py'
+                ),
+                LoadedObject(
+                    path = 'App\\ACL\\AuthLayer.py'
                 ),
                 LoadedObject(
                     path = 'Web\\DownloadManager\\Manager.py'

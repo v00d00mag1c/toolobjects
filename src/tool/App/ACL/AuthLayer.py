@@ -5,18 +5,13 @@ from pydantic import Field
 from typing import Generator
 from Data.Boolean import Boolean
 from App.ACL.User import User
-from App.ACL.Permissions.ObjectPermission import ObjectPermission
-from App.ACL.GetHash import GetHash
+from App.ACL.Permissions.Permission import Permission
+from App.DB.Query.Condition import Condition
 from App import app
 
 class AuthLayer(Object):
-    users: list[User] = Field(default = [])
-
-    def addUser(self, user: User):
-        self.users.append(user)
-
     def getUserByName(self, name: str) -> User:
-        for item in self.users:
+        for item in self.getUsers():
             if item.name == name:
                 return item
 
@@ -35,60 +30,32 @@ class AuthLayer(Object):
 
         return user
 
+    def getUsers(self) -> Generator[User]:
+        _storage = app.Storage.get('users')
+        _query = _storage.adapter.getQuery()
+        _query.addCondition(Condition(
+            val1 = 'content',
+            operator = '==',
+            val2 = 'App.ACL.User',
+            json_fields = ['obj', 'saved_via', 'object_name']
+        ))
+
+        for user in _query.getAll():
+            yield user.toPython()
+
+    def add_user(self, user: User):
+        user.flush(app.Storage.get('users'))
+
     @classmethod
     def mount(cls):
-        default_root_password = 'root'
-
         _layer = cls()
-        has_root = False
-        for user in _layer.getOption('app.auth.users'):
-            if user.name == 'root':
-                has_root = True
 
-            _layer.addUser(user)
-
-        if has_root == False:
-            _layer.addUser(User(
-                    name = 'root',
-                    # 2manywraps
-                    password_hash = GetHash().implementation({'string': default_root_password}).items[0].value
-                )
-            )
-
+        # App.Objects.Index.PostRun will check root user
         app.mount('AuthLayer', _layer)
-
-    def getPermissions(self, likeness: ObjectPermission) -> Generator[ObjectPermission]:
-        for item in self.getOption('app.auth.permissions'):
-            if item.object_name != likeness.object_name:
-                continue
-
-            if item.user != likeness.user:# and item.user != None:
-                continue
-
-            if item.action != likeness.action:
-                continue
-
-            if item.allow != likeness.allow:
-                continue
-
-            yield item
-
-    def compare_permissions(self, likeness: ObjectPermission):
-        return len(list(app.AuthLayer.getPermissions(likeness))) > 0
 
     @classmethod
     def _settings(cls):
         return [
-            ListArgument(
-                name = 'app.auth.users',
-                default = [],
-                orig = User
-            ),
-            ListArgument(
-                name = 'app.auth.permissions',
-                default = [],
-                orig = ObjectPermission
-            ),
             Argument(
                 name = 'app.auth.every_call_permission_check',
                 default = False,

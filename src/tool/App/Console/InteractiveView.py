@@ -6,7 +6,7 @@ import traceback
 
 class InteractiveView(ConsoleView):
     async def implementation(self, i):
-        i.set('auth', self._auth(i.get('username'), i.get('password')))
+        i.set('auth', self._auth(i.get('auth_username'), i.get('auth_password')))
 
         pre_i = i.get('pre_i')()
 

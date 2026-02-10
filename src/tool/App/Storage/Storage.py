@@ -55,6 +55,12 @@ class Storage(Object):
                 db_type = 'App.DB.Adapters.SQLite',
                 db = {}
             ),
+            StorageItem(
+                name = 'users',
+                db_type = 'App.DB.Adapters.SQLite',
+                allowed_objects = ['App.ACL.User', 'App.ACL.Permissions.Permission'],
+                db = {}
+            )
         ]
 
         for item in default_items:
