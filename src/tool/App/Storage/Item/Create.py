@@ -25,7 +25,7 @@ class Create(Act):
             Argument(
                 name = 'mount',
                 orig = Boolean,
-                default = False
+                default = True
             ),
             Argument(
                 name = 'db_args',

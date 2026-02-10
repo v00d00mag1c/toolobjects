@@ -4,11 +4,10 @@ from Data.Types.String import String
 class Text(Displayment):
     for_object = 'Media.Text.Text'
 
-    async def render_as_page(self, request, context):
-        query = request.rel_url.query
+    async def render_as_object(self, item):
         self.context.update({
-            'items': self.get_objs(query.get('uuids').split(',')),
+            'items': [item],
             'String': String,
         })
 
-        return self.render_template('Other/Media/text_page.html')
+        return self.render_string('Other/Media/text_page.html')

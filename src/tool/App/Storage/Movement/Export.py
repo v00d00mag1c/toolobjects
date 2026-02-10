@@ -61,7 +61,8 @@ class Export(Act):
 
         _create_items = await Create().execute({
             'name': export_name,
-            'dir': i.get('dir')
+            'dir': i.get('dir'),
+            'mount': False
         })
         export_storage = _create_items.items[0]
         export_storage.is_export = True

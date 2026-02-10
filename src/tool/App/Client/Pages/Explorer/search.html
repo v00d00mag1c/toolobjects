@@ -6,46 +6,69 @@ Search
 
 {% block body %}
     <form>
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input placeholder="Query" type="text" name="q" value="{{current_url.query.get('q') or ''}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="search_in_description">
+                            in description
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>In storage</td>
+                    <td>
+                        <input type="text" name="storage" value="{{current_url.query.get('storage') or ''}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Public only</td>
+                    <td>
+                        <input type="checkbox" name="public" {% if current_url.query.get('public') == 'on' %}checked{% endif %}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Descend</td>
+                    <td>
+                        <input type="checkbox" name="invert" {% if current_url.query.get('invert') == 'on' %}checked{% endif %}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Per page</td>
+                    <td>
+                        <input type="text" name="per_page" value="{{per_page}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Object name</td>
+                    <td>
+                        <input type="text" name="only_object" value="{{current_url.query.get('only_object') or ''}}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <input type="hidden" name="i" value="App.DB.Search">
         <input type="hidden" name="linked_to" value="{{current_url.query.get('linked_to') or ''}}">
         <input type="hidden" name="after" value="{{after}}">
 
-        <input placeholder="Query" type="text" name="q" value="{{current_url.query.get('q') or ''}}">
-        
-        <div>
-            <b>In storage</b>
-            <input type="text" name="storage" value="{{current_url.query.get('storage') or ''}}">
-        </div>
-
-        <div>
-            <b>Public only</b>
-            <input type="checkbox" name="public" {% if current_url.query.get('public') == 'on' %}checked{% endif %}>
-        </div>
-
-        <div>
-            <b>Descend</b>
-            <input type="checkbox" name="invert" {% if current_url.query.get('invert') == 'on' %}checked{% endif %}>
-        </div>
-
-        <div>
-            <b>Per page</b>
-            <input type="text" name="per_page" value="{{per_page}}">
-        </div>
-
-        <div>
-            <b>Object name</b>
-            <input type="text" name="only_object" value="{{current_url.query.get('only_object') or ''}}">
-        </div>
-
         <input type="submit" value="Search">  
     </form>
+    <hr>
     <div>
         <b>{{ tr("client.index.total_count", total_count) }}</b>
 
         <div>
             {% for item in items %}
                 <div>
-                    <span>{{ item.obj.name or 'Untitled' }}</span>
+                    <span>{{ item.obj.name or item._getNameJoined() }}</span>
 
                     {% if item.hasDb() %}
                         <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}">
@@ -56,8 +79,12 @@ Search
             {% endfor %}
 
             <div id="pages">
+                {% if before_url %}
                 <a href="?{{before_url}}"><</a>
-                <a href="?{{after_url}}">></a>
+                {% endif %}
+                {% if after_url %}
+                    <a href="?{{after_url}}">></a>
+                {% endif %}
             </div>
         </div>
     </div>

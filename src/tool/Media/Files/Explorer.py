@@ -7,7 +7,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from Data.Types.String import String
 
 from Media.Files.File import File
-from Media.Files.Dir import Dir
+from Media.Files.Dir.Dir import Dir
 from App.Objects.Relations.Submodule import Submodule
 
 class Explorer(ExplorerProtocol):

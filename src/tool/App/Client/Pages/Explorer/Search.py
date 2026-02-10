@@ -66,7 +66,7 @@ class Search(Displayment):
                 last_uuid = objs[-1].getDbId()
 
         _url = dict(query)
-        _url['before'] = after
+        _url['after'] = after
         _url2 = dict(query)
         _url2['after'] = last_uuid
 
@@ -74,10 +74,12 @@ class Search(Displayment):
             'total_count': _val.getTotalCount(),
             'items': objs,
             'last_uuid': last_uuid,
-            'before_url': self._to_url(_url),
             'after_url': self._to_url(_url2),
             'per_page': per_page
         })
+
+        if after != None:
+            self.context['before_url'] = self._to_url(_url)
 
         return self.render_template('Explorer/search.html')
 

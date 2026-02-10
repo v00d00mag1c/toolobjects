@@ -18,7 +18,6 @@ class Displayment(Object):
     auth: Any = None
     self_name = 'ClientDisplayment'
 
-    @abstractmethod
     def render_as_page(self, request, context):
         ...
 
@@ -34,6 +33,9 @@ class Displayment(Object):
 
     def render_template(self, template: str):
         return aiohttp_jinja2.render_template(template, self.request, self.context)
+
+    def render_string(self, template: str):
+        return aiohttp_jinja2.render_string(template, self.request, self.context)
 
     def get_objs(self, uuids):
         objs = list()

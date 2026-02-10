@@ -1,13 +1,5 @@
-{% extends "base.html" %}
-
-{% block title %}
-Audio
-{% endblock %}
-
-{% block body %}
-    {% for item in items %}
-        <div>
-            <audio src="{{item.get_url(True)}}" controls></audio>
-        </div>
-    {% endfor %}
-{% endblock %}
+{% for item in items %}
+    <div>
+        <audio src="{{item.get_url(True)}}" controls></audio>
+    </div>
+{% endfor %}

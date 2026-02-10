@@ -22,6 +22,11 @@
     background: #dfdddd87;
 }
 
+#upper_bar #bookmarks {
+    height: 100%;
+    padding: 0px 0px 0px 188px;
+}
+
 #upper #upper_menu {
     display: flex;
     justify-content: space-between;
@@ -44,6 +49,7 @@
 #floating_menu {
     position: fixed;
     right: 0;
+    top: 25px;
     opacity: 0.05;
     transition: opacity 200ms ease-in-out;
 }
@@ -58,4 +64,8 @@ textarea {
 
 textarea.heighted {
     height: 100px;
+}
+
+.displayment_back {
+    font-size: 10px;
 }

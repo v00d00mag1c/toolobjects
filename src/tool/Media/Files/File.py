@@ -22,7 +22,7 @@ class File(Object):
 
     @staticmethod
     def from_path(path: Path):
-        from Media.Files.Dir import Dir
+        from Media.Files.Dir.Dir import Dir
         from Media.Files.FileType import FileType
 
         item = FileType()

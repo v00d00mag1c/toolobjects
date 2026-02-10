@@ -2,8 +2,8 @@ from App.Objects.Act import Act
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.AllowedValues import AllowedValues
-from Web.Crawler.Webdrivers.Chromedriver.Chromedriver import Chromedriver
-from Web.Crawler.Webdrivers.Chromedriver.Add import Add
+from Web.Pages.Crawler.Webdrivers.Chromedriver.Chromedriver import Chromedriver
+from Web.Pages.Crawler.Webdrivers.Chromedriver.Add import Add
 from Data.Types.String import String
 from App import app
 from pathlib import Path

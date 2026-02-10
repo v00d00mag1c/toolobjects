@@ -1,15 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}
-Text
-{% endblock %}
-
-{% block body %}
-    {% for item in items %}
-        <div>
-            {% for line in item.text.split('\n') %}
-                {{ line|e }}{% if not loop.last %}<br>{% endif %}
-            {% endfor %}
-        </div>
-    {% endfor %}
-{% endblock %}
+{% for item in items %}
+    <div>
+        {% for line in item.text.split('\n') %}
+            {{ line|e }}{% if not loop.last %}<br>{% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}

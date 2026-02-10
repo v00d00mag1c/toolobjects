@@ -13,7 +13,7 @@ Browse
 
         {% for item in items.getItems() %}
             <div>
-                <span>{{ item.obj.name or 'Untitled' }}</span>
+                <span>{{ item.obj.name or item._getNameJoined() }}</span>
 
                 <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}">
                     <sup>{{ item.getDbIds() }}</sup>

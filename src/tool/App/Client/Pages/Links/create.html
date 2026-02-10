@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create link
+{% endblock %}
+
+{% block body %}
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><<< back</a>
+    
+    <form method="post">
+        <div>
+            <textarea name="with" placeholder="With... (ids)"></textarea>
+        </div>
+        <div>
+            <textarea name="role" placeholder="Roles (divided by comma)"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Link">
+        </div>
+    </form>
+{% endblock %}

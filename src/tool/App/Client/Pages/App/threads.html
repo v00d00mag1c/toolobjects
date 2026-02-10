@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Task manager
+{% endblock %}
+
+{% block body %}
+    <h4>{{ tr("client.task_manager.tasks") }}</h4>
+    {% for item in tasks %}
+        <div>
+            <b>{{item.name}}</b>
+            <a href="?i=App.Objects.Threads.Stop&id={{item.global_id}}">(end)</a>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -3,6 +3,7 @@ from App.Storage.Item.StorageItem import StorageItem
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.Assertions.NotNone import NotNone
+from Data.Types.Boolean import Boolean
 from App import app
 
 class Mount(Act):
@@ -13,6 +14,11 @@ class Mount(Act):
                 name = 'item',
                 orig = StorageItem,
                 assertions = [NotNone()]
+            ),
+            Argument(
+                name = 'to_config',
+                orig = Boolean,
+                default = False
             )
         ])
 
@@ -23,3 +29,7 @@ class Mount(Act):
         assert _check_storage == None, 'storage item with this name is already mounted'
 
         app.Storage.append(_item)
+
+        if i.get('to_config'):
+            # TODO
+            app.Config.get('storage.items')

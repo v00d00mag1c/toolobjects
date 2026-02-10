@@ -70,6 +70,14 @@
         {
             "id": "client.index.total_count",
             "value": "Total {0} items"
+        },
+        {
+            "id": "client.task_manager",
+            "value": "Task manager"
+        },
+        {
+            "id": "client.task_manager.tasks",
+            "value": "Tasks"
         }
     ]
 }
