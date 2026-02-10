@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from App.Storage.StorageUnit import StorageUnit
-from App.DB.ConnectionAdapters.ConnectionAdapter import ConnectionAdapter
+from App.DB.Adapters.Connection.ConnectionAdapter import ConnectionAdapter
 from pydantic import Field
 from pathlib import Path
 from App import app
@@ -61,7 +61,7 @@ class StorageItem(Object):
         self.getStorageDir().mkdir(exist_ok=True)
 
     def getDBAdapterByName(self, adapter_name: str):
-        from App.DB.ConnectionAdapters.SQLiteAdapter import SQLiteAdapter
+        from App.DB.Adapters.Connection.SQLiteAdapter import SQLiteAdapter
 
         _adapters = {'sqlite': SQLiteAdapter}
         _item = _adapters.get(adapter_name)()

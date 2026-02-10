@@ -1,4 +1,4 @@
-from App.DB.ConnectionAdapters.ConnectionAdapter import ConnectionAdapter
+from App.DB.Adapters.Connection.ConnectionAdapter import ConnectionAdapter
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, event, String
 from snowflake import SnowflakeGenerator
@@ -7,6 +7,8 @@ import json
 
 class SQLAlchemyAdapter(ConnectionAdapter):
     _engine: Any = None
+    ObjectUnit: Any = None
+    ObjectUnitLink: Any = None
 
     def _init_models(self):
         Base = declarative_base()
@@ -15,7 +17,7 @@ class SQLAlchemyAdapter(ConnectionAdapter):
             uuid = Column(Integer(), primary_key=True)
             content = Column(String(), nullable=False)
 
-        self.ObjectAdapter = ObjectUnit
+        self.ObjectUnit = ObjectUnit
 
         @event.listens_for(ObjectUnit, 'before_insert', propagate=True)
         def receive_before_insert(mapper, connection, target):

@@ -1,11 +1,9 @@
-from App.DB.ConnectionAdapters.SQLAlchemyAdapter import SQLAlchemyAdapter
+from App.DB.Adapters.Connection.SQLAlchemyAdapter import SQLAlchemyAdapter
 from pydantic import Field
 from typing import Literal, Any
 
 class SQLiteAdapter(SQLAlchemyAdapter):
     content: str = Field(default = None)
-    ObjectUnit: Any = None
-    ObjectUnitLink: Any = None
 
     def getContent(self, storage_di: Any = None):
         if self.content != None:

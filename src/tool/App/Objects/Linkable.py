@@ -1,6 +1,9 @@
-from pydantic import Field
+from pydantic import Field, BaseModel
 #from App.Objects.Object import Object
-from App.Objects.Link import Link
+
+class Link(BaseModel):
+    # todo ?????? remove
+    pass
 
 class Linkable:
     '''
@@ -13,6 +16,8 @@ class Linkable:
         self.links.append(item)
 
     def getLinks(self) -> list[Link]:
+        from App.Objects.Link import Link as RealLink
+
         return self.links
 
     def linkItem(self, object, link_type: int):

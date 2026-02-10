@@ -41,3 +41,4 @@
 - [ ] Web.RSS.GetFeed
 - [ ] DisplayType (?)
 - [ ] link insertion
+- [x] get rid of saveable
