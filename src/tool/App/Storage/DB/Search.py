@@ -66,6 +66,9 @@ class Search(Act):
                     self.log(f"{link.getId()}: not exists in this db")
 
                 for linked_item in link.getItem().toPython().getLinked():
+                    if linked_item.item.hasDb() == False:
+                        continue
+
                     _ids.append(linked_item.item.getDb().uuid)
 
             _query.addCondition(Condition(

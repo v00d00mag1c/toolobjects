@@ -7,6 +7,7 @@ from App.Storage.DB.Adapters.Search.Sort import Sort
 from App.Objects.Object import Object
 from App.Objects.Relations.Link import Link as CommonLink
 from App.Objects.Requirements.Requirement import Requirement
+from App.Objects.Misc.UnknownObject import UnknownObject
 from typing import Any, Generator
 import json
 
@@ -80,7 +81,11 @@ class SQLAlchemy(ConnectionAdapter):
             order = Column(Integer())
 
             def getTarget(self):
-                return _ObjectAdapter.getById(self.target)
+                _obj = _ObjectAdapter.getById(self.target)
+                if _obj == None:
+                    return self.fallback()
+
+                return _obj
 
             @classmethod
             def getQuery(cls):
@@ -99,6 +104,9 @@ class SQLAlchemy(ConnectionAdapter):
                     self.role = str(link.role)
 
                 _session.add(self)
+
+            def fallback(self):
+                return None
 
         # a lot of confusing links
         class _ObjectAdapter(ObjectAdapter, Base):
@@ -128,7 +136,14 @@ class SQLAlchemy(ConnectionAdapter):
             def getLinks(self) -> Generator[CommonLink]:
                 links = _session.query(_LinkAdapter).filter(_LinkAdapter.owner == self.uuid)
                 for link in links:
-                    yield link.toPython()
+                    _res = link.toPython()
+                    if link == None or _res == None:
+                        yield CommonLink(
+                            item = UnknownObject()
+                        )
+                        continue
+
+                    yield _res
 
             @classmethod
             def getQuery(cls):

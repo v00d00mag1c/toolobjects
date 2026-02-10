@@ -7,6 +7,7 @@ from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Responses.ObjectsList import ObjectsList
 from App.Responses.AnyResponse import AnyResponse
 from App.Storage.StorageItem import StorageItem
+from App.Storage.StorageUUID import StorageUUID
 from App import app
 
 class Save(Act):
@@ -26,9 +27,9 @@ class Save(Act):
                 assertions = [NotNoneAssertion()],
                 orig = StorageItem
             ),
-            Argument(
+            ListArgument(
                 name = 'link_to',
-                orig = Int
+                orig = StorageUUID
             ),
             Argument(
                 name = 'link_max_depth',
@@ -39,18 +40,23 @@ class Save(Act):
 
     async def implementation(self, i):
         results = 0
+        link_to = list()
+        for item in i.get('link_to'):
+            link_to.append(item.toPython())
 
         for storage in i.get('storage'):
-            link_to = i.get('link_to')
-
             assert storage != None, f"storage {storage.name} not found"
             assert storage.hasAdapter(), f"storage {storage.name} does not contains db connection"
 
             for item in i.get('items').getItems():
-                item.flush(storage,
-                        link_max_depth = i.get('link_max_depth'))
+                item.flush(storage, link_max_depth = i.get('link_max_depth'))
 
                 self.log(f"flushed item to db {storage.name}, uuid: {item.getDbId()}")
                 results += 1
+
+                for link_item in link_to:
+                    link_item.link(item)
+
+                    self.log(f"saving: linked {item.getDbId()} to {link_item.getDbId()}")
 
         return AnyResponse(data = results)

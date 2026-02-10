@@ -52,7 +52,7 @@ db and storage:
 - [ ] App.Storage.Movement.ExportAsZip, App.Storage.Movement.ImportZip
 - [ ] App.Storage.Movement.ExportAsFiles
 - [ ] objectlist adapter
-- [ ] link after save
+- [x] link after save
 - [x] search in linked
 - [x] Web.DownloadManager.Manager
 - [ ] storageunit generates hash randomly but maybe hash the common file?

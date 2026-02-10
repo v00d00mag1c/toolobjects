@@ -1,5 +1,4 @@
 from App.Objects.Act import Act
-from App.Objects.Executable import Executable
 from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
@@ -56,6 +55,7 @@ class DefaultExecutorWheel(Act):
                 await _save.execute({
                     'items': results,
                     'storage': save_to,
+                    'link_to': i.get('link_to'),
                     'auth': i.get('auth')
                 })
 
