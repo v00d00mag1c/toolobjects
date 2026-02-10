@@ -5,6 +5,9 @@ from pydantic import Field
 import secrets
 from App import app
 
+class TokenExpiredError(Exception):
+    pass
+
 class Token(Object):
     value: str = Field()
     user: str = Field()

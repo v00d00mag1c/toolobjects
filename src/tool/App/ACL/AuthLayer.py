@@ -5,7 +5,7 @@ from pydantic import Field
 from typing import Generator
 from App.ACL.User import User
 from App.ACL.Permissions.Permission import Permission
-from App.ACL.Tokens.Token import Token
+from App.ACL.Tokens.Token import Token, TokenExpiredError
 from App.DB.Query.Condition import Condition
 from App import app
 from Data.Boolean import Boolean
@@ -46,7 +46,9 @@ class AuthLayer(Object):
         _item = _query.first()
         if _item != None:
             _token = _item.toPython()
-            assert _token.is_expired() == False, 'token has expired'
+            if _token.is_expired() == True:
+                raise TokenExpiredError('token expired') 
+
             _user = _token.to_user()
             self.log(f"logged as {_user.name}", role = ['auth', 'auth.by_token'])
 

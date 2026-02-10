@@ -30,7 +30,15 @@ export class RPC {
                     break
                 case "object":
                     if (callback) {
-                        callback.resolve(rpc_event.payload)
+                        if (rpc_event.payload.obj.saved_via.object_name == 'App.Objects.Responses.Error') {
+                            if (rpc_event.payload.name == "TokenExpiredError") {
+                                window.app.auth.remove()
+                            }
+                            
+                            callback.reject(rpc_event.payload)
+                        } else {
+                            callback.resolve(rpc_event.payload)
+                        }
                         this.callback_dictionary[rpc_event.event_index] = null
                     }
             }
@@ -40,6 +48,10 @@ export class RPC {
     async call(args, attempt = 0) {
         if (attempt > 5) {
             throw Error()
+        }
+
+        if (window.app.auth.get_token()) {
+            args['auth'] = window.app.auth.get_token()
         }
 
         if (!this.connection.readyState) {
@@ -64,7 +76,6 @@ export class RPC {
             try {
                 event.send(this.connection)
             } catch(err) {
-                console.error(err)
                 reject(err)
             }
         })

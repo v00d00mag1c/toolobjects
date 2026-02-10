@@ -1,26 +1,37 @@
 body {
     padding: 0;
     margin: 0;
-    background: black;
+    background: #ffffff;
+}
+
+.logical-content-blocks .logical-block {
+    width: 100%;
+    min-height: 100vh;
 }
 
 .logical-block[data-id='tabs'] {
     position: fixed;
     width: 100vw;
-    background:#fc00ef;
+    background:#fcfcfc;
     height: 50px;
 }
 
+.logical-block[data-id='content'] {
+    padding-top: 50px;
+    min-height: 90vh;
+}
+
 .logical-block[data-id='footer'] {
-    background:#017f90;
+    background:#efefef;
     width: 100vw;
-    height: 30px;
+    height: 20%;
     position: fixed;
     bottom: 0;
+    display: none;
 }
 
 .logical-block[data-id='sidebar'] {
-    background:rgb(0, 89, 255);
+    background:#f7faff;
 }
 
 .logical-content-blocks {
@@ -28,7 +39,6 @@ body {
     grid-template-columns: 1fr 2fr;
 }
 
-.logical-content-blocks .logical-block {
-    width: 100%;
-    min-height: 100vh;
+#objects_list {
+    padding: 57px 10px 0px 14px;
 }

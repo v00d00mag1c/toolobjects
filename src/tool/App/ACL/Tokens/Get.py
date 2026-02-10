@@ -8,7 +8,7 @@ from Data.String import String
 from App import app
 import datetime
 
-class Auth(Act):
+class Get(Act):
     @classmethod
     def _arguments(cls) -> ArgumentDict:
         return ArgumentDict(items = [

@@ -12,6 +12,7 @@ from pathlib import Path
 from pydantic import Field
 from App.DB.Query.Condition import Condition
 from App.Storage.StorageUnit import StorageUnit
+from App.ACL.Tokens.Token import TokenExpiredError
 import asyncio, traceback
 
 class Server(View):
@@ -65,9 +66,7 @@ class Server(View):
                 text =
                 """
                 <html>
-                    <head>
-                        <script defer src="/static/client/node_modules/alpinejs/dist/cdn.min.js"></script>
-                    </head>
+                    <head></head>
                     <body>
                         <script type="module">
                             import { App } from "/static/client/App/App.js"
@@ -148,7 +147,11 @@ class Server(View):
         async def _call_shortcut(pre_i, args):
             _json = JSON(data = {})
             results = None
-            args['auth'] = app.AuthLayer.byToken(args.get('auth'))
+
+            try:
+                args['auth'] = app.AuthLayer.byToken(args.get('auth'))
+            except TokenExpiredError as e:
+                pass
 
             try:
                 results = await pre_i.execute(args)

@@ -1,5 +1,6 @@
 import { LogicalBlock } from "/static/client/Page/LogicalBlock.js"
 import { default_page_styles } from "/static/client/Page/Styles.js"
+import { ObjectsList } from "/static/client/Components/ObjectsList.js"
 
 export class Page {
     blocks = []
@@ -22,7 +23,9 @@ export class Page {
                 ${await default_page_styles()}
             </style>
             <div id="app">
-                <div class="logical-block" data-id="tabs"></div>
+                <div class="logical-block" data-id="tabs">
+                    <a href="#">Auth</a>
+                </div>
                 <div class="logical-content-blocks">
                     <div class="logical-block" data-id="sidebar"></div>
                     <div class="logical-block" data-id="content"></div>
@@ -30,16 +33,23 @@ export class Page {
                 <div class="logical-block" data-id="footer"></div>
             </div>
         `
-        this.load_head()
+        await this.load_head()
+
+        try {
+            await new ObjectsList().render(document.querySelector(`#app .logical-block[data-id='sidebar']`))
+        } catch(e) {}
+
         this._block_names.forEach(name => {
             this.blocks.push(new LogicalBlock(name, document.querySelector(`#app .logical-block[data-id='${name}']`)))
         })
     }
 
-    load_head() {
-        document.querySelector('head').innerHTML = `
-            <link rel="icon" href="/static/images/ico.png">
-        `
+    async load_head() {
+        try {
+            const _obj = await window.app.rpc.call({"i": "App.Config.Get", "key": "app.name"})
+
+            document.title = _obj['data']['app.name']
+        } catch(e){}
     }
 }
 

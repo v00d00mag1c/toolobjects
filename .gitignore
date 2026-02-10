@@ -7,6 +7,7 @@ env/
 venv/
 src/tool/Custom*
 src/venv/
+src/assets/app*
 storage/*
 src/storage/*
 *node_modules*

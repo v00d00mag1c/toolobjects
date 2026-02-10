@@ -4,8 +4,12 @@ from App import app
 
 class GetList(Act):
     def implementation(self, i):
-        _items = ObjectsList()
+        _items = ObjectsList(unsaveable = True)
         for item in app.ObjectsList.getItems().toList():
-            _items.append(item)
+            try:
+                item.to_json()
+                _items.append(item)
+            except Exception as e:
+                self.log_error(e)
 
         return _items

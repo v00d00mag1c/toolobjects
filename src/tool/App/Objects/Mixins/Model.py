@@ -190,52 +190,64 @@ class Model(PydanticBaseModel):
         _field_names = list()
         _defaults = dict()
 
-        for _item in [self.__class__.model_fields, self.__class__.model_computed_fields]:
-            for field_name, val in _item.items():
-                _field_names.append(field_name)
-                _defaults[field_name] = getattr(val, 'default', None)
+        try:
+            for _item in [self.__class__.model_fields, self.__class__.model_computed_fields]:
+                for field_name, val in _item.items():
+                    _field_names.append(field_name)
+                    _defaults[field_name] = getattr(val, 'default', None)
 
-        if Model._dump_options['only_class_fields'] == True:
-            _field_names = self.__class__.__annotations__
+            if Model._dump_options['only_class_fields'] == True:
+                _field_names = self.__class__.__annotations__
 
-        for field_name in _field_names:
-            if Model._dump_options['excludes'] != None and field_name in Model._dump_options['excludes']:
-                continue
-
-            if field_name in self.__class__._unserializable:
-                continue
-
-            value = getattr(self, field_name)
-
-            if isinstance(value, LinkInsertion):
-                value.setDb(self.getDb())
-                if Model._dump_options['convert_links'] == True:
-                    result[field_name] = value.unwrap()
-                else:
-                    result[field_name] = value
-            elif (isinstance(value, list) and value and isinstance(value[0], LinkInsertion)):
-                result[field_name] = []
-                for item in value:
-                    item.setDb(self.getDb())
-
-                    if Model._dump_options['convert_links'] == True:
-                        result.get('field_name').append(item.unwrap())
-            else:
-                _val = self._serializer(field_name, value)
-                if _val == None and self._dump_options.get('exclude_none') == True:
-                    continue
-
-                if self._dump_options.get('exclude_defaults') == True:
-                    if _val == _defaults.get(field_name, None):
+            for field_name in _field_names:
+                try:
+                    if Model._dump_options['excludes'] != None and field_name in Model._dump_options['excludes']:
                         continue
 
-                if hasattr(_val, 'setDb') and hasattr(self, 'setDb'):
-                    _val.setDb(self.getDb())
+                    if field_name in self.__class__._unserializable:
+                        continue
 
-                result[field_name] = _val
+                    value = getattr(self, field_name)
 
-        if Model._dump_options['include_extra'] == True and self.model_extra != None:
-            for key, val in self.model_extra.items():
-                result[key] = val
+                    if isinstance(value, LinkInsertion):
+                        value.setDb(self.getDb())
+                        if Model._dump_options['convert_links'] == True:
+                            result[field_name] = value.unwrap()
+                        else:
+                            result[field_name] = value
+                    elif (isinstance(value, list) and value and isinstance(value[0], LinkInsertion)):
+                        result[field_name] = []
+                        for item in value:
+                            item.setDb(self.getDb())
+
+                            if Model._dump_options['convert_links'] == True:
+                                result.get('field_name').append(item.unwrap())
+                    else:
+                        _val = self._serializer(field_name, value)
+                        if _val == None and self._dump_options.get('exclude_none') == True:
+                            continue
+
+                        if self._dump_options.get('exclude_defaults') == True:
+                            if _val == _defaults.get(field_name, None):
+                                continue
+
+                        if hasattr(_val, 'setDb') and hasattr(self, 'setDb'):
+                            _val.setDb(self.getDb())
+
+                        result[field_name] = _val
+                except Exception as e:
+                    self.log_error(e, exception_prefix = 'Can\'t include field {0}'.format(field_name))
+
+            if Model._dump_options['include_extra'] == True and self.model_extra != None:
+                for key, val in self.model_extra.items():
+                    try:
+                        result[key] = val
+                    except Exception as e:
+                        self.log_error(e, exception_prefix = 'Can\'t include field {0}'.format(key))
+        except Exception as _e:
+            self.log_error(e, exception_prefix='Error loading model {0}: '.format(self.getClassNameJoined()))
+
+            if True:
+                raise _e
 
         return result

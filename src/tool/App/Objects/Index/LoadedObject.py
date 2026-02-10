@@ -29,6 +29,8 @@ class LoadedObject(NameContainable):
     is_submodule: bool = False
     mounted: bool = False
 
+    _unserializable: bool = ['_module']
+
     def init_hook(self):
         _path = Path(self.path)
         _ext = _path.suffix[1:] # its always "py", why moving it lol
@@ -43,10 +45,13 @@ class LoadedObject(NameContainable):
 
     def getModule(self):
         if self._module == None:
-            self.setModule(self.loadModule(ignore_requires = True))
-            self.integrateModule(self._module)
+            self.loadModuleLater()
 
         return self._module
+
+    def loadModuleLater(self):
+        self.setModule(self.loadModule(ignore_requires = True))
+        self.integrateModule(self._module)
 
     def hasModuleLoaded(self):
         return self._module != None
