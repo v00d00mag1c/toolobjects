@@ -31,31 +31,31 @@ class BaseModel(PydanticBaseModel):
                 item.__init_subclass__()
 
     class Meta(Outer):
-        @classproperty
-        def mro(cls) -> list:
-            return cls.outer.__mro__
+        @property
+        def mro(self) -> list:
+            return self.outer.__mro__
 
-        @classmethod
-        def available_at(cls):
+        @property
+        def available_at(self):
             return ['web', 'cli', '*']
 
-        @classmethod
-        def required_modules(cls):
+        @property
+        def required_modules(self):
             return []
 
-        @classmethod
-        def is_abstract(cls):
+        @property
+        def is_abstract(self):
             return False
 
-        @classmethod
-        def is_hidden(cls) -> bool:
-            return getattr(cls, "hidden", False) == True
+        @property
+        def is_hidden(self) -> bool:
+            return getattr(self, "hidden", False) == True
 
-        @classmethod
-        def can_be_executed(cls):
-            return cls.is_abstract() == False and cls.is_hidden() == False # and cls.outer hasclass Execute
+        @property
+        def can_be_executed(self):
+            return self.is_abstract() == False and self.is_hidden() == False # and self.outer hasclass Execute
 
-        @classmethod
+        @property
         def get_not_installed_required_modules(cls) -> list:
             all_installed = {dist.metadata["Name"].lower() for dist in distributions()}
             satisf_libs = []
@@ -72,16 +72,16 @@ class BaseModel(PydanticBaseModel):
 
             return not_libs
 
-        @classmethod
+        @property
         def is_required_modules_installed(cls) -> bool:
             return len(cls.get_not_installed_required_modules()) > 0
 
-        @classproperty
+        @property
         def main_module(cls):
             if hasattr(cls, "outer") == False:
                 return None
 
-            for item in cls.__mro__:
+            for item in cls.outer.__mro__:
                 if getattr(item, "outer", None) != None:
                     return item.outer
 
@@ -110,6 +110,6 @@ class BaseModel(PydanticBaseModel):
         def class_module(cls) -> str:
             return cls.outer.__module__
 
-        @classmethod
+        @property
         def can_be_used_at(cls, at):
             return at in cls.available

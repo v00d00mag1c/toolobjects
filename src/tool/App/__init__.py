@@ -26,8 +26,8 @@ class _Wrap:
         '''
 
         if name == "settings":
-            return self._view.app.app.settings
+            return self._view.app.settings
 
-        return getattr(self._view.app.app, name, None)
+        return getattr(self._view.app, name, None)
 
 app = _Wrap()

@@ -1,9 +1,7 @@
-from pydantic.dataclasses import dataclass
 from typing import Any
 from App.Objects.Object import Object
 
-@dataclass
-class DictList:
+class DictList(Object):
     '''
     List that can be used as Dict.
     Must provide 'name' field in each element at 'items'

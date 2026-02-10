@@ -22,11 +22,12 @@ class App(Object):
 
     def _parse_argv(self):
         # didn't changed since sep.2024
+        delimiter = '--'
         args = sys.argv
         parsed_args = {}
         key = None
         for arg in args[1:]:
-            if arg.startswith('--'):
+            if arg.startswith(delimiter):
                 if key:
                     parsed_args[key] = True
                 key = arg[2:]
