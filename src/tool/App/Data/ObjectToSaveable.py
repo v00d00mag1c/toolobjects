@@ -17,7 +17,7 @@ class ObjectToSaveable(Executable):
             )
         ])
 
-    async def implementation(self, i):
+    def implementation(self, i):
         obj = i.get('object')
         item = Saveable(**obj.to_json())
 

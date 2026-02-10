@@ -29,7 +29,7 @@ class Saveable(Object, Linkable, AllowExtraFields):
     declared_created_at: datetime = Field(default_factory=lambda: datetime.now())
 
     '''
-    If you want to extend these fields, extend them as internal classes and annotate again
+    extend them as internal classes and annotate again if you want to extend
     '''
     source: Source = Field(default = Source())
     object_meta: ObjectMeta = Field(default = ObjectMeta())

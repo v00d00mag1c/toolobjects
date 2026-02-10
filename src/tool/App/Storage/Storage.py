@@ -28,7 +28,11 @@ class Storage(Object):
                 }
             ),
             StorageItem(
-                name = 'tmp'
+                name = 'tmp',
+                db = {
+                    'protocol': 'sqlite',
+                    'content': ':memory:'
+                }
             ),
             StorageItem(
                 name = 'instance'

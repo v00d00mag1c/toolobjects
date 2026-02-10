@@ -23,18 +23,8 @@ class StorageItem(Object):
     _path: str = None
     _storage_dir_name = 'storage'
 
-    def constructor(self):
-        if self.directory != None:
-            self._path = Path(self.directory)
-            if self._path.is_file() == True:
-                self.log_error(f"storage item {self.name}: path is file")
-            if self._path.exists() == False:
-                self._path.mkdir()
-
-        dbs_dir = app.app.storage.joinpath('dbs')
-        self._path = dbs_dir.joinpath(self.name)
-        self._path.mkdir(exist_ok=True)
-        self.getStorageDir().mkdir(exist_ok=True)
+    def getDir(self):
+        return self._path
 
     def getStorageDir(self):
         return self._path.joinpath(self._storage_dir_name)
@@ -47,3 +37,27 @@ class StorageItem(Object):
         _item._constructor()
 
         return _item
+
+    def getDB(self) -> DBConnection:
+        pass
+
+    def constructor(self):
+        self._initStorage()
+        self._initDB()
+
+    def _initStorage(self):
+        if self.directory != None:
+            self._path = Path(self.directory)
+            if self._path.is_file() == True:
+                self.log_error(f"storage item {self.name}: path is file")
+            if self._path.exists() == False:
+                self._path.mkdir()
+
+        dbs_dir = app.app.storage.joinpath('dbs')
+        self._path = dbs_dir.joinpath(self.name)
+        self._path.mkdir(exist_ok=True)
+        self.getStorageDir().mkdir(exist_ok=True)
+
+    def _initDB(self):
+        if self.db != None:
+            self.db._constructor(self)
