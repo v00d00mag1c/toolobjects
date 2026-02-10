@@ -1,7 +1,8 @@
+from App.Objects.Object import Object
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Misc.DictList import DictList
 from pydantic import Field
-from typing import Any
+from typing import Any, Self, Optional
 
 class ArgumentDict(DictList):
     '''
@@ -64,11 +65,28 @@ class ArgumentDict(DictList):
         else:
             return inputs
 
-    def join(self, another_dict) -> None:
+    def join(self, another_dict) -> Self:
         '''
         Appends another ArgumentDict's items to current ArgumentDict
         '''
 
-        _items = another_dict.items
-        for item in _items:
+        for item in another_dict.items:
             self.items.append(item)
+
+        return self
+
+    def join_class(self, another_object: Object, only: Optional[list[str]] = None) -> Self:
+        '''
+        Appends arguments from another executable to current list.
+
+        Arguments:
+        "only": append only arguments with names that passed in that list.
+        '''
+
+        for item in another_object.getArguments().toList():
+            if only != None and item.name not in only:
+                continue
+
+            self.items.append(item)
+
+        return self

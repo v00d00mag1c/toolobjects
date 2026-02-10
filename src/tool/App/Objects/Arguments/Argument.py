@@ -14,9 +14,9 @@ class Argument(NameContainable):
     default: Any | Callable = Field(default = None)
     inputs: str = Field(default = None) # workaround for assertions
 
-    literally: bool = Field(default = False)
+    is_class_returns: bool = Field(default = False)
     is_sensitive: bool = Field(default = False)
-    by_id: bool = Field(default = False) # workaround + hardcode
+    by_id: bool = Field(default = False)
     auto_apply: bool = Field(default = False)
     check_json: bool = Field(default = True)
 
@@ -58,7 +58,7 @@ class Argument(NameContainable):
             if StorageUUID.validate(val):
                 return StorageUUID.fromString(val).toPython()
 
-        if self.literally:
+        if self.is_class_returns:
             return self.getOrig().asClass(val)
 
         return self.getOrig().asArgument(val)

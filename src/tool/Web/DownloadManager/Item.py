@@ -5,6 +5,7 @@ import asyncio, datetime
 from App.Logger.LogPrefix import LogPrefix
 from Web.HTTP.RequestHeaders import RequestHeaders
 from pathlib import Path
+from Data.Types.String import String
 
 class NotFoundError(Exception):
     pass
@@ -55,7 +56,7 @@ class Item(Object):
         if new_headers != None:
             _headers.update(new_headers.to_minimal_json())
 
-        self.log('making call to {0} with headers {1}'.format(self.url, _headers))
+        self.log('making call to {0} with headers {1}'.format(String.cut(self.url, 500), String.cut(str(_headers), 1000)))
 
         async with self._manager_link.semaphore:
             request = session.get(self.url,
@@ -66,13 +67,16 @@ class Item(Object):
             async with request as response:
                 status = response.status
                 if status == 404:
-                    raise NotFoundError('404 error')
+                    raise NotFoundError('not found')
 
                 if status == 403:
                     _read = await response.content.read()
-                    self.log_error('access denied, error: {0}'.format(_read.decode("utf8")))
+                    _dc = _read.decode("utf8")
 
-                    raise AccessDeniedError('access denied')
+                    if len(_dc) < 1000:
+                        raise AccessDeniedError('access denied, error: {0}'.format(_dc))
+                    else:
+                        raise AccessDeniedError('access denied')
 
                 assert status not in [404, 403], '{0} error'.format(status)
 

@@ -14,6 +14,7 @@ from pydantic import Field
 from typing import Any
 
 from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from App.Storage.StorageUnit import StorageUnit
 
 import asyncio, traceback
@@ -29,6 +30,7 @@ class Server(View):
     pre_i: Object = Field(default = None)
     _app: Any = None
     _pre_i: Any = None
+    _host: str = None
 
     protect_storage_units: ClassVar[bool] = True
 
@@ -102,9 +104,10 @@ class Server(View):
         )
 
         await site.start()
-
         _http = 'http://'
-        self.log("Started server on {0}{1}:{2}".format(_http, self._get_ip(_host), _port))
+        self._host = '{0}{1}:{2}'.format(_http, self._get_ip(_host), _port)
+
+        self.log("Started server on {0}".format(self._host))
 
         if i.get('ignore_autostart') == False:
             asyncio.create_task(app.Autostart.start_them(i.get('pre_i')))
@@ -154,7 +157,7 @@ class Server(View):
             """
             <html>
                 <body>
-                    <b>v0.1</b>
+                    <b>Index page</b>
                 </body>
             </html>
             """,
@@ -197,9 +200,13 @@ class Server(View):
 
         _query = storage.get_db_adapter().getQuery()
         _query.addCondition(Condition(
-            val1 = 'uuid',
+            val1 = Value(
+                column = 'uuid'
+            ),
             operator = '==',
-            val2 = uuid
+            val2 = Value(
+                value = uuid
+            )
         ))
 
         storage_unit = _query.first()
@@ -320,6 +327,10 @@ class Server(View):
         }).dump())
 
     async def _upload_storage_unit(self, request):
+        _just_url = request.rel_url.query.get('just_url')
+        _old_auth = request.rel_url.query.get('auth')
+        _save_name = request.rel_url.query.get('save_name')
+        _i_after = request.rel_url.query.get('i_after')
         _user = self._auth(dict(request.rel_url.query))
 
         if _user == None:
@@ -336,15 +347,29 @@ class Server(View):
             raise web.HTTPNotAcceptable(text="not passed file")
 
         storage_unit = storage.get_storage_adapter().get_storage_unit()
-        filename = storage_unit.hash + '.oct'
+        filename = None
+        if _save_name == None:
+            filename = storage_unit.hash + '.oct'
+        else:
+            filename = _save_name
+
         file_path = storage_unit.getDir().joinpath(filename)
 
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
 
         storage_unit.flush(storage)
+        storage_unit.save()
 
         self.log('uploaded storage unit {0}'.format(storage_unit.getDbIds()))
+
+        # for sharex
+
+        if _just_url == '1':
+            return web.Response(
+                text = '{0}{1}{2}?auth={3}'.format(self._host, storage_unit.get_url(), filename, _old_auth),
+                content_type = 'text/plain'
+            )
 
         return web.Response(
             text = JSON(data = storage_unit.to_json()).dump(),

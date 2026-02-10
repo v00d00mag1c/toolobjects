@@ -8,6 +8,7 @@ from App.Objects.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.Movement.Save import Save
+from App.Storage.StorageUUID import StorageUUID
 from App.Locale.Documentation import Documentation
 from App.Locale.Key import Key
 from Data.Types.String import String
@@ -76,8 +77,7 @@ class DefaultExecutorWheel(Act):
             if results.should_be_saved() == True:
                 save_to = i.get('save_to')
                 if save_to != None and len(save_to) > 0:
-                    _save = Save()
-                    await _save.execute({
+                    await Save().execute({
                         'items': results,
                         'storage': save_to,
                         'ignore_flush_hooks': i.get('ignore_flush_hooks', results.ignore_flush_hooks),
@@ -149,6 +149,5 @@ class DefaultExecutorWheel(Act):
                     )
                 ),
             )
-            # link_to and link_max_depth will be passed because of missing_args_inclusion
         ],
-        missing_args_inclusion = True)
+        missing_args_inclusion = True).join_class(Save, ['link_to', 'link_max_depth'])

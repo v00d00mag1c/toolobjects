@@ -90,8 +90,9 @@ class Image(Media):
         )
 
     def save(self):
-        _read = self._read_file()
-        self._set_dimensions(_read)
-        self._reset_file()
+        if self.obj.has_dimensions() == False:
+            _read = self._read_file()
+            self._set_dimensions(_read)
+            self._reset_file()
 
         super().save()

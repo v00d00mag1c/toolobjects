@@ -18,14 +18,14 @@ class ObjectMeta(Model):
 
     source: list[Source] = Field(default = [], repr = False)
 
-    created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
+    created_at: Optional[datetime] = Field(default=None)
     updated_at: Optional[datetime] = Field(default=None)
 
     # other fields
     geo: Optional[Geo] = Field(default = None) # Why?????? Why not
-    width: Optional[int] = Field(default = None)
-    height: Optional[int] = Field(default = None)
-    duration: Optional[int] = Field(default = None)
+    width: Optional[float] = Field(default = None)
+    height: Optional[float] = Field(default = None)
+    duration: Optional[float] = Field(default = None)
 
     def set_common_source(self, source: Source):
         source.is_common = True
@@ -39,3 +39,6 @@ class ObjectMeta(Model):
         for source in self.source:
             if source.is_common == True:
                 return source
+
+    def has_dimensions(self) -> bool:
+        return self.width != None

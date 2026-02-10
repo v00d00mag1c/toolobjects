@@ -44,7 +44,7 @@ class AuthLayer(Object):
             ),
             operator = '==',
             val2 = Value(
-                value = 'content'
+                value = token
             ),
         ))
 

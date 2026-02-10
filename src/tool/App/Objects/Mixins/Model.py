@@ -67,10 +67,6 @@ class Model(PydanticBaseModel):
         return cls.__name__
 
     @classmethod
-    def _getNameJoined(self):
-        return ".".join(self._getName())
-
-    @classmethod
     def _getClassNameJoined(cls, last_names_doubling: bool = False):
         '''
         _getClassName() but joined
@@ -92,8 +88,16 @@ class Model(PydanticBaseModel):
         return _parts
 
     @classmethod
+    def _getNameJoined(self):
+        return ".".join(self._getName())
+
+    @classmethod
     def _getClassNameJoined(cls) -> str:
         return cls.__module__
+
+    @classmethod
+    def is_same_name(cls, name: str) -> bool:
+        return cls._getNameJoined() == name
 
     @classmethod
     def _allowed_views(cls) -> list:

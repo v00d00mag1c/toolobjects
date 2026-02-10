@@ -429,7 +429,11 @@ class SQLAlchemy(ConnectionAdapter):
         return self._session
 
     def commit(self):
-        self.log('commit...')
+        _role = ['db.commit']
+        if self._storage_item.name == 'tmp':
+            _role.append('db.commit.to_tmp')
+
+        self.log('commit...', role = _role)
 
         self.getSession().commit()
 
