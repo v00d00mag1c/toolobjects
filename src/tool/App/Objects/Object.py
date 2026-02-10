@@ -9,7 +9,7 @@ from .Mixins.Submodulable import Submodulable
 from App.ACL.Limitable import Limitable
 from App.DB.DBInsertable import DBInsertable
 from typing import ClassVar
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import ConfigDict
 from App import app
 
 class Object(BaseModel, 

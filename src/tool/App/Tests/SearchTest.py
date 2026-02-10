@@ -1,5 +1,5 @@
 from App.Objects.Test import Test
-from Data.Random.GetRandomInt.GetRandomInt import Random
+from Data.Random.GetRandomInt import GetRandomInt
 from App.DB.Search import Search
 from App import app
 from App.DB.Adapters.Search.Condition import Condition
@@ -7,11 +7,11 @@ from App.DB.Adapters.Search.Sort import Sort
 
 class SearchTest(Test):
     async def implementation(self, i):
-        _storage = app.Storage.get('content')
+        _storage = app.Storage.get('common')
         '''
         _ids = list()
         for i in range(1, 100):
-            _item = await Random().execute({'min': i, 'max': i * 100})
+            _item = await GetRandomInt().execute({'min': i, 'max': i * 100})
             _item.first().flush(_storage)
 
             if i % 10 == 0:

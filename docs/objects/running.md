@@ -16,5 +16,5 @@ Example: getting RSS channel and updating it (tmp will reset anyway)
 > python tool.py -view App.Console.InteractiveView
 -i Media.RSS.GetFeed -url https://feeds.bbci.co.uk/news/world/rss.xml -force_flush 1 -save_to tmp
 -i App.DB.Search -storage tmp
--i App.Objects.Operations.ExecuteById -item {got uuid} -sift 1
+-i App.Objects.Operations.ExecuteById -item {got uuid} -is_update 1
 ```

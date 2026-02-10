@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
-from Data.RSS.ChannelImage import ChannelImage
-from Data.RSS.ChannelItem import ChannelItem
+from Media.RSS.ChannelImage import ChannelImage
+from Media.RSS.ChannelItem import ChannelItem
 from pydantic import Field
 from typing import Optional
 import xml

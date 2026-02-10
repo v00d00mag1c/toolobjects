@@ -47,6 +47,11 @@ class StorageUnit(Object):
     def getDir(self):
         return self.getUpper().joinpath(self.hash)
 
+    def get_url(self):
+        _storage = self.getDb()._adapter._storage_item
+
+        return '/storage/{0}/{1}/'.format(_storage.name, self.getDbId())
+
     def fromDir(self, common_path: Path, hash: str):
         self.hash = hash
         self._common_path = common_path

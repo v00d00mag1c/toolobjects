@@ -1,29 +1,28 @@
 from App.Objects.Executable import Executable
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Objects.Object import Object
-from App.Objects.Arguments.ListArgument import ListArgument
+from App.Objects.Arguments.Argument import Argument
 
 class Extractor(Executable):
     '''
-    Class that doesn't needs to return anything. It just appends got items to variable
+    Class that returns only ObjectsList
     '''
 
     @classmethod
     def _variables(cls):
         return [
-            ListArgument(
+            Argument(
                 name = 'items',
-                orig = Object,
-                default = []
+                default = ObjectsList(unsaveable = False)
             )
         ]
 
     def append(self, out: Object):
-        self.variables.get("items").append(out)
+        self.variables.get("items").current.append(out)
 
     async def implementation(self, i = {}) -> None:
         '''
-        not supposed to return something
+        Not supposed to return something.
         '''
 
         pass
@@ -33,4 +32,4 @@ class Extractor(Executable):
 
         await self.implementation(i)
 
-        return ObjectsList(items = self.variables.get("items").current)
+        return self.variables.get("items").current

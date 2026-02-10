@@ -7,9 +7,9 @@ class StorageTest(Test):
         for item in app.Storage.items:
             self.log(str(item.to_json()))
 
-        self.log('content db:' + str(app.Storage.get('content')))
-        self.log('content db dir: ' + str(app.Storage.get('content').getStorageDir()))
-        _unit = app.Storage.get('content').getStorageUnit()
+        self.log('content db:' + str(app.Storage.get('common')))
+        self.log('content db dir: ' + str(app.Storage.get('common').getStorageDir()))
+        _unit = app.Storage.get('common').getStorageUnit()
         __name = _unit.getDir().joinpath('tmp')
         __name_2 = _unit.getDir().joinpath('txt.txt')
         _file = open(__name, 'w', encoding='utf-8')

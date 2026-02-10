@@ -32,7 +32,7 @@ class DefaultExecutorWheel(Act):
             results = await _item.execute(i = i)
         else:
             _vals = i.getValues(exclude = app.app.view.getCompareKeys() + self.getCompareKeys() + ['auth'])
-            results = ObjectsList(items = [])
+            results = ObjectsList(items = [], unsaveable = False)
             _item = executable()
 
             # isinstance(executable, Executable wont work with cls (
@@ -52,7 +52,7 @@ class DefaultExecutorWheel(Act):
 
             results.append(_item)
 
-        if isinstance(results, ObjectsList):
+        if isinstance(results, ObjectsList) and results.should_be_saved() == True:
             save_to = i.get('save_to')
             if save_to != None and len(save_to) > 0:
                 _save = Save()
