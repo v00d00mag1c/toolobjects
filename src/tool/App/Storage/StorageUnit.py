@@ -26,7 +26,7 @@ class StorageUnit(Object):
             assert self.hasDb(), 'storage unit does not contains _common_path and db ref'
 
             _storage = self.getDb()._adapter._storage_item
-            
+
             return _storage.getStorageDir()
 
         return self._common_path
@@ -57,18 +57,21 @@ class StorageUnit(Object):
         self.common = str(file_path.relative_to(self.getDir()))
 
     def genFilesList(self) -> Generator[File]:
-        dirs = self.getDir()
-
         for file in self.getDir().rglob('*'):
             if file.is_file():
                 _item = File(
                     name = file.name,
                     ext = file.suffix[1:],
                     size = file.stat().st_size,
-                    path = str(file.relative_to(dirs)),
+                    path = str(self.getRelativePath(file)),
                 )
 
                 yield _item
+
+    def getRelativePath(self, path: Path):
+        dirs = self.getDir()
+
+        return path.relative_to(dirs)
 
     def flush_hook(self, into: Type): # StorageItem cant be annotated anywhere :(
         _upper = into.getStorageDir().joinpath(self.hash[0:2])
@@ -92,11 +95,13 @@ class StorageUnit(Object):
         _common_file = self.getCommonFile()
         if _common_file == None:
             _common_file = self.getFirstFile()
-
         if _common_file == None:
             return None
 
+        #_common_file.path = str(self.getRelativePath())
         _common_file.path = str(self.getDir())
+        _common_file.path_hidden = True
+
         return _common_file
 
     def guessName(self) -> str:

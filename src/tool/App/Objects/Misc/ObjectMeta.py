@@ -3,6 +3,7 @@ from App.Objects.Mixins.BaseModel import BaseModel
 from datetime import datetime
 from typing import Optional
 from .Source import Source
+from .Thumbnail import Thumbnail
 from .SavedVia import SavedVia
 
 class ObjectMeta(BaseModel):
@@ -23,7 +24,7 @@ class ObjectMeta(BaseModel):
     public: Optional[bool] = Field(default=False)
 
     source: list[Source] = Field(default = [], repr = False)
-    thumbnail: Optional[dict] = Field(default = None)
+    thumbnail: Optional[list[Thumbnail]] = Field(default = [])
 
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now())
     edited_at: Optional[datetime] = Field(default=None)
@@ -43,6 +44,9 @@ class ObjectMeta(BaseModel):
 
     def add_source(self, source: Source):
         self.source.append(source)
+
+    def add_thumbnail(self, thumb: Thumbnail):
+        self.thumbnail.append(thumb)
 
     def make_public(self):
         self.public = True

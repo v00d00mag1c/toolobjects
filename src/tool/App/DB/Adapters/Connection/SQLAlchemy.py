@@ -119,7 +119,7 @@ class SQLAlchemy(ConnectionAdapter):
                 self.owner = owner.uuid
                 self.target = link.item.getDbId()
                 if len(link.role) > 0:
-                    self.role = str(link.role)
+                    self.role = json.dumps(link.role)
 
                 link.setDb(self)
                 self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")

@@ -18,6 +18,17 @@ class FileType(Object):
         if self.storage_unit != None:
             return self.storage_unit.getStorageUnit().toFile()
 
+    def move(self, new: Object):
+        if new.file != None:
+            self.file = new.file
+
+        if new.storage_unit != None:
+            self.storage_unit = new.storage_unit
+
+    def set_insertion_name(self, name: str):
+        if self.storage_unit != None:
+            self.storage_unit.path = name
+
     def set_storage_unit(self, storage_unit: StorageUnit):
         if storage_unit.isIndexed() == False:
             storage_unit.save()

@@ -32,6 +32,11 @@ class Download(Extractor):
                 name = 'download',
                 default = True,
                 orig = Boolean
+            ),
+            Argument(
+                name = 'make_thumbnail',
+                default = True,
+                orig = Boolean
             )
         ])
 
@@ -53,6 +58,15 @@ class Download(Extractor):
             await item.start()
 
             image.set_storage_unit(_unit)
+
+            _read = image._read_file()
+            image._set_dimensions(_read)
+
+            if i.get('make_thumbnail') == True:
+                thumb = image._make_thumbnail(_read)
+
+                image.link(thumb.obj, role = ['thumbnail'])
+                image.obj.add_thumbnail(thumb)
 
         image.obj.make_public()
         image.obj.set_common_source(Source(
