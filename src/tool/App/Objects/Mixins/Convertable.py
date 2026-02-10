@@ -41,9 +41,10 @@ class Convertable(BaseModel):
                 for item in new:
                     yield item
 
-    def displayAs(self, as_type: str) -> str | Any:
+    def displayAs(self, as_type: str = 'str') -> str | Any:
+        # It would'nt work with JSComponentDisplayment (change later)
         for displayment_probaly in self.getDisplayments():
-            if as_type in displayment_probaly.role:
+            if as_type in displayment_probaly.display_type:
                 return displayment_probaly.value().implementation(i = {'orig': self})
 
     def displayAsString(self) -> str:

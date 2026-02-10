@@ -1,6 +1,6 @@
 from App.Objects.Object import Object
 from pydantic import Field
-from App.Objects.Displayment import Displayment
+from App.Objects.Displayments.StringDisplayment import StringDisplayment
 from App.Objects.Act import Act
 
 class String(Object):
@@ -20,7 +20,7 @@ class String(Object):
                 orig = i.get('orig')
                 return str(orig.value)
 
-        return [Displayment(
+        return [StringDisplayment(
             role = ['str'],
             value = DisplayAsString
         )]

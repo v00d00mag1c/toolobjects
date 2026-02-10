@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Objects.Displayment import Displayment
+from App.Objects.Displayments.StringDisplayment import StringDisplayment
 from App.Objects.Act import Act
 
 class Int(Object):
@@ -12,7 +12,7 @@ class Int(Object):
                 orig = i.get('orig')
                 return str(orig.value)
 
-        return [Displayment(
+        return [StringDisplayment(
             role = ['str'],
             value = DisplayAsString
         )]

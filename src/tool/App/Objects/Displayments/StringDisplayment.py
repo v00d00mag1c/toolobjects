@@ -1,12 +1,15 @@
-from App.Objects.Mixins.BaseModel import BaseModel
-from typing import Literal, Any
+from App.Objects.Displayments.Displayment import Displayment
+from pydantic import Field
+from typing import Any, ClassVar
 
-class Displayment(BaseModel):
+class StringDisplayment(Displayment):
     '''
     Class that display object some way
     '''
 
-    role: list[Literal['str', 'js'] | str] = []
+    display_type: ClassVar[str] = 'any'
+    role: list[str] = Field(default = [])
+
     value: str | Any = None # probaly module
 
     def implementation(self, i: dict) -> Any:

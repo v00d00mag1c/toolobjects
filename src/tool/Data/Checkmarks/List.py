@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Objects.Displayment import Displayment
+from App.Objects.Displayments.StringDisplayment import StringDisplayment
 from Data.Checkmarks.Checkmark import Checkmark
 from App.Objects.Act import Act
 from typing import Generator
@@ -27,7 +27,7 @@ class List(Object):
                 return _out
 
         return [
-            Displayment( 
+            StringDisplayment( 
                 role = ['str'],
                 value = DisplayAsString
             )

@@ -1,5 +1,5 @@
 from App.Objects.Object import Object
-from App.Objects.Displayment import Displayment
+from App.Objects.Displayments.StringDisplayment import StringDisplayment
 from App.Objects.Act import Act
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 from Data.String import String
@@ -23,7 +23,7 @@ class Checkmark(Object):
                 return _mark + " " + _i.get('label').get('value') + ' '
 
         return [
-            Displayment(
+            StringDisplayment(
                 role = ['str'],
                 value = DisplayAsString
             )]
