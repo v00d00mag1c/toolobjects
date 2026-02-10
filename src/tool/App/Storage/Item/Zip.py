@@ -45,8 +45,7 @@ class Zip(Act):
                 name = 'compression',
                 values = ['ZIP_DEFLATED', 'ZIP_STORED', 'ZIP_BZIP2', 'ZIP_LZMA'],
                 default = 'ZIP_DEFLATED',
-            ),
-
+            )
         ])
 
     async def _implementation(self, i):

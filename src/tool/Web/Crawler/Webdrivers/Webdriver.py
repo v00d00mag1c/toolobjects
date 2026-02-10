@@ -1,10 +1,10 @@
 from App.Objects.Object import Object
 from App.Objects.Relations.LinkInsertion import LinkInsertion
 from App.Storage.StorageUnit import StorageUnit
+from Web.HTTP.UserAgent import UserAgent
 from typing import ClassVar
 from pydantic import Field
 from abc import abstractmethod
-import ua_generator
 
 class Webdriver(Object):
     webdriver_name: ClassVar[str] = 'none'
@@ -18,6 +18,6 @@ class Webdriver(Object):
     def get_useragent(self) -> str:
         _passed = self.getOption('web.crawler.user_agent')
         if _passed == None:
-            return ua_generator.generate(device='desktop', browser=['chrome', 'edge']).text
+            return UserAgent.generate()
 
         return _passed

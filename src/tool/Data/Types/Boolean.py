@@ -1,7 +1,7 @@
-from App.Objects.Object import Object
+from App.Objects.Misc.Valueable import Valueable
 from pydantic import Field
 
-class Boolean(Object):
+class Boolean(Valueable):
     value: bool = Field()
 
     @classmethod

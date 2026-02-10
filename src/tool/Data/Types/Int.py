@@ -1,7 +1,7 @@
-from App.Objects.Object import Object
+from App.Objects.Misc.Valueable import Valueable
 from App.Objects.Act import Act
 
-class Int(Object):
+class Int(Valueable):
     # It should be named "Integer"
     value: int = None
 

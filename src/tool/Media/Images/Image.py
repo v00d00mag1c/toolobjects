@@ -1,10 +1,22 @@
 from Media.Media import Media
 from App.Objects.Requirements.Requirement import Requirement
 from App.Objects.Misc.Thumbnail import Thumbnail
+from App.Objects.Relations.Submodule import Submodule
 from pathlib import Path
 
 class Image(Media):
     _img = None
+
+    @classmethod
+    def _submodules(cls) -> list:
+        from Media.Images.Download import Download
+
+        return [
+            Submodule(
+                item = Download,
+                role = ['media_method']
+            )
+        ]
 
     @classmethod
     def _requirements(cls):

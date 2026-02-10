@@ -18,26 +18,28 @@ class Wheel(Executable):
 
         return itms
 
-    async def implementation_wrap(self, i) -> Response:
-        '''
-        Overrides the default Executable.Execute "implementation_wrap()" and allows for automatic extractor choosing
-        You shouldn't override this. it's better to create single extractor
-        '''
+    async def _implementation(self, i) -> Response:
+        extract = self._get_submodule(i)
+        if extract == None:
+            self.log("Suitable submodule not found, calling _not_found_implementation()")
 
-        _submodule = self._wheel(i)
-        if _submodule == None:
-            self.log("Suitable submodule not found, calling _implementation()")
-
-            return await self._implementation(i)
-
-        self.log(f"Using submodule: {_submodule._getClassNameJoined()}", section = ['Execute'])
-
-        extract = _submodule.item()
+            return await self._not_found_implementation(i)
 
         return await extract.execute(i)
 
-    async def _implementation(self, i):
+    async def _not_found_implementation(self, i):
         raise AssertionError("can't find suitable submodule")
+
+    def _get_submodule(self, i):
+        _submodule = self._wheel(i)
+        if _submodule == None:
+            return None
+
+        extract = _submodule.item()
+
+        self.log(f"Using submodule: {extract._getClassNameJoined()}", section = ['Execute'])
+
+        return extract
 
     def _wheel(self, i):
         modules = []
@@ -49,7 +51,7 @@ class Wheel(Executable):
 
         _submodule = self.__class__.compareAndGetFirstSuitableSubmodule(modules, i)
         if _submodule != None:
-            return _submodule.item()
+            return _submodule
 
     @classmethod
     def compareAndGetFirstSuitableSubmodule(cls, items: list, values: dict):
@@ -57,15 +59,15 @@ class Wheel(Executable):
         Iterates got submodules (internal, role=wheel), calling comparer with each submodule, and if at least one (common?) arg is presented in dict, returning it
         '''
 
+        _vals = list()
+
+        max_index, max_value = 0, 0
         for item in items:
-            decl = ArgumentValues(compare = item.item.getArguments(), values = values)
-            if decl.diff():
-                return item
+            decl = ArgumentValues(compare = item.item.getArguments(), values = values.getValues())
+            _vals.append(decl.diff())
 
-        return None
+        for id, item in enumerate(_vals):
+            if item > max_value:
+                max_index, max_value = id, item
 
-    def _getOptimalStrategy(self):
-        '''
-        i dont rememba what strategy is
-        '''
-        pass
+        return items[max_index]

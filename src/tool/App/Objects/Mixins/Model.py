@@ -15,7 +15,8 @@ class Model(PydanticBaseModel):
         'internal_fields': ['meta', 'saved_via', 'links', 'db_info'],
         'only_class_fields': False,
         'exclude_none': False,
-        'exclude_defaults': False
+        'exclude_defaults': False,
+        'by_alias': False
     }
 
     # we can't use __init__ because of fields initialization, so we creating second constructor
@@ -148,6 +149,7 @@ class Model(PydanticBaseModel):
         Model._dump_options['only_class_fields'] = only_class_fields
         Model._dump_options['exclude_none'] = exclude_none
         Model._dump_options['exclude_defaults'] = exclude_defaults
+        Model._dump_options['by_alias'] = by_alias
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none,
@@ -207,6 +209,15 @@ class Model(PydanticBaseModel):
                 _field_names = self.__class__.__annotations__
 
             for field_name in _field_names:
+                field_name_key = field_name
+
+                # Getting alias
+
+                if field_name in self.__class__.model_fields:
+                    _val_key = self.__class__.model_fields.get(field_name)
+
+                    if getattr(_val_key, 'alias', None) != None and Model._dump_options.get('by_alias') == True:
+                        field_name_key = _val_key.alias
                 try:
                     if Model._dump_options['excludes'] != None and field_name in Model._dump_options['excludes']:
                         continue
@@ -215,20 +226,22 @@ class Model(PydanticBaseModel):
                         continue
 
                     value = getattr(self, field_name)
+                    _field_name = None
+                    _res = None
 
                     if isinstance(value, LinkInsertion):
                         value.setDb(self.getDb())
                         if Model._dump_options['convert_links'] == True:
-                            result[field_name] = value.unwrap()
+                            _res = value.unwrap()
                         else:
-                            result[field_name] = value
+                            _res = value
                     elif (isinstance(value, list) and value and isinstance(value[0], LinkInsertion)):
-                        result[field_name] = []
+                        _res = []
                         for item in value:
                             item.setDb(self.getDb())
 
                             if Model._dump_options['convert_links'] == True:
-                                result.get('field_name').append(item.unwrap())
+                                _res.append(item.unwrap())
                     else:
                         _val = self._serializer(field_name, value)
                         if _val == None and self._dump_options.get('exclude_none') == True:
@@ -241,10 +254,11 @@ class Model(PydanticBaseModel):
                         if hasattr(_val, 'setDb') and hasattr(self, 'setDb'):
                             _val.setDb(self.getDb())
 
-                        result[field_name] = _val
+                        _res = _val
                 except Exception as e:
                     self.log_error(e, exception_prefix = 'Can\'t include field {0}'.format(field_name))
 
+                result[field_name_key] = _res
             if Model._dump_options['include_extra'] == True and self.model_extra != None:
                 for key, val in self.model_extra.items():
                     try:

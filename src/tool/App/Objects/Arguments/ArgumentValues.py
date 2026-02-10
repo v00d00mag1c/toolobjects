@@ -96,13 +96,11 @@ class ArgumentValues(Object):
 
     def diff(self):
         diff_value = 0
-
         for item_name in self.compare.toNames():
             if self.values.get(item_name) != None:
-                #diff_value += 1
-                return True
+                diff_value += 1
 
-        return False
+        return diff_value
 
     def getValues(self, exclude: list[str] = list()) -> dict:
         vals = dict()

@@ -33,11 +33,6 @@ class Download(Extractor):
                 name = 'download',
                 default = True,
                 orig = Boolean
-            ),
-            Argument(
-                name = 'make_thumbnail',
-                default = False,
-                orig = Boolean
             )
         ])
 
