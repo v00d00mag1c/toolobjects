@@ -7,14 +7,15 @@ class BaseModel(PydanticBaseModel):
     '''
     Pydantic BaseModel with some functions
     '''
+    _unserializable: ClassVar[list[str]] = ['_only_class_fields', '_exclude_none', '_convert_links', '_include_extra', '_excludes', '_internal_fields', '_unserializable']
 
-    # Workaround to add model_serializer (that is in Linkable) check
+    # TODO remove
     _convert_links: ClassVar[bool] = False
     _include_extra: ClassVar[bool] = True
     _excludes: ClassVar[list[str]] = None
     _internal_fields: ClassVar[list[str]] = ['meta', 'saved_via', 'links', 'db_info']
-    _unserializable: ClassVar[list[str]] = ['_only_class_fields', '_convert_links', '_include_extra', '_excludes', '_internal_fields', '_unserializable']
-    _only_class_fields: bool = False
+    _only_class_fields: ClassVar[bool] = False
+    _exclude_none: ClassVar[bool] = False
 
     @computed_field
     @property
@@ -59,11 +60,11 @@ class BaseModel(PydanticBaseModel):
         for item in exclude:
             excludes.append(item)
 
-        BaseModel._convert_links = False
         BaseModel._include_extra = include_extra
         BaseModel._excludes = excludes
         BaseModel._convert_links = convert_links == 'unwrap'
         BaseModel._only_class_fields = only_class_fields
+        BaseModel._exclude_none = exclude_none
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none,
@@ -188,7 +189,11 @@ class BaseModel(PydanticBaseModel):
                     if BaseModel._convert_links == True:
                         result.get('field_name').append(item.unwrap())
             else:
-                result[field_name] = self._serializer(value)
+                _val = self._serializer(value)
+                if _val == None and self._exclude_none == True:
+                    continue
+
+                result[field_name] = _val
 
         if BaseModel._include_extra == True and self.model_extra != None:
             for key, val in self.model_extra.items():

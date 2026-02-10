@@ -40,7 +40,6 @@ class GetFeed(Extractor):
         for channel in root.findall('.//channel'):
             _channel = Channel.fromElement(channel)
             channels.append(_channel)
-            self.channel = _channel
 
             for channel_item in channel.findall('.//item'):
                 item = ChannelItem.fromElement(channel_item)
@@ -50,8 +49,9 @@ class GetFeed(Extractor):
                 # _channel.link(item)
                 self.append(item)
 
-            _link = self.link(_channel)
-            self.channel = _link.toInsert()
+            if self.channel == None:
+                _link = self.link(_channel)
+                self.channel = _link.toInsert()
 
     async def update(self, old: Self, response: ObjectsList) -> ObjectsList:
         _new = ObjectsList()
