@@ -1,13 +1,14 @@
 from App.Objects.Test import Test
 from Data.Text import Text
 from App.Storage.StorageUnit import StorageUnit
+from App.Storage.StorageItem import StorageItem
 from Data.JSON import JSON
 from App import app
 from App.Responses.ObjectsList import ObjectsList
 
 class ContentLinksTest(Test):
     async def implementation(self, i):
-        _storage = app.Storage.get('tmp')
+        _storage: StorageItem = app.Storage.get('tmp')
 
         _text = Text(text = '7777')
         _another_obj = _storage.getStorageUnit()
@@ -21,7 +22,10 @@ class ContentLinksTest(Test):
         _got_link = _text.link(_another_obj)
         #_another_text.link(_text) pydantic protects us from recursion
 
-        _text.text = _got_link.toInsert(["text"])
+        _another_obj.flush(_storage)
+        self.log_raw(_got_link)
+        self.log_raw(_got_link.item)
+        _text.text = _got_link.toInsert([])
 
         #_json = JSON(data = _text.to_json())
         #_json_no_links = JSON(data = _text.to_json(convert_links = False))
@@ -33,7 +37,7 @@ class ContentLinksTest(Test):
 
         self.log_success('trying to flush this into db')
 
-        _item = _storage.adapter.flush(_text)
+        _item = _text.flush(_storage)
 
         self.log_error('returning object')
 

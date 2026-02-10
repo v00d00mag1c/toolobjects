@@ -11,6 +11,6 @@ class FlushWithLinksTest(Test):
 
         self.log('flushingg to dbb')
         _storage = app.Storage.get('content')
-        _item = _storage.adapter.flush(lnk)
+        _item = lnk.flush(_storage)
 
-        print(lnk.getLinkedItems())
+        self.log_raw(lnk.getLinkedItems())

@@ -15,4 +15,6 @@ class ExportTest(Test):
         _links = await ContentLinksTest().execute({})
 
         for item in _links.getItems():
-            new_storage.adapter.flush(item)
+            item.flush(new_storage)
+
+            self.log_raw(item)

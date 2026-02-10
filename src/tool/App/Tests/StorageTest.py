@@ -22,6 +22,6 @@ class StorageTest(Test):
         _file2.close()
 
         _unit.setCommonFile(__name)
-        _unit.files = _unit.genFilesList()
+        _unit.files = list(_unit.genFilesList())
 
         self.log_raw(_unit)

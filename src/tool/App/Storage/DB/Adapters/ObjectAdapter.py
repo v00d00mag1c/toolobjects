@@ -10,7 +10,7 @@ class ObjectAdapter():
     must contain uuid and content
     '''
 
-    _connection: Any = None
+    _adapter: Any = None
 
     def getById(self, id: int):
         pass

@@ -46,13 +46,15 @@ class SQLAlchemyAdapter(ConnectionAdapter):
 
             class Link(ObjectLinkAdapter, Base):
                 __tablename__ = 'links'
+                _adapter = self_adapter
+
                 uuid = Column(Integer(), primary_key=True)
                 owner = Column(Integer())
                 target = Column(Integer())
                 role = Column(String(), nullable = True)
 
                 def getTarget(self):
-                    return ObjectAdapter.getById(self.target)
+                    return _ObjectAdapter.getById(self.target)
 
                 @classmethod
                 def getById(cls, id: int):

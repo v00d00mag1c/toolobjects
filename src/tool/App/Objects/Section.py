@@ -45,7 +45,7 @@ class Section:
             self.log_raw("logger error; ", args[0])
 
     def log(self, *args, **kwargs):
-        return self.log_shortcut(*args, _role=['message'], **kwargs)
+        return self.log_shortcut(*args, **kwargs)
 
     def log_error(self, *args, **kwargs):
         return self.log_shortcut(*args, _role=['error'], **kwargs)
@@ -54,6 +54,10 @@ class Section:
         return self.log_shortcut(*args, _role=['success'], **kwargs)
 
     def log_raw(self, anything: str):
+        '''
+        Just an alias for "print()". XD!!!!!!!!!
+        Everything (except ObjectAdapters) is an objects, so this function will be available everywhere.
+        '''
         print(anything)
 
     def fatal(self, exception):

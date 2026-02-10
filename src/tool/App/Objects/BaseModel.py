@@ -1,6 +1,6 @@
 from pydantic import BaseModel as PydanticBaseModel, computed_field, model_serializer
 from App.Objects.LinkInsertion import LinkInsertion
-from typing import Literal
+from typing import Literal, ClassVar
 
 class BaseModel(PydanticBaseModel):
     '''
@@ -8,9 +8,9 @@ class BaseModel(PydanticBaseModel):
     '''
 
     # Workaround to add model_serializer (that is in Linkable) check
-    _convert_links: bool = False
-    _include_extra: bool = True
-    _excludes: list[str] = None
+    _convert_links: ClassVar[bool] = False
+    _include_extra: ClassVar[bool] = True
+    _excludes: ClassVar[list[str]] = None
 
     @computed_field
     @property
@@ -29,7 +29,7 @@ class BaseModel(PydanticBaseModel):
 
     def to_json(self, 
                 convert_links: Literal['unwrap', 'none'] = 'none', 
-                exclude_internal: bool = True,
+                exclude_internal: bool = False,
                 exclude_none: bool = False,
                 exclude: list[str] = [],
                 include_extra: bool = True):
@@ -37,6 +37,12 @@ class BaseModel(PydanticBaseModel):
         convert_links: replace LinkInsertions with their "unwrap()" function results
 
         exclude_internal: exclude fields from "self._internal_fields"
+
+        exclude_none: exclude None values
+
+        exclude: list with excluded fields
+
+        include_extra: include "model_computed_fields"
         '''
 
         excludes = []
@@ -47,11 +53,10 @@ class BaseModel(PydanticBaseModel):
         for item in exclude:
             excludes.append(item)
 
-        self._convert_links = False
-        self._include_extra = include_extra
-        self._excludes = excludes
-        if convert_links == 'unwrap':
-            self._convert_links = True
+        self.__class__._convert_links = False
+        self.__class__._include_extra = include_extra
+        self.__class__._excludes = excludes
+        self.__class__._convert_links = convert_links == 'unwrap'
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none)
@@ -131,14 +136,14 @@ class BaseModel(PydanticBaseModel):
             _field_names.append(field_name)
 
         for field_name in _field_names:
-            if field_name in self._excludes:
+            if self.__class__._excludes != None and field_name in self.__class__._excludes:
                 continue
 
             value = getattr(self, field_name)
 
             if isinstance(value, LinkInsertion):
                 value.setDb(self.getDb())
-                if self._convert_links == True:
+                if self.__class__._convert_links == True:
                     result[field_name] = value.unwrap()
                 else:
                     result[field_name] = value
@@ -147,12 +152,12 @@ class BaseModel(PydanticBaseModel):
                 for item in value:
                     item.setDb(self.getDb())
 
-                    if self._convert_links == True:
+                    if self.__class__._convert_links == True:
                         result.get('field_name').append(item.unwrap())
             else:
                 result[field_name] = value
 
-        if self._include_extra == True:
+        if self.__class__._include_extra == True:
             for key, val in self.model_extra.items():
                 result[key] = val
 

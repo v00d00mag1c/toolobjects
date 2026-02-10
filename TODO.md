@@ -1,4 +1,5 @@
-- [ ] documentation
+core:
+
 - [x] Object
 - [x] App
 - [x] Objects list
@@ -23,6 +24,11 @@
 - [x] ~~App.Executables.Call list~~ List of running executables
 - [x] flushed object: allow to override name (ObjectMeta.object_names)
 - [x] ~~add collections?~~ allow to override getLinks
+- [x] Configurable: role of the argument 'env' or 'config'
+- [x] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
+
+db and storage:
+
 - [x] get rid of saveable
 - [x] Executable.common_object: move to submodule with common name
 - [x] declare requirements that module uses
@@ -32,8 +38,6 @@
 - [x] db flush: when loading from db save the link to db's item and add sync between them
 - [x] objects list: split to Namespace, allow to add another object lists
 - [x] arguments strangely passes to executable
-- [x] daemon, App.Daemons.StartDaemon, implementation_cycle() (?)
-- [x] Configurable: role of the argument 'env' or 'config'
 - [x] extra fields are not saving
 - [ ] db flush: export between dbs
 - [ ] objectlist adapter
@@ -41,6 +45,16 @@
 - [x] VirtualPath
 - [ ] VirtualPath pagination (adapter pagination also)
 - [ ] DisplayType (?) submodule=displayment
+- [ ] Web.DownloadManager.Manager
+- [ ] storageunit generates hash randomly but maybe hash the common file?
+- [ ] storageunit flush_hook and getCommonDir(): pathlib parts are duplicated and its better to move to HashDir class
+
+auth:
+
+- [ ] App.ACL.Auth ?
+
+modules:
+
 - [x] Data.XML
 - [x] Files.FileManager.Navigate
 - [ ] File.FileTypes.Image
@@ -48,10 +62,20 @@
 - [ ] App.Config.Get
 - [ ] App.Logger.List
 - [ ] App.Logger.GetFile
-- [ ] App.ACL.Auth ?
 - [ ] Web.RSS.GetFeed
-- [ ] Web.DownloadManager.Manager
 - [ ] Data.Text
+- [ ] Abstract.TODO or Abstract.Checkmarks
+
+documentation:
+
+- [ ] objects
+- [ ] objects loading
+- [ ] link
+
+web:
+
+- [ ] main blocks
+- [ ] displaytype=js_module
 
 others:
 

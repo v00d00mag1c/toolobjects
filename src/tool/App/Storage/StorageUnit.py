@@ -2,6 +2,8 @@ from App.Objects.Object import Object
 from Files.File import File
 from pydantic import Field
 from pathlib import Path
+from typing import Type, Generator
+import shutil
 
 class StorageUnit(Object):
     '''
@@ -19,8 +21,18 @@ class StorageUnit(Object):
         self.getUpper().mkdir(exist_ok=True)
         self.getDir().mkdir(exist_ok=True)
 
+    def getCommonPath(self):
+        if self._common_path == None:
+            assert self.hasDb(), 'storage unit does not contains _common_path and db ref'
+
+            _storage = self.getDb()._adapter._storage_item
+            
+            return _storage.getStorageDir()
+
+        return self._common_path
+
     def getUpper(self):
-        return Path(self._common_path).joinpath(self.hash[0:2])
+        return Path(self.getCommonPath()).joinpath(self.hash[0:2])
 
     def getDir(self):
         return self.getUpper().joinpath(self.hash)
@@ -38,8 +50,7 @@ class StorageUnit(Object):
         self.ext = file_path.suffix[1:]
         self.common = str(file_path.relative_to(self.getDir()))
 
-    def genFilesList(self):
-        lists = []
+    def genFilesList(self) -> Generator[File]:
         dirs = self.getDir()
 
         for file in self.getDir().rglob('*'):
@@ -50,6 +61,22 @@ class StorageUnit(Object):
                     size = file.stat().st_size,
                     path = str(file.relative_to(dirs)),
                 )
-                lists.append(_item)
 
-        return lists
+                yield _item
+
+    def flush_hook(self, into: Type): # StorageItem cant be annotated anywhere :(
+        _upper = into.getStorageDir().joinpath(self.hash[0:2])
+        _upper.mkdir(exist_ok = True)
+        _hash = _upper.joinpath(self.hash)
+        _hash.mkdir(exist_ok = True)
+
+        try:
+            self.copySelf(_hash)
+        except AssertionError:
+            pass
+
+    def copySelf(self, new_path: Path):
+        assert str(self.getDir()) != str(new_path), 'its already here'
+
+        shutil.copytree(str(self.getDir()), str(new_path), dirs_exist_ok = True)
+        self.log(f"copied storageunit from {str(self.getDir())} to {str(new_path)}")
