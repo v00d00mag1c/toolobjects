@@ -75,8 +75,12 @@ class SQLAlchemy(ConnectionAdapter):
                 return _ObjectAdapter.getById(self.target)
 
             @classmethod
-            def getById(cls, id: int):
-                return _session.query(cls).filter(cls.uuid == id).first()
+            def getQuery(cls):
+                _query = self_adapter.QueryAdapter()
+                _query._model = cls
+                _query._query = _session.query(cls)
+
+                return _query
 
             def toDB(self, owner, link: CommonLink):
                 assert link.item.hasDb(), 'link item is not flushed.'
@@ -116,6 +120,14 @@ class SQLAlchemy(ConnectionAdapter):
                 for link in links:
                     yield link.getLink()
 
+            @classmethod
+            def getQuery(cls):
+                _query = self_adapter.QueryAdapter()
+                _query._model = cls
+                _query._query = _session.query(cls)
+
+                return _query
+
             def addLink(self, link: CommonLink):
                 _link = _LinkAdapter()
                 _link.toDB(self, link)
@@ -125,22 +137,6 @@ class SQLAlchemy(ConnectionAdapter):
 
             def removeLink(self, link: CommonLink):
                 pass
-
-            @classmethod
-            def getById(cls, uuid: int):
-                return cls.getQuery().addCondition(Condition(
-                    val1 = 'uuid',
-                    operator = '==',
-                    val2 = uuid
-                )).first()
-
-            @classmethod
-            def getQuery(cls):
-                _query = self_adapter.QueryAdapter()
-                _query._model = cls
-                _query._query = _session.query(cls)
-
-                return _query
 
         # Automatically sets snowflake id
         @event.listens_for(_ObjectAdapter, 'before_insert', propagate=True)

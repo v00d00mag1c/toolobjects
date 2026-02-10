@@ -43,20 +43,21 @@ db and storage:
 - [x] arguments strangely passes to executable
 - [x] extra fields are not saving
 - [x] db flush: export between dbs
+- [x] argument: default env val
+- [x] VirtualPath
+- [x] DisplayType (?) submodule=displayment
+- [x] App.Storage.DB.Search
 - [ ] App.Storage.Movement.ExportAsZip, App.Storage.Movement.ImportZip
 - [ ] App.Storage.Movement.ExportAsFiles
 - [ ] objectlist adapter
-- [x] argument: default env val
-- [x] VirtualPath
-- [ ] VirtualPath pagination (adapter pagination also)
-- [ ] App.Object.Paginable
-- [x] DisplayType (?) submodule=displayment
+- [ ] link after save
+- [ ] search in linked
 - [ ] Web.DownloadManager.Manager
 - [ ] storageunit generates hash randomly but maybe hash the common file?
 - [ ] storageunit flush_hook and getCommonDir(): pathlib parts are duplicated and its better to move to HashDir class
 - [ ] links order
-- [ ] link with parent=None to link to the db)))
-- [x] App.Storage.DB.Search
+- [ ] link with parent=None to link to the db
+- [ ] VirtualPath pagination (adapter pagination also)
 
 auth:
 
@@ -102,3 +103,4 @@ others:
 - [ ] Example: App.Storage.Movement.Import. mount_name is None by default, and if its not, its sets that the name from last part. and maybe its better to set default as lambda function?
 - [ ] App.Storage.Movement.Save and App.Storage.Movement.Export are the same
 - [ ] App.Objects.Displayment and App.Objects.View are similar
+- [ ] App.Object.Paginable

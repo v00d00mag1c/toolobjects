@@ -20,7 +20,7 @@ class Linkable(BaseModel):
         )
         return self.addLink(_link)
 
-    def unlink(self, item: Link, type: int) -> None:
+    def unlink(self, item: Link) -> None:
         pass
 
     def addLink(self, link: Link) -> Link:

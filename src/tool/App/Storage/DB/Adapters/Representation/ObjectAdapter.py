@@ -11,11 +11,6 @@ import json
 class ObjectAdapter(AbstractAdapter):
     content: str = None # Encoded json
 
-    @classmethod
-    @abstractmethod
-    def getQuery(self):
-        ...
-
     @abstractmethod
     def flush_content(self, item: Object):
         ...
