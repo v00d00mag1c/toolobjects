@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "orgtool"
 version = "0.0.1"
-dependencies  = ["pydantic", "asyncio==3.4.3", "aiohttp==3.11.12", "pymysql", "snowflake-id", "requests==2.32.3", "urllib3==2.2.3", "idna==3.10", "certifi==2024.8.30", "xmltodict", "pycryptodomex", "colorama", "json5==0.10.0", "Brotli==1.1.0", "charset-normalizer==3.3.2"]
+dependencies  = ["pydantic", "sqlalchemy=2.0.44", "asyncio==3.4.3", "aiohttp==3.11.12", "pymysql", "snowflake-id", "requests==2.32.3", "urllib3==2.2.3", "idna==3.10", "certifi==2024.8.30", "xmltodict", "pycryptodomex", "colorama", "json5==0.10.0", "Brotli==1.1.0", "charset-normalizer==3.3.2"]
 
 [tool.setuptools]
 package-dir = {"" = "tool"}

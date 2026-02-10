@@ -22,7 +22,10 @@ class Storage(Object):
 
         default_items = [
             StorageItem(
-                name = 'content'
+                name = 'content',
+                db = {
+                    'protocol': 'sqlite'
+                }
             ),
             StorageItem(
                 name = 'tmp'

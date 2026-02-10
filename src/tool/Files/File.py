@@ -23,19 +23,19 @@ class File(Object):
         from Files.Dir import Dir
         from Files.FileTypes.FileType import FileType
 
-        item = None
+        item = FileType()
         if path.is_dir() == True:
-            item = Dir(
+            item.file = Dir(
                 path = str(path)
             )
         else:
-            item = File(
+            item.file = File(
                 path = str(path)
             )
 
-        item.countStats()
+        item.file.countStats()
 
-        return FileType(file = item)
+        return item
 
     def getParent(self):
         _upper = Path(self.path)

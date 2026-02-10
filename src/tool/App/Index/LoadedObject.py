@@ -80,7 +80,7 @@ class LoadedObject(Object):
             #common_object.triggerHooks('loaded')
 
             if app.Config != None:
-                # or getAllSettings
+                # if config already exists (we loading it firstly), getting settings of the object (probaly getAllSettings needed here) and appendig to global config
                 _settings = common_object.getSettings()
                 if _settings != None:
                     for item in _settings:

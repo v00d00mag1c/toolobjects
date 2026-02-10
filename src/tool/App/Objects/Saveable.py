@@ -2,7 +2,7 @@ from pydantic import Field
 from datetime import datetime
 from pydantic import BaseModel as PydanticBaseModel
 from .Object import Object
-from .Saved import Saved
+from .SavedVia import SavedVia
 from .Source import Source
 from .ObjectMeta import ObjectMeta
 from .Linkable import Linkable
@@ -33,7 +33,7 @@ class Saveable(Object, Linkable, AllowExtraFields):
     '''
     source: Source = Field(default = Source())
     object_meta: ObjectMeta = Field(default = ObjectMeta())
-    saved: Saved = Field(default = Saved())
+    saved_via: SavedVia = Field(default = SavedVia())
 
     # set by user
     display_name: str = Field(default=None)

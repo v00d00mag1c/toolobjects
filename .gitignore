@@ -5,6 +5,7 @@ dist/
 build/
 env/
 venv/
+src/tool/Custom*
 src/venv/
 storage/*
 src/storage/*

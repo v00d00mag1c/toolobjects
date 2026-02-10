@@ -1,5 +1,6 @@
 from App.Objects.Object import Object
 from App.Storage.StorageUnit import StorageUnit
+from App.DB.DBConnection import DBConnection
 from pydantic import Field
 from pathlib import Path
 from App import app
@@ -18,6 +19,7 @@ class StorageItem(Object):
     name: str = Field()
     display_name: str = Field(default = None)
     directory: str = Field(default = None)
+    db: DBConnection = Field(default = None)
     _path: str = None
     _storage_dir_name = 'storage'
 
