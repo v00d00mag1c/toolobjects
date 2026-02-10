@@ -35,6 +35,22 @@ class QueueTest(Test):
                         "direct_value": "#0.models.0.number"
                     }
                 }
+            },
+            {
+                "predicate": "App.Data.ObjectToSaveable.ObjectToSaveable",
+                "arguments": {
+                    "object": {
+                        "direct_value": "#0"
+                    }
+                }
+            },
+            {
+                "predicate": "App.DB.Flush.Flush",
+                "arguments": {
+                    "object": {
+                        "direct_value": "#2"
+                    }
+                }
             }]''',
             'output': '''
             [{
@@ -44,6 +60,17 @@ class QueueTest(Test):
             '''
         })
         '''
+            {
+                "name": "Web.URL.URL",
+                "arguments": {
+                    "url": {
+                        "value": "",
+                        "replacements": [{
+                            "position": (36, 37),
+                            "value": "#0.current"
+                        }
+                }
+            }
                     {
                 "predicate": "Web.URL.URL",
                 "arguments": {

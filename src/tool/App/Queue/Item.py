@@ -51,10 +51,10 @@ class Item(Object):
         if 'direct_value' in val:
             vals = LinkValue(value = val.get('direct_value'))
 
-            return vals.toLink(self._queue.prestart, self._queue.items)
+            return vals.toString(self._queue.prestart, self._queue.items)
 
         if 'replacements' in val:
-            vals = ValueWithReplaces(value = val)
+            vals = ValueWithReplaces(**val)
 
             return vals.toString()
 

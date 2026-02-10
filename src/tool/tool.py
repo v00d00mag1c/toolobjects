@@ -1,8 +1,12 @@
 # Initialization file
 
 from App.App import App
+from App.Views.View import View
 
 current = App()
+tmp_view = View(app = current)
+tmp_view.setAsCommon()
+
 current._constructor()
 current.load_plugins(current.cwd)
 

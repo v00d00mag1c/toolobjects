@@ -4,7 +4,7 @@ from pydantic import Field
 class LinkValue(Object):
     value: str = Field()
 
-    def toLink(self, prestart: dict, items: list):
+    def toString(self, prestart: dict, items: list):
         _items: list[str] = self.value.split(".")
         applied_parts: list = []
 

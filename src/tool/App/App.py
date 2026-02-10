@@ -12,6 +12,7 @@ class App(Object):
     argv: dict = None
     cwd: str = None
     src: str = None
+    storage: str = None
     loop: Any = None
     objects: ObjectsList = None
 
@@ -19,6 +20,8 @@ class App(Object):
         self.argv = self._parse_argv(sys.argv)
         self.cwd = Path(os.getcwd())
         self.src = self.cwd.parent
+        self.storage = self.src.joinpath('storage')
+        self.storage.mkdir(exist_ok = True)
         self.loop = asyncio.get_event_loop()
 
     def _parse_argv(self, args):

@@ -38,9 +38,6 @@ class _Wrap:
         if self._view == None:
             raise ViewNotLoadedYetError('view was not set yet')
 
-        if name == "settings":
-            return self._view.app.settings
-
         return getattr(self._view, name, None)
 
 app = _Wrap()

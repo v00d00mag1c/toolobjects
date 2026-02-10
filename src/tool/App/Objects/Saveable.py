@@ -2,7 +2,9 @@ from pydantic import Field
 from datetime import datetime
 from pydantic import BaseModel as PydanticBaseModel
 from .Object import Object
+from .Saved import Saved
 from .Source import Source
+from .ObjectMeta import ObjectMeta
 from typing import ClassVar
 
 class Saveable(Object):
@@ -18,18 +20,6 @@ class Saveable(Object):
 
     self_name: ClassVar[str] = 'Saveable'
 
-    class Outer(PydanticBaseModel):
-        '''
-        Additional data about object
-        '''
-        thumbnail: dict = Field(default = None)
-        duration: int = Field(default = None)
-
-    class Saved(PydanticBaseModel):
-        name: str = Field(default = None)
-        method: str = Field(default = None)
-        call: int = Field(default = None)
-
     display_name: str = Field(default=None)
     original_name: str = Field(default=None)
     display_description: str = Field(default=None)
@@ -44,7 +34,7 @@ class Saveable(Object):
     If you want to extend these fields, extend them as internal classes and annotate again
     '''
     source: Source = Field(default = Source())
-    outer: Outer = Field(default = Outer())
+    object_meta: ObjectMeta = Field(default = ObjectMeta())
     saved: Saved = Field(default = Saved())
 
     collection: bool = Field(default=False)
@@ -54,10 +44,4 @@ class Saveable(Object):
         '''
         TODO: return all fields except those listed above
         '''
-        pass
-
-    def toContentUnit(self):
-        pass
-
-    def fromContentUnit(self):
         pass

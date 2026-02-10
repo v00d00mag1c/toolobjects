@@ -5,11 +5,17 @@
 - [x] Arguments
 - [x] ArgumentsDict
 - [ ] hooks need to be refactored (its impossible to debug this)
-- [ ] submodules
 - [ ] switchextractor
-- [ ] db flushing
 - [x] queue
-- [ ] storage
-- [ ] storageunit
-- [ ] config
-- [ ] queue keys with replace
+- [ ] queue: repeat
+- [ ] App.DB.Flush
+- [ ] App.Storage.ObjectsStorage
+- [ ] App.Storage.StorageUnit
+- [ ] App.Storage.StorageUnitStorage
+- [ ] App.Objects.Client
+- [ ] App.Objects.Submodules
+- [ ] App.Objects.Linkable
+- [x] App.Config.Config
+- [ ] App.Queue.ValueWithReplaces
+- [ ] Data.Text
+- [ ] App.Console.PrintLog

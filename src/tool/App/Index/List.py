@@ -73,3 +73,6 @@ class List(Object):
                 return None
 
         return _item
+
+    def getList(self) -> list:
+        return self.items.items
