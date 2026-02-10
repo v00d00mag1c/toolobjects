@@ -182,6 +182,7 @@ class Server(View):
             try:
                 thread = ExecutionThread(id = event_index)
                 thread.set(pre_i.execute(args))
+                thread.set_name(str(args.get('i')))
                 results = await thread.get()
                 thread.end()
             except Exception as e:
@@ -222,7 +223,7 @@ class Server(View):
 
                     data = JSON.fromText(text = msg.data).data
                     if data.get('type') == 'object':
-                        asyncio.create_task(_handle_object_message(ws, _pre_i, data))
+                        asyncio.create_task(_handle_object_mesasge(ws, _pre_i, data))
                 except Exception as e:
                     traceback.print_exception(e)
 
@@ -230,7 +231,7 @@ class Server(View):
 
             return ws
 
-        async def _handle_object_message(ws, pre_i, data):
+        async def _handle_object_mesasge(ws, pre_i, data):
             _event_type = data.get('type')
             _event_index = int(data.get('event_index'))
             _payload = data.get('payload')

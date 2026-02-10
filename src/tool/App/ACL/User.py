@@ -34,3 +34,6 @@ class User(Object):
             return True
 
         return self.via_token.is_expired()
+
+    def is_from_token(self) -> bool:
+        return self.via_token != None

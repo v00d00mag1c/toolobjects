@@ -4,86 +4,76 @@ from typing import Type, Coroutine, Optional, Any
 from concurrent.futures import Future
 from pydantic import Field
 from App import app
-import threading
 import asyncio
-import queue
 
 class ExecutionThread(Object):
     '''
     Wrapper of the executable run
     '''
 
-    thread: Any | Type[threading.Thread] = Field(default = None)
-    result_future: Any | Type[Future] = Field(default = None)
-    stop_event: Any | Type[threading.Event] = Field(default = None)
-    result_queue: Any | Type[queue.Queue] = Field(default = None)
-    exception: Any | Type[Exception] = Field(default = None)
+    task: Any | Type[asyncio.Task] = Field(default = None)
+    is_stopped: bool = Field(default = False)
+    cancelled: bool = Field(default = False)
 
     id: int = Field()
+    global_id: int = Field(default = None)
+    name: str = Field(default = 'Untitled')
+    timeout: Optional[float] = Field(default = None)
 
-    _unserializable = ['thread', 'result_future', 'stop_event', 'result_queue', 'exception', 'id']
+    _unserializable = ['task']
 
     @property
     def append_prefix(self) -> LogPrefix:
         return LogPrefix(
-            id = self.id,
+            id = self.global_id,
             name = 'ID'
         )
 
     def set(self, func: Coroutine):
-        def _run():
-            try:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                try:
-                    if asyncio.iscoroutine(func):
-                        result = loop.run_until_complete(func)
-                    else:
-                        result = func()
+        if app.ThreadsList != None:
+            app.ThreadsList.add(self)
 
-                    self.result_future.set_result(result)
-                    self.result_queue.put(('result', result))
+        self.task = asyncio.create_task(self._execute_wrapper(func))
 
-                except Exception as e:
-                    self.result_future.set_exception(e)
-                    self.result_queue.put(('error', e))
-                    self.exception = e
+    def set_name(self, name: str):
+        self.name = name
 
-                finally:
-                    loop.close()
-            except Exception as e:
-                self.result_future.set_exception(e)
-                self.result_queue.put(('error', e))
-                self.exception = e
-
-        self.thread = threading.Thread(target=_run, daemon = True)
-        self.result_future = Future()
-        self.stop_event = threading.Event()
-        self.result_queue = queue.Queue()
-
-        if app.ExecutablesList != None:
-            app.ExecutablesList.add(self)
-
-    def end(self):
-        self.stop_event.set()
-
-        if app.ExecutablesList != None:
-            app.ExecutablesList.remove(self)
-
-    async def get(self, timeout: Optional[float] = None):
-        self.log('Running thread')
-
-        assert self.thread != None, 'this thread is unavailable'
-        assert self.thread.is_alive() == False, 'this thread is already running'
-
-        self.thread.start()
-        self.thread.join(timeout)
-
-        if self.thread.is_alive():
-            raise TimeoutError(f"Thread execution timeout after {timeout} seconds")
+    async def _execute_wrapper(self, coro: Coroutine):
         try:
-            return self.result_future.result(timeout=0)
+            result = await coro
+            return result
+        except asyncio.CancelledError:
+            self.log_error('task {0} was cancelled'.format(self.global_id))
         except Exception as e:
-            if self.exception:
-                raise self.exception
             raise e
+        finally:
+            if app.ThreadsList is not None:
+                app.ThreadsList.remove(self)
+
+    def end(self):       
+        if self.task and not self.task.done():
+            self.task.cancel()
+
+        if app.ThreadsList != None:
+            app.ThreadsList.remove(self)
+
+    async def get(self):
+        self.log('running thread')
+
+        if self.task is None:
+            raise RuntimeError("Task is not set")
+
+        if self.task.done():
+            return await self.task
+
+        try:
+            if self.timeout is not None:
+                return await asyncio.wait_for(self.task, self.timeout)
+            else:
+                return await self.task
+        except asyncio.CancelledError:
+            self.cancelled = True
+            raise
+        except Exception as e:
+            self.log(f"Task raised exception: {e}")
+            raise

@@ -3,6 +3,7 @@ from App.Objects.Threads.ExecutionThread import ExecutionThread
 from pydantic import Field
 from collections import deque
 from typing import Generator
+from App import app
 
 class ThreadsList(Object):
     '''
@@ -23,7 +24,7 @@ class ThreadsList(Object):
 
     def getById(self, id: int):
         for item in self.items:
-            if item.id == id:
+            if item.global_id == id:
                 return item
 
     def getAll(self) -> Generator[ExecutionThread]:
@@ -31,6 +32,9 @@ class ThreadsList(Object):
             yield item
 
     def add(self, item: ExecutionThread):
+        item.global_id = app.app.threads_id.getIndex()
+        self.log('new thread: {0}'.format(item.global_id))
+
         self.items.append(item)
 
     def remove(self, item: ExecutionThread):

@@ -28,6 +28,7 @@ class App(Object):
     loop: Any = None
     hook_thread: Any = None
     executables_id: Increment = None
+    threads_id: Increment = None
     view: Any = None
 
     def init_hook(self):
@@ -45,6 +46,7 @@ class App(Object):
         asyncio.set_event_loop(self.loop)
 
         self.executables_id = Increment()
+        self.threads_id = Increment()
         self.hook_thread = HookThread()
 
     def loadView(self) -> None:

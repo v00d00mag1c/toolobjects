@@ -12,7 +12,10 @@ class Limitable():
             ))
 
         # ???
-        if user.name == 'root' and user.is_expired() == False:
+        if user.name == 'root':
+            if user.is_from_token() == True:
+                return user.is_expired() == False
+
             return True
 
         return user.can('call', cls)
