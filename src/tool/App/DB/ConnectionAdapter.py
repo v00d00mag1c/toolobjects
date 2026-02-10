@@ -1,6 +1,8 @@
 from App.Objects.Object import Object
 from App.Objects.Protocol import Protocol
 from App.Objects.Object import Object
+from App.DB.Query.Condition import Condition
+from App.DB.Query.Values.Value import Value
 from pydantic import Field
 from typing import Any, ClassVar
 from snowflake import SnowflakeGenerator
@@ -40,6 +42,16 @@ class ConnectionAdapter(Object, Protocol):
 
     def getQuery(self):
         return self.ObjectAdapter.getQuery()
+
+    def get_rows_count(self):
+        query = self.getQuery()
+
+        return query.count()
+
+    def get_links_count(self):
+        query = self.LinkAdapter.getQuery()
+
+        return query.count()
 
     @property
     def append_prefix(self):

@@ -41,17 +41,32 @@ class Client(Server):
         return users
 
     def _get_template_context(self, request):
+        categories = {
+            'client.index.content': [],
+            'client.app': [],
+        }
+
+        for key, val in app.app.view.displayments.items():
+            menu = val[0].get_menu()
+            if menu != None:
+                if categories.get(menu.category_name) is None:
+                    categories[menu.category_name] = []
+
+                categories[menu.category_name].append(menu)
+
         return {
             'app_name': self.getOption('app.name'),
             'user': self._get_current_user(request),
-            'tr': app.Locales.get
+            'tr': app.Locales.get,
+            'current_url': request.rel_url,
+            'categories': categories
         }
 
     def _auth(self, args: dict, request):
         args['auth'] = self._get_current_user(request)
 
         if args.get('auth') != None:
-            self.log('auth as {0}'.format(args.get('auth').name))
+            # self.log('auth as {0}'.format(args.get('auth').name))
 
             return args.get('auth')
         else:
@@ -130,7 +145,7 @@ class Client(Server):
         object_name = query.get('i', 'App.Client.Client')
         displayment = self.displayments.get(object_name)
 
-        self.log('request to displayment {0}'.format(object_name))
+        self.log('request to displayment {0}'.format(object_name), role = ['displayment_client_request'])
 
         if displayment == None or len(displayment) == 0:
             _context.update({'error_message': 'Not found displayment for {0}'.format(object_name)})

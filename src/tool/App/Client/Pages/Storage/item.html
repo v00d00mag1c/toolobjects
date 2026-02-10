@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}
+"{{ item.name }}"
+{% endblock %}
+
+{% block body %}
+    <a href="/?i=App.Storage.Item.List"><<< All</a>
+    <div>
+        <h2>{{ item.name }}</h2>
+    </div>
+
+    <div>
+        <table>
+            <tbody>
+                {% if item.is_export %}
+                    <tr>
+                        <td>Is created via export</td>
+                        <td>True</td>
+                    </tr>
+                {% endif %}
+                {% if item.root_uuid %}
+                    <tr>
+                        <td>Root</td>
+                        <td>{{ item.root_uuid }}</td>
+                    </tr>
+                {% endif %}
+                {% if item.allowed_objects %}
+                    <tr>
+                        <td>Allowed objects:</td>
+                        <td>{{ ", ".join(item.allowed_objects) }}</td>
+                    </tr>
+                {% endif %}
+                {% if item.forbidden_objects %}
+                    <tr>
+                        <td>Forbidden objects:</td>
+                        <td>{{ ", ".join(item.forbidden_objects) }}</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <a href="?i=App.Storage.Item.Get&name={{item.name}}&calculate=1&calculate_db=1">Calculate sizes</a>
+    </div>
+
+    <div>
+        <b>Storage</b>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>Type</td>
+                    <td>
+                        <a href="?i=App.Objects.Index.Get&name={{item.storage_type}}">{{ item.storage_type }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>
+                        {% if storage_size and storage_size > -1 %}
+                            <b>{{ FileSize.convert_from(storage_size, 'b', 'mb') }} Mb</b>
+                        {% else %}
+                            ...
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <form method="post" action="?i=App.Storage.Item.Get&name={{item.name}}&clear=1">
+                            <input type="submit" value="Clear">
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if item.adapter %}
+        <b>DB</b>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>Type</td>
+                    <td>
+                        <a href="?i=App.Objects.Index.Get&name={{item.db_type}}">{{ item.db_type }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        {{ item.adapter.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Rows count</td>
+                    <td>
+                        {{ rows_count or '...' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Links count</td>
+                    <td>
+                        {{ links_count or '...' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Settings</td>
+                    <td>
+                        <a href="?i=App.Storage.Item.Get&name={{item.name}}&get_settings=1">...</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <div>
+        <div>
+            <a href="?i=App.Storage.VirtualPath.Navigate&path={{item.name}}:/">Explorer</a>
+        </div>
+        <div>
+            <a href="">Search</a>
+        </div>
+    </div>
+{% endblock %}

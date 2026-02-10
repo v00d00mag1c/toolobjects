@@ -28,11 +28,11 @@ core:
 - [x] name of object required twice
 - [x] namespace: load submodules
 - [x] ~~remove Optional required by model_validate~~
-- [ ] keep spaces in brackets in `_parse_argv`, choose argparser that supports it
+- [ ] keep spaces in brackets in `_parse_argv`, choose argparser that supports it. also can't pass json in console
 - [x] App.Objects.Operations.Edit
 - [x] App.ReloadModules
 - [x] advanced arguments
-- [ ] fix submodules dups
+- [x] fix submodules dups
 
 db and storage:
 
@@ -91,8 +91,6 @@ modules:
 - [x] move File.FileTypes.Image
 - [ ] App.Config.Set
 - [x] App.Config.Get
-- [ ] ~~App.Logger.List~~
-- [ ] ~~App.Logger.GetFile~~
 - [x] Web.RSS.GetFeed
 - [x] Web.RSS Atom support
 - [x] Media.Text.Text
@@ -114,9 +112,16 @@ web:
 - [x] WebServer
 - [ ] websocket connection: set event_index in executable to distinguish variables messages or smth
 - [ ] hook functions for thread and variables
-- [ ] displaytype=js_module
 - [x] file uploading
 - [x] file uploading auth
+- [ ] file uploading: after save action
+
+client:
+
+- [ ] storage item page
+- [ ] object and linked page
+- [ ] search
+- [ ] execute page
 
 others:
 
@@ -135,5 +140,5 @@ others:
 - [x] App.Storage.Movement* acts logically should belong to App.DB*
 - [ ] ~~LinkInsertion must be changed after flushing from db~~ (self._get() is compromis)
 - [ ] ~~remove console and to_json differences~~
-- [ ] storageunit generates hash randomly but maybe hash the common file? (no it is imposible because the common file is not known beforehand)
+- [ ] storageunit generates hash randomly but maybe hash the common file? (no this is imposible because the common file is not known beforehand)
 - [ ] db operators as objects implementation (for example addCondition(val1 = 'uuid', operator = '==', val2 = String(max_length = 10, min_length = 2)))

@@ -26,6 +26,9 @@ from aiohttp import web
 from App import app
 
 class Server(View):
+    roles: ClassVar[dict] = {
+        'asset_request': ['asset_request']
+    }
     ws_connections: list = Field(default = list())
     pre_i: Object = Field(default = None)
     _app: Any = None
@@ -200,10 +203,10 @@ class Server(View):
             static_file.resolve().relative_to(_assets.resolve())
         except (ValueError, RuntimeError, AssertionError):
 
-            self.log(_msg + ", failed.")
+            self.log(_msg + ", failed.", role = self.roles.get('asset_request'))
             raise web.HTTPForbidden(reason="Not found / Access denied")
 
-        self.log(_msg)
+        self.log(_msg, role = self.roles.get('asset_request'))
 
         _response = web.FileResponse(static_file)
         _response.headers['Cache-Control'] = 'max-age=0'

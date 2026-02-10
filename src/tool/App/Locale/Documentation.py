@@ -9,3 +9,11 @@ class Documentation(BaseModel):
 
     name: Key = Field(default = None)
     description: Key = Field(default = None)
+
+    def get_name(self):
+        if self.name:
+            return self.name.value
+
+    def get_description(self):
+        if self.description:
+            return self.description.value

@@ -2,6 +2,8 @@ from App.Objects.Object import Object
 from App.Client.Menu.Item import Item
 from typing import ClassVar
 from abc import abstractmethod
+from Data.Types.JSON import JSON
+import aiohttp
 
 class Displayment(Object):
     '''
@@ -18,3 +20,9 @@ class Displayment(Object):
     @classmethod
     def get_menu(self) -> Item:
         return None
+
+    def return_json(self, val):
+        return aiohttp.web.Response(
+            text = JSON(data = val).dump(4),
+            content_type = 'application/json'
+        )

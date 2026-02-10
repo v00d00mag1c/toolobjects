@@ -5,16 +5,22 @@ Browse
 {% endblock %}
 
 {% block body %}
+    <b>{{ path.join() }}</b>
     <div id='storages'>
+        <a href="?i=App.Storage.VirtualPath.Navigate&path={{ path.prev() }}">
+            ..
+        </a>
+
         {% for item in items.getItems() %}
             <div>
-                <a href="">
-                    <span>{{ item.obj.name or 'Untitled' }}</span>
-                    <span class="object_name">{{ item.obj.saved_via.object_name }}</span>
+                <span>{{ item.obj.name or 'Untitled' }}</span>
+
+                <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}">
+                    <sup>{{ item.getDbIds() }}</sup>
                 </a>
 
-                <a href="?i=App.Storage.VirtualPath.Navigate&path={{ path + '/' + item.getDbId(True) }}/">
-                    (linked)
+                <a href="?i=App.Storage.VirtualPath.Navigate&path={{ '{0}/{1}'.format(path.join(), item.getDbId(True)) }}/">
+                    >
                 </a>
             </div>
         {% endfor %}

@@ -299,6 +299,8 @@ class Model(PydanticBaseModel):
                         _res = _val
                 except Exception as e:
                     self.log_error(e, exception_prefix = 'Can\'t include field {0}: '.format(field_name))
+                    _res = None
+                    # Or do "continue"? dk
 
                 result[field_name_key] = _res
             if Model._dump_options['include_extra'] == True and self.model_extra != None:

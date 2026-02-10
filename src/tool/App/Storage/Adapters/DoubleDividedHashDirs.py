@@ -69,6 +69,8 @@ class DoubleDividedHashDirs(StorageAdapter):
     def clear(self, recreate: bool = True):
         self._check_name()
 
+        self.log('clearing storage')
+
         shutil.rmtree(self.getStorageDir())
 
         if recreate == True:
@@ -92,3 +94,8 @@ class DoubleDividedHashDirs(StorageAdapter):
 
     def get_relative_path(self, path: Path):
         return path.relative_to(self.getDir())
+
+    def get_size(self):
+        self.log('getting size of dir {0}'.format(self.getStorageDir()))
+
+        return sum(f.stat().st_size for f in self.getStorageDir().rglob('*') if f.is_file())

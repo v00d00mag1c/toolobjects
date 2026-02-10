@@ -9,7 +9,7 @@
     <div id='storages'>
         {% for item in storages %}
             <div>
-                <a href="?i=App.Storage.VirtualPath.Navigate&path={{ item.name }}:/">{{ item.name }}</a>
+                <a href="?i=App.Storage.Item.Get&name={{ item.name }}">{{ item.name }}</a>
             </div>
         {% endfor %}
     </div>

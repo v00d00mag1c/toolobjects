@@ -37,6 +37,9 @@ Objects list
         <a href="/?i=App.Objects.Index.GetList"><<< Namespaces</a>
     {% endif %}
 
+    <div>
+        <b>{{ tr("client.index.total_count", total_count)}}</b>
+    </div>
     <div id='objects'>
         {{ recursive_list(categories) }}
     </div>

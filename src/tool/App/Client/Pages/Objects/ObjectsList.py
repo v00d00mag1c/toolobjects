@@ -10,16 +10,18 @@ class ObjectsList(Displayment):
         namespace_name = query.get('name')
         namespace = None
         categories = dict()
+        total_count = 0
 
         if namespace_name:
             namespace = app.ObjectsList.get_namespace_with_name(namespace_name)
-            categories = app.ObjectsList.sort(namespace.getItems())
+            categories, total_count = app.ObjectsList.sort(namespace.getItems())
         else:
-            categories = app.ObjectsList.sort(app.ObjectsList.getItems().toList())
+            categories, total_count = app.ObjectsList.sort(app.ObjectsList.getItems().toList())
 
         context.update({
             'namespace': namespace,
             'categories': categories,
+            'total_count': total_count,
             'hasattr': hasattr,
             'type': type
         })

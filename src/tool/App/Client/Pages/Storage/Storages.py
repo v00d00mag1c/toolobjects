@@ -8,10 +8,6 @@ class Storages(Displayment):
 
     async def render_as_page(self, request, context):
         query = request.rel_url.query
-        items = None
-
-        if query.get('name') != None:
-            items = app.ObjectsList.get_namespace_with_name(query.get('name')).getItems()
 
         context.update({
             'storages': app.Storage.items,

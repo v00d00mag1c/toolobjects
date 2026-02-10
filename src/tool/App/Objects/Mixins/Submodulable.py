@@ -13,6 +13,7 @@ class Submodulable:
     @classmethod
     def getSubmodules(cls, with_role: list[str] | None = None) -> list[Submodule]:
         modules = []
+        _names = list()
 
         for item in cls.getMRO():
             if hasattr(item, '_submodules') == False:
@@ -23,6 +24,9 @@ class Submodulable:
                 continue
 
             for submodule in _items:
+                if submodule.item._getNameJoined() in _names:
+                    continue
+
                 if with_role != None:
                     contains_len = 0
                     for role in submodule.role:
@@ -33,5 +37,6 @@ class Submodulable:
                         continue
 
                 modules.append(submodule)
+                _names.append(submodule.item._getNameJoined())
 
         return modules

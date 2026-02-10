@@ -66,6 +66,10 @@
         {
             "id": "objects.do_load",
             "value": "Load this object"
+        },
+        {
+            "id": "client.index.total_count",
+            "value": "Total {0} items"
         }
     ]
 }

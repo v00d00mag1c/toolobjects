@@ -17,21 +17,20 @@ class Navigate(ExplorerProtocol):
         return ArgumentDict(items = [
             Argument(
                 name = 'path',
-                orig = String
+                orig = VirtualPath
             )
         ],
         missing_args_inclusion=True)
 
     async def _implementation(self, i):
-        _path = i.get('path')
-        if _path == None:
+        path = i.get('path')
+        if path == None or path.has_parts() is False:
             _list = ObjectsList()
             for item in app.Storage.getAll():
                 _list.append(item)
 
             return _list
 
-        path = VirtualPath.from_str(_path)
         _vals = path.to_args().copy()
         _vals.update(i.values)
 

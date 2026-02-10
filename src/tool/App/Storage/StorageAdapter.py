@@ -31,3 +31,7 @@ class StorageAdapter(Object, Protocol):
     @abstractmethod
     def get_relative_path(self, path: Path):
         ...
+
+    @abstractmethod
+    def get_size(self) -> int:
+        ...

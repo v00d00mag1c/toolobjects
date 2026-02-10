@@ -47,7 +47,7 @@ class Locales(Object):
         for lang in list(self.get_default_langs()) + self.getOption('app.locales.langs'):
             try:
                 self.langs.append(self._load_lang_by_path(lang))
-                self.log_success('loaded lang {0}'.format(lang))
+                self.log_success('loaded lang {0}'.format(lang), role = ['lang.loaded'])
             except Exception as e:
                 self.log_error(e, exception_prefix='error loading lang {0}:'.format(lang))
 

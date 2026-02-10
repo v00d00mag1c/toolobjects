@@ -16,26 +16,43 @@ Object
                 <tbody>
                     <tr>
                         <td>Class name</td>
-                        <td>{{ obj.getModule()._getNameJoined() }}</td>
+                        <td>{{ obj_module._getNameJoined() }}</td>
                     </tr>
                     <tr>
                         <td>Type</td>
-                        <td>{{ obj.getModule().self_name }}</td>
+                        <td>{{ obj_module.self_name }}</td>
                     </tr>
+                    {% if documentation %}
                     <tr>
                         <td>Name</td>
-                        <td>{{ obj.getModule()._documentation() }}</td>
+                        <td>{{ documentation.get_name() }}</td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td></td>
+                        <td>{{ documentation.get_description() }}</td>
                     </tr>
+                    {% endif %}
+
+                    {% if mro_items %}
+                    <tr>
+                        <td>Extend tree</td>
+                        <td>
+                        {% for item in mro_items %}
+                            <div>
+                                <a href="?i=App.Objects.Index.Get&name={{ item._getNameJoined() }}">{{ item._getNameJoined() }}</a>
+                            </div>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
                     <tr>
                         <td>Submodules</td>
                         <td>
-                            {% for item in obj.getModule().getSubmodules() %}
+                            {% for item in obj_module.getSubmodules() %}
                                 <div>
                                     <a href="?i=App.Objects.Index.Get&name={{ item.item._getNameJoined() }}">{{ item.item._getNameJoined() }}</a>
+
+                                    <span>{{ ", ".join(item.role) }}</span>
                                 </div>
                             {% endfor %}
                         </td>

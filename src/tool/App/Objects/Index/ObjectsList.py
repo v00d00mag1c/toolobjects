@@ -91,6 +91,7 @@ class ObjectsList(Object):
     def sort(self, items: list[str]) -> dict:
         _items = dict()
         names = list()
+        total_count = 0
         for item in items:
             _items[item.get_name_for_dictlist()] = item
             names.append(item.get_name_for_dictlist())
@@ -114,6 +115,7 @@ class ObjectsList(Object):
                     if cursor_link.get('_items') == None:
                         cursor_link['_items'] = []
 
+                    total_count += 1
                     cursor_link.get('_items').append({
                         'part': item,
                         'obj': obj
@@ -127,7 +129,7 @@ class ObjectsList(Object):
 
                 ind += 1
 
-        return categories
+        return categories, total_count
 
     @classmethod
     def _settings(cls):

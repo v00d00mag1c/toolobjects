@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+DB Object
+{% endblock %}
+
+{% block body %}
+    {% for item in objects %}
+        <div>
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Prototype</td>
+                            <td>
+                                <a href="?i=App.Objects.Index.Get&name={{ item._getNameJoined() }}">{{ item._getNameJoined() }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>JSON</td>
+                            <td>
+                                <div>
+                                    <a href="{{current_url}}&act=view_json">...</a>
+                                </div>
+                                <div>
+                                    <a href="{{current_url}}&act=view_json&include_nones=1">Include None values</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}
