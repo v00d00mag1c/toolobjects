@@ -10,4 +10,8 @@ class Displayment(Executable):
     role: ClassVar[list[Literal['str', 'js'] | str]] = []
 
     def implementation(self, i: dict) -> Any:
+        '''
+        The object to display is passed in i.get("object")
+        '''
+
         pass

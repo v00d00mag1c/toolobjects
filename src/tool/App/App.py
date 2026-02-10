@@ -27,6 +27,7 @@ class App(Object):
     loop: Any = None
     hook_thread: Any = None
     executables_id: Increment = None
+    view: Any = None
 
     def constructor(self):
         _args = self._parse_argv(sys.argv)
@@ -56,9 +57,15 @@ class App(Object):
         self.loadObjects()
         view_name = self.argv.get('view', 'App.Console.ConsoleView')
         view_class = self.objects.getByName(view_name)
-        view: View = view_class.getModule()()
+        _view: View = view_class
+
+        assert _view != None, 'no such view'
+
+        view = _view.getModule()()
         view.setAsCommon()
         view.setApp(self)
+
+        self.view = view
 
         return view
 

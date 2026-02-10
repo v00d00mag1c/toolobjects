@@ -4,7 +4,7 @@ Orgtool is a framework/app/manager that allows to imagine data as objects. Basic
 
 ### Guides
 
-- [how to run](guides/run.md)
+- [how to run](concepts/console.md)
 
 ### Classes
 

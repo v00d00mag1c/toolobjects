@@ -16,21 +16,12 @@ class ConsoleView(View):
     '''
 
     async def implementation(self, i: ArgumentValues = {}):
-        executable = i.get('i')
+        pre_i = i.get('pre_i')()
+        results = await pre_i.execute(i)
 
-        await self._object_call(executable, i.get('print_result'), i)
+        self._print_call(results, i.get('console_view.print_result'), i.get('console_view.print_as'))
 
-    async def _object_call(self, executable, print_result: bool = True, i: ArgumentValues = {}):
-        assert executable != None, 'not found object'
-        assert executable.canBeExecuted(), 'object does not contains execute interface'
-        assert self.canUseObject(executable), 'object cannot be used at this view'
-        assert executable.canBeUsedBy(None), 'access denied'
-
-        _item = executable()
-        _item.integrate(i.values)
-        results = await _item.execute(i = i)
-
-        print_as = i.get('print_as')
+    def _print_call(self, results, print_result: bool = True, print_as: bool = 'str'):
         if print_result == True:
             if results == None:
                 self.log('nothing returned', role = ['empty_response', 'view_message'])
@@ -46,19 +37,18 @@ class ConsoleView(View):
     def getArguments(cls) -> ArgumentDict:
         dicts = ArgumentDict(items = [
             Executable(
-                name = 'i',
-                default = 'App.Queue.Run',
+                name = 'pre_i',
+                default = 'App.Console.ConsoleExecutorWheel',
                 assertions = [
-                    NotNoneAssertion(),
-                    InputNotInValues(values=['App.Console.ConsoleView', 'App.Console.ConsoleView.ConsoleView'])
+                    NotNoneAssertion()
                 ]
             ),
             Boolean(
-                name = 'print_result',
+                name = 'console_view.print_result',
                 default = True
             ),
             String(
-                name = 'print_as',
+                name = 'console_view.print_as',
                 default = 'str'
             )
         ],

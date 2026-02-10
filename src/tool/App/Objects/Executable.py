@@ -63,7 +63,6 @@ class Executable(Object, Variableable, Validable):
         else:
             i.modified = True
 
-
         if app.ExecutablesList != None:
             app.ExecutablesList.add(self)
 
@@ -95,5 +94,5 @@ class Executable(Object, Variableable, Validable):
         just sets args that can be flushed
         '''
 
-        self.internal_use = False
+        self.internal_use = False # idk whats this
         self.args = args.values

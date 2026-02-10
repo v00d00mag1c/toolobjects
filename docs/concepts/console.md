@@ -1,0 +1,33 @@
+### Running
+
+```
+cd {src folder}
+
+.\venv.ps1 - load and enter venv
+
+.\update.ps1 - update dependencies
+```
+
+now you can call:
+
+```
+python tool.py -i {object name}
+```
+
+change View:
+
+```
+python tool.py -view {view name}
+```
+
+change preexecutor:
+
+```
+python tool.py -pre_i {wheel name}
+```
+
+If you dont want to exit:
+
+```
+python tool.py -view App.Console.InteractiveView
+```

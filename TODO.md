@@ -95,8 +95,9 @@ others:
 - [ ] there is similar functions: Configurable.getAllSettings, Validable.getAllArguments, Submodulable.getAllSubmodules, Variableable.getAllVariables, no functions to skip one of mro's item. maybe move it to MROThing
 - [ ] env variables and arguments are separate but theyre similar by usage. Argument should contain 'env' field, and if value is not passed, take value from env
 - [ ] Namespace: allow to not fallback to common
-- [ ] executable with "through" type, or "proxy" idk. for example, act that saves and runs after main
+- [ ] ~~executable with "through" type, or "proxy" idk. for example, act that saves and runs after main~~
 - [ ] safety: permissions per every class
 - [ ] restrictedpython when importing
 - [ ] Example: App.Storage.Movement.Import. mount_name is None by default, and if its not, its sets that the name from last part. and maybe its better to set default as lambda function?
 - [ ] App.Storage.Movement.Save and App.Storage.Movement.Export are the same
+- [ ] App.Objects.Displayment and App.Objects.View are similar

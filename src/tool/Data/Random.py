@@ -33,3 +33,6 @@ class Random(Extractor):
 
     def randomInt(self, min: int, max: int):
         return random.randint(min, max)
+
+    def randomFloat(self, min: float, max: float):
+        return random.uniform(min, max)

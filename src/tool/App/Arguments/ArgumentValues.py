@@ -6,7 +6,7 @@ from typing import Any
 
 class ArgumentValues(Object):
     '''
-    class that imitates dict
+    Class that imitates dictionary and comparer between object arguments and values
     '''
 
     compare: ArgumentDict = Field(default=None)
