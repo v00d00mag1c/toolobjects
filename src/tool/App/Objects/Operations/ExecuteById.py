@@ -6,9 +6,9 @@ from App.Storage.StorageUUID import StorageUUID
 from App.Objects.Arguments.Assertions.NotNoneAssertion import NotNoneAssertion
 from App.Objects.Responses.ObjectsList import ObjectsList
 
-from App.Objects.Locale.Documentation import Documentation
-from App.Objects.Locale.ObjectDocumentation import ObjectDocumentation
-from App.Objects.Locale.Key import Key
+from App.Locale.Documentation import Documentation
+from App.Locale.ObjectDocumentation import ObjectDocumentation
+from App.Locale.Key import Key
 
 class ExecuteById(Act):
     async def implementation(self, i):

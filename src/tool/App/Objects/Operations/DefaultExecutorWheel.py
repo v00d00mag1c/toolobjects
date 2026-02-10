@@ -8,8 +8,8 @@ from App.Objects.Arguments.Assertions.InputNotInValues import InputNotInValues
 from App.Objects.Arguments.ArgumentValues import ArgumentValues
 from App.Objects.Responses.ObjectsList import ObjectsList
 from App.Storage.Movement.Save import Save
-from App.Objects.Locale.Documentation import Documentation
-from App.Objects.Locale.Key import Key
+from App.Locale.Documentation import Documentation
+from App.Locale.Key import Key
 from Data.String import String
 from Data.Boolean import Boolean
 from App import app

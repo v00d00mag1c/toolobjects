@@ -3,7 +3,7 @@ from App.Objects.Object import Object
 from App.Objects.Misc.NameContainable import NameContainable
 from typing import Any, List, Literal, Callable, Generator
 from pydantic import Field, computed_field, field_serializer
-from App.Objects.Locale.Documentation import Documentation
+from App.Locale.Documentation import Documentation
 from App.Storage.StorageUUID import StorageUUID
 from Data.JSON import JSON
 from App.Objects.Index.ModuleData import ModuleData

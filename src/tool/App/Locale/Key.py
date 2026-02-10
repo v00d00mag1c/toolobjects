@@ -3,7 +3,7 @@ from pydantic import Field
 
 class Key(BaseModel):
     '''
-    Description of something (english default)
+    Description of something
     '''
 
     value: str = Field(default = '')

@@ -107,6 +107,9 @@ class App(Object):
                 ),
                 LoadedObject(
                     path = 'App\\Objects\\Daemons\\List.py'
+                ),
+                LoadedObject(
+                    path = 'App\\Locale\\Locales.py'
                 )
             ]
         )
