@@ -1,3 +1,9 @@
 <div>
     <span>{{ String.cut(item.any_name, 90) }}</span>
+
+    {% if object_show_id %}
+        <sup>
+            <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.getDbIds()}}</a>
+        </sup>
+    {% endif %}
 </div>

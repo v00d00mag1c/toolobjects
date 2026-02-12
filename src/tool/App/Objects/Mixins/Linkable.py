@@ -1,7 +1,7 @@
 from pydantic import Field, model_serializer, BaseModel
 from App.Objects.Relations.Link import Link
 from App.Objects.Relations.LinkData import LinkData
-from typing import ClassVar, Generator
+from typing import ClassVar, Generator, AsyncGenerator
 
 class Linkable():
     '''
@@ -120,21 +120,31 @@ class Linkable():
 
                 yield item
 
-    def _get_virtual_linked(self, with_role: str = None) -> Generator[Link]:
+    async def _get_virtual_linked(self, with_role: str = None) -> AsyncGenerator[Link]:
         '''
         Returns linked items. This method can be overriden
         '''
 
-        return self.getLinkedItems()
+        for item in self.getLinkedItems():
+            yield item
 
     def getLinked(self, ignore_virtual: bool = False, with_role: str = None) -> Generator[Link]:
         '''
-        Return dynamic links or real links
+        Return dynamic links or real links.
+        No, dynamic links are getting from asyncGetLinked.
         '''
+        #if self.local_obj.dynamic_links == True and ignore_virtual == False:
+            #return self._get_virtual_linked(with_role = with_role)
+        #else:
+        return self.getLinkedItems(with_role = with_role)
+
+    async def asyncGetLinked(self, ignore_virtual: bool = False, with_role: str = None):
         if self.local_obj.dynamic_links == True and ignore_virtual == False:
-            return self._get_virtual_linked(with_role = with_role)
+            async for item in self._get_virtual_linked(with_role = with_role):
+                yield item
         else:
-            return self.getLinkedItems(with_role = with_role)
+            for item in self.getLinkedItems(with_role = with_role):
+                yield item
 
     def getLinksRecurisvely(self, current_level = 0, max_depth = 10) -> Generator[Link]:
         if current_level >= max_depth:

@@ -35,3 +35,6 @@ class LocalObjectMeta(Model):
 
     def set_updated(self):
         self.updated_at = datetime.now()
+
+    def make_possible_to_use_dynamic_links(self):
+        self.dynamic_links = True

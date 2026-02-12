@@ -67,6 +67,9 @@ class File(Object):
 
         return _new
 
+    def _get_name(self) -> str:
+        return self.name
+
     @field_serializer('path')
     def path_get(self, path: str) -> str:
         if self.path_hidden == True:

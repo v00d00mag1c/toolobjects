@@ -9,7 +9,6 @@ class Edit(Displayment):
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         render_as = query.get('as')
-        vals = await self.request.post()
         path_val = query.get('item')
         item = self.get_objs([path_val])[0]
 
@@ -39,6 +38,7 @@ class Edit(Displayment):
 
         if self.is_post():
             _dict = {'object': item}
+            vals = await self.request.post()
             _dict.update(dict(vals))
             await LocalEdit().execute(_dict)
 

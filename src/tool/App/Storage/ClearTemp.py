@@ -33,4 +33,4 @@ class ClearTemp(Act):
         for item in query.toObjectsList().getItems():
             item.delete(remove_links = True)
 
-        storage.commit()
+        storage.adapter.commit()

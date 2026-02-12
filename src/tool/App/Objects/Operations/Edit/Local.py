@@ -33,6 +33,10 @@ class Local(Act):
                 name = 'public',
                 orig = Boolean
             ),
+            Argument(
+                name = 'dynamic_links',
+                orig = Boolean
+            ),
             ListArgument(
                 name = 'saved_via',
                 orig = String

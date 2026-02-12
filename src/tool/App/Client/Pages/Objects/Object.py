@@ -67,7 +67,8 @@ class Object(Displayment):
     async def render_as_list_item(self, item, args):
         self.context.update({
             'item': item,
-            'args': args
+            'args': args,
+            'object_show_id': True
         })
         return self.render_string('Objects/object_listview.html')
 

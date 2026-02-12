@@ -71,6 +71,7 @@ class DefaultExecutorWheel(Act):
                 else:
                     item_that_executed = item_class
 
+            item_that_executed.obj.is_forced = True
             results.append(item_that_executed)
 
         if results.isInstance(ObjectsList):

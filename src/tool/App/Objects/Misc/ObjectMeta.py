@@ -45,3 +45,6 @@ class ObjectMeta(Model):
 
     def has_dimensions(self) -> bool:
         return self.width != None
+
+    def set_tmp(self):
+        self.is_tmp = True

@@ -98,7 +98,7 @@ class Search(Act):
 
         for storage in storages:
             try:
-                _query = self._search_in_storage(i, storage)
+                _query = await self._search_in_storage(i, storage)
                 _objects.total_count += _query.count()
 
                 for item in _query.getAll():
@@ -111,7 +111,7 @@ class Search(Act):
 
         return _objects
 
-    def _search_in_storage(self, i, storage):
+    async def _search_in_storage(self, i, storage):
         _query = storage.adapter.getQuery()
         for condition in i.get('conditions'):
             _query.addCondition(condition)
@@ -133,7 +133,7 @@ class Search(Act):
                     self.log(f"{link.getId()}: not exists in this db")
                     continue
 
-                for linked_item in _item.toPython().getLinked():
+                async for linked_item in _item.toPython().asyncGetLinked():
                     if linked_item.item.hasDb() == False:
                         continue
 

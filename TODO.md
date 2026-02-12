@@ -34,6 +34,10 @@ core:
 - [x] advanced arguments
 - [x] fix submodules dups
 
+config:
+
+- [ ] save old value on `set()`
+
 db and storage:
 
 - [x] get rid of saveable
@@ -61,14 +65,15 @@ db and storage:
 - [x] links order
 - [ ] links are not optimized and paginated
 - [ ] multifile config
-- [x] link to storageunit file (StorageUnitLink)
+- [x] link to file from storageunit (StorageUnitLink)
 - [x] advanced Conditions (val1 % val2 > 0 or smth)
-- [x] storage item.commit()
+- [x] storage item .commit()
 - [x] remove displayments
 - [x] root_uuid
 - [x] App.Storage.CreateRoot
 - [x] VirtualPath
 - [x] allow to cancel scripts and run them at once
+- [ ] Linkable.getParents
 
 other with objects:
 
@@ -76,6 +81,8 @@ other with objects:
 - [x] autostart items
 - [ ] allowed_objects that allowed to link to item
 - [ ] documentation of the fields
+- [ ] custom objects
+- [ ] dynamic links
 
 auth:
 
@@ -132,6 +139,7 @@ client:
 - [x] execute page
 - [x] thumbnails
 - [x] collection create page
+- [ ] config page
 
 others:
 

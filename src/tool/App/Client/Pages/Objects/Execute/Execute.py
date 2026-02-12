@@ -16,13 +16,19 @@ class Execute(Displayment):
         _obj = app.ObjectsList.getByName(name)
 
         assert _obj != None, 'not found object'
-        assert _obj.is_inited, 'not inited'
+        if _obj.is_inited == False:
+            return self.redirect('/?i=App.Objects.Index.Get&name=' + name)
 
         obj = _obj.getModule()
 
         self.context.update({
-            'post_data': {}
+            'post_data': {},
+            'preset': {}
         })
+
+        for key, val in query.items():
+            if key.startswith('preset_param_'):
+                self.context['preset'][key.replace('preset_param_', '')] = val
 
         if self.request.method == 'POST':
             _params = dict(await self.request.post())

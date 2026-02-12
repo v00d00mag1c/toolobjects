@@ -140,6 +140,16 @@
                 </div>
             </div>
             <hr>
+
+            {% if item.obj.is_forced %}
+                <div>
+                    <div>
+                        <a href="/?i=App.Objects.Operations.DefaultExecutorWheel&name=App.Objects.Operations.ExecuteById&preset_param_item={{item.getDbIds()}}">{{_("client.object.execute")}}</a>
+                    </div>
+                </div>
+
+                <hr>
+            {% endif %}
         </div>
     {% endfor %}
 {% endblock %}

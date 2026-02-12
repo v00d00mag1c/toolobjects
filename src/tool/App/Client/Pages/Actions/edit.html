@@ -35,6 +35,12 @@ Edit
                     </td>
                 </tr>
                 <tr>
+                    <td>{{_("client.objects.edit.allow_dynamic_links")}}</td>
+                    <td>
+                        <input value="1" type="checkbox" name="dynamic_links" {% if item.local_obj.dynamic_links %}checked{% endif %}>
+                    </td>
+                </tr>
+                <tr>
                     <td>Pseudo objects</td>
                     <td>
                         <input type="text" name="saved_via" value="{{','.join(custom_saved_via)}}">
