@@ -8,11 +8,25 @@ class Edit(Displayment):
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
+        render_as = query.get('as')
         vals = await self.request.post()
         path_val = query.get('item')
         item = self.get_objs([path_val])[0]
 
         assert item != None, 'not found'
+
+        if render_as != None:
+            edit_display = self.get_for(render_as)
+
+            assert edit_display != None, 'non-editable'
+
+            edit_display = edit_display(request = self.request, context = self.context)
+
+            results = await edit_display.render_as_edit(item, {})
+            if results != None:
+                return results
+            else:
+                self.throw_message('no edit displayment')
 
         custom_saved_via = list()
         for object_name in item.local_obj.saved_via:
@@ -23,7 +37,7 @@ class Edit(Displayment):
             'custom_saved_via': custom_saved_via
         })
 
-        if self.request.method == 'POST':
+        if self.is_post():
             _dict = {'object': item}
             _dict.update(dict(vals))
             await LocalEdit().execute(_dict)

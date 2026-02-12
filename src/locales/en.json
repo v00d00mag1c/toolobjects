@@ -3,6 +3,7 @@
     "native_name": "English",
     "id": "en_US",
     "keys_dict": {
+        "ok": "OK",
         "client.create": "Create",
         "client.app": "App",
         "client.index.title": "Index",
@@ -29,6 +30,7 @@
         "client.collections.type": "Prototype",
         "client.objects.copy": "Copy",
         "client.objects.edit_meta": "Edit meta",
+        "client.objects.edit": "Edit",
         "client.objects.copy.title": "Copy to another storage",
         "client.objects.uuids": "UUIDs",
         "client.index.logged_as": "Logged as <span>{0}</span>.",

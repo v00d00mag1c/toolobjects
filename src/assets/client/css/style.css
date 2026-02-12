@@ -49,8 +49,6 @@
 #floating_menu {
     position: fixed;
     right: 0;
-    opacity: 0.05;
-    transition: opacity 200ms ease-in-out;
     padding: 25px 5px 0px 0px;
     text-align: right;
 
@@ -73,12 +71,18 @@
     width: 100px;
 }
 
-#floating_menu:hover {
+.less_visible {
+    opacity: 0.05;
+    transition: opacity 200ms ease-in-out;
+}
+
+.less_visible:hover {
     opacity: 1;
 }
 
 textarea {
     width: 100%;
+    height: 150px;
     min-width: 100%;
     max-width: 100%;
     min-height: 20px;
@@ -92,6 +96,10 @@ textarea.heighted {
 
 input[type='text'] {
     width: 80%;
+}
+
+form tr input[type='text'] {
+    width: 100%;
 }
 
 .displayment_back {

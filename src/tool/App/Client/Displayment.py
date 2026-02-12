@@ -35,6 +35,9 @@ class Displayment(Object):
     async def render_as_collection(self, orig_items, args, orig_collection = None):
         ...
 
+    async def render_as_edit(self, item, args = {}):
+        ...
+
     @classmethod
     def get_for(cls, name: str):
         _item = app.app.view.displayments.get(name)
@@ -79,7 +82,6 @@ class Displayment(Object):
 
     def get_link_item(self):
         query = self.request.rel_url.query
-        _item = query.get('item') or query.get('db_item')
         if query.get('storage'):
             storage = app.Storage.get(query.get('storage'))
 
@@ -90,6 +92,12 @@ class Displayment(Object):
             })
 
             return storage
+
+        return self._get_item()
+
+    def _get_item(self):
+        query = self.request.rel_url.query
+        _item = query.get('item') or query.get('db_item')
 
         if _item:
             item = StorageUUID.fromString(_item).toPython()
@@ -113,3 +121,6 @@ class Displayment(Object):
         new_item.save()
 
         return '/?i=App.Objects.Object&uuids=' + new_item.getDbIds()
+
+    def redirect_to_object(self, object_item):
+        return self.redirect('/?i=App.Objects.Object&uuids=' + object_item.getDbIds())

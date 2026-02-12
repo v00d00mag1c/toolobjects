@@ -7,10 +7,14 @@ Text
 {% block body %}
     <div>
         <form method="POST">
-            <textarea name="text"></textarea>
+            {% if db_item %}
+                <textarea name="text">{{db_item.text}}</textarea>
+            {% else %}
+                <textarea name="text"></textarea>
+            {% endif %}
 
             <div>
-                <input type="submit" value="Create">
+                <input type="submit" value="{{_('ok')}}">
             </div>
         </form>
     </div>
