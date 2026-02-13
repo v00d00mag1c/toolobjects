@@ -77,6 +77,13 @@ class Displayment(Object):
     def redirect(self, url: str):
         return aiohttp.web.HTTPFound(url)
 
+    def redirect_to_object(self, object_item: Object, as_self: bool = False):
+        url = '/?i=App.Objects.Object&uuids=' + object_item.getDbIds()
+        if as_self:
+            url += '&act=display&as=' + object_item._getNameJoined()
+
+        return self.redirect(url)
+
     def is_post(self):
         return self.request.method == 'POST'
 
@@ -121,10 +128,3 @@ class Displayment(Object):
         new_item.save()
 
         return '/?i=App.Objects.Object&uuids=' + new_item.getDbIds()
-
-    def redirect_to_object(self, object_item: Object, as_self: bool = False):
-        url = '/?i=App.Objects.Object&uuids=' + object_item.getDbIds()
-        if as_self:
-            url += '&act=display&as=' + object_item._getNameJoined()
-
-        return self.redirect(url)

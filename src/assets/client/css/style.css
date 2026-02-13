@@ -113,6 +113,7 @@ form tr input[type='text'] {
 body {
     word-break: break-word;
     word-wrap: break-word;
+    font-family: cursive;
     background: #9f92cd80;
 }
 
@@ -206,4 +207,10 @@ body {
 
 #recursive_objects .recursed_object.hidden .recursed_object_links {
     display: none;
+}
+
+.displayment_item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

@@ -64,6 +64,16 @@ class Search(Act):
                 orig = Boolean,
                 default = True
             ),
+            Argument(
+                name = 'storage_root_if_no_collection.recursively',
+                orig = Boolean,
+                default = True
+            ),
+            Argument(
+                name = 'show_tmp',
+                orig = Boolean,
+                default = False
+            ),
             ListArgument(
                 name = 'only_object',
                 orig = String,
@@ -74,10 +84,20 @@ class Search(Act):
                 default = None,
                 orig = StorageUUID
             ),
+            Argument(
+                name = 'linked_to.recursively',
+                default = True,
+                orig = Boolean
+            ),
             ListArgument(
                 name = 'not_linked_to',
                 default = None,
                 orig = StorageUUID
+            ),
+            Argument(
+                name = 'not_linked_to.recursively',
+                default = True,
+                orig = Boolean
             ),
             ListArgument(
                 name = 'uuids',
@@ -127,13 +147,21 @@ class Search(Act):
             if key == 'linked_to':
                 in_root = False
 
+            recursively = i.get(key + '.recursively')
+
             for link in _val:
                 _item = link.getItem()
                 if _item == None:
                     self.log(f"{link.getId()}: not exists in this db")
                     continue
 
-                async for linked_item in _item.toPython().asyncGetLinked():
+                links = None
+                if recursively:
+                    links = await _item.toPython().getLinksRecurisvely()
+                else:
+                    links = await _item.toPython().asyncGetLinked()
+
+                for linked_item in links:
                     if linked_item.item.hasDb() == False:
                         continue
 
@@ -154,7 +182,15 @@ class Search(Act):
             root_collection = storage.get_root_collection()
 
             if root_collection:
-                for link in root_collection.getLinked():
+                recursively = i.get('storage_root_if_no_collection.recursively')
+
+                links = None
+                if recursively:
+                    links =  root_collection.getLinksRecurisvely()
+                else:
+                    links = await root_collection.asyncGetLinked()
+
+                for link in links:
                     _2_uuids.append(link.item.getDbId())
 
                 _query.addCondition(Condition(
@@ -194,35 +230,40 @@ class Search(Act):
                 )
             ))
 
-        q = i.get('q')
-        if q and len(q) > 0:
-            _conditions = [Condition(
-                val1 = Value(
-                    column = 'content',
-                    json_fields = ['local_obj', 'name']
-                ),
-                operator = 'contains',
-                val2 = Value(
-                    value = q
-                )
-            ),
+        if i.get('show_tmp') == False:
+            _query.addCondition((
             Condition(
                 val1 = Value(
                     column = 'content',
-                    json_fields = ['obj', 'name']
+                    json_fields = ['obj', 'is_tmp']
+                ),
+                operator = '==',
+                val2 = Value(
+                    value = None
+                )
+            )))
+
+        q = i.get('q')
+        if q and len(q) > 0:
+            _conditions = list()
+            for key in ['local_obj', 'obj']:
+                _conditions.append(Condition(
+                val1 = Value(
+                    column = 'content',
+                    json_fields = [key, 'name']
                 ),
                 operator = 'contains',
                 val2 = Value(
                     value = q
                 )
-            )]
+            ))
 
             if i.get('q.in_description'):
                 for key in ['local_obj', 'obj']:
                     _conditions.append(Condition(
                         val1 = Value(
                             column = 'content',
-                            json_fields = ['local_' + key, 'description']
+                            json_fields = [key, 'description']
                         ),
                         operator = 'contains',
                         val2 = Value(

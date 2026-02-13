@@ -6,16 +6,36 @@ Login
 
 {% block body %}
 
-<form action="/login" method="POST">
-    <div>
-        <b>Login</b>
+<style>
+    #login {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 90vh;
+    }
+
+    #login #frame {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+    }
+</style>
+
+<form id="login" action="/login" method="POST">
+    <div id="frame">
+        <div style="align-self: normal;">
+            <b>Login</b>
+        </div>
         <div>
             <input type="text" name="username" placeholder="Username">
         </div>
         <div>
             <input type="password" name="password" placeholder="Password">
         </div>
-        <div>
+        <div style="align-self: end;">
             <input type="submit" value="Auth">
         </div>
     </div>

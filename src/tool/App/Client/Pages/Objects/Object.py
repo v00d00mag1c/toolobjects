@@ -8,6 +8,7 @@ class Object(Displayment):
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
         act = query.get('act')
+        redirect_if_no_displayment = query.get('redirect_if_no_displayment') == 'on'
         objs = self.get_objs(query.get('uuids', '').split(','))
 
         assert len(objs) > 0, 'objects not found'
@@ -31,9 +32,12 @@ class Object(Displayment):
                 for item in objs:
                     _class = self.get_for(_as)
                     if _class == None:
-                        htmls.append(
-                            (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': 'not found displayment for ' + _as}))
-                        )
+                        if redirect_if_no_displayment:
+                            return self.redirect_to_object(item)
+                        else:
+                            htmls.append(
+                                (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': 'not found displayment for ' + _as}))
+                            )
                         continue
                     else:
                         displayment = _class()

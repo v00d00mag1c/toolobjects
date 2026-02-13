@@ -11,6 +11,7 @@ class Management(Displayment):
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
+        response = aiohttp.web.HTTPFound('/?i=App')
         act = query.get('act')
 
         match(act):
@@ -27,10 +28,15 @@ class Management(Displayment):
                     'displayments': app.app.view.displayments.items()
                 })
                 return self.render_template('App/displayments.html')
+            case 'change_theme':
+                if self.request.cookies.get('theme') == 'dark_theme':
+                    response.set_cookie('theme', '')
+                else:
+                    response.set_cookie('theme', 'dark_theme')
             case _:
                 return self.render_template('App/management.html')
 
-        return aiohttp.web.HTTPFound('/?i=App')
+        return response
 
     @classmethod
     def get_menu(cls) -> Item:

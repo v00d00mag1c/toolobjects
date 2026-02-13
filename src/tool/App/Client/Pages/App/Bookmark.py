@@ -8,11 +8,10 @@ class Bookmark(Displayment):
     async def render_as_page(self, args = {}):
         url = self.request.rel_url.query.get('url')
         title = self.request.rel_url.query.get('title')
-        collection = app.app.view._get_bookmarks_collection()
+        collection = app.app.view._get_bookmarks_collection(self.auth)
 
         bookmark = RealBookmark(url = url)
         bookmark.obj.name = title
-        collection = self.getOption('web.bookmarks.collection_id').toPython()
         collection.link(bookmark, role = ['internal'])
 
         bookmark.save()

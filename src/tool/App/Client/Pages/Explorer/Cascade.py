@@ -25,7 +25,8 @@ class Cascade(Displayment):
                 else:
                     item_dict['item'] = object
 
-                item_dict['links'] = recurse(item_dict.get('item').getLinked(), current_level = current_level + 1, max_depth = max_depth)
+                items = recurse(item_dict.get('item').getLinked(), current_level = current_level + 1, max_depth = max_depth, objects_limit = 10)
+                item_dict['links'] = items[:objects_limit]
 
                 new_list.append(item_dict)
 
@@ -35,7 +36,7 @@ class Cascade(Displayment):
         rel_url = '/?i=App.DB.Search'
         attrs = dict(self.request.rel_url.query)
         for key, val in attrs.items():
-            if key in ['linked_to_type', 'linked_to', 'i', 'show_unlisted', 'act']:
+            if key in ['show_tmp', 'linked_to_type', 'linked_to', 'i', 'show_unlisted', 'act']:
                 continue
 
             rel_url += '&' + key + '=' + val
@@ -44,6 +45,7 @@ class Cascade(Displayment):
         self.context.update({
             'items': objects,
             'args': args,
-            'this_relative_url': rel_url
+            'this_relative_url': rel_url,
+            'ref': attrs.get('ref')
         })
         return self.render_string('Explorer/cascade.html')

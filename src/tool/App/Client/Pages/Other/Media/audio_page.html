@@ -1,5 +1,13 @@
 {% for item in items %}
     <div>
-        <audio src="{{item.get_url(True)}}" controls></audio>
+        {% if show_id %}
+            <div>
+                <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.any_name}}</a>
+            </div>
+        {% endif %}
+
+        {% if item.hasAttr('get_url') %}
+            <audio src="{{item.get_url(True)}}" controls></audio>
+        {% endif %}
     </div>
 {% endfor %}

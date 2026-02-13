@@ -2,9 +2,16 @@
 
 {% block body %}
     {% for item in htmls %}
-        <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}">
-            <<< back to object
-        </a>
-        {{item[1]|safe}}
+        <div class="displayment_item">
+            <div>
+                <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}">
+                    <<< {{item[0].getDbIds()}}
+                </a>
+            </div>
+
+            <div>
+                {{item[1]|safe}}
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}

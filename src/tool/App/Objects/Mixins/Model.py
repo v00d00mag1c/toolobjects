@@ -104,6 +104,10 @@ class Model(PydanticBaseModel, Section):
         return cls.__module__
 
     @classmethod
+    def hasAttr(cls, name):
+        return hasattr(cls, name)
+
+    @classmethod
     def is_same_name(cls, name: str) -> bool:
         return cls._getNameJoined() == name
 

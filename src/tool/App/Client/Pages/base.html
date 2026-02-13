@@ -6,6 +6,10 @@
     <title>{% block title %}{% endblock %} — {{ app_name or '...' }}</title>
     <link rel="stylesheet" href="static/client/css/style.css">
 
+    {% if theme and theme != '' %}
+        <link rel="stylesheet" href="static/client/css/{{theme}}.css">
+    {% endif %}
+
     <script src="static/client/js/funcs.js"></script>
 </head>
 <body>

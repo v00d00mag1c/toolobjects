@@ -3,10 +3,10 @@
         <div class="recursed_object">
             <div class="recursed_object_line" onclick="collapse(event)"></div>
             <div class="recursed_object_title">
-                <a href="/?i=App.Objects.Object&uuids={{item.get('item').getDbIds()}}">
+                <a href="/?i=App.Objects.Object&uuids={{item.get('item').getDbIds()}}&act=display&as={{item.get('item')._getNameJoined()}}&redirect_if_no_displayment=on&ref={{current_url_encoded}}">
                     <span>{{item.get('item').any_name}}</span>
                 </a>
-                <a href="{{this_relative_url}}&storage={{item.get('item').getDbName()}}&act=linked_to&show_unlisted=on&linked_to={{item.get('item').getDbIds()}}">></a>
+                <a href="{{this_relative_url}}&storage={{item.get('item').getDbName()}}&act=linked_to&show_tmp=on&linked_to={{item.get('item').getDbIds()}}">></a>
             </div>
 
             <div class="recursed_object_links">

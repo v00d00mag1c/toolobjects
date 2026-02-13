@@ -27,7 +27,7 @@ class SQLAlchemy(ConnectionAdapter):
 
         return Column(Text(), nullable=False)
 
-    # we have to put this into function :(to have links to the connection class and session)
+    # we have to put this into function to have links to the connection class and session)
     def _init_models(self_adapter):
         from sqlalchemy.ext.declarative import declarative_base
         from sqlalchemy import Column, BigInteger, Integer, event, String
@@ -38,8 +38,8 @@ class SQLAlchemy(ConnectionAdapter):
             __tablename__ = self_adapter.links_table_name
             _adapter = self_adapter
 
-            uuid = Column(BigInteger(), primary_key=True)
-            owner = Column(BigInteger(), nullable = True) # if null its links to db
+            uuid = Column(BigInteger(), primary_key=True, index=True)
+            owner = Column(BigInteger(), nullable = True, index=True) # if null its links to db
             target = Column(BigInteger())
             data = Column(String(1000), nullable = True)
             order = Column(BigInteger())
@@ -101,7 +101,7 @@ class SQLAlchemy(ConnectionAdapter):
             _orig = None
             order_index = None
 
-            uuid = Column(BigInteger(), primary_key=True)
+            uuid = Column(BigInteger(), primary_key=True, index=True)
             content = self_adapter._get_content_column()
 
             def get_order_index(self):

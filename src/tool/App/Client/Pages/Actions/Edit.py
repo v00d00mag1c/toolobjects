@@ -17,14 +17,16 @@ class Edit(Displayment):
         if render_as != None:
             edit_display = self.get_for(render_as)
 
-            assert edit_display != None, 'non-editable'
+            try:
+                assert edit_display != None, 'non-editable'
 
-            edit_display = edit_display(request = self.request, context = self.context)
+                edit_display = edit_display(request = self.request, context = self.context)
 
-            results = await edit_display.render_as_edit(item, {})
-            if results != None:
+                results = await edit_display.render_as_edit(item, {})
+                assert results != None
+
                 return results
-            else:
+            except AssertionError as e:
                 self.throw_message('no edit displayment')
 
         custom_saved_via = list()

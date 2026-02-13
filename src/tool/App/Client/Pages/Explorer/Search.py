@@ -40,6 +40,8 @@ class Search(Displayment):
                   'conditions': [],
                   'offset_conditions': [],
                   'ascend': ascend,
+                  'show_tmp': query.get('show_tmp') == 'on',
+                  'storage_root_if_no_collection': True,
                   'sort': []
         }
 

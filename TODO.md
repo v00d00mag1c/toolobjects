@@ -139,6 +139,8 @@ client:
 - [x] execute page
 - [x] thumbnails
 - [x] collection create page
+- [x] menu bookmarks
+- [x] separate bookmarks for each user?
 - [ ] config page
 
 others:

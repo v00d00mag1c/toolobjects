@@ -90,6 +90,12 @@
                     <div>
                         <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}">View as self</a>
                     </div>
+                    <div>
+                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to">View links</a>
+                    </div>
+                    <div>
+                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to&display_page_as={{item._getNameJoined()}}">View links as self</a>
+                    </div>
                 </div>
                 <hr>
                 <div>
@@ -106,8 +112,14 @@
                 <hr>
                 <div>
                     <div>
-                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to">Show links</a>
+                        <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}">{{_("client.objects.edit_fields")}}</a>
                     </div>
+                    <div>
+                        <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}&act=json">{{_("client.objects.edit_json")}}</a>
+                    </div>
+                </div>
+                <hr>
+                <div>
                     <div>
                         <a href="?i=App.DB.Link&item={{item.getDbIds()}}">Link with...</a>
                     </div>
@@ -130,9 +142,6 @@
                     </div>
                     <div>
                         <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}&as={{item._getNameJoined()}}">{{_("client.objects.edit")}}</a>
-                    </div>
-                    <div>
-                        <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}">{{_("client.objects.edit_meta")}}</a>
                     </div>
                     <div>
                         <a href="?i=App.Storage.Movement.Delete&item={{item.getDbIds()}}">Delete</a>

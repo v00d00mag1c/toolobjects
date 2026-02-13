@@ -14,6 +14,8 @@ from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.StorageUUID import StorageUUID
 from Data.Primitives.Collections.Collection import Collection
+from Data.Types.Boolean import Boolean
+from Data.Types.Dict import Dict
 from Web.Bookmarks.Bookmark import Bookmark
 from pathlib import Path
 
@@ -52,20 +54,24 @@ class Client(Server):
 
         return users
 
-    def _get_bookmarks_collection(self):
+    def _get_bookmarks_collection(self, user):
         option_id = 'web.bookmarks.collection_id'
         collection_id = self.getOption(option_id)
+        if collection_id == None:
+            collection_id = {}
+
         collection = None
 
-        if collection_id != None:
-            collection = collection_id.toPython()
-        else:
+        if collection_id.get(user.name) == None:
             common = app.Storage.get('common')
             collection = Collection()
             collection.flush(common)
             collection.save()
+            collection_id[user.name] = collection.getDbIds()
 
-            app.Config.getItem().set(option_id, collection.getDbIds())
+            app.Config.getItem().set(option_id, collection_id)
+        else:
+            collection = StorageUUID.fromString(collection_id.get(user.name)).toPython()
 
         return collection
 
@@ -91,11 +97,12 @@ class Client(Server):
 
                 categories[menu.category_name].append(menu)
 
-        bookmarks_collection = self._get_bookmarks_collection()
+        current_user = self._get_current_user(request)
+        bookmarks_collection = self._get_bookmarks_collection(current_user)
 
         return {
             'app_name': self.getOption('app.name'),
-            'user': self._get_current_user(request),
+            'user': current_user,
             '_': app.Locales.get,
             'request': request,
             'global_app_categories': categories,
@@ -104,6 +111,7 @@ class Client(Server):
             'url_for_object': '?i=App.Objects.Object&uuids=',
             'current_url': request.rel_url,
             'current_url_encoded': quote(str(request.rel_url)),
+            'theme': request.cookies.get('theme'),
             '_app_bookmarks_collection': bookmarks_collection,
             '_app_bookmarks': list(self._check_bookmarks(bookmarks_collection))
         }
@@ -224,7 +232,7 @@ class Client(Server):
             Argument(
                 name = 'web.bookmarks.collection_id',
                 default = None,
-                orig = StorageUUID
+                orig = Dict
             ),
             ListArgument(
                 name = 'web.index.collection',
