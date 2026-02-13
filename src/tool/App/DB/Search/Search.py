@@ -157,7 +157,7 @@ class Search(Act):
 
                 links = None
                 if recursively:
-                    links = await _item.toPython().getLinksRecurisvely()
+                    links = _item.toPython().getLinksRecurisvely()
                 else:
                     links = await _item.toPython().asyncGetLinked()
 

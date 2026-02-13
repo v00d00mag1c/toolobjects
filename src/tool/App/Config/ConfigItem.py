@@ -55,7 +55,11 @@ class ConfigItem(Object):
 
         return got
 
-    def set(self, option: str, value: str):
+    def set(self, option: str, value: str, save_old_values: bool = False):
+        if save_old_values:
+            _val = self.values.values.get(option)
+            self.values.values[option + '.old'] = _val
+
         if value == None:
             del self.values.values[option]
         else:

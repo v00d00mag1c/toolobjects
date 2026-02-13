@@ -51,7 +51,7 @@ class Create(Act):
             channel.save()
 
             if add_to_autostart:
-                autostart.append({
+                _val = {
                     'unused': False,
                     'args': {
                         "i": "App.Objects.Operations.ExecuteIterative",
@@ -61,7 +61,10 @@ class Create(Act):
                         "channel": channel.getDbIds(),
                         "auth": "root"
                     }
-                })
+                }
+
+                await app.Autostart.run_by_dict(_val)
+                autostart.append(_val)
 
             self.log('added channel {0} to autostart'.format(channel.getDbIds()))
 
