@@ -131,6 +131,14 @@ class SQLAlchemy(ConnectionAdapter):
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
 
+            def flush_new_json(self, data: dict = {}):
+                self.content = json.dumps(data)
+
+                self_adapter.log('updated json of ...')
+
+                if self_adapter.auto_commit == True:
+                    self_adapter.commit()
+
             # Link functions
             def getLinks(self, with_role: str = None) -> Generator[CommonLink]:
                 from sqlalchemy import func

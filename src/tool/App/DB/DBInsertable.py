@@ -144,7 +144,7 @@ class DBInsertable():
         if commit == True and self._db._adapter.auto_commit == False:
             self._db._adapter.commit()
 
-    def save(self, do_commit: bool = True) -> bool:
+    def save(self, do_commit: bool = True, do_flush_content: bool = True) -> bool:
         '''
         Updates linked db item if exists (save_hook)
         '''
@@ -154,7 +154,8 @@ class DBInsertable():
         if self.hasDb() == False:
             return True
 
-        self.getDb().flush_content(self)
+        if do_flush_content == True:
+            self.getDb().flush_content(self)
         if do_commit and self._db._adapter.auto_commit == False:
             self._db._adapter.commit()
 

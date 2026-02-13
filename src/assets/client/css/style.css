@@ -113,7 +113,7 @@ form tr input[type='text'] {
 body {
     word-break: break-word;
     word-wrap: break-word;
-    font-family: cursive;
+    font-family: sans-serif;
     background: #9f92cd80;
 }
 

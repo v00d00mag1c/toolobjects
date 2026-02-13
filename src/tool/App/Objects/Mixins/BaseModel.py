@@ -44,6 +44,16 @@ class BaseModel(Model):
     def _get_name(self) -> str:
         return self._getNameJoined()
 
+    def _get_fields(self) -> dict:
+        _res = dict()
+        for key, item in self.to_json().items():
+            if type(item) in [dict, list]:
+                pass
+
+            _res[key] = item
+
+        return _res
+
     @computed_field
     @property
     def any_name(self) -> str:

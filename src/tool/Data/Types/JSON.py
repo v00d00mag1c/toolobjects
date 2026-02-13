@@ -8,6 +8,16 @@ import json
 class JSON(Object):
     data: list | dict | str = Field(default = None)
 
+    @classmethod
+    def asArgument(cls, val):
+        if val == None:
+            return None
+
+        if type(val) == dict:
+            return val
+
+        return cls.fromText(val).data
+
     @staticmethod
     def fromText(text: str):
         _json = JSON()

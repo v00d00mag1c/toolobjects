@@ -13,6 +13,9 @@ class String(Valueable):
         if val == None:
             return None
 
+        if type(val) == str:
+            return val
+
         return str(val)
 
     def asArgumentAsInstance(self, val):

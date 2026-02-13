@@ -25,6 +25,7 @@ class Model(PydanticBaseModel, Section):
         'exclude_defaults': False,
         'by_alias': False,
         'exclude_that_excluded': True,
+        'include_computed_fields': False,
     }
 
     # we can't use __init__ because of fields initialization, so we creating second constructor
@@ -138,12 +139,13 @@ class Model(PydanticBaseModel, Section):
     def to_db_json(self):
         return self.to_json(
             exclude_internal = False,
-            exclude = ['links', 'db_info', 'class_name'],
+            exclude = ['links', 'db_info', 'class_name', 'any_name', 'any_description'],
             exclude_output_values = False,
             convert_links = 'none',
             exclude_none = True,
             exclude_defaults = True,
-            only_class_fields = False
+            only_class_fields = False,
+            include_computed_fields = False
         )
 
     def to_json(self, 
@@ -155,7 +157,8 @@ class Model(PydanticBaseModel, Section):
                 exclude_defaults: bool = False,
                 by_alias: bool = True,
                 include_extra: bool = True,
-                only_class_fields: bool = False):
+                only_class_fields: bool = False,
+                include_computed_fields: bool = True):
         '''
         convert_links: replace LinkInsertions with their "unwrap()" function results
 
@@ -183,6 +186,7 @@ class Model(PydanticBaseModel, Section):
         for item in exclude:
             excludes.append(item)
 
+        # I don't know a way to pass values to serializer
         Model._dump_options['include_extra'] = include_extra
         Model._dump_options['excludes'] = excludes
         Model._dump_options['convert_links'] = convert_links == 'unwrap'
@@ -190,11 +194,13 @@ class Model(PydanticBaseModel, Section):
         Model._dump_options['exclude_none'] = exclude_none
         Model._dump_options['exclude_defaults'] = exclude_defaults
         Model._dump_options['by_alias'] = by_alias
+        Model._dump_options['include_computed_fields'] = include_computed_fields
 
         results = self.model_dump(mode = 'json', 
                 exclude_none = exclude_none,
                 exclude_defaults = exclude_defaults,
-                by_alias = by_alias)
+                by_alias = by_alias,
+                exclude_computed_fields = include_computed_fields == False)
 
         return results
 
@@ -243,7 +249,11 @@ class Model(PydanticBaseModel, Section):
         _defaults = dict()
 
         try:
-            for _item in [self.__class__.model_fields, self.__class__.model_computed_fields]:
+            _fields_to_search = [self.__class__.model_fields]
+            if Model._dump_options['include_computed_fields'] == True:
+                _fields_to_search.append(self.__class__.model_computed_fields)
+
+            for _item in _fields_to_search:
                 for field_name, val in _item.items():
                     _field_names.append(field_name)
                     _defaults[field_name] = getattr(val, 'default', None)

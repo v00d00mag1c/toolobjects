@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit fields
+{% endblock %}
+
+{% block body %}
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><<< back</a>
+
+    <form method="post">
+        {% if act == 'json' %}
+            <textarea name="json">{{json}}</textarea>
+        {% else %}
+            
+        {% endif %}
+
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
