@@ -13,6 +13,10 @@ class CustomObject(Object):
     execution: Optional[Queue] = Field(default = None)
 
     async def execute(self, i):
-        assert self.execution != None, 'object does not contains execution interface'
-
-        return await self.execution.run(i)
+        if self.execution:
+            return await self.execution.run(i)
+        else:
+            if hasattr(super, 'execute'):
+                return await super().execute(i)
+            else:
+                raise AssertionError('object does not contains execution interface')

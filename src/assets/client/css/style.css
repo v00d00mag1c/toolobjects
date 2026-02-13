@@ -65,10 +65,10 @@
     grid-template-columns: 1fr 0fr;
 }
 
-.search_items .search_item a {
+.search_items .search_item .no_id {
     text-decoration: none;
     font-size: 12px;
-    width: 100px;
+    width: max-content;
 }
 
 .less_visible {

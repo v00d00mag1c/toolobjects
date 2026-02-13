@@ -1,0 +1,5 @@
+{% for item in items %}
+    <a href="{{url_for_object}}{{item.getId()}}">
+        {{item.getId()}}
+    </a>
+{% endfor %}

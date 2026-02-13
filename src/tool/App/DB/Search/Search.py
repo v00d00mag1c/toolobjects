@@ -74,6 +74,11 @@ class Search(Act):
                 orig = Boolean,
                 default = False
             ),
+            Argument(
+                name = 'show_internal',
+                orig = Boolean,
+                default = False
+            ),
             ListArgument(
                 name = 'only_object',
                 orig = String,
@@ -236,6 +241,19 @@ class Search(Act):
                 val1 = Value(
                     column = 'content',
                     json_fields = ['obj', 'is_tmp']
+                ),
+                operator = '==',
+                val2 = Value(
+                    value = None
+                )
+            )))
+
+        if i.get('show_internal') == False:
+            _query.addCondition((
+            Condition(
+                val1 = Value(
+                    column = 'content',
+                    json_fields = ['obj', 'is_internal']
                 ),
                 operator = '==',
                 val2 = Value(

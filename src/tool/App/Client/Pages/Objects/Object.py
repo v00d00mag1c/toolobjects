@@ -72,7 +72,7 @@ class Object(Displayment):
         self.context.update({
             'item': item,
             'args': args,
-            'object_show_id': True
+            'object_show_id': args.get('object_show_id', True)
         })
         return self.render_string('Objects/object_listview.html')
 
@@ -83,7 +83,7 @@ class Object(Displayment):
         for item in orig_items:
             try:
                 _d = self.get_for(args.get('display_as'))(request = self.request, context = self.context)
-                _html = await _d.render_as_list_item(item, {})
+                _html = await _d.render_as_list_item(item, {'object_show_id': False})
 
                 html_items.append([item, _html])
             except Exception as e:

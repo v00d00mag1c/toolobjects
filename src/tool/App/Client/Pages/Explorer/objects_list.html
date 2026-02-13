@@ -3,9 +3,11 @@
         {{item[1]|safe}}
 
         {% if item[0].hasDb() %}
-            <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}">
-                <sup>{{item[0].getDbId()}}</sup>
-            </a>
+            <sup class="no_id">
+                <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}">
+                    {{item[0].getDbId()}}
+                </a>
+            </sup>
         {% endif %}
     </div>
 {% endfor %}

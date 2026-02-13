@@ -1,8 +1,10 @@
 <div>
-    <span>{{ String.cut(item.any_name, 90) }}</span>
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&redirect_if_no_displayment=on&ref={{current_url_encoded}}">
+        <span>{{ String.cut(item.any_name, 90) }}</span>
+    </a>
 
     {% if object_show_id %}
-        <sup>
+        <sup class="no_id">
             <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.getDbIds()}}</a>
         </sup>
     {% endif %}

@@ -208,6 +208,10 @@ class Model(PydanticBaseModel, Section):
     def model_validate_override(cls, data: dict | Any):
         return cls.model_validate(data)
 
+    @classmethod
+    async def from_some_api(cls, data: dict | Any):
+        return cls.model_validate_override(data)
+
     def __init_subclass__(cls):
         for item in cls.__mro__:
             if hasattr(item, "init_subclass") == True:

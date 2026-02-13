@@ -28,6 +28,7 @@ class ObjectMeta(Model):
 
     # other 2
     is_tmp: Optional[bool] = Field(default = False)
+    is_internal: Optional[bool] = Field(default = False)
     is_forced: Optional[bool] = Field(default = False)
 
     def set_common_source(self, source: Source):

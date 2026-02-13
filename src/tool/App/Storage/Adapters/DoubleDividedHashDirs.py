@@ -37,6 +37,7 @@ class DoubleDividedHashDirs(StorageAdapter):
         _bytes = 32
 
         _item = StorageUnit()
+        _item.obj.is_internal = True
         _item.hash = secrets.token_hex(_bytes)
 
         _paths = self.pathFromHash(_item.hash)

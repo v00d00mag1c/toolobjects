@@ -1,5 +1,6 @@
 from App.Objects.Extractor import Extractor
 from App.Objects.Object import Object
+from App.Objects.Misc.Abstract import Abstract
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
@@ -19,7 +20,7 @@ class Items(Extractor):
             Argument(
                 name = 'object',
                 orig = Object,
-                assertions = [NotNone()]
+                default = 'App.Objects.Misc.Abstract'
             ),
             ListArgument(
                 name = 'count_key',
@@ -59,7 +60,7 @@ class Items(Extractor):
 
         for item in items:
             try:
-                got_item = _object.model_validate(item)
+                got_item = await _object.from_some_api(item)
                 self.append(got_item)
             except Exception as e:
                 self.log_error(e, exception_prefix = 'Could not load object: ')
