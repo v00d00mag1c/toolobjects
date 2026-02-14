@@ -115,7 +115,6 @@ class JSON(Wheel):
         missing_args_inclusion = True)
 
     async def _implementation(self, i):
-        _object = i.get('object')
         extract = self._get_submodule(i)
 
         assert extract != None, 'not found way'
@@ -161,11 +160,15 @@ class JSON(Wheel):
         if count != None and type(count) == int:
             output_items.set_total_count(count)
 
+        await self._set_items(i, items, output_items)
+
+        return output_items
+
+    async def _set_items(self, i: dict, items: list, output: ObjectsList):
+        _object = i.get('object')
         for item in items:
             try:
                 got_item = await _object.from_some_api(item)
-                output_items.append(got_item)
+                output.append(got_item)
             except Exception as e:
                 self.log_error(e, exception_prefix = 'Could not load object: ')
-
-        return output_items

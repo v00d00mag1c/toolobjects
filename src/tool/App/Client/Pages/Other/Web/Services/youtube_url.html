@@ -1,0 +1,5 @@
+{% for item in items %}
+    <div>
+        <iframe width="{{item.get_width()}}" height="{{item.get_height()}}" src="{{item.get_embed_url()}}" frameborder="0"></iframe>
+    </div>
+{% endfor %}

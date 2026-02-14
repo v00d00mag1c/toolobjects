@@ -128,3 +128,23 @@ class Displayment(Object):
         new_item.save()
 
         return '/?i=App.Objects.Object&uuids=' + new_item.getDbIds()
+
+    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True):
+        args.update({
+            'auth': self.auth
+        })
+
+        if executor_wheel:
+            args.update({
+                'i': object_name
+            })
+
+            object_name = 'App.Objects.Operations.DefaultExecutorWheel'
+
+        obj = app.ObjectsList.getByName(object_name)
+
+        assert obj != None, 'object does not exist'
+
+        executable = obj.getModule()()
+
+        return await executable.execute(args)

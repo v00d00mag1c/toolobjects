@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Save YouTube URL
+{% endblock %}
+
+{% block body %}
+    <form method="POST">
+        <table width="100%">
+            <tbody>
+                <tr>
+                    <td>URL</td>
+                    <td>
+                        <input type="text" name="youtube_url">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="{{_('client.create')}}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

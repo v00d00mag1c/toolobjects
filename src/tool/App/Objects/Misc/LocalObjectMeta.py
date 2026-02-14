@@ -16,6 +16,9 @@ class LocalObjectMeta(Model):
     description: Optional[str] = Field(default=None)
     collection: Optional[bool] = Field(default=False)
 
+    width: Optional[float] = Field(default = None)
+    height: Optional[float] = Field(default = None)
+
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
     edited_at: Optional[datetime] = Field(default=None)
     updated_at: Optional[datetime] = Field(default=None)

@@ -112,12 +112,6 @@ class XML(Wheel):
         missing_args_inclusion = True)
 
     async def _implementation(self, i):
-        import xmltodict
-
-        assert True, 'not implemented'
-
-        selector = i.get('selector')
-        _object = i.get('object')
         extract = self._get_submodule(i)
 
         assert extract != None, 'not found way'
@@ -128,12 +122,20 @@ class XML(Wheel):
         output_items = ObjectsList(items = [])
 
         parsed = Feed.parse(output)
-        for item in parsed.find_all(selector):
+        await self._set_items(i, parsed, output_items)
+
+        return output_items
+
+    async def _set_items(self, i: dict, xml: str, output: ObjectsList):
+        import xmltodict
+
+        selector = i.get('selector')
+        _object = i.get('object')
+
+        for item in xml.find_all(selector):
             try:
                 _data = xmltodict.parse(str(item))
                 got_item = await _object.from_xml(_data)
-                output_items.append(got_item)
+                output.append(got_item)
             except Exception as e:
                 self.log_error(e, exception_prefix = 'Could not load object: ')
-
-        return output_items
