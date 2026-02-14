@@ -96,7 +96,7 @@ class Search(Displayment):
         # getting html of the list
         collection_display = self.get_for(display_page_as)
         if collection_display is None:
-            self.throw_message('no displayment for this', 'error')
+            #self.throw_message('no displayment for this', 'error')
             collection_display = self.get_for(_fallback)
 
         collection_display = collection_display(request = self.request, context = self.context)
@@ -110,7 +110,8 @@ class Search(Displayment):
             'per_page': per_page,
             'params': params,
             'act': act,
-            'show_search': query.get('q') != ''
+            'show_search': query.get('q') != '',
+            'ref': query.get('ref')
         })
 
         if act == 'linked_to':

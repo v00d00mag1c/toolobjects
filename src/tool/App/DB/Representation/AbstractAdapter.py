@@ -52,8 +52,11 @@ class AbstractAdapter():
     def deleteFromDB(self):
         ...
 
-    def toUnknown(self, reason: str = None):
+    def toUnknown(self, reason: str = None, content: dict = None):
         unknown = UnknownObject(reason = reason)
+        if content != None:
+            unknown.original_content = content
+
         unknown.setDb(self)
 
         return unknown

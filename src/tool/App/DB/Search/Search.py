@@ -67,7 +67,7 @@ class Search(Act):
             Argument(
                 name = 'storage_root_if_no_collection.recursively',
                 orig = Boolean,
-                default = True
+                default = False
             ),
             Argument(
                 name = 'show_tmp',
@@ -91,7 +91,7 @@ class Search(Act):
             ),
             Argument(
                 name = 'linked_to.recursively',
-                default = True,
+                default = False,
                 orig = Boolean
             ),
             ListArgument(
@@ -101,7 +101,7 @@ class Search(Act):
             ),
             Argument(
                 name = 'not_linked_to.recursively',
-                default = True,
+                default = False,
                 orig = Boolean
             ),
             ListArgument(
@@ -163,14 +163,20 @@ class Search(Act):
                 links = None
                 if recursively:
                     links = _item.toPython().getLinksRecurisvely()
+
+                    for linked_item in links:
+                        if linked_item.item.hasDb() == False:
+                            continue
+
+                        _ids.append(linked_item.item.getDb().uuid)
                 else:
-                    links = await _item.toPython().asyncGetLinked()
+                    links = _item.toPython().asyncGetLinked()
 
-                for linked_item in links:
-                    if linked_item.item.hasDb() == False:
-                        continue
+                    async for linked_item in links:
+                        if linked_item.item.hasDb() == False:
+                            continue
 
-                    _ids.append(linked_item.item.getDb().uuid)
+                        _ids.append(linked_item.item.getDb().uuid)
 
             _query.addCondition(Condition(
                 val1 = Value(
@@ -191,12 +197,15 @@ class Search(Act):
 
                 links = None
                 if recursively:
-                    links =  root_collection.getLinksRecurisvely()
-                else:
-                    links = await root_collection.asyncGetLinked()
+                    links = root_collection.getLinksRecurisvely()
 
-                for link in links:
-                    _2_uuids.append(link.item.getDbId())
+                    for link in links:
+                        _2_uuids.append(link.item.getDbId())
+                else:
+                    links = root_collection.asyncGetLinked()
+
+                    async for link in links:
+                        _2_uuids.append(link.item.getDbId())
 
                 _query.addCondition(Condition(
                     val1 = Value(

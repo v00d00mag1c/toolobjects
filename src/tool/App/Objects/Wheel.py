@@ -41,19 +41,20 @@ class Wheel(Executable):
 
         extract = _submodule.item()
 
-        self.log(f"Using submodule: {extract._getClassNameJoined()}", section = ['Execute'])
+        self.log(f"Using submodule: {extract._getModuleName()}", section = ['Execute'])
 
         return extract
 
     def _wheel(self, i):
         modules = []
-        for submodule in self.getSubmodules():
+        for submodule in self.getSubmodules(check_repeats = False):
             if 'wheel' not in submodule.role:
                 continue
 
             modules.append(submodule)
 
         if i.get('__wheel_select'):
+            self.log('wheel is selected')
             for item in modules:
                 if item.getItem()._getNameJoined() == i.get('__wheel_select'):
                     return item

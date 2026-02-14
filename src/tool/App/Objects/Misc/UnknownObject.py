@@ -7,3 +7,7 @@ class UnknownObject(Object):
     '''
 
     reason: str = Field(default = None)
+    original_content: dict = Field(default = {})
+
+    def to_db_json(self):
+        return self.original_content

@@ -47,6 +47,7 @@ class ObjectAdapter(AbstractAdapter):
 
     def toPython(self):
         _object_name = None
+        _content = None
 
         try:
             _content = self._parseJson()
@@ -74,7 +75,7 @@ class ObjectAdapter(AbstractAdapter):
 
             app.Logger.log(message = _msg, role = ['error', 'storage.adapter.db.import'])
 
-            return self.toUnknown(reason = _msg2)
+            return self.toUnknown(reason = _msg2, content = _content)
         except Exception as e:
             app.Logger.log(e, role = ['error'])
 

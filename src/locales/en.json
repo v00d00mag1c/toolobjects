@@ -11,6 +11,9 @@
         "client.index.find": "Find",
         "client.index.calculate": "Calculate",
         "client.index.export": "Export",
+
+        "client.navigation.back_to_previous": "Back to previous page",
+
         "client.storages": "Storages",
         "client.storages.add": "Create new storage",
         "client.storages.add.tip": "A new SQLite DB will be created now. You can change connection settings later.",

@@ -11,7 +11,7 @@ class Submodulable:
         return []
 
     @classmethod
-    def getSubmodules(cls, with_role: list[str] | None = None) -> list[Submodule]:
+    def getSubmodules(cls, check_repeats: bool = True, with_role: list[str] | None = None) -> list[Submodule]:
         modules = []
         _names = list()
 
@@ -24,7 +24,7 @@ class Submodulable:
                 continue
 
             for submodule in _items:
-                if submodule.getItem()._getNameJoined() in _names:
+                if check_repeats and submodule.getItem()._getNameJoined() in _names:
                     continue
 
                 if with_role != None:

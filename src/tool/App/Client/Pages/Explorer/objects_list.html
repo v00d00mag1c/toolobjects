@@ -4,7 +4,7 @@
 
         {% if item[0].hasDb() %}
             <sup class="no_id">
-                <a href="?i=App.Objects.Object&uuids={{item[0].getDbIds()}}">
+                <a href="/?i=App.DB.Search&storage={{item[0].getDbName()}}&linked_to={{item[0].getDbIds()}}&ref={{current_url_encoded}}">
                     {{item[0].getDbId()}}
                 </a>
             </sup>

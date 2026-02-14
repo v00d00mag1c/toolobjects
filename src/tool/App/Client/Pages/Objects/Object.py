@@ -45,7 +45,12 @@ class Object(Displayment):
                         displayment.context = self.context
 
                         if displayment.prefer_object_displayment == 'object':
-                            htmls.append((item, await displayment.render_as_object(item)))
+                            try:
+                                htmls.append((item, await displayment.render_as_object(item)))
+                            except Exception as e:
+                                htmls.append(
+                                    (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': str(e)}))
+                                )
                         else:
                             return await displayment.render_as_page({
                                 'item': item

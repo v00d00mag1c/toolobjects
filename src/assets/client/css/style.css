@@ -51,11 +51,9 @@
     right: 0;
     padding: 25px 5px 0px 0px;
     text-align: right;
-
     overflow-y: auto;
-    max-height: 96vh;
-
-    background: #fffcfc85;
+    height: 99vh;
+    background: linear-gradient(270deg, #ffffff, transparent);
 }
 
 .search_items .search_item {

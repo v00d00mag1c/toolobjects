@@ -96,5 +96,10 @@ class AuthLayer(Object):
                 name = 'app.auth.token.refresh_limit',
                 default = 86400,
                 orig = Float
+            ),
+            Argument(
+                name = 'app.permissions.file_access',
+                default = True,
+                orig = Boolean
             )
         ]
