@@ -1,10 +1,12 @@
 from App.Objects.Act import Act
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
+from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Responses.ObjectsList import ObjectsList
 from Data.Primitives.Checkmarks.Checkmark import Checkmark
 from Data.Primitives.Checkmarks.List import List
 from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 
 class AddCheckmark(Act):
     @classmethod
@@ -16,8 +18,14 @@ class AddCheckmark(Act):
                 orig = List
             ),
             Argument(
+                name = 'save_to_list',
+                orig = Boolean,
+                default = True
+            ),
+            Argument(
                 name = 'label',
-                default = False,
+                assertions = [NotNone()],
+                default = '',
                 # literally = True,
                 orig = String
             )
@@ -28,8 +36,12 @@ class AddCheckmark(Act):
         checkmarks = i.get('list')
 
         checkmark = Checkmark()
+        checkmark.label = _label
+        checkmark.local_obj.make_public()
         checkmarks.link(checkmark)
-        checkmark.label = checkmark.link(String(value = _label)).toInsert()
-        checkmark.save()
 
-        return ObjectsList(items = [checkmarks])
+        if i.get('save_to_list'):
+            checkmarks.save()
+            checkmark.save()
+
+        return ObjectsList(items = [checkmark])

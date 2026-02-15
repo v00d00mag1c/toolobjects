@@ -330,7 +330,8 @@ class Server(View):
         if request.method == 'POST':
             _i = await request.post()
         else:
-            _i = await request.json()
+            #_i = await request.json()
+            _i = request.rel_url.query
 
         _i = dict(_i)
 

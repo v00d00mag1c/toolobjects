@@ -62,7 +62,7 @@ class Download(Extractor):
 
                 await item.start(_headers)
 
-            _item = _obj.detect_from_su(_su)
+            _item = _obj.detect_from_su(_su)()
             _item.set_storage_unit(_su)
             _item.obj.set_common_source(Source(
                 obj = _url

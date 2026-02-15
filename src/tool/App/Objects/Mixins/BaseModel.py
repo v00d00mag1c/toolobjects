@@ -42,9 +42,6 @@ class BaseModel(Model):
     def _get_locale_key(self, data: str):
         return self._getClassNameJoined() + '.' + data
 
-    def _get_name(self) -> str:
-        return self._getNameJoined()
-
     def _get_fields(self) -> dict:
         _res = dict()
         for key, item in self.to_json().items():

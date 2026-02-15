@@ -5,141 +5,146 @@
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Storage.Item.List"><<< All</a>
+    <a href="/?i=App.Storage.Item.List"><< All</a>
     <div>
         <h2>{{ item.name }}</h2>
     </div>
 
-    <div>
-        <b>Info</b>
-        <table>
-            <tbody>
-                {% if item.is_export %}
-                    <tr>
-                        <td>{{_("client.storage.via_export")}}</td>
-                        <td>+</td>
-                    </tr>
-                {% endif %}
-                {% if item.root_uuid %}
-                    <tr>
-                        <td>{{_("client.storage.root")}}</td>
-                        <td><a href="?i=App.Objects.Object&uuids={{ item.root_uuid }}">{{ item.root_uuid }}</a></td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>{{_("client.storage.root")}}</td>
-                        <td><a href="/?i=App.Storage.Item.Get&create_root=1&name={{item.name}}">Create</a></td>
-                    </tr>
-                {% endif %}
-                {% if item.allowed_objects %}
-                    <tr>
-                        <td>{{_("client.storage.allowed_objects")}}:</td>
-                        <td>{{ ", ".join(item.allowed_objects) }}</td>
-                    </tr>
-                {% endif %}
-                {% if item.forbidden_objects %}
-                    <tr>
-                        <td>{{_("client.storage.forbidden_objects")}}:</td>
-                        <td>{{ ", ".join(item.forbidden_objects) }}</td>
-                    </tr>
-                {% endif %}
-                <tr>
-                    <td>{{_("client.storage.sizes")}}</td>
-                    {% if storage_size %}
-                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}">{{_("client.index.back")}}</a></td>
-                    {% else %}
-                        <td><a href="?i=App.Storage.Item.Get&name={{item.name}}&calculate=1&calculate_db=1">{{_("client.index.calculate")}}</a></td>
-                    {% endif %}
-                </tr>
-                
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <b>{{_("client.storage.name")}}</b>
-
-        <table>
-            <tbody>
-                <tr>
-                    <td>Type</td>
-                    <td>
-                        <a href="?i=App.Objects.Index.Get&name={{item.storage_type}}">{{ item.storage_type }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{_("client.storage.size")}}</td>
-                    <td>
-                        {% if storage_size and storage_size > -1 %}
-                            <b>{{ FileSize.convert_from(storage_size, 'b', 'mb') }} Mb</b>
-                        {% else %}
-                            ...
+    <div class="adaptive_row">
+        <div>
+            <div>
+                <b>Info</b>
+                <table>
+                    <tbody>
+                        {% if item.is_export %}
+                            <tr>
+                                <td>{{_("client.storage.via_export")}}</td>
+                                <td>+</td>
+                            </tr>
                         {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        {% if item.root_uuid %}
+                            <tr>
+                                <td>{{_("client.storage.root")}}</td>
+                                <td><a href="?i=App.Objects.Object&uuids={{ item.root_uuid }}">{{ item.root_uuid }}</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{_("client.storage.root")}}</td>
+                                <td><a href="/?i=App.Storage.Item.Get&create_root=1&name={{item.name}}">Create</a></td>
+                            </tr>
+                        {% endif %}
+                        {% if item.allowed_objects %}
+                            <tr>
+                                <td>{{_("client.storage.allowed_objects")}}:</td>
+                                <td>{{ ", ".join(item.allowed_objects) }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if item.forbidden_objects %}
+                            <tr>
+                                <td>{{_("client.storage.forbidden_objects")}}:</td>
+                                <td>{{ ", ".join(item.forbidden_objects) }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>{{_("client.storage.sizes")}}</td>
+                            {% if storage_size %}
+                                <td><a href="?i=App.Storage.Item.Get&name={{item.name}}">{{_("client.index.back")}}</a></td>
+                            {% else %}
+                                <td><a href="?i=App.Storage.Item.Get&name={{item.name}}&calculate=1&calculate_db=1">{{_("client.index.calculate")}}</a></td>
+                            {% endif %}
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
 
-        {% if item.adapter %}
-        <b>DB</b>
+            <div>
+                <b>{{_("client.storage.name")}}</b>
 
-        <table>
-            <tbody>
-                <tr>
-                    <td>Type</td>
-                    <td>
-                        <a href="?i=App.Objects.Index.Get&name={{item.db_type}}">{{ item.db_type }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td>
-                        {{ item.adapter.name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Rows count</td>
-                    <td>
-                        {{ rows_count or '...' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Links count</td>
-                    <td>
-                        {{ links_count or '...' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Settings</td>
-                    <td>
-                        <a href="?i=App.Storage.Item.Get&name={{item.name}}&get_settings=1">...</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <a href="?i=App.Objects.Index.Get&name={{item.storage_type}}">{{ item.storage_type }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{_("client.storage.size")}}</td>
+                            <td>
+                                {% if storage_size and storage_size > -1 %}
+                                    <b>{{ FileSize.convert_from(storage_size, 'b', 'mb') }} Mb</b>
+                                {% else %}
+                                    ...
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        {% endif %}
-    </div>
+                {% if item.adapter %}
+                <b>DB</b>
 
-    <hr>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <a href="?i=App.Objects.Index.Get&name={{item.db_type}}">{{ item.db_type }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                {{ item.adapter.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rows count</td>
+                            <td>
+                                {{ rows_count or '...' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Links count</td>
+                            <td>
+                                {{ links_count or '...' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Settings</td>
+                            <td>
+                                <a href="?i=App.Storage.Item.Get&name={{item.name}}&get_settings=1">...</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <div>
-        <div>
-            <a href="/?i=App.DB.Search&storage={{item.name}}&act=linked_to&linked_to_type=item">Search</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="width: 50%;">
+            <div>
+                <div>
+                    <a href="/?i=App.DB.Search&storage={{item.name}}&act=linked_to&linked_to_type=item">Search</a>
+                </div>
+            </div>
+
+            <hr>
+
+            <div>
+                <div>
+                    <a href="/?i=App.Storage.Movement.Export&act=storage&storage={{item.name}}&ref={{current_url_encoded}}">{{_("client.index.export")}}</a>
+                </div>
+            </div>
+
+            <hr>
+
+            <div>
+                <a href="/?i=App.Storage.Clear&name={{item.name}}&ref={{current_url_encoded}}">Clear</a>
+            </div>
         </div>
     </div>
 
-    <hr>
-
-    <div>
-        <div>
-            <a href="/?i=App.Storage.Movement.Export&act=storage&storage={{item.name}}&ref={{current_url_encoded}}">{{_("client.index.export")}}</a>
-        </div>
-    </div>
-
-    <hr>
-
-    <div>
-        <a href="/?i=App.Storage.Clear&name={{item.name}}&ref={{current_url_encoded}}">Clear</a>
-    </div>
 {% endblock %}

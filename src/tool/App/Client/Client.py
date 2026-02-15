@@ -112,6 +112,7 @@ class Client(Server):
             'url_for_object': '?i=App.Objects.Object&uuids=',
             'current_url': request.rel_url,
             'current_url_encoded': quote(str(request.rel_url)),
+            'ref': request.rel_url.query.get('ref'),
             'theme': request.cookies.get('theme'),
             '_app_bookmarks_collection': bookmarks_collection,
             '_app_bookmarks': list(self._check_bookmarks(bookmarks_collection))

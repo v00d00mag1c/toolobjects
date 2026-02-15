@@ -10,11 +10,12 @@
 
 #upper {
     margin-top: -8px;
-    margin-left: 30px;
+    margin-left: 40px;
     display: block;
     width: fit-content;
     min-width: 136px;
     background: #f4caff;
+    box-shadow: 0px -1px 4px 1px #58364d89;
     padding: 3px 7px;
 }
 
@@ -142,7 +143,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 25px;
     padding: 15px 4px;
 }
 
@@ -232,6 +233,12 @@ body {
     width: 130px;
     height: 100%;
     min-height: 80px;
+}
+
+.adaptive_row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 @media (max-width: 1000px) {

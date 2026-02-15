@@ -44,15 +44,18 @@ class Extractor(Executable):
 
     async def _get_virtual_linked(self, with_role = None):
         _items = await self.execute(self.args)
+        _storage = app.Storage.get(self.getDbName())
         for item in _items.getItems():
             item.obj.is_tmp = True
             item.local_obj.make_public()
-            item.flush(app.Storage.get(self.getDbName()))
-            item.save()
+            item.flush(_storage)
+            item.save(do_commit = False)
 
             yield Link(
                 item = item
             )
+
+        _storage.adapter.commit()
 
     async def _implementation(self, i = {}) -> None:
         '''

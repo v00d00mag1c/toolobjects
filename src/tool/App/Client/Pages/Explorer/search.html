@@ -18,7 +18,7 @@ Search
                     {% if _item %}
                         <div>
                             <a href="/?i=App.Storage.Item.Get&name={{_item.name}}">
-                                <<< back
+                                << back
                             </a>
                         </div>
 
@@ -30,7 +30,7 @@ Search
                     {% if _object %}
                         <div>
                             <a href="/?i=App.Objects.Object&uuids={{_object}}">
-                                <<< back
+                                << back
                             </a>
                         </div>
 
@@ -88,6 +88,12 @@ Search
                         <td>Show unlisted</td>
                         <td>
                             <input type="checkbox" name="show_unlisted" {% if params.get('show_unlisted') == 'on' %}checked{% endif %}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Show temporary</td>
+                        <td>
+                            <input type="checkbox" name="show_tmp" {% if params.get('show_tmp') %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>

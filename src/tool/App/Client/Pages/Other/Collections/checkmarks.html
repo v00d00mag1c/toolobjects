@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{items[0].any_name}}
+{% endblock %}
+
+{% block body %}
+    {% for item in items %}
+        <div style="margin-top: 10px;">
+            <b>{{item.any_name}}</b>
+            <div>
+                <table id="checkmarks">
+                    <tbody>
+                        {% for checkmark in item.getCheckmarks() %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" 
+                                    onchange="_check_mark(event)" 
+                                    data-checkbox="{{checkmark.getDbIds()}}"
+                                    {% if checkmark.state %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                </td>
+                                <td>
+                                    {{checkmark.get_label_text()}}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <form method="post" style="margin-top: 10px;">
+            <input type="hidden" name="act" value="add_checkmark">
+            <input type="hidden" name="uuid" value="{{item.getDbIds()}}">
+
+            <span>New task</span>
+            <input type="text" name="todolist_new_task_name">
+            <input type="submit" value="Add">
+        </form>
+    {% endfor %}
+
+    <script>
+        function _check_mark(event) {
+            const value = event.target.checked
+            const id = event.target.dataset.checkbox
+            call({
+                'i': 'Data.Primitives.Checkmarks.SetChecked',
+                'item': id,
+                'state': Number(value)
+            })
+        }
+    </script>
+{% endblock %}

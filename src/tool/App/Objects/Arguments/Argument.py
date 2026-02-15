@@ -97,14 +97,14 @@ class Argument(NameContainable):
             return _orig.asArgumentAsInstance(val)
 
     def _by_id(self, val: str):
-        _orig = self.getOrig()
         if StorageUUID.validate(val):
             _val = StorageUUID.fromString(val).toPython()
-            # for listargument
-            if callable(_orig) == False:
-                return _orig.asArgumentAsInstance(_val)
 
             return _val
+
+        # maybe move to BaseModel.isMeets()
+        if val.hasDb():
+            return val
 
     def getOrig(self) -> Object:
         return self.orig

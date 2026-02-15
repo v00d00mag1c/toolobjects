@@ -8,6 +8,7 @@ class Config(Displayment):
 
     @classmethod
     def get_menu(cls) -> Item:
+        return None
         return Item(
             url = cls.for_object,
             name = "client.config",

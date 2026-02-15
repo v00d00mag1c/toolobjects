@@ -43,6 +43,7 @@ class Object(Displayment):
                         displayment = _class()
                         displayment.request = self.request
                         displayment.context = self.context
+                        displayment.auth = self.auth
 
                         if displayment.prefer_object_displayment == 'object':
                             try:

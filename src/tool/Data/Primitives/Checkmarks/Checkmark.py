@@ -1,12 +1,22 @@
 from App.Objects.Object import Object
 from App.Objects.Act import Act
 from App.Objects.Relations.LinkInsertion import LinkInsertion
-from Data.Types.String import String
+from App.Objects.Operations.Create.CreationItem import CreationItem
 from pydantic import Field
 
 class Checkmark(Object):
     state: bool = Field(default = False)
-    label: String | LinkInsertion = Field(default = None)
+    label: str | LinkInsertion = Field(default = None)
+
+    def get_label_text(self):
+        label = self._get('label')
+        if label == None:
+            return '...'
+
+        if type(label) == str:
+            return label
+        else:
+            return 'label no text'
 
     def _display_as_string(self):
         _mark = "[ ]"
@@ -20,3 +30,13 @@ class Checkmark(Object):
             _label_text = _label.value
 
         return "\n" + _mark + " " + _label_text + ' \n'
+
+    @classmethod
+    def _creations(cls) -> list:
+        return [
+            CreationItem(
+                name = 'TODO List',
+                object_name = 'Data.Primitives.Checkmarks.List',
+                create = 'Data.Primitives.Checkmarks.CreateList'
+            ),
+        ]

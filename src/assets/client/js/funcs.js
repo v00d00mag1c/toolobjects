@@ -12,3 +12,14 @@ function bookmark_this_page() {
     const title = encodeURIComponent(document.title.split(' — ')[0])
     window.location.assign(`/?i=App.Client.Bookmark&title=${title}&url=${url}`)
 }
+
+async function call(args = {}) {
+    const formdata = new FormData()
+    Object.entries(args).forEach(item => {
+      formdata.append(item[0], item[1])
+    })
+    return fetch('/api', {
+      'method': 'POST',
+      'body': formdata
+    })
+}

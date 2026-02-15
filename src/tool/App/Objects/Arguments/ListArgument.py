@@ -22,9 +22,7 @@ class ListArgument(Argument):
 
         if type(val) == list:
             for item in val:
-                if StorageUUID.validate(item):
-                    _val = StorageUUID.fromString(item).toPython()
-                    returns.append(_val)
+                returns.append(super()._by_id(item))
         else:
             returns.append(super()._by_id(val))
 

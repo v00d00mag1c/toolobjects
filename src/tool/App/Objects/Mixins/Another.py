@@ -2,6 +2,9 @@ from pydantic import computed_field
 from App.Objects.Mixins.Model import Model
 
 class Another():
+    def _get_name(self) -> str:
+        return self._getNameJoined()
+
     def get_width(self) -> float:
         if self.obj.width:
             return self.obj.width
