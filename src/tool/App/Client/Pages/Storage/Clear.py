@@ -7,16 +7,19 @@ class Clear(Displayment):
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
+        act = query.get('act')
         storage_name = query.get('name')
         self.context.update({
-            'ref': query.get('ref')
+            'storage_name': storage_name,
+            'ref': query.get('ref'),
+            'act': act
         })
 
         if self.is_post():
             data = await self.request.post()
-            act = data.get('act')
+            post_act = data.get('act')
 
-            match (act):
+            match (post_act):
                 case 'storage':
                     await RealClear().execute({
                         'storage': storage_name
@@ -25,7 +28,16 @@ class Clear(Displayment):
                     await ClearTemp().execute({
                         'storage': storage_name
                     })
+                case 'clear_all':
+                    await self._execute('App.Storage.Item.Delete', {
+                        'storage': storage_name
+                    })
+                    return self.redirect('/?i=App.Storage.Item.List')
 
             return self.redirect('/?i=App.Storage.Item.Get&name=' + storage_name)
+
+        match (act):
+            case 'clear_all':
+                return self.render_template('Storage/clear.html')
 
         return self.render_template('Storage/clear.html')

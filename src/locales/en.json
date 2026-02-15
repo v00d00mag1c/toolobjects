@@ -12,6 +12,7 @@
         "client.index.calculate": "Calculate",
         "client.index.export": "Export",
 
+        "client.navigation": "Menu",
         "client.navigation.back_to_previous": "Back to previous page",
 
         "client.storages": "Storages",
@@ -31,7 +32,8 @@
         "client.storage.export.as_zip": "as zip",
         "client.storage.clear": "Clear",
         "client.storage.clear.storage": "Clear files",
-        "client.storage.clear.tmp": "Clear temporary files",
+        "client.storage.clear.all": "Remove everything",
+        "client.storage.clear.tmp": "Clear temporary",
         "client.collections.name": "Name",
         "client.collections.type": "Prototype",
         "client.objects.copy": "Copy",

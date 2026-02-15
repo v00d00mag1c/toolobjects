@@ -1,10 +1,11 @@
 #content {
-    padding: 0px 160px 0px 0px;
+    padding: 40px 160px 0px 40px;
 }
 
 #content #page {
     background: #fcfcfc;
     padding: 20px 30px 20px 30px;
+    box-shadow: 5px 5px 10px 1px #00000052;
 }
 
 #upper {
@@ -231,4 +232,36 @@ body {
     width: 130px;
     height: 100%;
     min-height: 80px;
+}
+
+@media (max-width: 1000px) {
+    #content {
+        padding: 0px;
+        width: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 25px;
+    }
+
+    body * {
+        font-size: 25px;
+    }
+
+    #floating_menu {
+        background: white;
+        padding: 25px 10px 0px 9px;
+        opacity: 1;
+        display: none;
+    }
+
+    #upper_bar {
+        height: 100px;
+    }
+
+    #upper_divider {
+        display: none;
+    }
 }

@@ -12,16 +12,23 @@ class Index(Displayment):
             'storages': app.Storage.getAll()
         })
 
-        menu_collections = self.getOption('web.index.collection')
-        if menu_collections:
-            generators = list()
-            for item in menu_collections:
-                for link in item.toPython().getLinked():
-                    generators.append(link)
+        try:
+            menu_collections = self.getOption('web.index.collection')
+            if menu_collections:
+                generators = list()
+                for item in menu_collections:
+                    _item = item.toPython()
+                    if _item == None:
+                        continue
 
-            self.context.update({
-                'generators': generators
-            })
+                    for link in _item.getLinked():
+                        generators.append(link)
+
+                self.context.update({
+                    'generators': generators
+                })
+        except Exception as e:
+            self.log_error(e)
 
         return self.render_template('index.html')
 

@@ -172,7 +172,7 @@ class ByDir(Extractor):
                 _execute_vals['set_info'] = True
                 _execute_vals['path'] = item.get('items')
 
-                vals = await ByPath().execute(_execute_vals)
+                vals = await i.get('object')._get_submodule_by_last('ByPath')().execute(_execute_vals)
                 coll = item.get('coll')
 
                 for item in vals.getItems():

@@ -25,9 +25,7 @@
 
     {% endfor %}
 
-    {% if is_index and len(_app_bookmarks) == 0 %}
-        <span></span>
-    {% else %}
+    {% if is_index == False and len(_app_bookmarks) > 0 and _app_bookmarks_collection != None %}
         <a href="?i=App.DB.Search&storage={{_app_bookmarks_collection.getDbName()}}&linked_to={{_app_bookmarks_collection.getDbIds()}}&show_unlisted=on">
             <b>Bookmarks</b>
         </a>

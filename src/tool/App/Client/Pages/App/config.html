@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Config
+{% endblock %}
+
+{% block body %}
+    {% if act == 'edit' %}
+        <div>
+            <a href="?i=App.Config"><<<</a>
+        </div>
+        <div>
+            <form method="post">
+                <b>{{key}}</b>
+                <div>
+                    <textarea name="config_value">{{val|safe }}</textarea>
+                </div>
+                <div>
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <table>
+            <tbody>
+                {% for key, item in keys.items() %}
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>
+                            <a href="?i=App.Config&act=edit&key={{key}}">edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

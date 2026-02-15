@@ -64,3 +64,6 @@ class ConnectionAdapter(Object, Protocol):
     @abstractmethod
     def destroy(self):
         ...
+
+    def delete_everything(self):
+        pass

@@ -24,7 +24,11 @@ class Text(Media):
         if self.has_set_from_file:
             return self.value
         else:
-            return self.get_file().getPath().read_text(encoding = self.encoding)
+            _path = self.get_file().getPath()
+            if self.encoding:
+                return _path.read_text(encoding = self.encoding)
+            else:
+                return _path.read_text(encoding = 'utf-8')
 
     @classmethod
     def get_page_js_selectors(cls):

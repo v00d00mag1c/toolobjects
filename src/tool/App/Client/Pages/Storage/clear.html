@@ -5,18 +5,39 @@
 {% endblock %}
 
 {% block body %}
-    <div>
+    {% if act == 'clear_all' %}
+        <form method="post">
+            <input type="hidden" name="act" value="clear_all">
+            <p>Are you sure?</p>
+            <p>Storage will be recreated on restart.</p>
+            <div style="display: flex;justify-content: space-between;">
+                <a href="/?i=App.Storage.Item.Get&name={{storage_name}}">
+                    <input type="button" value="No">
+                </a>
+
+                <input type="submit" value="Yes">
+            </div>
+            
+        </form>
+    {% else %}
         <div>
-            <form method="POST">
-                <input type="hidden" name="act" value="storage">
-                <input type="submit" value="{{_('client.storage.clear.storage')}}">
-            </form>
+            <div>
+                <form method="POST">
+                    <input type="hidden" name="act" value="storage">
+                    <input type="submit" value="{{_('client.storage.clear.storage')}}">
+                </form>
+            </div>
+            <div>
+                <form method="POST">
+                    <input type="hidden" name="act" value="tmp">
+                    <input type="submit" value="{{_('client.storage.clear.tmp')}}">
+                </form>
+            </div>
+            <div>
+                <a href="/?i=App.Storage.Clear&name={{storage_name}}&act=clear_all">
+                    <input type="button" value="{{_('client.storage.clear.all')}}">
+                </a>
+            </div>
         </div>
-        <div>
-            <form method="POST">
-                <input type="hidden" name="act" value="tmp">
-                <input type="submit" value="{{_('client.storage.clear.tmp')}}">
-            </form>
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}

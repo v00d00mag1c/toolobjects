@@ -11,6 +11,13 @@ class Submodulable:
         return []
 
     @classmethod
+    def _get_submodule_by_last(cls, name: str, with_role: list[str] = None):
+        for module in cls.getSubmodules(with_role = with_role):
+            if module.getItem()._getModuleName() == name:
+                return module.getItem()
+
+    # why not generator?
+    @classmethod
     def getSubmodules(cls, check_repeats: bool = True, with_role: list[str] | None = None) -> list[Submodule]:
         modules = []
         _names = list()

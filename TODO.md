@@ -141,7 +141,7 @@ client:
 - [x] collection create page
 - [x] menu bookmarks
 - [x] separate bookmarks for each user?
-- [ ] config page
+- [x] config page
 - [ ] do not set langs for every user
 
 others:

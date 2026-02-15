@@ -60,6 +60,11 @@ class StorageItem(Object):
     def has_storage_adapter(self) -> bool:
         return self.storage_adapter != None
 
+    def delete(self):
+        self.adapter.delete_everything()
+        self.adapter.destroy()
+        self.storage_adapter.destroy()
+
     def destroy(self):
         self.adapter.destroy()
         self.storage_adapter.destroy()
