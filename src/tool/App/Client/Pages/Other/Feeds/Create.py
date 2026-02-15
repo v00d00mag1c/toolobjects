@@ -1,5 +1,4 @@
 from App.Client.Displayment import Displayment
-from Web.Feeds.Create import Create as FeedCreate
 from App.Storage.Item.StorageItem import StorageItem
 
 class Create(Displayment):
@@ -20,25 +19,24 @@ class Create(Displayment):
             data = await self.request.post()
             url = data.get('url')
 
-            assert url != '', 'url = null'
-
-            refresh_every = data.get('refresh_every', None)
-
             _storage = None
             if item.isInstance(StorageItem):
                 _storage = item.name
             else:
                 _storage = item.getDbName()
 
-            items = await FeedCreate().execute({
+            assert url != '', 'url = null'
+
+            refresh_every = data.get('refresh_every', None)
+            new_items = await self._execute('Web.Feeds.Create', {
                 'url': url,
                 'refresh_every': refresh_every,
                 'save_to': [_storage]
             })
+            new_item = new_items.items[0]
 
-            for item in items.getItems():
-                item.local_obj.make_public()
+            self._flush_creation(item, new_item)
 
-            return self.redirect('/?i=App.Objects.Object&uuids=' + items.get(0).getDbIds())
+            return self.redirect('/?i=App.Objects.Object&uuids=' + new_item.getDbIds())
 
         return self.render_template('Other/Feeds/create.html')

@@ -42,6 +42,7 @@
         "client.objects.copy.title": "Copy to another storage",
         "client.objects.uuids": "UUIDs",
         "client.objects.edit.allow_dynamic_links": "Allow dynamic links",
+        "client.objects.prototype_name": "Prototype name",
 
         "client.index.logged_as": "Logged as <span>{0}</span>.",
         "client.index.logout": "Logout",
@@ -49,12 +50,15 @@
         "client.objects": "Objects",
         "client.object.execute": "Execute",
         "client.index.custom": "Custom",
+
         "client.namespaces.all": "All",
         "client.namespaces.by_name": "By name",
         "client.namespaces.path": "Path",
         "client.namespaces": "Namespaces",
         "client.namespaces.enabled": "Enabled",
         "client.namespaces.other": "Other",
+        "client.namespaces.load_all.and.not_recomended": "Load all objects",
+
         "client.displayments": "Displayments",
         "client.config": "Config",
         "client.management": "Management",

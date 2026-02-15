@@ -6,6 +6,7 @@ from App.Objects.Arguments.Argument import Argument
 from Data.Types.Boolean import Boolean
 from bs4 import BeautifulSoup
 from bs4.dammit import EncodingDetector
+from App.Objects.Operations.Create.CreationItem import CreationItem
 
 class Feed(Object):
     @classmethod
@@ -42,3 +43,13 @@ class Feed(Object):
                 default = True
             )
         ])
+
+    @classmethod
+    def _creations(cls) -> list:
+        return [
+            CreationItem(
+                name = 'RSS Feed',
+                object_name = 'Web.Feeds.Elements.Channel',
+                create = 'Web.Feeds.Create'
+            )
+        ]

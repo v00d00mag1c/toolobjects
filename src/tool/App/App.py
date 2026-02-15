@@ -112,25 +112,10 @@ class App(Object):
                     create = 'Data.Primitives.Collections.Create',
                 ),
                 CreationItem(
-                    name = 'Media',
-                    object_name = 'Media.Media',
-                    create = 'Media.Get'
-                ),
-                CreationItem(
-                    name = 'RSS Feed',
-                    object_name = 'Web.Feeds.Elements.Channel',
-                    create = 'Web.Feeds.Create'
-                ),
-                CreationItem(
-                    name = 'Web page',
-                    object_name = 'Web.Pages.Page',
-                    create = 'Web.Pages.Get'
-                ),
-                CreationItem(
-                    name = 'Text',
-                    object_name = 'Media.Text.Text',
-                    create = 'Media.Text.Get'
-                ),
+                    name = 'Anything',
+                    object_name = 'App.Objects.Misc.Abstract',
+                    create = 'App.Objects.Misc.Abstract.Create',
+                )
             ]
         )
         self.objects.load()

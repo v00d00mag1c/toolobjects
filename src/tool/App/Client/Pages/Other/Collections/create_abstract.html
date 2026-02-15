@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.storages.create_collection.title")}}
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <table>
+            <tbody>
+                <tr>
+                    <td>{{_("client.objects.prototype_name")}}</td>
+                    <td>
+                        <input value="App.Objects.Misc.Abstract" type="text" name="prototype_name">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td>Add fields</td>
+                <td>
+                    <input style="width:70%" onkeypress="_onkeypress(event)" type="text" id="_add_name">
+                    <input type="button" onclick="_add()" value="Insert">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="{{_('client.create')}}">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script>
+        function _onkeypress(event) {
+            if (event.key == 'Enter') {
+                event.preventDefault()
+            }
+        }
+
+        function _add(name) {
+            if (name == null) {
+                name = document.querySelector('#_add_name').value
+                document.querySelector('#_add_name').value = ''
+            }
+            if (name == '') {
+                return
+            }
+            document.querySelector('tbody').insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${escapeHtml(name)}</td>
+                    <td>
+                        <textarea name="field_${escapeHtml(name)}"></textarea>
+                    </td>
+                </tr>
+            `)
+        }
+    </script>
+{% endblock %}

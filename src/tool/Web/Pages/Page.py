@@ -4,10 +4,12 @@ from Web.Pages.HTMLFile import HTMLFile
 from Web.Pages.Assets.Asset import Asset
 from Web.Pages.Assets.Favicon import Favicon
 from Web.Pages.Assets.Meta import Meta
+from Web.Pages.Assets.Link import Link
 from typing import Any
 from pydantic import Field
 from App.Objects.Requirements.Requirement import Requirement
 from Web.Pages.Crawler.Webdrivers.WebdriverPage import WebdriverPage
+from App.Objects.Operations.Create.CreationItem import CreationItem
 
 class Page(Object):
     _downloader: Any = None
@@ -19,7 +21,8 @@ class Page(Object):
     assets: list[Asset] = Field(default = None)
     favicons: list[Favicon] = Field(default = [])
     meta_tags: list[Meta] = Field(default = [])
-    page_links: list = Field(default = [])
+    page_links: list[Link] = Field(default = [])
+
     url: str = Field(default = None)
     base_url: str = Field(default = None)
     relative_url: str = Field(default = None)
@@ -122,5 +125,15 @@ class Page(Object):
             Requirement(
                 name = 'ua-generator',
                 version = '2.0.19'
+            )
+        ]
+
+    @classmethod
+    def _creations(cls) -> list:
+        return [
+            CreationItem(
+                name = 'Web page',
+                object_name = 'Web.Pages.Page',
+                create = 'Web.Pages.Get'
             )
         ]

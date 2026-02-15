@@ -5,6 +5,7 @@ from App.Objects.Relations.Submodule import Submodule
 from Web.HTTP.RequestHeaders import RequestHeaders
 from Data.Types.String import String
 from App.Objects.Responses.ObjectsList import ObjectsList
+from App.Objects.Operations.Create.CreationItem import CreationItem
 
 class Text(Media):
     value: str | LinkInsertion = Field(default = '')
@@ -81,3 +82,13 @@ class Text(Media):
             ))
 
         return _objs
+
+    @classmethod
+    def _creations(cls) -> list:
+        return [
+            CreationItem(
+                name = 'Text',
+                object_name = 'Media.Text.Text',
+                create = 'Media.Text.Get'
+            )
+        ]

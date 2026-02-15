@@ -11,12 +11,3 @@ class CustomObject(Object):
     arguments: Optional[ArgumentDict] = Field(default = None)
     submodules: Optional[list[Submodule]] = Field(default = None)
     execution: Optional[Queue] = Field(default = None)
-
-    async def execute(self, i):
-        if self.execution:
-            return await self.execution.run(i)
-        else:
-            if hasattr(super, 'execute'):
-                return await super().execute(i)
-            else:
-                raise AssertionError('object does not contains execution interface')

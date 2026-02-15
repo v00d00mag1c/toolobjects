@@ -7,7 +7,19 @@ class Namespace(Displayment):
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
+        act = query.get('act')
         namespace = app.ObjectsList.get_namespace_with_name(query.get('name'))
+
+        match(act):
+            case 'load_all':
+                if namespace:
+                    for item in namespace.getItems():
+                        try:
+                            item.getModule()
+                        except Exception:
+                            pass
+
+                    return self.redirect('/?i=App.Objects.Index.Namespaces.Get&name=' + namespace.name)
 
         _items = None
         if namespace:

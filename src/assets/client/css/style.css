@@ -1,6 +1,10 @@
 #content {
+    padding: 0px 160px 0px 0px;
+}
+
+#content #page {
     background: #fcfcfc;
-    padding: 10px 160px 10px 30px;
+    padding: 20px 30px 20px 30px;
 }
 
 #upper {
@@ -15,7 +19,7 @@
 
 #upper_bar {
     width: 100%;
-    height: 25px;
+    height: 23px;
     left: 0;
     position: absolute;
     z-index: -1;
@@ -211,4 +215,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.objects_tree a.not_loaded {
+    color: gray;
 }

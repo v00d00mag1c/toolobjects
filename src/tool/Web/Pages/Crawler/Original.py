@@ -72,7 +72,7 @@ class Original(Object):
 
                     self.log('assets: downloaded {0}'.format(_url), role = _roles)
                 except Exception as e:
-                    self.log_error(e, exception_prefix = 'error downloading asset {0}: '.format(_url), role = _roles)
+                    self.log_error('error downloading asset {0}'.format(_url), role = list(_roles))
 
             request.done = True
 
@@ -81,6 +81,7 @@ class Original(Object):
 
     async def crawl(self, page: Page, i: dict):
         remove_scripts = i.get('scripts.remove')
+        download_assets = i.get('crawler.download_other_assets')
 
         await asyncio.sleep(i.get('crawler.sleep.before_crawl'))
 
@@ -128,8 +129,12 @@ class Original(Object):
                         found_asset = asset
 
                 if found_asset == None and item.has_url():
+                    if download_assets == False:
+                        continue
+
                     try:
-                        await item.download_function(page.html.get_assets_dir(), self.i.getIndex())
+                        pass
+                        #await item.download_function(page.html.get_assets_dir(), self.i.getIndex())
                     except Exception as e:
                         self.log_error(e, exception_prefix='assets downloading error: ', role = ['crawler.asset.download'])
 
@@ -140,13 +145,10 @@ class Original(Object):
             page.favicons.append(item)
 
         for meta in html.get_meta(page):
-            _name = meta.get_name()
-            #if _name == None:
-            #    self.log('metatag {0} = {1}'.format(_name, meta.get_content()))
-            #else:
-            #    self.log('metatag: no name')
-
             page.meta_tags.append(meta)
+
+        for link in html.get_links(page):
+            page.page_links.append(link)
 
         #if remove_scripts:
         #    try:
@@ -167,17 +169,17 @@ class Original(Object):
             Argument(
                 name = 'crawler.network_timeout',
                 orig = Float,
-                default = 5000
+                default = 5
             ),
             Argument(
                 name = 'crawler.sleep.before_crawl',
                 orig = Float,
-                default = 10
+                default = 2
             ),
             Argument(
                 name = 'crawler.sleep.before_html',
                 orig = Float,
-                default = 10
+                default = 2
             ),
             Argument(
                 name = 'crawler.screenshot.save',
@@ -186,6 +188,11 @@ class Original(Object):
             ),
             Argument(
                 name = 'data.save_urls',
+                orig = Boolean,
+                default = True
+            ),
+            Argument(
+                name = 'crawler.download_other_assets',
                 orig = Boolean,
                 default = True
             ),

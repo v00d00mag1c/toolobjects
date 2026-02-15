@@ -99,6 +99,7 @@ class ObjectsList(Object):
         return _item
 
     def get_creations(self):
+        obj_names = list()
         for item in self.namespaces:
             # getting creations (whatever they are), firstly getting them from namespaces 
             for obj in item.get_creation_items():
@@ -108,6 +109,11 @@ class ObjectsList(Object):
                 if obj.is_inited and obj.object_name != 'ObjectsList':
                     try:
                         for creation in obj.getModule().get_creations():
+                            if creation.object_name in obj_names:
+                                continue
+
+                            obj_names.append(creation.object_name)
+
                             yield creation
                     except Exception as e:
                         self.log_error(e)

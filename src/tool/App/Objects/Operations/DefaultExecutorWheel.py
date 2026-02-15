@@ -75,24 +75,25 @@ class DefaultExecutorWheel(Act):
             results.append(item_that_executed)
 
         if results.isInstance(ObjectsList):
-            if results.should_be_saved() == True and i.get('do_save'):
-                save_to = i.get('save_to')
-                if save_to != None and len(save_to) > 0:
-                    try:
-                        _new = i.toDict()
-                        _new.update({
-                            'items': results,
-                            'storage': save_to,
-                            'auth': i.get('auth'),
-                            'ignore_errors': i.get('ignore_errors'),
-                            'ignore_flush_hooks': i.get('ignore_flush_hooks', results.ignore_flush_hooks)
-                        })
+            if i.get('do_save'):
+                if results.should_be_saved() == True:
+                    save_to = i.get('save_to')
+                    if save_to != None and len(save_to) > 0:
+                        try:
+                            _new = i.toDict()
+                            _new.update({
+                                'items': results,
+                                'storage': save_to,
+                                'auth': i.get('auth'),
+                                'ignore_errors': i.get('ignore_errors'),
+                                'ignore_flush_hooks': i.get('ignore_flush_hooks', results.ignore_flush_hooks)
+                            })
 
-                        await Save().execute(_new)
-                    except Exception as e:
-                        self.log_error(e)
-            else:
-                self.log('result cannot be saved')
+                            await Save().execute(_new)
+                        except Exception as e:
+                            self.log_error(e)
+                else:
+                    self.log('result cannot be saved')
 
         return results
 

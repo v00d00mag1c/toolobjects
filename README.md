@@ -1,4 +1,4 @@
-### toolobjects
+### toolobjects / escapysm
 
 Experimental framework that provides object system.
 

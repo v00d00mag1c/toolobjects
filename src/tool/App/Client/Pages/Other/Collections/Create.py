@@ -3,7 +3,7 @@ from Data.Primitives.Collections.Create import Create as RealCreate
 from App import app
 
 class Create(Displayment):
-    for_object = 'Data.Primitives.Collections.Create'
+    for_object = ['Data.Primitives.Collections.Create']
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
@@ -16,7 +16,7 @@ class Create(Displayment):
         if self.is_post():
             data = await self.request.post()
 
-            new_items = await RealCreate().execute({
+            new_items = await self._execute(self.for_object[0], {
                 'name': data.get('name'),
                 'collection_type': data.get('prototype'),
             })

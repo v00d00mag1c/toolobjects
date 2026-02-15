@@ -45,16 +45,21 @@ class Page(Displayment):
         if query.get('encoding') != None:
             encoding = query.get('encoding')
 
-        hide_banner = query.get('hide_banner') == '1'
+        hide_banner = query.get('hide_banner') == 'on'
+        disable_js = query.get('disable_js') == 'on'
+        disable_css = query.get('disable_css') == 'on'
+        disable_iframes = query.get('disable_iframes', 'on') == 'on'
         html_path = item._get('html').get_main()
 
         html = html_path.read_text(encoding = encoding)
 
         html = PageHTML.from_html(html)
-        if query.get('disable_js') == 'on':
+        if disable_js:
             html.clear_js()
-        if query.get('disable_css') == 'on':
+        if disable_css:
             html.remove_css()
+        if disable_iframes:
+            html.remove_iframes()
 
         html.make_correct_links(item)
         head_html = html.move_head()

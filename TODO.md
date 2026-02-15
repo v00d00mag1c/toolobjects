@@ -142,6 +142,7 @@ client:
 - [x] menu bookmarks
 - [x] separate bookmarks for each user?
 - [ ] config page
+- [ ] do not set langs for every user
 
 others:
 

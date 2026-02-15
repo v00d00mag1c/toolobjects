@@ -27,7 +27,6 @@ class CustomLoadedObject(LoadedObject):
             '__module__': self.get_name_for_dictlist()
         })
 
-        # ???
         if obj.arguments != None:
             @classmethod
             def _arg_func(cls):
@@ -41,6 +40,12 @@ class CustomLoadedObject(LoadedObject):
                 return obj.submodules
 
             new._submodules = _submodules_func
+
+        if obj.execution != None:
+            async def _implementation(self, i):
+                return await obj.execution.run(i)
+
+            new._implementation = _implementation
 
         return new
 

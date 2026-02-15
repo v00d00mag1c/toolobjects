@@ -2,6 +2,7 @@ from Media.Files.FileType import FileType
 from typing import ClassVar
 from Web.HTTP.RequestHeaders import RequestHeaders
 from App.Objects.Relations.Submodule import Submodule
+from App.Objects.Operations.Create.CreationItem import CreationItem
 from App import app
 
 class Media(FileType):
@@ -114,3 +115,13 @@ class Media(FileType):
         new.save()
 
         return new
+
+    @classmethod
+    def _creations(cls) -> list:
+        return [
+            CreationItem(
+                name = 'Media',
+                object_name = 'Media.Media',
+                create = 'Media.Get'
+            ),
+        ]

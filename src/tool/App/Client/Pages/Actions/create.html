@@ -8,7 +8,7 @@ Create
     <div>
         {% for item in creations %}
             <div>
-                <a href="/?i={{item.create}}&storage={{storage or ''}}&item={{db_item or ''}}">{{item.name}}</a>
+                <a href="/?i={{item.create}}&storage={{storage or ''}}&item={{db_item or ''}}&ref={{current_url_encoded}}">{{item.name}}</a>
             </div>
         {% endfor %}
     </div>

@@ -81,7 +81,7 @@ class URL(Object):
         return 300
 
     @classmethod
-    def get_creations(cls) -> list:
+    def _creations(cls) -> list:
         return [
             CreationItem(
                 name = 'YouTube URL',

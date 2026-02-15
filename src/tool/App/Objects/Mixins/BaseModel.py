@@ -4,6 +4,7 @@ from App.Objects.Misc.LocalObjectMeta import LocalObjectMeta
 from App.Objects.Misc.SavedVia import SavedVia
 from App.Objects.Mixins.Model import Model
 from pydantic import Field, model_validator, computed_field
+from App import app
 
 class BaseModel(Model):
     obj: ObjectMeta = Field(default = ObjectMeta())
@@ -54,6 +55,67 @@ class BaseModel(Model):
 
         return _res
 
+    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True, auth_from_self: bool = True):
+        if auth_from_self and hasattr(self, 'auth'):
+            args.update({
+                'auth': self.auth,
+            })
+
+        if executor_wheel:
+            args.update({
+                'i': object_name,
+                'do_save': 0
+            })
+
+            object_name = 'App.Objects.Operations.DefaultExecutorWheel'
+
+        obj = app.ObjectsList.getByName(object_name)
+
+        assert obj != None, 'object does not exist'
+
+        executable = obj.getModule()()
+
+        return await executable.execute(args)
+
+    @classmethod
+    def _creations(cls) -> list:
+        return []
+
+    @classmethod
+    def get_creations(cls) -> list:
+        exist_names = list()
+        _list = list()
+        for _class in cls.getMRO():
+            if hasattr(_class, '_creations'):
+                new_creations = _class._creations()
+                if new_creations == None:
+                    continue
+
+                for creation in new_creations:
+                    if creation.object_name in exist_names:
+                        continue
+
+                    exist_names.append(creation.object_name)
+                    _list.append(creation)
+
+        return _list
+
+    def add_thumbnail(self, item: Model):
+        self.link(item, role = ['thumbnail'])
+
+    def add_thumbnails(self, items):
+        for item in items:
+            self.add_thumbnail(item)
+
+    def get_thumbnails(self, include_linked: bool = True):
+        #for thumb in self.local_obj.thumbnail:
+        #    thumb.setDb(self.getDb())
+
+        #    yield thumb
+
+        for thumb in self.getLinked(with_role = 'thumbnail'):
+            yield thumb
+
     @computed_field
     @property
     def any_name(self) -> str:
@@ -73,23 +135,3 @@ class BaseModel(Model):
             return self.obj.description
 
         return ''
-
-    @classmethod
-    def get_creations(cls) -> list:
-        return []
-
-    def add_thumbnail(self, item: Model):
-        self.link(item, role = ['thumbnail'])
-
-    def add_thumbnails(self, items):
-        for item in items:
-            self.add_thumbnail(item)
-
-    def get_thumbnails(self, include_linked: bool = True):
-        #for thumb in self.local_obj.thumbnail:
-        #    thumb.setDb(self.getDb())
-
-        #    yield thumb
-
-        for thumb in self.getLinked(with_role = 'thumbnail'):
-            yield thumb

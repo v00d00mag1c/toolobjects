@@ -20,7 +20,7 @@
                     <ul>
                         {% for val in item.get('_items') %}
                             <li>
-                                <a href="?i=App.Objects.Index.Get&name={{ val.get('obj').get_name_for_dictlist() }}">{{ val.get('part') }}</a>
+                                <a class="{% if val.get('obj').hasModuleLoaded() %}loaded{% else %}not_loaded{% endif %}" href="?i=App.Objects.Index.Get&name={{ val.get('obj').get_name_for_dictlist() }}">{{ val.get('part') }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -33,6 +33,22 @@
 {% block body %}
     <a href="/?i=App.Objects.Index.GetList"><<< {{_('client.namespaces.all')}}</a>
 
+    {% if namespace %}
+        <div>
+            <b>{{_("client.namespaces.path")}}:</b>
+
+            <div>
+                {{ namespace.root }}
+            </div>
+        </div>
+
+        <div>
+            <a href="/?i=App.Objects.Index.Namespaces.Get&name={{namespace.name}}&act=load_all">{{_("client.namespaces.load_all.and.not_recomended")}}</a>
+        </div>
+
+        <hr>
+    {% endif %}
+
     <div>
         <b>{{ _("client.index.total_count", total_count)}}</b>
     </div>
@@ -42,21 +58,11 @@
         </div>
     {% endif %}
 
-    <div id='objects'>
+    <div id='objects' class="objects_tree">
         {{ recursive_list(categories) }}
     </div>
 
     <div>
         <hr>
     </div>
-
-    {% if namespace %}
-        <div>
-            <b>{{_("client.namespaces.path")}}:</b>
-
-            <div>
-                {{ namespace.root }}
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}

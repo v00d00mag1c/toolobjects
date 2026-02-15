@@ -127,11 +127,20 @@ class PageHTML(Object):
 
         return head_html
 
+    def remove_iframes(self):
+        for tag in self.bs.select('iframe'):
+            tag.decompose()
+
     def clear_js(self):
-        #self.log('removing all js functions from tags')
+        # self.log('removing all js functions from tags')
+
+        for tag in self.bs.select('script'):
+            tag.decompose()
+
+        for tag in self.bs.select('noscript'):
+            tag.decompose()
 
         for tag in self.bs.select('*'):
-
             attrs_to_remove = []
             for attr in tag.attrs:
                 if re.match(r'^on\w+', attr, re.IGNORECASE):

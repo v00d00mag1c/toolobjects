@@ -1,5 +1,4 @@
 from App.Client.Displayment import Displayment
-from Web.Pages.Get import Get as PageGet
 from App.Storage.Item.StorageItem import StorageItem
 from App import app
 
@@ -26,24 +25,13 @@ class Get(Displayment):
 
             assert url != '', 'url = null'
 
-            _storage = None
-            if orig_item.isInstance(StorageItem):
-                _storage = orig_item
-            else:
-                _storage = app.Storage.get(orig_item.getDbName())
-
-            items = await PageGet().execute({
+            new_items = await self._execute('Web.Pages.Get', {
                 'url': url,
-                'mode': mode
+                'mode': mode,
             })
+            new_item = new_items.items[0]
+            self._flush_creation(orig_item, new_item)
 
-            for item in items.getItems():
-                item.local_obj.make_public()
-                item.flush(_storage)
-
-                if orig_item.isInstance(StorageItem) == False:
-                    orig_item.link(item)
-
-            return self.redirect('/?i=App.Objects.Object&uuids=' + items.get(0).getDbIds())
+            return self.redirect('/?i=App.Objects.Object&uuids=' + new_item.getDbIds())
 
         return self.render_template('Other/Web/Page/get.html')

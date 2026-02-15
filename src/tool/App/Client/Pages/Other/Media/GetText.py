@@ -1,6 +1,5 @@
 from App.Client.Displayment import Displayment
 from App.Storage.Item.StorageItem import StorageItem
-from Media.Text.Get import Get
 
 class GetText(Displayment):
     for_object = 'Media.Text.Get'
@@ -14,7 +13,7 @@ class GetText(Displayment):
 
         if self.is_post():
             data = await self.request.post()
-            new_items = await Get().execute({
+            new_items = await self._execute('Media.Text.Get', {
                 'object': 'Media.Text',
                 'text': data.get('text')
             })

@@ -8,11 +8,15 @@ class Link(Asset):
     as_item: str = Field(default = None, alias = 'as')
 
     def should_download(self):
-        if 'alternate' in self.rel:
-            # self.log('assets: links: {0} is alternate, so dont downloading it'.format(item))
+        if self.type == None and self.as_item == None and self.rel == None:
             return False
 
-        if self.type == None and self.as_item == None and self.rel == None:
+        is_internal = True
+        for key in ['icon', 'stylesheet']:
+            if key in self.rel:
+                is_internal = False
+
+        if is_internal == True:
             return False
 
         return True

@@ -1,7 +1,6 @@
 from App.Objects.Act import Act
 from App.Objects.Wheel import Wheel
 from App.Objects.Object import Object
-from App.Objects.Misc.Abstract import Abstract
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Argument import Argument
 from App.Objects.Arguments.ListArgument import ListArgument
