@@ -12,7 +12,7 @@ class DBInsertable():
             _db = self.getDb()
 
             return DBInfo(
-                uuid = _db.uuid,
+                uuid = str(_db.uuid),
                 db_name = _db._adapter._storage_item.name
             )
 

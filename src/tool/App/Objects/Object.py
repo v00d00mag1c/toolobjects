@@ -5,6 +5,7 @@ from .Mixins.Linkable import Linkable
 from .Mixins.Convertable import Convertable
 from .Mixins.ModuleRequireable import ModuleRequireable
 from .Mixins.Submodulable import Submodulable
+from App.Objects.Mixins.Another import Another
 from App.ACL.Limitable import Limitable
 from App.DB.DBInsertable import DBInsertable
 from typing import ClassVar
@@ -19,7 +20,8 @@ class Object(BaseModel,
              Configurable, 
              Convertable, 
              DBInsertable,
-             Limitable):
+             Limitable,
+             Another):
 
     self_name: ClassVar[str] = 'Object'
     model_config = ConfigDict(extra='allow')

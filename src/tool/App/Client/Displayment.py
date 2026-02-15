@@ -68,6 +68,9 @@ class Displayment(Object):
         })
 
     def get_objs(self, uuids):
+        if type(uuids) == str:
+            uuids = uuids.split(',')
+
         objs = list()
         for id in uuids:
             objs.append(StorageUUID.fromString(id).toPython())
@@ -115,16 +118,22 @@ class Displayment(Object):
 
             return item
 
-    def _flush_creation(self, origin_item, new_item):
-        new_item.local_obj.make_public()
-        if origin_item.isInstance(StorageItem):
-            root = origin_item.get_root_collection()
-            new_item.flush(origin_item)
-            if root:
-                root.link(new_item)
-        else:
-            origin_item.link(new_item)
+    def _flush_creation(self, origin_item, new_items: list):
+        if type(new_items) != list:
+            new_items = [new_items]
 
-        new_item.save()
+        ids = []
+        for new_item in new_items:
+            new_item.local_obj.make_public()
+            if origin_item.isInstance(StorageItem):
+                root = origin_item.get_root_collection()
+                new_item.flush(origin_item)
+                if root:
+                    root.link(new_item)
+            else:
+                origin_item.link(new_item)
 
-        return '/?i=App.Objects.Object&uuids=' + new_item.getDbIds()
+            new_item.save()
+            ids.append(new_item.getDbIds())
+
+        return '/?i=App.Objects.Object&uuids=' + ','.join(ids)

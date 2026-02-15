@@ -69,27 +69,35 @@ class Get(ExtendedWheel):
                     thumbnails_methods.append(thumb)
 
         item_count = 0
-        for item in _val.getItems():
-            for thumb_func in thumbnails_methods:
-                thumb_item = thumb_func.item
-                current_thumbnail_settings = {}
-                if thumb_item._getNameJoined() in thumbnail_settings:
-                    current_thumbnail_settings.update(thumbnail_settings.get(thumb_item._getNameJoined()))
+        for _item in _val.getItems():
+            iterate_objects = list()
+            if _item.isInMRO(Media) == False:
+                for _item_obj in _item.getLinked():
+                    iterate_objects.append(_item_obj.getItem())
+            else:
+                iterate_objects = [_item]
 
-                current_thumbnail_settings.update({
-                    'object': item
-                })
+            for item in iterate_objects:
+                for thumb_func in thumbnails_methods:
+                    thumb_item = thumb_func.getItem()
+                    current_thumbnail_settings = {}
+                    if thumb_item._getNameJoined() in thumbnail_settings:
+                        current_thumbnail_settings.update(thumbnail_settings.get(thumb_item._getNameJoined()))
 
-                try:
-                    _resp = await thumb_item().execute(current_thumbnail_settings)
+                    current_thumbnail_settings.update({
+                        'object': item
+                    })
 
-                    for thumb_result in _resp.getItems():
-                        item.add_thumbnail(thumb_result)
+                    try:
+                        _resp = await thumb_item().execute(current_thumbnail_settings)
 
-                    self.log('thumbnail for item {0}, {1}'.format(item_count, thumb_item._getNameJoined()), role = ['thumbnail'])
-                except Exception as e:
-                    self.log_error(e, role = ['thumbnail'], exception_prefix = 'thumbnail for item {0}, {1}: '.format(item_count, thumb_item._getNameJoined()))
+                        for thumb_result in _resp.getItems():
+                            item.add_thumbnail(thumb_result)
 
-            item_count += 1
+                        self.log('thumbnail for item {0}, {1}'.format(item_count, thumb_item._getNameJoined()), role = ['thumbnail'])
+                    except Exception as e:
+                        self.log_error(e, role = ['thumbnail'], exception_prefix = 'thumbnail for item {0}, {1}: '.format(item_count, thumb_item._getNameJoined()))
+
+                item_count += 1
 
         return _val

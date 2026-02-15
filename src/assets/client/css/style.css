@@ -220,3 +220,15 @@ body {
 .objects_tree a.not_loaded {
     color: gray;
 }
+
+.db_item:not(:last-of-type) {
+    border-bottom: 2px solid #ff0000;
+    margin: 0px 0px 5px 0px;
+}
+
+.placeholder {
+    background: pink;
+    width: 130px;
+    height: 100%;
+    min-height: 80px;
+}

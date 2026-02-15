@@ -5,26 +5,154 @@ Get medias
 {% endblock %}
 
 {% block body %}
-    <div>
-        <b>Media item</b>
-    </div>
+    {% if act %}
+        <div>
+            <form method="post">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Media type</td>
+                            <td>
+                                <select name="object">
+                                    {% for item in media_types %}
+                                        <option {% if item._getModuleName() == 'Auto' %}selected{% endif %} value="{{item._getNameJoined()}}">
+                                            {{item._getModuleName()}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        {% if act == 'url' %}
+                        <tr>
+                            <td>URL</td>
+                            <td>
+                                <input type="text" name="media_url">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Referer</td>
+                            <td>
+                                <input type="text" name="media_referer">
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if act == 'dir' %}
+                        <tr>
+                            <td>Directory</td>
+                            <td>
+                                <input type="url" name="media_dir">
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if act == 'path' %}
+                        <tr>
+                            <td>Path</td>
+                            <td>
+                                <input type="url" name="media_path">
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if act == 'file' %}
+                        <tr>
+                            <td>File</td>
+                            <td>
+                                <input oninput="send_file(event)" multiple type="file" id="_media_path">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Storage unit</td>
+                            <td>
+                                <input type="text" name="media_storage_unit">
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if act not in ['url', 'file'] %}
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label>
+                                    <input checked type="checkbox" name="media_symlink">
+                                    Symlink (May not work in some cases)
+                                </label>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Create">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </form>
+        </div>
+    {% else %}
+        <div>
+            <ul>
+                <li>
+                    <a href="{{current_url}}&act=url">From URL</a>
+                </li>
+                <li>
+                    <a href="{{current_url}}&act=dir">From dir</a>
+                </li>
+                <li>
+                    <a href="{{current_url}}&act=path">From path</a>
+                </li>
+                <li>
+                    <a href="{{current_url}}&act=file">From file</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
 
-    <div>
-        <table>
-            <tbody>
-                <tr>
-                    <td>Media type</td>
-                    <td>
-                        <select name="object">
-                            {% for item in media_types %}
-                                <option value="{{item._getNameJoined()}}">
-                                    {{item._getModuleName()}}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <script>
+        const storage_name = "{{storage_name}}"
+        const uuids = []
+
+        function send_file(event) {
+            let first_name = null
+
+            const formdata = new FormData()
+
+            Object.entries(event.target.files).forEach(file => {
+                if (file[1].name) {
+                    first_name = file[1].name
+                }
+
+                formdata.append('file[]', file[1])
+            })
+            let url = '/api/upload?storage=' + storage_name + '&save_name=' + first_name
+
+            const xhr = new XMLHttpRequest()
+            xhr.responseType = 'json'
+            xhr.open('POST', url)
+            xhr.onloadend = (ev) => {
+                xhr.response.forEach(file => {
+                    uuids.push(file.db_info.db_name + '_' + file.db_info.uuid)
+                })
+
+                document.querySelector("input[name='media_storage_unit']").value = uuids.join(',')
+            }
+
+            xhr.send(formdata)
+        }
+
+        document.addEventListener('paste', (e) => {
+            const dT = e.clipboardData
+            const file = dT.files[ 0 ]
+
+            if (file) {
+                console.log(file)
+                document.querySelector('#_media_path').files = dT.files
+                document.querySelector('#_media_path').dispatchEvent(new Event('input'))
+            }
+        })
+
+        document.addEventListener("drop", (e) => {
+            if (document.querySelector('#_media_path')) {
+                document.querySelector('#_media_path').files = e.dataTransfer.items
+            }
+        });
+    </script>
 {% endblock %}

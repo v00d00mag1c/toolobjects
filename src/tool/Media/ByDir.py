@@ -66,6 +66,8 @@ class ByDir(Extractor):
         ]).join_class(ByPath, only = ['object', 'symlink', 'set_source'])
 
     async def _implementation(self, i):
+        assert self.getOption('app.permissions.file_access') == True, 'access denied'
+
         allowed_extensions = i.get('allowed_extensions')
         find_covers = i.get('split.find_covers')
         find_covers_ext = i.get('split.find_covers.extensions')
@@ -105,7 +107,7 @@ class ByDir(Extractor):
                     if _suf in find_covers_ext:
                         return True
                 else:
-                    return True
+                    return False
 
             return False
 

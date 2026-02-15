@@ -27,6 +27,9 @@ class StorageUnit(Object):
 
         return self._root_path
 
+    def by_path(self, path: str):
+        return File.from_path(self.get_root().joinpath(path))
+
     def set_root(self, path: str):
         self._root_path = str(path)
 
@@ -41,6 +44,9 @@ class StorageUnit(Object):
             _file = file.model_copy()
             _file.path = self.getDir()
             yield _file
+
+    def get_ext(self):
+        return self.ext.lower()
 
     def getFirstFile(self) -> File:
         return self.files[0]
@@ -61,7 +67,7 @@ class StorageUnit(Object):
 
     def setCommonFile(self, file_path: Path):
         self.name = file_path.name
-        self.ext = file_path.suffix[1:]
+        self.ext = file_path.suffix[1:].lower()
         self.common = str(file_path.relative_to(self.getDir()))
 
     def genFilesList(self) -> Generator[File]:

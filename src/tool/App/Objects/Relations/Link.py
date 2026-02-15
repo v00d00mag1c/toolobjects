@@ -14,3 +14,6 @@ class Link(Model, DBInsertable):
             link = self,
             field = field
         )
+
+    def getItem(self):
+        return self.item

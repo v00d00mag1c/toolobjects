@@ -24,6 +24,11 @@ class Frames(Thumbnail):
                 default = 1,
             ),
             Argument(
+                name = 'duration_offset',
+                orig = Int,
+                default = 4,
+            ),
+            Argument(
                 name = 'quality',
                 orig = Int,
                 default = 85,
@@ -42,18 +47,20 @@ class Frames(Thumbnail):
         stream.thread_type = 'AUTO'
 
         duration_sec = container.duration / av.time_base
+        offset = i.get('duration_offset')
         limit = i.get('frames_limit')
         frame_interval = i.get('frame_interval')
         quality = i.get('quality')
         total_thumbs = int(duration_sec / frame_interval)
 
-        items = list()
+        items = ObjectsList(items = [])
 
         for iterator in range(total_thumbs):
             this_thumb_timecode = iterator * frame_interval
             if this_thumb_timecode > duration_sec:
                 this_thumb_timecode = duration_sec
 
+            this_thumb_timecode = min(this_thumb_timecode + offset, duration_sec)
             target_time = int(this_thumb_timecode / stream.time_base)
             container.seek(target_time, stream = stream)
             frame = next(container.decode(stream))
@@ -67,6 +74,7 @@ class Frames(Thumbnail):
             img.save(file.getPath().with_name(filename), quality = quality)
 
             thumb_image.set_insertion_name(filename)
+            thumb_image.save()
 
             items.append(thumb_image)
 
@@ -75,4 +83,4 @@ class Frames(Thumbnail):
 
         video._reset_file()
 
-        return ObjectsList(items = items)
+        return items

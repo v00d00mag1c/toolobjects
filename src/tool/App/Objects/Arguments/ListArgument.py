@@ -16,3 +16,16 @@ class ListArgument(Argument):
             allow_commas_fallback = self.allow_commas_fallback,
             single_recommended = self.single_recommended
         )
+
+    def _by_id(self, val: str):
+        returns = list()
+
+        if type(val) == list:
+            for item in val:
+                if StorageUUID.validate(item):
+                    _val = StorageUUID.fromString(item).toPython()
+                    returns.append(_val)
+        else:
+            returns.append(super()._by_id(val))
+
+        return returns

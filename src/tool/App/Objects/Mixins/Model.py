@@ -49,6 +49,8 @@ class Model(PydanticBaseModel, Section):
                 if item._getNameJoined() == object._getNameJoined():
                     return True
 
+        return False
+
     @classmethod
     def isSame(cls, object: PydanticBaseModel) -> bool:
         return cls._getNameJoined() == object._getNameJoined()

@@ -45,10 +45,14 @@ class File(Object):
         return _upper.parent
 
     def getPath(self, path_override: str = None) -> Path:
+        _path = Path(self.path)
         if path_override != None:
             return Path(path_override).joinpath(self.name)
 
-        return Path(self.path).joinpath(self.name)
+        if self.name == _path.name:
+            return _path
+ 
+        return _path.joinpath(self.name)
 
     def get_name_only(self) -> str:
         return self.name.replace('.'+self.ext, '')

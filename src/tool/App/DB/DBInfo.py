@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 class DBInfo(BaseModel):
-    uuid: int
+    uuid: str
     db_name: str

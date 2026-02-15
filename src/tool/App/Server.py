@@ -62,6 +62,11 @@ class Server(View):
                 name = 'app.name',
                 default = 'escapysm',
                 orig = String
+            ),
+            Argument(
+                name = 'web.aiohttp.client_max_size',
+                default = 10000,
+                orig = Int
             )
         ]
 
@@ -94,7 +99,9 @@ class Server(View):
             self.log('port is not passed anywhere, so it will be chosen randomly')
             _port = self._get_random_port()
 
-        self._app = web.Application()
+        self._app = web.Application(
+            client_max_size = int(self.getOption('web.aiohttp.client_max_size') ** 2)
+        )
         self._pre_i = i.get('pre_i')
 
         self._register_default_routes(i)
@@ -402,44 +409,64 @@ class Server(View):
             raise web.HTTPNotAcceptable(text="not found storage")
 
         data = await request.post()
-        file = data.get('file')
-        if file == None:
+        files = list()
+        if data.get('file') == None:
+            # Multiple files
+
+            for field_name, value in data.items():
+                if isinstance(value, web.FileField):
+                    filename = value.filename
+                    files.append(value)
+        else:
+            files.append(data.get('file'))
+
+        if len(files) == 0:
             raise web.HTTPNotAcceptable(text="not passed file")
 
-        storage_unit = storage.get_storage_adapter().get_storage_unit()
-        filename = None
-        if _save_name == None:
-            filename = storage_unit.hash + '.oct'
-        else:
-            filename = _save_name
+        storage_units = list()
+        for file in files:
+            _storage_unit_new = storage.get_storage_adapter().get_storage_unit()
+            filename = None
+            if _save_name == None:
+                filename = _storage_unit_new.hash + '.oct'
+            else:
+                filename = _save_name
 
-        file_path = storage_unit.getDir().joinpath(filename)
-        with open(file_path, 'wb') as f:
-            f.write(file.file.read())
+            file_path = _storage_unit_new.getDir().joinpath(filename)
 
-        storage_unit.setCommonFile(file_path)
-        storage_unit.flush(storage)
-        storage_unit.save()
+            with open(file_path, 'wb') as f:
+                f.write(file.file.read())
 
-        self.log('uploaded storage unit, id {0}'.format(storage_unit.getDbIds()), role = ['server.upload'])
+            _storage_unit_new.setCommonFile(file_path)
+            _storage_unit_new.flush(storage)
+            _storage_unit_new.save()
+
+            self.log('uploaded storage unit, id {0}'.format(_storage_unit_new.getDbIds()), role = ['server.upload'])
+
+            storage_units.append(_storage_unit_new)
 
         if _i_after != None:
-            try:
-                after_action = JSON.fromText(_i_after).data
-                after_action[_i_after_key] = storage_unit
-                after_action['auth'] = _user
+            for storage_unit in storage_units:
+                try:
+                    after_action = JSON.fromText(_i_after).data
+                    after_action[_i_after_key] = storage_unit
+                    after_action['auth'] = _user
 
-                await self._pre_i().execute(after_action)
-            except Exception as e:
-                self.log_error(e, exception_prefix = 'Error when uploading file: ')
+                    await self._pre_i().execute(after_action)
+                except Exception as e:
+                    self.log_error(e, exception_prefix = 'Error when uploading file: ')
 
         if _just_url == '1':
             return web.Response(
-                text = '{0}{1}{2}?auth={3}'.format(self._host, storage_unit.get_url(), filename, _old_auth),
+                text = '{0}{1}{2}?auth={3}'.format(self._host, storage_units[0].get_url(), filename, _old_auth),
                 content_type = 'text/plain'
             )
 
+        _json = JSON(data = [])
+        for _item in storage_units:
+            _json.data.append(_item.to_json())
+
         return web.Response(
-            text = JSON(data = storage_unit.to_json()).dump(),
+            text = _json.dump(),
             content_type = 'application/json'
         )

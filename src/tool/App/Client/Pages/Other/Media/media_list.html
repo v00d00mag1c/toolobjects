@@ -14,8 +14,8 @@
     {% for item in items %}
         {% if item.media_type in ['image', 'video'] %}
             <div class="search_item gallery_item">
-                <a href="{{url_for_object}}{{item.getDbIds()}}&act=display&as=Media.Images.Image&ref={{current_url_encoded}}">
-                    <img src="{{item.get_url(True)}}" alt="{{item.any_description}}">
+                <a href="{{url_for_object}}{{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&ref={{current_url_encoded}}">
+                    <img src="{{item.get_thumbnail_url(True)}}" alt="{{item.any_description or item.any_name}}">
                 </a>
             </div>
         {% elif item.media_type == 'audio' %}
@@ -27,7 +27,11 @@
                 </div>
             </div>
         {% else %}
-            <a href="{{url_for_object}}{{item.getDbIds()}}">unsupported ({{item.media_type}})</a>
+            <div class="search_item gallery_item">
+                <a href="{{url_for_object}}{{item.getDbIds()}}">
+                    <div class="placeholder"></div>
+                </a>
+            </div>
         {% endif %}
     {% endfor %}
 </div>

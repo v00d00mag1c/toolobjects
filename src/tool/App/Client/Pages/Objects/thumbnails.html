@@ -18,6 +18,7 @@ Thumbnails
                         <img src="{{thumb.item.get_url(True)}}">
                     </a>
                 </div>
+                <a href="{{url_for_object}}{{thumb.getItem().getDbIds()}}">...</a>
             {% else %}
                 <span>unknown role</span>
             {% endif %}

@@ -10,14 +10,26 @@ class FileType(Object):
     file: File = Field(default = None)
     storage_unit: StorageUnitLink = Field(default = None)
 
-    def get_file(self):
+    def get_any(self):
+        if self.file != None:
+            return self.file
+
+        if self.storage_unit != None:
+            self.storage_unit.setDb(self.getDb())
+            return self.storage_unit
+
+    def get_file(self, follow_path: bool = False):
         if self.file != None:
             return self.file
 
         if self.storage_unit != None:
             # ???
             self.storage_unit.setDb(self.getDb())
-            return self.storage_unit.get_storage_unit().toFile()
+
+            if follow_path:
+                return self.storage_unit.get_file()
+            else:
+                return self.storage_unit.get_storage_unit().toFile()
 
     def move(self, new: Object):
         '''
@@ -25,10 +37,10 @@ class FileType(Object):
         '''
 
         if new.file != None:
-            self.file = new.file
+            self.file = new.file.model_copy()
 
         if new.storage_unit != None:
-            self.storage_unit = new.storage_unit
+            self.storage_unit = new.storage_unit.model_copy()
 
     def set_insertion_name(self, name: str):
         if self.storage_unit != None:
@@ -45,11 +57,16 @@ class FileType(Object):
             insertion = _lnk.toInsert()
         )
 
+    def getPath(self):
+        _s = self.get_file()
+        if _s != None:
+            return _s.getPath()
+
+        return _s
+
     def get_url(self, from_server: bool = False) -> str:
         if from_server == False:
-            _s = self.get_file()
-            if _s != None:
-                return _s.getPath()
+            return self.getPath()
         else:
             _f = None
             if self.storage_unit != None:
@@ -57,7 +74,7 @@ class FileType(Object):
                 _f = self.storage_unit.get_storage_unit()
 
             if _f != None:
-                return _f.get_common_file_url()
+                return _f.get_url() + self.storage_unit.path
 
         _common_source = self.obj.get_common_source()
         if _common_source == None or _common_source.obj.isInstance(URL) == False:

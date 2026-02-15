@@ -125,3 +125,7 @@ class Media(FileType):
                 create = 'Media.Get'
             ),
         ]
+
+    @classmethod
+    def detect_from_su(cls, storage_unit):
+        return cls

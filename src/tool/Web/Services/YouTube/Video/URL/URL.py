@@ -62,24 +62,6 @@ class URL(Object):
 
         return url
 
-    def get_width(self) -> float:
-        if self.obj.width:
-            return self.obj.width
-
-        if self.local_obj.width:
-            return self.local_obj.width
-
-        return 500
-
-    def get_height(self) -> float:
-        if self.obj.height:
-            return self.obj.height
-
-        if self.local_obj.height:
-            return self.local_obj.height
-
-        return 300
-
     @classmethod
     def _creations(cls) -> list:
         return [

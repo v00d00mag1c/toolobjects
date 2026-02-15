@@ -8,6 +8,7 @@ class Video(Media):
     thumbnail_type = ['video']
     default_name = 'video.mp4'
     mime_type = 'video/mp4'
+    extensions = ['mp4', 'mov', 'avi']
     media_type: ClassVar[str] = 'video'
     _vid = None
 
@@ -51,13 +52,20 @@ class Video(Media):
 
         video_stream = next(s for s in vid.streams if s.type == 'video')
 
-        self.obj.width = video_stream.codec_context.width
-        self.obj.height = video_stream.codec_context.height
+        try:
+            self.obj.width = video_stream.codec_context.width
+            self.obj.height = video_stream.codec_context.height
 
-        self.obj.duration = round(vid.duration / av.time_base, 5)
+            self.obj.duration = round(vid.duration / av.time_base, 5)
+        except Exception as e:
+            self.log_error(e)
 
     def save_hook(self):
         if self.obj.has_dimensions() == False:
             _read = self._read_file()
             self._set_dimensions(_read)
             self._reset_file()
+
+    def get_thumbnail_url(self, from_server: bool = True):
+        for thumb in self.get_thumbnails():
+            return thumb.getItem().get_url(from_server)

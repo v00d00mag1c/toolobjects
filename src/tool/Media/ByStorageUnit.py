@@ -3,6 +3,7 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.Argument import Argument
+from App.Objects.Arguments.ListArgument import ListArgument
 from App.Storage.StorageUnit import StorageUnit
 
 class ByStorageUnit(Extractor):
@@ -14,7 +15,7 @@ class ByStorageUnit(Extractor):
                 orig = Object,
                 assertions = [NotNone()]
             ),
-            Argument(
+            ListArgument(
                 name = 'storage_unit',
                 by_id = True,
                 orig = StorageUnit,
@@ -23,9 +24,14 @@ class ByStorageUnit(Extractor):
         ])
 
     async def _implementation(self, i):
-        _storage_unit = i.get('storage_unit')
-        _new = i.get('object')()
-        _new.set_storage_unit(_storage_unit)
-        _new.save()
+        for storage_unit in i.get('storage_unit'):
+            if storage_unit == None:
+                self.log_error('missing storage_unit')
 
-        self.append(_new)
+                continue
+
+            _new = i.get('object').detect_from_su(storage_unit)()
+            _new.set_storage_unit(storage_unit)
+            _new.save()
+
+            self.append(_new)

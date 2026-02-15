@@ -71,7 +71,7 @@ class Image(Media):
         from PIL import Image
 
         if self._img == None:
-            _file = self.get_file()
+            _file = self.get_file(follow_path = True)
             if _file == None:
                 return None
 
@@ -97,3 +97,13 @@ class Image(Media):
                 self.log_error(e)
 
             self._reset_file()
+
+    def get_thumbnail_url(self, from_server: bool = True):
+        url = None
+        for thumb in self.get_thumbnails():
+            url = thumb.item.get_url(from_server)
+
+        if url == None:
+            return self.get_url(from_server)
+
+        return url

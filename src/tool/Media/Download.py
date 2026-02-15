@@ -52,18 +52,18 @@ class Download(Extractor):
                 if filename == None:
                     filename = _obj.default_name
 
-            _item = _obj()
+            _su = None
             if i.get('download') == True:
-                _unit = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
+                _su = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
 
-                item = app.DownloadManager.addURL(_url.value, _unit, filename)
+                item = app.DownloadManager.addURL(_url.value, _su, filename)
                 _headers = _obj.get_headers()
                 _headers.referer = i.get('referer')
 
                 await item.start(_headers)
 
-                _item.set_storage_unit(_unit)
-
+            _item = _obj.detect_from_su(_su)
+            _item.set_storage_unit(_su)
             _item.obj.set_common_source(Source(
                 obj = _url
             ))

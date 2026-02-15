@@ -48,6 +48,8 @@ class ByPath(Extractor):
         ])
 
     async def _implementation(self, i):
+        assert self.getOption('app.permissions.file_access') == True, 'access denied'
+
         for item in i.get('path'):
             _path = Path(item)
             try:
@@ -101,7 +103,7 @@ class ByPath(Extractor):
     def _get_objects(self, i, path) -> Generator[Object]:
         storage_unit = self._move_file(path, i)
 
-        _obj = i.get('object')()
+        _obj = i.get('object').detect_from_su(storage_unit)()
         _obj.set_storage_unit(storage_unit)
 
         yield _obj

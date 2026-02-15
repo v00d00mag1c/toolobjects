@@ -12,6 +12,7 @@ class Text(Media):
     has_set_from_file: bool = Field(default = True)
     encoding: str = Field(default = None)
     mime_type = 'text/html'
+    extensions = ['txt', 'rtf', 'md']
     default_name = 'text.txt'
     thumbnail_type = ['text']
 

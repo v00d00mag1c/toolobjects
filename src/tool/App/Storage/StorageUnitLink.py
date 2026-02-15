@@ -10,3 +10,7 @@ class StorageUnitLink(Model, DBInsertable, Section):
 
     def get_storage_unit(self):
         return self._get('insertion')
+
+    def get_file(self):
+        _insertion = self._get('insertion')
+        return _insertion.by_path(self.path)
