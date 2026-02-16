@@ -16,5 +16,12 @@ class Meta(Asset):
 
         return self.content
 
+    def get_any_name(self):
+        if self.name:
+            return self.name
+
+        if self.property:
+            return self.property
+
     async def download_function(self, dir):
         pass

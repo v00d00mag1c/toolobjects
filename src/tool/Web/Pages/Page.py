@@ -2,9 +2,11 @@ from App.Objects.Object import Object
 from App.Storage.Item.StorageItem import StorageItem
 from Web.Pages.HTMLFile import HTMLFile
 from Web.Pages.Assets.Asset import Asset
+from Web.Pages.Assets.Media import Media
 from Web.Pages.Assets.Favicon import Favicon
 from Web.Pages.Assets.Meta import Meta
 from Web.Pages.Assets.Link import Link
+from Web.Pages.Assets.URL import URL
 from typing import Any
 from pydantic import Field
 from App.Objects.Requirements.Requirement import Requirement
@@ -21,7 +23,9 @@ class Page(Object):
     assets: list[Asset] = Field(default = None)
     favicons: list[Favicon] = Field(default = [])
     meta_tags: list[Meta] = Field(default = [])
-    page_links: list[Link] = Field(default = [])
+    page_links: list[URL] = Field(default = [])
+    media: list[Media] = Field(default = [])
+    header_links: list[Link] = Field(default = [])
 
     url: str = Field(default = None)
     base_url: str = Field(default = None)
@@ -52,6 +56,11 @@ class Page(Object):
     def get_html_file(self):
         return self.file.get_storage_unit()
 
+    def get_page_links(self):
+        for page in self.page_links:
+            if page != None:
+                yield page
+
     async def from_url(self, url: str):
         # gymnastics
         self._page = await self._downloader.webdriver.new_page(self._crawler)
@@ -65,9 +74,19 @@ class Page(Object):
         self._page = await self._downloader.webdriver.new_page(self._crawler)
         await self._init_hook()
 
-        self._page.url_override = url
-        self._page_response = await self._page.goto('about:blank')
-        await self._page.get().evaluate("() => {document.write(`"+html+"`);}")
+        async def handle_route(route, request):
+            await route.fulfill(
+                status=200,
+                content_type="text/html",
+                body=html
+            )
+
+        await self._page.get().route(url, handle_route)
+
+        #self._page.url_override = url
+
+        self._page_response = await self._page.goto(url)
+        #await self._page.get().evaluate("() => {document.write(`"+html+"`);}")
 
     async def set_info(self):
         self.set_title(await self._page.get_title())

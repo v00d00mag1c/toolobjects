@@ -165,18 +165,18 @@ class Search(Act):
                     links = _item.toPython().getLinksRecurisvely()
 
                     for linked_item in links:
-                        if linked_item.item.hasDb() == False:
+                        if linked_item.getTargetId() == None:
                             continue
 
-                        _ids.append(linked_item.item.getDb().uuid)
+                        _ids.append(linked_item.getDbId())
                 else:
                     links = _item.toPython().asyncGetLinked()
 
                     async for linked_item in links:
-                        if linked_item.item.hasDb() == False:
+                        if linked_item.getTargetId() == None:
                             continue
 
-                        _ids.append(linked_item.item.getDb().uuid)
+                        _ids.append(linked_item.getTargetId())
 
             _query.addCondition(Condition(
                 val1 = Value(

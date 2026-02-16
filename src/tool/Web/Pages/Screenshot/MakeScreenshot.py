@@ -33,7 +33,13 @@ class MakeScreenshot(Thumbnail):
 
             st.setCommonFile(new_path)
 
-            await page._page.get().screenshot(path=new_path)
+            if key == 'viewport':
+                await page._page.get().screenshot(path=new_path)
+            else:
+                await page._page.get().screenshot(
+                    path = new_path,
+                    full_page = True
+                )
 
             img = Image()
             img.set_storage_unit(st)

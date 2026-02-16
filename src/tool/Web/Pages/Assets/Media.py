@@ -1,4 +1,6 @@
 from Web.Pages.Assets.Asset import Asset
+from pydantic import Field
 
 class Media(Asset):
-    pass
+    tagName: str = Field(default = None)
+    alt: str = Field(default = None)

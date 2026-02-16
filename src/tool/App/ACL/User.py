@@ -11,6 +11,7 @@ class User(Object):
     password_hash: str = Field(repr = False)
     inactive: bool = Field(default = False)
     via_token: Optional[Token] = Field(default = None)
+    permissions: list[str] = Field(default = [])
 
     def auth(self, password: str) -> bool:
         hasher = PasswordHasher()
@@ -27,6 +28,12 @@ class User(Object):
             action = action,
             allow = True
         ))
+
+    def has_permission(self, name: str):
+        if self.name == 'root':
+            return True
+
+        return name in self.permissions
 
     def is_expired(self) -> bool:
         if self.via_token == None:

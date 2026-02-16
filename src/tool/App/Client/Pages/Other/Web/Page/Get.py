@@ -13,6 +13,7 @@ class Get(Displayment):
         self.context.update({
             'item': orig_item,
             'args': args,
+            'webdriver_id': self.getOption('web.crawler.webdriver')
         })
 
         if self.is_post():

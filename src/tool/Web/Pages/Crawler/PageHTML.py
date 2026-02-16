@@ -34,8 +34,11 @@ class PageHTML(Object):
     def get_media(self, orig_page: Page) -> Generator[Favicon]:
         for tag in self.bs.select("img[src], video[src], audio[src]"):
             item = Media()
+            item.tagName = tag.name
             item.set_url(tag.get('src'), orig_page.relative_url)
             item.set_node(tag)
+            if tag.get('alt'):
+                item.alt = tag.get('alt')
 
             yield item
 
@@ -74,8 +77,12 @@ class PageHTML(Object):
 
     def get_urls(self, orig_page: Page):
         for tag in self.bs.select("a"):
+            label = tag.text
+
             url = URL()
             url.set_node(tag)
+            if type(label) == str:
+                url.label = label
 
             for key, attr in tag.attrs.items():
                 if key == 'target':
@@ -92,7 +99,7 @@ class PageHTML(Object):
                         self.log('url {0}: empty url'.format(attr))
                     elif is_protocol:
                         self.log('url {0}: probaly protocol'.format(attr))
-                        url.set_url(attr)
+                        url.set_protocol(attr)
                     else:
                         url.set_url(attr, orig_page.base_url)
                 elif key == 'download':
@@ -131,6 +138,14 @@ class PageHTML(Object):
         for tag in self.bs.select('iframe'):
             tag.decompose()
 
+    def remove_selectors(self, selectors: list | str):
+        if type(selectors) != list:
+            selectors = [selectors]
+
+        for selector in selectors:
+            for tag in self.bs.select(selector):
+                tag.decompose()
+
     def clear_js(self):
         # self.log('removing all js functions from tags')
 
@@ -159,16 +174,27 @@ class PageHTML(Object):
         for tag in self.bs.select('style'):
             tag.decompose()
 
+        for tag in self.bs.select('link[rel=\'stylesheet\']'):
+            tag.decompose()
+
     def make_correct_links(self, page):
         _s = page.html._get('file').get_storage_unit()
 
+        for item in self.bs.select('link[href]'):
+            if item.get('data-__to_orig_key') != None:
+                continue
+
+            _href = item.get('href')
+            if _href:
+                item['href'] = '{0}{1}'.format(page.relative_url, _href)
+
         # replacing assets
         for item in self.bs.select('[data-__to_orig]'):
-            _file_url = Asset.encode_url(item['data-__to_orig'])
             #_url = base64.urlsafe_b64encode(('assets/' + _file_url).encode()).decode()
-            _id = page.html.assets_links.get(_file_url)
+            _url = item['data-__to_orig']
+            _id = page.html.get_asset_by_url(_url)
             if _id == None:
-                self.log_error('page {0}: element \"{1}\" is missing'.format(page.getDbIds(), _file_url))
+                self.log_error('page {0}: element \"{1}\" is missing'.format(page.getDbIds(), _url))
 
                 continue
 
@@ -185,7 +211,10 @@ class PageHTML(Object):
         for item in self.bs.select('a[href]'):
             _href = item.get('href')
             if _href:
-                item['href'] = '/?i=Web.Pages.Page&item={0}&act=url&url={1}'.format(page.getDbIds(), Asset.encode_url(_href))
+                if _href[0] == '#':
+                    continue
+
+                item['href'] = '/?i=Web.Pages.Page&item={0}&web_act=url&url={1}'.format(page.getDbIds(), Asset.encode_url(_href))
 
     def prettify(self) -> str:
         return self.bs.prettify()

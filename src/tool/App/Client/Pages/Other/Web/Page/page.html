@@ -2,20 +2,28 @@
     <head>
         {{head_html|safe}}
     </head>
-    <body id="___to_insert_page">
-
+    <body>
+        <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/client/js/sw_assets.js')
+            .then(reg => {
+                console.log('registered, ', reg)
+            })
+            .catch(err => console.error('SW error:', err));
+        }
+        </script>
         {% if hide_banner %}
             <!--no banner-->
         {% else %}
             <style>
-                #___to_insert_page > #___to_inserted_page_banner {
+                #___to_inserted_page_banner {
                     position: absolute;
                     z-index: 99999;
                     top: 0;
                     left: 0;
                 }
 
-                #___to_insert_page > #___to_inserted_page_banner > * {
+                #___to_inserted_page_banner > * {
                     font-size: unset;
                     font-weight: unset;
                     font-family: times !important;

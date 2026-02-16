@@ -160,8 +160,8 @@ class Client(Server):
                 response = aiohttp.web.HTTPFound('/')
                 data = await request.post()
                 token = await TokensGet().execute({
-                    'username': data.get('username', '').strip(),
-                    'password': data.get('password', '').strip(),
+                    'username': data.get('_escapysm_username', '').strip(),
+                    'password': data.get('_escapysm_password', '').strip(),
                     'infinite': True
                 })
                 _tokens = self._get_tokens(request)

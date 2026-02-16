@@ -1,6 +1,7 @@
 from App.Objects.Object import Object
 from App.Storage.StorageUnitLink import StorageUnitLink
 from App.Storage.StorageUnit import StorageUnit
+from Web.Pages.Assets.Asset import Asset
 from pydantic import Field
 import chardet
 
@@ -36,6 +37,13 @@ class HTMLFile(Object):
         _path = self._get('file').get_storage_unit().get_root().joinpath(self.assets)
         _path.mkdir(exist_ok = True)
         return _path
+
+    def get_asset_by_url(self, url):
+        asset = self.assets_links.get(Asset.encode_url(url))
+        if asset == None:
+            asset = self.assets_links.get(Asset.encode_url(url.strip()))
+
+        return asset
 
     def write(self, html: str):
         _detect = chardet.detect(html.encode('utf-8', errors='ignore'))

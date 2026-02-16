@@ -99,7 +99,6 @@ class Linkable():
         if self.getDb() != None and ignore_db == False:
             for item in self.getDb().getLinks(with_role = with_role):
                 _item = item.toPython()
-
                 if _item == None:
                     continue
 

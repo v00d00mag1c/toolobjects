@@ -23,3 +23,19 @@ async function call(args = {}) {
       'body': formdata
     })
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+  
+    if (e.target.tagName == 'TEXTAREA') {
+      const textarea = e.target
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+
+      textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+
+      textarea.selectionStart = textarea.selectionEnd = start + 4;
+    }
+  }
+});

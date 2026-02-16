@@ -36,6 +36,7 @@ class DBInsertable():
 
         return self._db
 
+    # can't convert in another place, huh?
     def getDbId(self, as_str: bool = False):
         if as_str:
             return str(self._db.uuid)

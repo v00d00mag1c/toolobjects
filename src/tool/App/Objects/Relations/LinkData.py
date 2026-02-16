@@ -4,7 +4,7 @@ from pydantic import Field, computed_field
 from typing import Literal
 
 class LinkData(Model, DBInsertable):
-    role: list[Literal['object', 'thumbnail', 'common', 'external', 'revision', 'list_item'] | str] = Field(default = ['object'])
+    role: list[Literal['object', 'thumbnail', 'common', 'external', 'revision', 'list_item', 'horizontal'] | str] = Field(default = ['object'])
 
     @computed_field
     @property

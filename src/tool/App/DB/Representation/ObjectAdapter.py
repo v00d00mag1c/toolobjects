@@ -63,7 +63,7 @@ class ObjectAdapter(AbstractAdapter):
 
             return _item
         except (AttributeError, json.decoder.JSONDecodeError, ValidationError) as e:
-            _msg = f"Object with uuid {self.uuid} was tried to be loaded, "
+            _msg = f"UUID {self.uuid}: tried to be loaded, "
             _msg2 = ''
 
             if _object_name == None:

@@ -272,3 +272,7 @@ body {
         display: none;
     }
 }
+
+.webpage .thumb {
+    width: 100%;
+}

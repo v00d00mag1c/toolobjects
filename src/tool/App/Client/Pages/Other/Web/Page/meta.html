@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}
+Page resources
+{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{back}}"><< {{_("client.web_pages.back")}}</a>
+    </div>
+
+    <div>
+        <div>
+            <b>Meta</b>
+
+            <div>
+                <table>
+                    <tbody>
+                        {% for tag in item.meta_tags %}
+                        <tr>
+                            <td width="200">{{tag.get_any_name()}}</td>
+                            <td>
+                                {{tag.content}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <b>Links from head</b>
+
+            <div>
+                <table>
+                    <tbody>
+                        {% for tag in item.header_links %}
+                        <tr>
+                            <td>
+                                {{tag.rel}}
+                            </td>
+                            <td>
+                                {{tag.url}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <b>Favicons</b>
+
+            <div>
+                <table>
+                    <tbody>
+                        {% for tag in item.favicons %}
+                        <tr>
+                            <td>
+                                {{tag.url}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -108,6 +108,18 @@ class Original(Object):
         if page.html.encoding == None:
             page.html.set_encoding(html.encoding)
 
+        for meta in html.get_meta(page):
+            page.meta_tags.append(meta)
+
+        for link in html.get_links(page):
+            page.header_links.append(link)
+
+        for link in html.get_urls(page):
+            page.page_links.append(link)
+
+        for link in html.get_media(page):
+            page.media.append(link)
+
         results = dict()
         for key in ['get_favicons', 'get_media', 'get_downloadable_links', 'get_scripts']:
             if results.get(key) == None:
@@ -143,12 +155,6 @@ class Original(Object):
 
         for item in results.get('get_favicons'):
             page.favicons.append(item)
-
-        for meta in html.get_meta(page):
-            page.meta_tags.append(meta)
-
-        for link in html.get_links(page):
-            page.page_links.append(link)
 
         #if remove_scripts:
         #    try:

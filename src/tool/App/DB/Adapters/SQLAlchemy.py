@@ -63,7 +63,7 @@ class SQLAlchemy(ConnectionAdapter):
 
                 return _query
 
-            def toDB(self, owner, link: CommonLink, order: Increment):
+            def toDB(self, owner, link: CommonLink, order: Increment, do_commit: bool = False):
                 assert link.item.hasDb(), 'link item is not flushed'
                 #assert self.getStorageItemName() == link.item._db.getStorageItemName(), 'cross db'
 
@@ -77,7 +77,7 @@ class SQLAlchemy(ConnectionAdapter):
                 # self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
 
                 if owner._orig != None:
-                    owner._orig.save()
+                    owner._orig.save(do_commit = do_commit)
 
                 if self.uuid is None:
                     self.uuid = next(self_adapter._id_gen)
@@ -121,13 +121,14 @@ class SQLAlchemy(ConnectionAdapter):
                 self.get_permission_to_flush(obj)
                 self._orig = obj
 
-                self.content = json.dumps({'flush': 'notflushed'})
+                self.content = "{}"
 
             def flush_content(self, obj: Object = None):
                 if obj == None:
                     obj = self._orig
 
                 self.content = json.dumps(obj.to_db_json())
+                print(self_adapter.auto_commit)
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
 
@@ -176,9 +177,9 @@ class SQLAlchemy(ConnectionAdapter):
 
                 return _query
 
-            def addLink(self, link: CommonLink, no_commit: bool = False):
+            def addLink(self, link: CommonLink, no_commit: bool = True):
                 _link = _LinkAdapter()
-                _link.toDB(self, link, self.get_order_index())
+                _link.toDB(self, link, self.get_order_index(), do_commit = no_commit == False)
 
                 if self_adapter.auto_commit == True and no_commit == False:
                     self_adapter.commit()
@@ -474,6 +475,9 @@ class SQLAlchemy(ConnectionAdapter):
         return self._session
 
     def commit(self):
+        #import traceback
+
+        #traceback.print_stack()
         _role = ['db.commit']
         if self._storage_item.name == 'tmp':
             _role.append('db.commit.to_tmp')

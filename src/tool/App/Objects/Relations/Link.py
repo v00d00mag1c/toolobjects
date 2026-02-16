@@ -15,5 +15,12 @@ class Link(Model, DBInsertable):
             field = field
         )
 
+    # "getTarget"
     def getItem(self):
         return self.item
+
+    def getOwnerId(self):
+        return self._db.owner
+
+    def getTargetId(self):
+        return self._db.target

@@ -57,6 +57,6 @@ class Update(Act):
                 _count += 1
 
         _channel.local_obj.updated_at = _new_time
-
         _channel.save()
+
         self.log('totally {0} new items; old time is {1}, new time is {2}'.format(_count, _old_time, _new_time))

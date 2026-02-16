@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Web page switch
+{% endblock %}
+
+{% block body %}
+    <div class="webpage">
+        <div>
+            <a href="{{back}}"><< {{item.getDbIds()}}</a>
+        </div>
+
+        <h4>{{item.any_name}}</h4>
+
+        <div>
+            {% if thumb %}
+                <a href="{{fullsize_thumb.get_url(True)}}">
+                    <img class="thumb" src="{{thumb.get_url(True)}}">
+                </a>
+            {% endif %}
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <a href="{{url}}render_page">Show page</a>
+                </li>
+                <li>
+                    <a href="{{url}}options">Options</a>
+                </li>
+                <li>
+                    <a href="{{url}}render_page&disable_js=on&disable_css=on">Text only</a>
+                </li>
+                <li>
+                    <a href="{{url}}meta">Meta</a>
+                </li>
+                <li>
+                    <a href="{{url}}hyperlinks&ref={{current_url_encoded}}">Hyperlinks</a>
+                </li>
+                <li>
+                    <a href="{{url}}media&ref={{current_url_encoded}}">Media</a>
+                </li>
+                <li>
+                    <a href="{{url}}images&ref={{current_url_encoded}}">Images</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

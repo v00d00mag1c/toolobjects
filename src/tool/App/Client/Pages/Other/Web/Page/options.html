@@ -13,9 +13,9 @@ Options
 
     <div>
         <form method="get">
-            <input type="hidden" name="i", value="App.Objects.Object">
-            <input type="hidden" name="uuids", value="{{item.getDbIds()}}">
-            <input type="hidden" name="act" value="display">
+            <input type="hidden" name="i", value="Web.Pages.Page">
+            <input type="hidden" name="item", value="{{item.getDbIds()}}">
+            <input type="hidden" name="web_act" value="render_page">
             <input type="hidden" name="as" value="Web.Pages.Page">
 
             <table>
@@ -41,6 +41,12 @@ Options
                         <td>Disable CSS</td>
                         <td>
                             <input type="checkbox" name="disable_css">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Remove elements</td>
+                        <td>
+                            <input type="text" name="remove_selectors">
                         </td>
                     </tr>
                 </tbody>

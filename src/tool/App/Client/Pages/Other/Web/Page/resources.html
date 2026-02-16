@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resources
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% if resources_act == 'hyperlinks' %}
+            {% for item in item.page_links %}
+                <div>
+                    <a href="{{item.value}}">{{item.label}}</a>
+                </div>
+            {% endfor %}
+        {% elif resources_act == 'media' %}
+            {% for item in item.media %}
+                <div>
+                    <a href="{{item.url}}">{{item.tagName}} 
+                        {% if item.alt %}
+                        ({{item.alt}})
+                        {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        {% elif resources_act == 'images' %}
+            <style>
+                img {
+                    max-width: 100%;
+                }
+            </style>
+
+            {% for item in item.media %}
+                {% if item.tagName == 'img' %}
+                <div>
+                    <img src="{{item.url}}" alt="{{item.alt}}">
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
