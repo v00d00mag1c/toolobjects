@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Management
+{{_("client.management")}}
 {% endblock %}
 
 {% block body %}
@@ -21,6 +21,6 @@ Management
         </form>
     </div>
     <div>
-        <a href="/?i=App&act=change_theme">Change theme</a>
+        <a href="/?i=App&act=change_theme">{{_("client.management.change_theme")}}</a>
     </div>
 {% endblock %}

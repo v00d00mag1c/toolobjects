@@ -22,20 +22,20 @@
 
                 <div id='custom_args'></div>
                 <div>
-                    <label><input type="checkbox" checked value="1" name="stay">Stay on page</label>
+                    <label><input type="checkbox" checked value="1" name="stay">{{_("client.execute.stay_on_page")}}</label>
                 </div>
             {% endif %}
             <div>
                 <div>
                     {% if arguments and arguments.missing_args_inclusion == False %}
-                        <div><b>Notice: custom arguments probaly will not be counted.</b></div>
+                        <div><b>{{_("client.execute.notice")}}</b></div>
                     {% endif %}
                     <input type="text" id="_add_name">
-                    <input type="button" onclick="_add()" value="Insert">
+                    <input type="button" onclick="_add()" value="{{_('client.execute.insert')}}">
                 </div>
             </div>
         </div>
-        <input type="submit" value="Execute">
+        <input type="submit" value="{{_('client.execute.act')}}">
     </form>
 
     <script>

@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}
-Create link
+{{_("client.objects.links.create")}}
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< back</a>
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< {{_("client.index.back")}}</a>
 
     <form method="post">
         <div>
             <textarea name="with" placeholder="{{act}}... (ids)"></textarea>
         </div>
         <div>
-            <textarea name="role" placeholder="Roles (divided by comma)"></textarea>
+            <textarea name="role" placeholder="{{_('client.objects.links.roles_comma')}}"></textarea>
         </div>
         <div>
             <label>
                 <input type="checkbox" name="unlink">
-                Unlink
+                {{_("client.objects.links.unlink")}}
             </label>
         </div>
         <div>

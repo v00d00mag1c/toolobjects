@@ -6,7 +6,7 @@
 
 {% block body %}
     <div>
-        <a href="/?"><< Index</a>
+        <a href="/?"><< {{_("client.index.title")}}</a>
     </div>
     
     <div>
@@ -28,6 +28,6 @@
 
     <div>
         <hr>
-        <a href="/?i=App.Objects.Index.Namespaces.Get">All them together</a>
+        <a href="/?i=App.Objects.Index.Namespaces.Get">{{_("client.namespaces.together")}}</a>
     </div>
 {% endblock %}

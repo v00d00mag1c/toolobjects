@@ -1,35 +1,35 @@
 {% extends "base.html" %}
 
 {% block title %}
-Edit
+{{_("client.objects.edit")}}
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< back</a>
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< {{_("client.index.back")}}</a>
 
     <form method="post">
         <table>
             <tbody>
                 <tr>
-                    <td>Name</td>
+                    <td>{{_("client.objects.name")}}</td>
                     <td>
                         <input type="text" name="name" value="{{item.any_name or ''}}">
                     </td>
                 </tr>
                 <tr>
-                    <td>Description</td>
+                    <td>{{_("client.objects.description")}}</td>
                     <td>
                         <textarea name="description" id="">{{item.local_obj.description or ''}}</textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td>Collection</td>
+                    <td>{{_("client.objects.is_collection")}}</td>
                     <td>
                         <input value="1" type="checkbox" name="collection" {% if item.local_obj.collection %}checked{% endif %}>
                     </td>
                 </tr>
                 <tr>
-                    <td>Public</td>
+                    <td>{{_("client.objects.public")}}</td>
                     <td>
                         <input value="1" type="checkbox" name="public" {% if item.local_obj.public %}checked{% endif %}>
                     </td>
@@ -41,7 +41,7 @@ Edit
                     </td>
                 </tr>
                 <tr>
-                    <td>Pseudo objects</td>
+                    <td>{{_("client.objects.pseudo")}}</td>
                     <td>
                         <input type="text" name="saved_via" value="{{','.join(custom_saved_via)}}">
                     </td>
@@ -49,6 +49,6 @@ Edit
             </tbody>
         </table>
 
-        <input type="submit" value="Save">
+        <input type="submit" value="{{_('client.save')}}">
     </form>
 {% endblock %}

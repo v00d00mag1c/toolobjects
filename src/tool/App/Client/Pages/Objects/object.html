@@ -22,27 +22,27 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>Class name</td>
+                        <td>{{_("client.objects.class_name")}}</td>
                         <td>{{ obj_module._getNameJoined() }}</td>
                     </tr>
                     <tr>
-                        <td>Type</td>
+                        <td>{{_("client.objects.type")}}</td>
                         <td>{{ obj_module.self_name }}</td>
                     </tr>
                     {% if documentation %}
                     <tr>
-                        <td>Name</td>
+                        <td></td>
                         <td>{{ documentation.get_name() }}</td>
                     </tr>
                     <tr>
-                        <td>Description</td>
+                        <td></td>
                         <td>{{ documentation.get_description() }}</td>
                     </tr>
                     {% endif %}
 
                     {% if mro_items %}
                     <tr>
-                        <td>Extend tree</td>
+                        <td>{{_("client.objects.extend_tree")}}</td>
                         <td>
                         {% for item in mro_items %}
                             <div>
@@ -53,7 +53,7 @@
                     </tr>
                     {% endif %}
                     <tr>
-                        <td>Submodules</td>
+                        <td>{{_("client.objects.submodules")}}</td>
                         <td>
                             <div>
                                 <table>
@@ -82,7 +82,7 @@
             <div>
                 <hr>
                 <div>
-                    <a href="/?i=App.Objects.Operations.DefaultExecutorWheel&name={{obj.getModule()._getNameJoined()}}">Execute</a>
+                    <a href="/?i=App.Objects.Operations.DefaultExecutorWheel&name={{obj.getModule()._getNameJoined()}}">{{_("client.execute.act")}}</a>
                 </div>
             </div>
         {% endif %}

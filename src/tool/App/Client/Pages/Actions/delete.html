@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-Delete
+{{_("client.delete")}}
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< back</a>
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< {{_("client.index.back")}}</a>
 
     <form method="post">
         <div>
@@ -17,7 +17,7 @@ Delete
         <div>
             <label>
                 <input type="checkbox" name="remove_links">
-                Remove links
+                {{_("client.delete.remove_links")}}
             </label>
         </div>
         <input type="submit" value="Delete">

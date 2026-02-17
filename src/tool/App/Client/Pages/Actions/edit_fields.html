@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-Edit fields
+{{_("client.edit.fields")}}
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< back</a>
+    <a href="/?i=App.Objects.Object&uuids={{item.getDbIds()}}"><< {{_("client.index.back")}}</a>
 
     <form method="post">
         {% if act == 'json' %}

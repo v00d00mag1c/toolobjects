@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Search
+{{_("client.objects.search")}}
 {% endblock %}
 
 {% block body %}
@@ -18,7 +18,7 @@ Search
                     {% if _item %}
                         <div>
                             <a href="/?i=App.Storage.Item.Get&name={{_item.name}}">
-                                << back
+                                << {{_("client.index.back")}}
                             </a>
                         </div>
 
@@ -30,7 +30,7 @@ Search
                     {% if _object %}
                         <div>
                             <a href="/?i=App.Objects.Object&uuids={{_object}}">
-                                << back
+                                << {{_("client.index.back")}}
                             </a>
                         </div>
 
@@ -48,7 +48,7 @@ Search
             <div></div>
         {% else %}
             <div>
-                <a href="javascript:_toggle_options()">Toggle params</a>
+                <a href="javascript:_toggle_options()">{{_("client.objects.search.toggle_params")}}</a>
             </div>
         {% endif %}
 
@@ -58,7 +58,7 @@ Search
             <table>
                 <tbody>
                     <tr>
-                        <td>Query</td>
+                        <td>{{_("client.objects.search.query")}}</td>
                         <td>
                             <input type="text" name="q" value="{{params.get('q') or ''}}">
                         </td>
@@ -68,14 +68,14 @@ Search
                         <td>
                             <label>
                                 <input type="checkbox" name="q.in_description" {% if params.get('q.in_description') %}checked{%endif%}>
-                                in description
+                                {{_("client.objects.search.in_description")}}
                             </label>
                         </td>
                     </tr>
 
                     {% if params.get('storage') %}
                     <tr>
-                        <td>In storage</td>
+                        <td>{{_("client.objects.search.in_storage")}}</td>
                         <td>
                             <input type="hidden" name="storage" value="{{params.get('storage')}}">
                             <a href="/?i=App.Storage.Item.Get&name={{params.get('storage')}}">
@@ -85,43 +85,43 @@ Search
                     </tr>
                     {% endif %}
                     <tr>
-                        <td>Show unlisted</td>
+                        <td>{{_("client.objects.search.show_unlisted")}}</td>
                         <td>
                             <input type="checkbox" name="show_unlisted" {% if params.get('show_unlisted') == 'on' %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>
-                        <td>Show temporary</td>
+                        <td>{{_("client.objects.search.show_temporary")}}</td>
                         <td>
                             <input type="checkbox" name="show_tmp" {% if params.get('show_tmp') %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>
-                        <td>Ascend</td>
+                        <td>{{_("client.objects.search.ascend")}}</td>
                         <td>
                             <input type="checkbox" name="ascend" {% if params.get('ascend') %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>
-                        <td>Per page</td>
+                        <td>{{_("client.objects.search.per_page")}}</td>
                         <td>
                             <input type="text" name="per_page" value="{{per_page}}">
                         </td>
                     </tr>
                     <tr>
-                        <td>Object name</td>
+                        <td>{{_("client.objects.search.object_name")}}</td>
                         <td>
                             <input type="text" name="only_object" value="{{params.get('only_object') or ''}}">
                         </td>
                     </tr>
                     <tr>
-                        <td>Display as</td>
+                        <td>{{_("client.objects.search.display_as")}}</td>
                         <td>
                             <input type="text" name="display_as" value="{{params.get('display_as') or ''}}">
                         </td>
                     </tr>
                     <tr>
-                        <td>Display this page as</td>
+                        <td>{{_("client.objects.search.display_as_page")}}</td>
                         <td>
                             <input type="text" name="display_page_as" value="{{params.get('display_page_as') or ''}}">
                         </td>
@@ -132,7 +132,7 @@ Search
             <input type="hidden" name="linked_to" value="{{params.get('linked_to') or ''}}">
             <input type="hidden" name="after" value="{{after}}">
 
-            <input type="submit" value="Search">  
+            <input type="submit" value="{{_('client.objects.search')}}">  
         </form>
     </div>
 
