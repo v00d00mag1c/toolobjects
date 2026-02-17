@@ -57,7 +57,7 @@ class Save(Act):
                 name = 'public',
                 orig = Boolean,
                 default = True
-            ),
+            )
         ])
 
     async def _implementation(self, i):
@@ -81,10 +81,15 @@ class Save(Act):
                         if i.get('public'):
                             item.local_obj.make_public()
 
-                    item.flush(storage, link_max_depth = i.get('link_max_depth'), ignore_flush_hooks = i.get('ignore_flush_hooks'), ignore_errors = ignore_errors)
-                    item.save(do_commit = False)
+                    item.flush(storage, 
+                               link_max_depth = i.get('link_max_depth'), 
+                               ignore_flush_hooks = i.get('ignore_flush_hooks'), 
+                               ignore_errors = ignore_errors,
+                               set_db_if_set = just_copy)
 
                     results += 1
+
+                    item.save(do_commit = storage.adapter.auto_commit == True)
 
                     for link_item in link_to:
                         if link_item != None:

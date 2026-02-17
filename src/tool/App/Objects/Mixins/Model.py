@@ -26,6 +26,7 @@ class Model(PydanticBaseModel, Section):
         'by_alias': False,
         'exclude_that_excluded': True,
         'include_computed_fields': False,
+        'links_replace': {},
     }
 
     # we can't use __init__ because of fields initialization, so we creating second constructor
@@ -299,6 +300,12 @@ class Model(PydanticBaseModel, Section):
 
                     if isinstance(value, LinkInsertion):
                         value.setDb(self.getDb())
+
+                        if value != None and value.link != None and type(value.link) == int:
+                            _repl = self._dump_options['links_replace'].get(value.link)
+                            if _repl != None:
+                                value.link = _repl
+
                         if Model._dump_options['convert_links'] == True:
                             _res = value.unwrap()
                         else:

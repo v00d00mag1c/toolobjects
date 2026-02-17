@@ -10,6 +10,7 @@ class Chromedriver(Webdriver):
     revision: str | int = Field(default = None)
     viewport: dict = Field(default = {})
     executable_path: str = Field(default = None)
+    user_data_dir: str = Field(default = None)
 
     _playwright: Any = None
     _browser: Any = None
@@ -47,6 +48,10 @@ class Chromedriver(Webdriver):
             '--no-sandbox',
             '--user-agent={0}'.format(self.get_useragent())
         ]
+
+        if self.user_data_dir != None:
+            args.append('--user_data=' + self.user_data_dir)
+
         for argument in i.get('webdriver.args'):
             args.append(argument)
 

@@ -16,14 +16,23 @@ class Create(Act):
                 name = 'executable_path',
                 orig = String,
                 assertions = [NotNone()]
+            ),
+            Argument(
+                name = 'user_data_dir',
+                orig = String,
+                default = None
             )
         ])
 
     async def _implementation(self, i):
+        user_data_dir = i.get('user_data_dir')
         _bin = app.Storage.get('bin')
 
         _new = Chromedriver()
         _new.executable_path = i.get('executable_path')
+        if user_data_dir != None:
+            _new.user_data_dir = user_data_dir
+
         _bin.flush(_new)
 
         _new.save()

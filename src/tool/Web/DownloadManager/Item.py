@@ -43,16 +43,16 @@ class Item(Object):
     def getPath(self):
         return Path(self.download_dir).joinpath(self.name)
 
-    async def start(self, new_headers: dict = None) -> asyncio.Task:
+    async def start(self, new_headers: dict = None, allow_redirects: bool = True) -> asyncio.Task:
         async with self._manager_link.getSession() as session:
             self.log(f"URL: {self.url}")
             self.started_at = datetime.datetime.now()
             self.resume()
-            self._task = await asyncio.create_task(self.download(session, new_headers))
+            self._task = await asyncio.create_task(self.download(session, new_headers, allow_redirects = allow_redirects))
 
             return self._task
 
-    async def download(self, session, new_headers: RequestHeaders = None):
+    async def download(self, session, new_headers: RequestHeaders = None, allow_redirects: bool = True):
         _headers = self._manager_link.getHeaders().to_minimal_json()
         if new_headers != None:
             _headers.update(new_headers.to_minimal_json())
@@ -61,7 +61,7 @@ class Item(Object):
 
         async with self._manager_link.semaphore:
             request = session.get(self.url,
-                                       allow_redirects=self._manager_link.getOption('download_manager.allow_redirects'), 
+                                       allow_redirects=allow_redirects, 
                                        headers=_headers,
                                        timeout = self._manager_link.timeout)
 

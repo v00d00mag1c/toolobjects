@@ -7,7 +7,8 @@ class Get(Displayment):
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
-        obj = app.ObjectsList.getByName(query.get('name'))
+        name = query.get('name')
+        obj = app.ObjectsList.getByName(name)
 
         assert obj != None, 'not found object'
 
@@ -27,7 +28,8 @@ class Get(Displayment):
         self.context.update({
             'obj': obj,
             'False': False,
-            'mro_items': mro_items
+            'mro_items': mro_items,
+            'displayment': self.get_for(name)
         })
 
         return self.render_template('Objects/object.html')

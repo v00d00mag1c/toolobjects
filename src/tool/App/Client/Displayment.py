@@ -50,6 +50,13 @@ class Displayment(Object):
     def get_menu(self) -> Item:
         return None
 
+    @classmethod
+    def get_for_object(cls):
+        if type(cls.for_object) == list:
+            return cls.for_object[0]
+
+        return cls.for_object
+
     def return_json(self, val):
         return aiohttp.web.Response(
             text = JSON(data = val).dump(4),

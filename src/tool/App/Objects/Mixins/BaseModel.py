@@ -52,16 +52,20 @@ class BaseModel(Model):
 
         return _res
 
-    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True, auth_from_self: bool = True):
+    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True, auth_from_self: bool = True, do_save: bool = False):
         if auth_from_self and hasattr(self, 'auth'):
             args.update({
                 'auth': self.auth,
             })
 
+        if do_save == False:
+            args.update({
+                'do_save': 0
+            })
+
         if executor_wheel:
             args.update({
                 'i': object_name,
-                'do_save': 0
             })
 
             object_name = 'App.Objects.Operations.DefaultExecutorWheel'

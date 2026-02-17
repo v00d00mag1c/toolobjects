@@ -4,7 +4,7 @@
 
         {% if item[0].hasDb() %}
             <sup class="no_id">
-                <a href="/?i=App.DB.Search&storage={{item[0].getDbName()}}&linked_to={{item[0].getDbIds()}}&ref={{current_url_encoded}}">
+                <a href="/?i=App.DB.Search&storage={{item[0].getDbName()}}&linked_to={{item[0].getDbIds()}}&ref={{current_url_encoded}}&act=linked_to&linked_to_type=item">
                     Links
                 </a>
             </sup>

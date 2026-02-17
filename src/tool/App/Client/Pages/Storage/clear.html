@@ -38,6 +38,12 @@
                     <input type="button" value="{{_('client.storage.clear.all')}}">
                 </a>
             </div>
+            <div>
+                <form method="POST">
+                    <input type="hidden" name="act" value="unmount">
+                    <input type="submit" value="{{_('client.storage.unmount')}}">
+                </form>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

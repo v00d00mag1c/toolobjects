@@ -21,7 +21,6 @@ class SQLAlchemy(ConnectionAdapter):
     _session: Any = None
     delimiter: ClassVar[str] = '://'
 
-    # OK, its very bad code, but however
     def _get_content_column(self):
         from sqlalchemy import Column, Text
 
@@ -70,8 +69,12 @@ class SQLAlchemy(ConnectionAdapter):
                 self.owner = owner.uuid
                 self.target = link.item.getDbId()
                 self.order = order.getIndex()
-                if len(link.data.role) > 0:
-                    self.data = json.dumps(link.data.to_minimal_json())
+
+                try:
+                    if len(link.data.role) > 0:
+                        self.data = json.dumps(link.data.to_minimal_json())
+                except Exception:
+                    pass
 
                 link.setDb(self)
                 # self_adapter.log(f"flushed link with target uuid {link.item.getDbId()}")
@@ -128,7 +131,6 @@ class SQLAlchemy(ConnectionAdapter):
                     obj = self._orig
 
                 self.content = json.dumps(obj.to_db_json())
-                print(self_adapter.auto_commit)
                 if self_adapter.auto_commit == True:
                     self_adapter.commit()
 

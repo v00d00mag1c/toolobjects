@@ -77,6 +77,7 @@ class DBInsertable():
         # We cant annotate this class here, so probaly the StorageItem should have this method? But we have StorageUnit that need to take its files to another dir
 
         _db_item = into.get_db_adapter().flush(self)
+        _links_copy_ids = dict()
         _set_db = True
         # ???
         if set_db == False:
@@ -90,8 +91,12 @@ class DBInsertable():
         if flush_linked == True and link_current_depth < link_max_depth and hasattr(self, 'getLinkedItems'):
             for link in self.getLinkedItems():
                 try:
+                    _old_id = None
+                    if link.hasDb():
+                        _old_id = link.getDbId()
+
                     # If link item exists, but the link is not exists in db.
-                    if link.item.hasDb() and link.item.getDbName() != into.name:
+                    if link.item.hasDb() and link.item.getDbName() == into.name:
                         self.log('flush: links: the link item is already flushed')
                     else:
                         link.item.flush(into,
@@ -99,10 +104,14 @@ class DBInsertable():
                                         link_current_depth = link_current_depth,
                                         link_max_depth = link_max_depth,
                                         set_db = set_db,
+                                        set_db_if_set = set_db_if_set,
                                         ignore_flush_hooks = ignore_flush_hooks)
 
+                    _res = _db_item.addLink(link = link)
                     if link.hasDb() == False or _set_db == True:
-                        link.setDb(_db_item.addLink(link = link))
+                        link.setDb(_res)
+
+                    _links_copy_ids[_old_id] = link.getDbId()
 
                     self.log('flush: links: flushed link with id {0}, order {1}'.format(link.getDbId(), _id), role = ['flushed', 'flushing.link'])
 
@@ -116,10 +125,11 @@ class DBInsertable():
         if _set_db == True:
             self.setDb(_db_item)
 
-        _db_item.flush_content(self)
-
         if ignore_flush_hooks == False:
             self.flush_hook(into)
+
+        self._dump_options['links_replace'] = _links_copy_ids
+        _db_item.flush_content(self)
 
         _role = ['flushed']
         if into.name == 'tmp':
@@ -156,6 +166,7 @@ class DBInsertable():
             return True
 
         if do_flush_content == True:
+            #self.log('changed item content')
             self.getDb().flush_content(self)
         if do_commit and self._db._adapter.auto_commit == False:
             self._db._adapter.commit()

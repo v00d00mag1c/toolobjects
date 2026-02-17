@@ -33,6 +33,12 @@ class Clear(Displayment):
                         'storage': storage_name
                     })
                     return self.redirect('/?i=App.Storage.Item.List')
+                case 'unmount':
+                    await self._execute('App.Storage.Item.Unmount', {
+                        'name': storage_name,
+                        'to_config': True
+                    })
+                    return self.redirect('/?i=App.Storage.Item.List')
 
             return self.redirect('/?i=App.Storage.Item.Get&name=' + storage_name)
 

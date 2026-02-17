@@ -38,6 +38,11 @@ class Download(Extractor):
                 default = True,
                 orig = Boolean
             ),
+            Argument(
+                name = 'allow_redirects',
+                default = True,
+                orig = Boolean
+            ),
         ])
 
     async def _implementation(self, i):
@@ -60,10 +65,12 @@ class Download(Extractor):
                 _headers = _obj.get_headers()
                 _headers.referer = i.get('referer')
 
-                await item.start(_headers)
+                await item.start(_headers, allow_redirects = i.get('allow_redirects'))
 
             _item = _obj.detect_from_su(_su)()
-            _item.set_storage_unit(_su)
+            if _su != None:
+                _item.set_storage_unit(_su)
+
             _item.obj.set_common_source(Source(
                 obj = _url
             ))

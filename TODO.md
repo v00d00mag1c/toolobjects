@@ -1,5 +1,6 @@
 core:
 
+- [ ] LinkInsertions breaks on moving between storages
 - [x] Object
 - [x] App
 - [x] Objects list
@@ -74,6 +75,7 @@ db and storage:
 - [x] VirtualPath
 - [x] allow to cancel scripts and run them at once
 - [ ] Linkable.getParents
+- [ ] storageuuid as symlink to another uuid
 
 other with objects:
 
@@ -109,6 +111,7 @@ media:
 - [x] web links bookmarks
 - [ ] rss: CDATA (image downloading)
 - [ ] rss: save another fields
+- [ ] Set audio's performer
 
 web crawler:
 

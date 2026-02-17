@@ -75,13 +75,17 @@ class Page(Object):
         await self._init_hook()
 
         async def handle_route(route, request):
-            await route.fulfill(
-                status=200,
-                content_type="text/html",
-                body=html
-            )
+            if request.url == url:
+                await route.fulfill(
+                    status=200,
+                    content_type="text/html",
+                    body=html
+                )
+                return
+            else:
+                await route.continue_()
 
-        await self._page.get().route(url, handle_route)
+        await self._page._page.route("**/*", handle_route)
 
         #self._page.url_override = url
 
