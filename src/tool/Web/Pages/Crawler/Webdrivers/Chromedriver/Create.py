@@ -36,3 +36,5 @@ class Create(Act):
         _bin.flush(_new)
 
         _new.save()
+
+        self.log('created new webdriver: {0}'.format(_new.getDbIds()))
