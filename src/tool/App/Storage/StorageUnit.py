@@ -87,7 +87,7 @@ class StorageUnit(Object):
 
         return path.relative_to(dirs)
 
-    def flush_hook(self, into: Type):
+    def flush_hook_before(self, into: Type):
         into.storage_adapter.copy_storage_unit(self)
 
     def copySelf(self, new_root: Path):

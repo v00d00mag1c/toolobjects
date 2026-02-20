@@ -5,6 +5,13 @@ New storage
 {% endblock %}
 
 {% block body %}
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
     <a href="/?i=App.Storage.Item.List"><< {{_("client.index.back")}}</a>
     <hr>
     <form method="POST">

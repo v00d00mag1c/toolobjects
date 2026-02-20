@@ -8,14 +8,14 @@
     {% if act == 'clear_all' %}
         <form method="post">
             <input type="hidden" name="act" value="clear_all">
-            <p>Are you sure?</p>
-            <p>Storage will be recreated on restart.</p>
+            <p>{{_("client.storage.clear.sure")}}</p>
+            <p>{{_("client.storage.clear.sure_2")}}</p>
             <div style="display: flex;justify-content: space-between;">
                 <a href="/?i=App.Storage.Item.Get&name={{storage_name}}">
-                    <input type="button" value="No">
+                    <input type="button" value="{{_('client.no')}}">
                 </a>
 
-                <input type="submit" value="Yes">
+                <input type="submit" value="{{_('client.yes')}}">
             </div>
             
         </form>

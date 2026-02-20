@@ -52,7 +52,9 @@ class BaseModel(Model):
 
         return _res
 
-    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True, auth_from_self: bool = True, do_save: bool = False):
+    async def _execute(self, object_name: str, args: dict = {}, executor_wheel: bool = True, auth_from_self: bool = True, do_save: bool = False, in_thread: bool = True):
+        from App.Objects.Threads.ExecutionThread import ExecutionThread
+
         if auth_from_self and hasattr(self, 'auth'):
             args.update({
                 'auth': self.auth,
@@ -75,6 +77,15 @@ class BaseModel(Model):
         assert obj != None, 'object does not exist'
 
         executable = obj.getModule()()
+
+        if in_thread:
+            thread = ExecutionThread(id = -3)
+            thread.set(executable.execute(args))
+            thread.set_name(str(args.get('i')))
+            results = await thread.get()
+            thread.end()
+
+            return results
 
         return await executable.execute(args)
 

@@ -271,6 +271,10 @@ body {
     #upper_divider {
         display: none;
     }
+
+    .adaptive_row {
+        flex-direction: column;
+    }
 }
 
 .webpage .thumb {

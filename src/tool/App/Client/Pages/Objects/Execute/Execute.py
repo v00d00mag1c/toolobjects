@@ -44,7 +44,7 @@ class Execute(Displayment):
 
             stay = _params.get('stay') == '1'
 
-            results = await DefaultExecutorWheel().execute(i = _vals)
+            results = await self._execute(_vals.get('i'), _vals)
             json = results.to_json()
 
             if stay == False:

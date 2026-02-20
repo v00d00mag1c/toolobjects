@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{storage.name}}
+{% endblock %}
+
+{% block body %}
+    <a href="/?i=App.Storage.Item.List"><< {{_("client.index.back")}}</a>
+    <hr>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>owner</th>
+                    <th>target</th>
+                    <th>role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in links %}
+                <tr>
+                    <td>{{item.getDbId()}}</td>
+                    <td>
+                        <a href="{{url_for_object}}{{item.getDbName()}}_{{item.getOwnerId()}}">{{item.getOwnerId()}}</a>
+                    </td>
+                    <td>
+                        <a href="{{url_for_object}}{{item.getDbName()}}_{{item.getTargetId()}}">{{item.getTargetId()}}</a>
+                    </td>
+                    <td>{{item.data.role}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

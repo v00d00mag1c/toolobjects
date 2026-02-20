@@ -10,3 +10,5 @@ class Auto(Media):
         for class_val in [Image, Video, Audio, Text]:
             if storage_unit.get_ext() in class_val.extensions:
                 return class_val
+
+        return Media

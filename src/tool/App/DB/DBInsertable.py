@@ -100,7 +100,7 @@ class DBInsertable():
                         self.log('flush: links: the link item is already flushed')
                     else:
                         link.item.flush(into,
-                                        flush_linked,
+                                        flush_linked = flush_linked,
                                         link_current_depth = link_current_depth,
                                         link_max_depth = link_max_depth,
                                         set_db = set_db,
@@ -122,14 +122,17 @@ class DBInsertable():
                     else:
                         raise e
 
+        if ignore_flush_hooks == False:
+            self.flush_hook_before(into)
+
         if _set_db == True:
             self.setDb(_db_item)
 
-        if ignore_flush_hooks == False:
-            self.flush_hook(into)
-
         self._dump_options['links_replace'] = _links_copy_ids
         _db_item.flush_content(self)
+
+        if ignore_flush_hooks == False:
+            self.flush_hook(into)
 
         _role = ['flushed']
         if into.name == 'tmp':
@@ -172,6 +175,9 @@ class DBInsertable():
             self._db._adapter.commit()
 
         return True
+
+    def flush_hook_before(self, into: Type) -> None:
+        pass
 
     def flush_hook(self, into: Type) -> None:
         pass

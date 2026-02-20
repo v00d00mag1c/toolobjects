@@ -4,6 +4,7 @@ from App.Objects.Arguments.Assertions.NotNone import NotNone
 from App.Objects.Arguments.ArgumentDict import ArgumentDict
 from Web.Pages.Crawler.Webdrivers.Chromedriver.Chromedriver import Chromedriver
 from Data.Types.String import String
+from Data.Types.Boolean import Boolean
 from App import app
 
 class Create(Act):
@@ -21,6 +22,11 @@ class Create(Act):
                 name = 'user_data_dir',
                 orig = String,
                 default = None
+            ),
+            Argument(
+                name = 'set_as_current',
+                orig = Boolean,
+                default = False
             )
         ])
 
@@ -37,4 +43,5 @@ class Create(Act):
 
         _new.save()
 
-        self.log('created new webdriver: {0}'.format(_new.getDbIds()))
+        if i.get('set_as_current'):
+            app.Config.set("web.crawler.webdriver", _new.getDbIds())

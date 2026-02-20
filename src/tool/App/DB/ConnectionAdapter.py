@@ -54,6 +54,12 @@ class ConnectionAdapter(Object, Protocol):
 
         return query.count()
 
+    def getAllLinks(self):
+        query = self.LinkAdapter.getQuery()
+
+        for item in query.getAll():
+            yield item.toPython()
+
     @property
     def append_prefix(self):
         return LogPrefix(

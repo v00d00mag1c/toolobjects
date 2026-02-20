@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <a href="/?i=App.Storage.Item.List"><< All</a>
+    <a href="/?i=App.Storage.Item.List"><< {{_("client.all")}}</a>
     <div>
         <h2>{{ item.name }}</h2>
     </div>
@@ -23,10 +23,7 @@
                             </tr>
                         {% endif %}
                         {% if item.root_uuid %}
-                            <tr>
-                                <td>{{_("client.storage.root")}}</td>
-                                <td><a href="?i=App.Objects.Object&uuids={{ item.root_uuid }}">{{ item.root_uuid }}</a></td>
-                            </tr>
+                            <tr></tr>
                         {% else %}
                             <tr>
                                 <td>{{_("client.storage.root")}}</td>
@@ -64,7 +61,7 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Type</td>
+                            <td>{{_("client.storage.item.type")}}</td>
                             <td>
                                 <a href="?i=App.Objects.Index.Get&name={{item.storage_type}}">{{ item.storage_type }}</a>
                             </td>
@@ -83,36 +80,40 @@
                 </table>
 
                 {% if item.adapter %}
-                <b>DB</b>
+                <b>{{_("client.storage.db")}}</b>
 
                 <table>
                     <tbody>
                         <tr>
-                            <td>Type</td>
+                            <td>{{_("client.storage.item.type")}}</td>
                             <td>
                                 <a href="?i=App.Objects.Index.Get&name={{item.db_type}}">{{ item.db_type }}</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Name</td>
+                            <td>{{_("client.storage.item.name")}}</td>
                             <td>
                                 {{ item.adapter.name }}
                             </td>
                         </tr>
                         <tr>
-                            <td>Rows count</td>
+                            <td>{{_("client.storage.item.rows_count")}}</td>
                             <td>
                                 {{ rows_count or '...' }}
                             </td>
                         </tr>
                         <tr>
-                            <td>Links count</td>
+                            <td>
+                                <a href="/?i=App.Objects.Operations.GetLinks&storage={{item.name}}">
+                                    {{_("client.storage.item.links_count")}}
+                                </a>
+                            </td>
                             <td>
                                 {{ links_count or '...' }}
                             </td>
                         </tr>
                         <tr>
-                            <td>Settings</td>
+                            <td>{{_("client.storage.item.settings")}}</td>
                             <td>
                                 <a href="?i=App.Storage.Item.Get&name={{item.name}}&get_settings=1">...</a>
                             </td>
@@ -125,9 +126,16 @@
         </div>
 
         <div style="width: 50%;">
+            {% if item.root_uuid %}
+                <div>
+                    <a href="/?i=App.DB.Search&storage={{ item.name }}&linked_to={{ item.root_uuid }}&act=linked_to">{{_("client.storage.root")}}</a>
+                </div>
+
+                <hr>
+            {% endif %}
             <div>
                 <div>
-                    <a href="/?i=App.DB.Search&storage={{item.name}}&act=linked_to&linked_to_type=item">Search</a>
+                    <a href="/?i=App.DB.Search&storage={{item.name}}&act=linked_to&linked_to_type=item">{{_("client.objects.search")}}</a>
                 </div>
             </div>
 
@@ -142,7 +150,7 @@
             <hr>
 
             <div>
-                <a href="/?i=App.Storage.Clear&name={{item.name}}&ref={{current_url_encoded}}">Clear</a>
+                <a href="/?i=App.Storage.Clear&name={{item.name}}&ref={{current_url_encoded}}">{{_("client.storage.clear")}}</a>
             </div>
         </div>
     </div>

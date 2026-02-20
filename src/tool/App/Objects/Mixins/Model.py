@@ -189,7 +189,7 @@ class Model(PydanticBaseModel, Section):
         for item in exclude:
             excludes.append(item)
 
-        # I don't know a way to pass values to serializer
+        # I don't know a better way to pass values to serializer
         Model._dump_options['include_extra'] = include_extra
         Model._dump_options['excludes'] = excludes
         Model._dump_options['convert_links'] = convert_links == 'unwrap'
