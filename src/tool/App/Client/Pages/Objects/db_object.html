@@ -141,7 +141,10 @@
                         <a href="/?i=App.Storage.Movement.Save&items={{item.getDbIds()}}&ref={{current_url_encoded}}">{{_("client.objects.copy")}}</a>
                     </div>
                     <div>
-                        <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}&as={{item._getNameJoined()}}">{{_("client.objects.edit")}}</a>
+                        <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}">{{_("client.objects.edit")}}</a>
+                    </div>
+                    <div>
+                        <a href="?i=App.Objects.Operations.Edit.Local&item={{item.getDbIds()}}&as={{item._getNameJoined()}}">{{_("client.objects.edit.as_self")}}</a>
                     </div>
                     <div>
                         <a href="?i=App.Storage.Movement.Delete&item={{item.getDbIds()}}">{{_("client.delete")}}</a>

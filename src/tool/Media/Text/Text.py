@@ -97,3 +97,9 @@ class Text(Media):
                 create = 'Media.Text.Get'
             )
         ]
+
+    def _get_name(self) -> str:
+        if self.value not in ['', None]:
+            return self.value[0:40]
+
+        return self._getNameJoined()

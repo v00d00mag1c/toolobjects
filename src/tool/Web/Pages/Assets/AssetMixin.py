@@ -29,11 +29,9 @@ class AssetMixin(BaseModel):
     def decompose(self):
         self.bs_node.decompose()
 
-    def set_url(self, href: str, base_url: str = ''):
+    def set_url(self, href: str):
         if not href.startswith('http'):
-            if href.startswith('data:') == False:
-                href = base_url + href
-            else:
+            if href.startswith('data:') == True:
                 return
 
         self.url = href

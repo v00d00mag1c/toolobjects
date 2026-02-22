@@ -38,10 +38,19 @@ class HTMLFile(Object):
         _path.mkdir(exist_ok = True)
         return _path
 
-    def get_asset_by_url(self, url):
-        asset = self.assets_links.get(Asset.encode_url(url))
-        if asset == None:
-            asset = self.assets_links.get(Asset.encode_url(url.strip()))
+    def get_asset_by_url(self, url: str):
+        asset = None
+        for attempt in range(0, 3):
+            match (attempt):
+                case 0:
+                    asset = self.assets_links.get(Asset.encode_url(url))
+                case 1:
+                    asset = self.assets_links.get(Asset.encode_url(url.strip()))
+                case 2:
+                    asset = self.assets_links.get(url.replace('https', 'http', 1))
+
+            if asset != None:
+                return asset
 
         return asset
 

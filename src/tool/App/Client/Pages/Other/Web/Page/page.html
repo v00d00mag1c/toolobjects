@@ -17,6 +17,7 @@
         {% else %}
             <style>
                 #___to_inserted_page_banner {
+                    background: white;
                     position: absolute;
                     z-index: 99999;
                     top: 0;
@@ -28,17 +29,16 @@
                     font-weight: unset;
                     font-family: times !important;
                     color: unset !important;
-                    text-shadow: 0px 0px 4px #ffffff;
                     width: unset;
                 }
             </style>
             <div id="___to_inserted_page_banner">
                 <a href="{{url_for_object}}{{item.getDbIds()}}">
-                    << back
+                    <<
                 </a>
                 |
                 <a href="{{options_url}}">
-                    options
+                    {{_("client.web_pages.options")}}
                 </a>
             </div>
         {% endif %}

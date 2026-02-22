@@ -1,4 +1,4 @@
-#content {
+body, #content, #content #page {
     background: #3b3b3b;
     color: white;
 }

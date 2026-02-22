@@ -40,6 +40,10 @@ class Model(PydanticBaseModel, Section):
         pass
 
     @classmethod
+    def isEditable(cls) -> bool:
+        return True
+
+    @classmethod
     def isInstance(cls, object: PydanticBaseModel) -> bool:
         return cls._getClassNameJoined() == object._getClassNameJoined()
 
@@ -139,11 +143,11 @@ class Model(PydanticBaseModel, Section):
     def to_minimal_json(self):
         return self.to_json(only_class_fields = True, by_alias = True, exclude_defaults = True)
 
-    def to_db_json(self):
+    def to_db_json(self, exclude_output_values: bool = False):
         return self.to_json(
             exclude_internal = False,
             exclude = ['links', 'db_info', 'class_name', 'any_name', 'any_description'],
-            exclude_output_values = False,
+            exclude_output_values = exclude_output_values,
             convert_links = 'none',
             exclude_none = True,
             exclude_defaults = True,

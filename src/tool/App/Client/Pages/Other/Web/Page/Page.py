@@ -83,10 +83,7 @@ class Page(Displayment):
             case 'url':
                 url = query.get('url')
                 new_url = Asset.get_decoded_url(url)
-                redirect_url = item.relative_url + new_url
-
-                if new_url.startswith(item.relative_url) or new_url.startswith('http'):
-                    redirect_url = new_url
+                redirect_url = item.get_relative_url(new_url)
 
                 self.context.update({
                     'url': new_url,

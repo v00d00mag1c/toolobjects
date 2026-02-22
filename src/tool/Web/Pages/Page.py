@@ -119,6 +119,22 @@ class Page(Object):
 
         return 'utf-8'
 
+    def get_relative_url(self, url: str):
+        if not url.startswith('http'):
+            if url.startswith('data:') == True:
+                return url
+
+        new_url = None
+        if url.startswith(self.relative_url) or url.startswith('http'):
+            new_url = url
+
+        if self.relative_url[-1] == '/' or url[-1] == '/':
+            new_url = self.relative_url + url
+        else:
+            new_url = self.relative_url + '/' + url
+
+        return new_url
+
     # crawling methods
 
     def set_downloader(self, downloader):

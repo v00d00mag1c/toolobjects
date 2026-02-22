@@ -79,6 +79,9 @@ class Item(Object):
                     else:
                         raise AccessDeniedError('access denied')
 
+                if allow_redirects == False:
+                    assert status not in [302], 'redirected'
+
                 assert status not in [404, 403], '{0} error'.format(status)
 
                 content_length = int(response.headers.get("Content-Length", 0))

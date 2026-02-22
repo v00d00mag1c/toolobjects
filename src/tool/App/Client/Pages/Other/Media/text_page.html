@@ -1,22 +1,27 @@
 {% for item in items %}
-    <div class="less_visible" style="padding-bottom: 15px;">
-        <form method="POST">
-            <div>
-                <label>
-                    <input type="checkbox" name="ignore_escaping" {% if ignore_escaping %}checked{% endif %}>
-                    Do not escape HTML
-                </label>
-            </div>
-            <input type="submit" value="OK">
-        </form>
-    </div>
-    <div>
-        {% for line in item.text.split('\n') %}
-            {% if ignore_escaping %}
-                {{ line|safe }}{% if not loop.last %}<br>{% endif %}
-            {% else %}
-                {{ line|e }}{% if not loop.last %}<br>{% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
+    {% if sub_act == 'options' %}
+        <div style="padding-bottom: 15px;">
+            <form method="POST">
+                <input type="hidden" name="sub_act" value="no">
+                <div>
+                    <label>
+                        <input type="checkbox" name="ignore_escaping" {% if ignore_escaping %}checked{% endif %}>
+                        {{_("client.media.text.not_escape")}}
+                    </label>
+                </div>
+                <input type="submit" value="OK">
+            </form>
+        </div>
+    {% else %}
+        <a href="{{current_url}}&sub_act=options">{{_("client.navigation.options")}}</a>
+        <div>
+            {% for line in item.text.split('\n') %}
+                {% if ignore_escaping %}
+                    {{ line|safe }}{% if not loop.last %}<br>{% endif %}
+                {% else %}
+                    {{ line|e }}{% if not loop.last %}<br>{% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endfor %}

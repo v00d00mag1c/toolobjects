@@ -12,6 +12,7 @@
         "client.no": "No",
         "client.delete.remove_links": "Remove links",
         "client.edit.fields": "Edit fields",
+        "client.navigation.options": "Options",
 
         "client.app": "App",
         "client.index.title": "Index",
@@ -59,6 +60,7 @@
         "client.objects.copy": "Copy",
         "client.objects.edit_meta": "Edit meta",
         "client.objects.edit": "Edit",
+        "client.objects.edit.as_self": "Edit as self",
         "client.objects.edit_fields": "Edit fields",
         "client.objects.edit_json": "Edit JSON",
         "client.objects.copy.title": "Copy to another storage",
@@ -147,11 +149,13 @@
 
         "client.web_pages.back": "Back to the page",
         "client.web_pages.page_url": "Page URL",
+        "client.web_pages.options": "options",
+        "client.web_page.url": "Page URL",
 
         "client.rss.url": "Feed URL",
         "client.rss.create": "Create feed",
         "client.rss.html_included": "Warning: HTML included",
 
-        "client.web_page.url": "Page URL"
+        "client.media.text.not_escape": "Do not escape HTML"
     }
 }

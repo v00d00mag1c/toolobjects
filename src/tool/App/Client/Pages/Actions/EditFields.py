@@ -15,10 +15,11 @@ class EditFields(Displayment):
 
         assert item != None, 'not found'
         assert act in ['json', None], 'wrong act'
+        assert item.isEditable(), 'access denied'
 
         match(act):
             case 'json':
-                _json = JSON(data = item.to_db_json())
+                _json = JSON(data = item.to_db_json(exclude_output_values = item._unserializable_on_output))
                 self.context.update({
                     'json': _json.dump(4)
                 })

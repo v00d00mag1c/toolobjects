@@ -5,15 +5,20 @@ class Text(Displayment):
     for_object = 'Media.Text.Text'
 
     async def render_as_object(self, item):
+        query = self.request.rel_url.query
         self.context.update({
             'items': [item],
-            'String': String
+            'sub_act': query.get('sub_act'),
+            'String': String,
         })
 
         if self.is_post():
             data = await self.request.post()
             ignore_escaping = data.get('ignore_escaping') == 'on'
-            self.context['ignore_escaping'] = ignore_escaping
+            self.context.update({
+                'ignore_escaping': ignore_escaping,
+                'sub_act': data.get('sub_act')
+            })
 
         return self.render_string('Other/Media/text_page.html')
 

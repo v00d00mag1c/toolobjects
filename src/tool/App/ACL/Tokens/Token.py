@@ -15,6 +15,10 @@ class Token(Object):
 
     _unserializable_on_output = ['value']
 
+    @classmethod
+    def isEditable(cls) -> bool:
+        return False
+
     def is_expired(self):
         if self.infinite == True:
             return False

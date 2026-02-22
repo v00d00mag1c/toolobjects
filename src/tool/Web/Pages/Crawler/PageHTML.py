@@ -23,7 +23,7 @@ class PageHTML(Object):
     def get_favicons(self, orig_page: Page, take_default: bool = True) -> Generator[Favicon]:
         for icon in self.bs.select("link[rel*='icon']"):
             favicon = Favicon(sizes = getattr(icon, 'sizes', None))
-            favicon.set_url(icon.get('href'), orig_page.relative_url)
+            favicon.set_url(orig_page.get_relative_url(icon.get('href')))
             favicon.set_node(icon)
 
             yield favicon
@@ -35,7 +35,7 @@ class PageHTML(Object):
         for tag in self.bs.select("img[src], video[src], audio[src]"):
             item = Media()
             item.tagName = tag.name
-            item.set_url(tag.get('src'), orig_page.relative_url)
+            item.set_url(orig_page.get_relative_url(tag.get('src')))
             item.set_node(tag)
             if tag.get('alt'):
                 item.alt = tag.get('alt')
@@ -62,7 +62,7 @@ class PageHTML(Object):
 
             for key, attr in tag.attrs.items():
                 if key == 'href':
-                    item.set_url(attr, orig_page.relative_url)
+                    item.set_url(orig_page.get_relative_url(attr))
                 else:
                     setattr(item, key, attr)
 
@@ -101,7 +101,7 @@ class PageHTML(Object):
                         self.log('url {0}: probaly protocol'.format(attr))
                         url.set_protocol(attr)
                     else:
-                        url.set_url(attr, orig_page.base_url)
+                        url.set_url(orig_page.get_relative_url(attr))
                 elif key == 'download':
                     url.is_download = True
 
@@ -113,7 +113,7 @@ class PageHTML(Object):
             item.set_node(tag)
 
             if tag.get('src') != None:
-                item.set_url(tag.get('src'), orig_page.base_url)
+                item.set_url(orig_page.get_relative_url(tag.get('src')))
             else:
                 pass
                 #for key, attr in tag.attrs.items():

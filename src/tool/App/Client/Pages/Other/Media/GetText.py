@@ -9,7 +9,10 @@ class GetText(Displayment):
         item = self.get_link_item()
 
         assert item != None
-        self.context['ref'] = query.get('ref')
+
+        self.context.update({
+            'ref': query.get('ref'),
+        })
 
         if self.is_post():
             data = await self.request.post()
