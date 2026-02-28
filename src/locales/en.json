@@ -100,10 +100,12 @@
         "client.objects.search.show_unlisted": "Show unlisted",
         "client.objects.search.show_temporary": "Show temporary",
         "client.objects.search.ascend": "Ascend",
+        "client.objects.search.order_by": "Order by",
         "client.objects.search.per_page": "Per page",
         "client.objects.search.object_name": "Object name",
         "client.objects.search.display_as": "Display as",
         "client.objects.search.display_as_page": "Display this page as",
+        "client.objects.search.only_collections": "Collections only",
         "client.objects.show_familiar": "Show familiar",
 
         "client.objects.class_name": "Class name",

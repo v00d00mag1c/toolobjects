@@ -79,6 +79,11 @@ class Search(Act):
                 orig = Boolean,
                 default = False
             ),
+            Argument(
+                name = 'only_collections',
+                orig = Boolean,
+                default = False
+            ),
             ListArgument(
                 name = 'only_object',
                 orig = String,
@@ -237,6 +242,18 @@ class Search(Act):
                 val1 = Value(
                     column = 'content',
                     json_fields = ['local_obj', 'public']
+                ),
+                operator = '==',
+                val2 = Value(
+                    value = True
+                )
+            ))
+
+        if i.get('only_collections') == True:
+            _query.addCondition(Condition(
+                val1 = Value(
+                    column = 'content',
+                    json_fields = ['obj', 'collection']
                 ),
                 operator = '==',
                 val2 = Value(

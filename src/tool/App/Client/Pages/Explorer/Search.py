@@ -27,9 +27,13 @@ class Search(Displayment):
         except:
             prev = 0
 
+        # 2 messy
+
+        order_by = query.get('order_by', 'uuid')
         ascend = query.get('ascend') == 'on'
         operator = '<'
-        params = {'q': query.get('q'), 
+        params = {'q': query.get('q'),
+                  'only_collections': query.get('only_collections') == 'on',
                   'storage': storage,
                   'show_unlisted': query.get('show_unlisted'),
                   'only_public': query.get('show_unlisted') != 'on',
@@ -42,7 +46,8 @@ class Search(Displayment):
                   'ascend': ascend,
                   'show_tmp': query.get('show_tmp', 'on') == 'on',
                   'storage_root_if_no_collection': True,
-                  'sort': []
+                  'sort': [],
+                  'order_by': order_by
         }
 
         if linked_to not in bad:
@@ -63,11 +68,20 @@ class Search(Displayment):
                 )
             ))
 
+        sort_condition = None
+        if order_by in bad:
+            sort_condition = Value(
+                column = 'uuid'
+            )
+        else:
+            sort_condition = Value(
+                column = 'content',
+                json_fields = order_by.split('.')
+            )
+
         params['sort'].append(Sort(
             condition = Condition(
-                val1 = Value(
-                    column = 'uuid'
-                )
+                val1 = sort_condition
             ),
             descend = ascend == False
         ))

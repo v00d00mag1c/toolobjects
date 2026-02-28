@@ -61,10 +61,13 @@ class PageHTML(Object):
             item.set_node(tag)
 
             for key, attr in tag.attrs.items():
-                if key == 'href':
-                    item.set_url(orig_page.get_relative_url(attr))
-                else:
-                    setattr(item, key, attr)
+                try:
+                    if key == 'href':
+                        item.set_url(orig_page.get_relative_url(attr))
+                    else:
+                        setattr(item, key, attr)
+                except Exception as e:
+                    self.log_error(e)
 
             yield item
 

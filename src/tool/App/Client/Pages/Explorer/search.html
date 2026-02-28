@@ -94,6 +94,15 @@
                             </label>
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="only_collections" {% if params.get('only_collections') %}checked{%endif%}>
+                                {{_("client.objects.search.only_collections")}}
+                            </label>
+                        </td>
+                    </tr>
 
                     {% if params.get('storage') %}
                     <tr>
@@ -119,9 +128,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{{_("client.objects.search.ascend")}}</td>
+                        <td>{{_("client.objects.search.order_by")}}</td>
                         <td>
-                            <input type="checkbox" name="ascend" {% if params.get('ascend') %}checked{% endif %}>
+                            <input type="text" name="order_by" value="{{params.get('order_by')}}">
+
+                            <label>
+                                <input type="checkbox" name="ascend" {% if params.get('ascend') %}checked{% endif %}>
+                                {{_("client.objects.search.ascend")}}
+                            </label>
                         </td>
                     </tr>
                     <tr>
