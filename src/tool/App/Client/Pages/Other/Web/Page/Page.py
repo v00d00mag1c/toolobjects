@@ -8,7 +8,7 @@ class Page(Displayment):
     prefer_object_displayment = 'page'
 
     async def render_as_page(self, args = {}):
-        query = self.request.rel_url.query
+        query = dict(self.request.rel_url.query)
 
         act = query.get('web_act', 'switch')
         item = args.get('item')
@@ -22,16 +22,23 @@ class Page(Displayment):
             'back': '/?i=App.Objects.Object&uuids={0}'.format(item.getDbIds()),
         })
 
+        if act == 'text_only':
+            act = 'render_page'
+            query['disable_js'] = 'on'
+            query['disable_css'] = 'on'
+            query['remove_inline_styles'] = 'on'
+            query['disable_iframes'] = 'on'
+            query['remove_selectors'] = 'nav, header, input'
+
         match (act):
             case 'meta':
                 return self.render_template('Other/Web/Page/meta.html')
             case 'switch':
                 thumbs = list(item.get_thumbnails())
                 if len(thumbs) > 0:
-                    self.context.update({
-                        'thumb': thumbs[0].getItem(),
-                        'fullsize_thumb': thumbs[1].getItem()
-                    })
+                    self.context['thumb'] = thumbs[0].getItem()
+                if len(thumbs) > 1:
+                    self.context['fullsize_thumb_url'] = thumbs[1].getItem().get_url(True)
 
                 self.context.update({
                     'url': '/?i=Web.Pages.Page&item={0}&web_act='.format(item.getDbIds())
@@ -61,6 +68,8 @@ class Page(Displayment):
                 html = PageHTML.from_html(html)
                 if disable_js:
                     html.clear_js()
+                if query.get('remove_inline_styles') == 'on':
+                    html.remove_inline_css()
                 if disable_css:
                     html.remove_css()
                 if disable_iframes:

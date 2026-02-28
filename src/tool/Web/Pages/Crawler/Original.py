@@ -80,7 +80,6 @@ class Original(Object):
         page._page._page.on('response', _response)
 
     async def crawl(self, page: Page, i: dict):
-        remove_scripts = i.get('scripts.remove')
         download_assets = i.get('crawler.download_other_assets')
 
         await asyncio.sleep(i.get('crawler.sleep.before_crawl'))
@@ -145,8 +144,7 @@ class Original(Object):
                         continue
 
                     try:
-                        pass
-                        #await item.download_function(page.html.get_assets_dir(), self.i.getIndex())
+                        await item.download_function(page.html.get_assets_dir(), self.i.getIndex())
                     except Exception as e:
                         self.log_error(e, exception_prefix='assets downloading error: ', role = ['crawler.asset.download'])
 
@@ -200,6 +198,6 @@ class Original(Object):
             Argument(
                 name = 'crawler.download_other_assets',
                 orig = Boolean,
-                default = True
-            ),
+                default = False
+            )
         ])

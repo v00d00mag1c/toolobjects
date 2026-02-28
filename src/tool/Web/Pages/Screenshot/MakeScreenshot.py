@@ -23,28 +23,31 @@ class MakeScreenshot(Thumbnail):
         page = i.get('page')
 
         for key in ['viewport', 'fullscreen']:
-            self.log('making {0} screenshot...'.format(key))
+            try:
+                self.log('making {0} screenshot...'.format(key))
 
-            st = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
-            filename = 'screenshot_' + key + '.png'
+                st = app.Storage.get('tmp').get_storage_adapter().get_storage_unit()
+                filename = 'screenshot_' + key + '.png'
 
-            path = st.get_root()
-            new_path = path.joinpath(filename)
+                path = st.get_root()
+                new_path = path.joinpath(filename)
 
-            st.setCommonFile(new_path)
+                st.setCommonFile(new_path)
 
-            if key == 'viewport':
-                await page._page.get().screenshot(path=new_path)
-            else:
-                await page._page.get().screenshot(
-                    path = new_path,
-                    full_page = True
-                )
+                if key == 'viewport':
+                    await page._page.get().screenshot(path=new_path)
+                else:
+                    await page._page.get().screenshot(
+                        path = new_path,
+                        full_page = True
+                    )
 
-            img = Image()
-            img.set_storage_unit(st)
-            img.save()
+                img = Image()
+                img.set_storage_unit(st)
+                img.save()
 
-            thumbs.append(img)
+                thumbs.append(img)
+            except Exception as e:
+                self.log_error(e)
 
         return thumbs

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Save page
+{{_("client.web_pages.save_page")}}
 {% endblock %}
 
 {% block body %}
@@ -15,7 +15,7 @@ Save page
                     </td>
                 </tr>
                 <tr>
-                    <td>Webdriver</td>
+                    <td>{{_("client.web_pages.webdriver")}}</td>
                     <td>
                         <input type="text" value="{{webdriver_id}}" name="webdriver_id">
                     </td>

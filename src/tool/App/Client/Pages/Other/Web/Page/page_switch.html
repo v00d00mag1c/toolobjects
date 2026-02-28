@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Web page switch
+{{item.any_name}}
 {% endblock %}
 
 {% block body %}
@@ -14,7 +14,7 @@ Web page switch
 
         <div>
             {% if thumb %}
-                <a href="{{fullsize_thumb.get_url(True)}}">
+                <a href="{{fullsize_thumb_url or '#'}}">
                     <img class="thumb" src="{{thumb.get_url(True)}}">
                 </a>
             {% endif %}
@@ -22,25 +22,25 @@ Web page switch
         <div>
             <ul>
                 <li>
-                    <a href="{{url}}render_page">Show page</a>
+                    <a href="{{url}}render_page">{{_("client.web_page.show_page")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}options">Options</a>
+                    <a href="{{url}}options">{{_("client.web_page.options")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}render_page&disable_js=on&disable_css=on">Text only</a>
+                    <a href="{{url}}text_only">{{_("client.web_page.text_only")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}meta">Meta</a>
+                    <a href="{{url}}meta">{{_("client.web_page.meta")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}hyperlinks&ref={{current_url_encoded}}">Hyperlinks</a>
+                    <a href="{{url}}hyperlinks&ref={{current_url_encoded}}">{{_("client.web_page.hyperlinks")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}media&ref={{current_url_encoded}}">Media</a>
+                    <a href="{{url}}media&ref={{current_url_encoded}}">{{_("client.web_page.media")}}</a>
                 </li>
                 <li>
-                    <a href="{{url}}images&ref={{current_url_encoded}}">Images</a>
+                    <a href="{{url}}images&ref={{current_url_encoded}}">{{_("client.web_page.images")}}</a>
                 </li>
             </ul>
         </div>

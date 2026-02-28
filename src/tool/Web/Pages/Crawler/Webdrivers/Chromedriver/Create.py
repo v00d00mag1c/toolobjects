@@ -39,7 +39,7 @@ class Create(Act):
         if user_data_dir != None:
             _new.user_data_dir = user_data_dir
 
-        _bin.flush(_new)
+        _new.flush(_bin)
 
         _new.save()
 

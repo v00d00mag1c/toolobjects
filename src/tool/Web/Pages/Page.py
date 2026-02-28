@@ -71,15 +71,23 @@ class Page(Object):
         self._page_response = await self._page.goto(url)
 
     async def from_html(self, url: str, html: str):
+        from Web.Pages.Crawler.PageHTML import PageHTML
+
         self._page = await self._downloader.webdriver.new_page(self._crawler)
         await self._init_hook()
+
+        # all js will be removed because of possible redirects
+        _p = PageHTML.from_html(html)
+        _p.clear_js()
+        # and also removing integrity, to not get errors probaly
+        _p.remove_integrity()
 
         async def handle_route(route, request):
             if request.url == url:
                 await route.fulfill(
                     status=200,
                     content_type="text/html",
-                    body=html
+                    body=_p.prettify()
                 )
                 return
             else:
@@ -99,7 +107,7 @@ class Page(Object):
         self.relative_url = await self._page.get_relative_url()
 
     async def get_encoding(self):
-        page = self._page.get()
+        #page = self._page.get()
         #charset = await page.locator('meta[charset]').get_attribute('charset')
         #if charset:
         #    return charset
@@ -124,16 +132,19 @@ class Page(Object):
             if url.startswith('data:') == True:
                 return url
 
-        new_url = None
         if url.startswith(self.relative_url) or url.startswith('http'):
-            new_url = url
+            return url
 
-        if self.relative_url[-1] == '/' or url[-1] == '/':
-            new_url = self.relative_url + url
+        if self.relative_url[-1] == '/':
+            self.relative_url[-1] = ''
+
+        if len(url) > 0:
+            if url[0] == '/':
+                return self.relative_url + url
+            else:
+                return self.relative_url + '/' + url
         else:
-            new_url = self.relative_url + '/' + url
-
-        return new_url
+            return self.relative_url # ???
 
     # crawling methods
 

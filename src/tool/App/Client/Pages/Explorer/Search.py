@@ -72,7 +72,7 @@ class Search(Displayment):
             ))
 
         sort_condition = None
-        if order_by in bad:
+        if order_by in bad + ['uuid']:
             sort_condition = Value(
                 column = 'uuid'
             )

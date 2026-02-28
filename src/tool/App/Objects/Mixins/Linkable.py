@@ -90,7 +90,7 @@ class Linkable():
                 if link.item == item:
                     return link
 
-    def getLinkedItems(self, ignore_db: bool = False, with_role: str = None) -> Generator[Link]:
+    def getLinkedItems(self, ignore_db: bool = False, with_role: str = None, ids_only: bool = False) -> Generator[Link]:
         '''
         Returns linked items.
         Non-overridable!
@@ -98,6 +98,10 @@ class Linkable():
 
         if self.getDb() != None and ignore_db == False:
             for item in self.getDb().getLinks(with_role = with_role):
+                if ids_only:
+                    yield item.target
+                    continue
+
                 _item = item.toPython()
                 if _item == None:
                     continue
@@ -119,12 +123,12 @@ class Linkable():
 
                 yield item
 
-    async def _get_virtual_linked(self, with_role: str = None) -> AsyncGenerator[Link]:
+    async def _get_virtual_linked(self, with_role: str = None, ids_only: bool = False) -> AsyncGenerator[Link]:
         '''
         Returns linked items. This method can be overriden
         '''
 
-        for item in self.getLinkedItems():
+        for item in self.getLinkedItems(ids_only = ids_only):
             yield item
 
     def getLinked(self, ignore_virtual: bool = False, with_role: str = None) -> Generator[Link]:
@@ -147,20 +151,20 @@ class Linkable():
 
             yield _item
 
-    async def asyncGetLinked(self, ignore_virtual: bool = False, with_role: str = None):
+    async def asyncGetLinked(self, ignore_virtual: bool = False, with_role: str = None, ids_only: bool = False):
         if self.local_obj.dynamic_links == True and ignore_virtual == False:
-            async for item in self._get_virtual_linked(with_role = with_role):
+            async for item in self._get_virtual_linked(with_role = with_role, ids_only = ids_only):
                 yield item
         else:
-            for item in self.getLinkedItems(with_role = with_role):
+            for item in self.getLinkedItems(with_role = with_role, ids_only = ids_only):
                 yield item
 
-    def getLinksRecurisvely(self, current_level = 0, max_depth = 10) -> Generator[Link]:
+    def getLinksRecurisvely(self, current_level: int = 0, max_depth: int = 10, ids_only: bool = False) -> Generator[Link]:
         if current_level >= max_depth:
             return []
 
         for link in self.getLinkedItems():
             yield link
-            _next_links = link.item.getLinksRecurisvely(current_level = current_level + 1, max_depth = max_depth)
+            _next_links = link.item.getLinksRecurisvely(current_level = current_level + 1, max_depth = max_depth, ids_only = ids_only)
             for item in _next_links:
                 yield item

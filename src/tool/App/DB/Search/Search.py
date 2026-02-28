@@ -172,21 +172,15 @@ class Search(Act):
 
                 links = None
                 if recursively:
-                    links = _item.toPython().getLinksRecurisvely()
+                    links = _item.toPython().getLinksRecurisvely(ids_only = True)
 
                     for linked_item in links:
-                        if linked_item.getTargetId() == None:
-                            continue
-
                         _ids.append(linked_item.getDbId())
                 else:
-                    links = _item.toPython().asyncGetLinked()
+                    links = _item.toPython().asyncGetLinked(ids_only = True)
 
                     async for linked_item in links:
-                        if linked_item.getTargetId() == None:
-                            continue
-
-                        _ids.append(linked_item.getTargetId())
+                        _ids.append(linked_item)
 
             _query.addCondition(Condition(
                 val1 = Value(
@@ -223,15 +217,15 @@ class Search(Act):
 
                 links = None
                 if recursively:
-                    links = root_collection.getLinksRecurisvely()
+                    links = root_collection.getLinksRecurisvely(ids_only = True)
 
                     for link in links:
-                        _2_uuids.append(link.item.getDbId())
+                        _2_uuids.append(link)
                 else:
-                    links = root_collection.asyncGetLinked()
+                    links = root_collection.asyncGetLinked(ids_only = True)
 
                     async for link in links:
-                        _2_uuids.append(link.item.getDbId())
+                        _2_uuids.append(link)
 
                 _query.addCondition(Condition(
                     val1 = Value(

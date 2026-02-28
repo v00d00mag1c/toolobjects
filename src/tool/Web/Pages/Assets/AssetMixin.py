@@ -4,7 +4,6 @@ from abc import abstractmethod
 from pydantic import Field
 from typing import Any
 from App import app
-import secrets
 import urllib
 
 class AssetMixin(BaseModel):

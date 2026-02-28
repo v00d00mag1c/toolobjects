@@ -12,8 +12,6 @@ from Web.Pages.Page import Page
 
 from bs4.dammit import EncodingDetector
 from bs4 import BeautifulSoup
-import urllib
-import base64
 import re
 
 class PageHTML(Object):
@@ -88,25 +86,29 @@ class PageHTML(Object):
                 url.label = label
 
             for key, attr in tag.attrs.items():
-                if key == 'target':
-                    url.target = attr
-                elif key == 'href':
-                    is_protocol = False
-                    _parts = attr.split(':')
-                    if len(_parts) > 2:
-                        is_protocol = _parts[1] != '/'
+                try:
+                    if key == 'target':
+                        url.target = attr
+                    elif key == 'href':
+                        is_protocol = False
+                        _parts = attr.split(':')
+                        if len(_parts) > 2:
+                            is_protocol = _parts[1] != '/'
 
-                    if attr[0] == '#':
-                        self.log('url {0}: probaly anchor'.format(attr))
-                    elif attr[0] == '' or attr == None:
-                        self.log('url {0}: empty url'.format(attr))
-                    elif is_protocol:
-                        self.log('url {0}: probaly protocol'.format(attr))
-                        url.set_protocol(attr)
-                    else:
-                        url.set_url(orig_page.get_relative_url(attr))
-                elif key == 'download':
-                    url.is_download = True
+                        if attr[0] == '#':
+                            self.log('url {0}: anchor'.format(attr))
+                        elif attr[0] == '' or attr == None:
+                            self.log('url {0}: empty url'.format(attr))
+                        elif is_protocol:
+                            self.log('url {0}: probaly protocol'.format(attr))
+                            url.set_protocol(attr)
+                        else:
+                            url.set_url(orig_page.get_relative_url(attr))
+                    elif key == 'download':
+                        url.is_download = True
+                except Exception as e:
+                    self.log_error(e)
+                    continue
 
             yield url
 
@@ -173,12 +175,20 @@ class PageHTML(Object):
             tag.attrs = {key:value for key,value in tag.attrs.items()
                     if key not in attrs_to_remove}
 
+    def remove_inline_css(self):
+        for tag in self.bs.find_all(attrs={"style": True}):
+            del tag['style']
+
     def remove_css(self):
         for tag in self.bs.select('style'):
             tag.decompose()
 
         for tag in self.bs.select('link[rel=\'stylesheet\']'):
             tag.decompose()
+
+    def remove_integrity(self):
+        for tag in self.bs.find_all(attrs={"integrity": True}):
+            del tag['integrity']
 
     def make_correct_links(self, page):
         _s = page.html._get('file').get_storage_unit()
