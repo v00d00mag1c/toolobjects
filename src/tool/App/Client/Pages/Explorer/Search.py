@@ -53,6 +53,9 @@ class Search(Displayment):
         if linked_to not in bad:
             params['linked_to'] = linked_to
 
+        if query.get('parent_of') not in bad:
+            params['parent_of'] = query.get('parent_of')
+
         if ascend:
             operator = '>'
             params['invert'] = True

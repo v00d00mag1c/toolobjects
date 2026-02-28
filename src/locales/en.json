@@ -107,6 +107,7 @@
         "client.objects.search.display_as_page": "Display this page as",
         "client.objects.search.only_collections": "Collections only",
         "client.objects.show_familiar": "Show familiar",
+        "client.objects.show_parents": "Parents",
 
         "client.objects.class_name": "Class name",
         "client.objects.type": "Type",

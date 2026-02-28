@@ -47,6 +47,13 @@ class SQLAlchemy(ConnectionAdapter):
                 self.order = order
                 self_adapter.commit()
 
+            def getOwner(self):
+                _obj = _ObjectAdapter.getById(self.owner)
+                if _obj == None:
+                    return self.fallback()
+
+                return _obj
+
             def getTarget(self):
                 _obj = _ObjectAdapter.getById(self.target)
                 if _obj == None:
@@ -158,8 +165,6 @@ class SQLAlchemy(ConnectionAdapter):
                         value = self.uuid
                     )
                 ))
-                #if with_role:
-                #    _query._query = _query._query.select_from(func.json_each(func.json_extract(_LinkAdapter.data, '$.role'))).where(func.json_each.c.value == with_role)
 
                 _query.addSort(Sort(
                     condition = Condition(
@@ -170,6 +175,30 @@ class SQLAlchemy(ConnectionAdapter):
                 ))
                 for link in _query.getAll():
                     yield link
+
+            def getParents(self) -> Generator[CommonLink]:
+                _query = self_adapter.QueryAdapter()
+                _query._query = self_adapter.getSession().query(_LinkAdapter)
+                _query._model = _LinkAdapter
+                _query.addCondition(Condition(
+                    val1 = Value(
+                        column = 'target'
+                    ),
+                    operator = '==',
+                    val2 = Value(
+                        value = self.uuid
+                    )
+                ))
+                _query.addSort(Sort(
+                    condition = Condition(
+                        val1 = Value(
+                            column = 'order'
+                        )
+                    )
+                ))
+
+                for link in _query.getAll():
+                    yield link.getOwner()
 
             @classmethod
             def getQuery(cls):

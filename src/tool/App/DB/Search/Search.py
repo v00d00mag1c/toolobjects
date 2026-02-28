@@ -90,6 +90,11 @@ class Search(Act):
                 default = []
             ),
             ListArgument(
+                name = 'parent_of',
+                default = None,
+                orig = StorageUUID
+            ),
+            ListArgument(
                 name = 'linked_to',
                 default = None,
                 orig = StorageUUID
@@ -190,6 +195,22 @@ class Search(Act):
                 operator = _operator,
                 val2 = Value(
                     value = _ids
+                )
+            ))
+
+        if i.get('parent_of'):
+            _3_uuids = list()
+            for item in i.get('parent_of'):
+                for p in item.toPython().getParents():
+                    _3_uuids.append(p.getDbId())
+
+            _query.addCondition(Condition(
+                val1 = Value(
+                    column = 'uuid'
+                ),
+                operator = 'in',
+                val2 = Value(
+                    value = _3_uuids
                 )
             ))
 

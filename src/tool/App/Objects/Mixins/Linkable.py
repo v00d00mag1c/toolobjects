@@ -137,6 +137,16 @@ class Linkable():
         #else:
         return self.getLinkedItems(with_role = with_role)
 
+    def getParents(self, ignore_virtual: bool = False, with_role: str = None):
+        assert self.hasDb(), 'not flushed'
+
+        for item in self.getDb().getParents():
+            _item = item.toPython()
+            if _item == None:
+                continue
+
+            yield _item
+
     async def asyncGetLinked(self, ignore_virtual: bool = False, with_role: str = None):
         if self.local_obj.dynamic_links == True and ignore_virtual == False:
             async for item in self._get_virtual_linked(with_role = with_role):

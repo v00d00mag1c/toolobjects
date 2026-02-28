@@ -21,6 +21,7 @@ class LinkAdapter(AbstractAdapter):
         return []
 
     def toPython(self) -> Link:
+        # This is very unoptimized; it finds target by id every time
         _role = self._parseData()
         _target = self.getTarget()
         if _target == None:
