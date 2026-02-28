@@ -11,7 +11,7 @@ class Search(Displayment):
     async def render_as_page(self, args = {}):
         bad = ['', None, 0]
         query = self.request.rel_url.query
-        per_page = query.get('per_page', 30)
+        per_page = int(query.get('per_page', 30))
         storage = query.get('storage')
         act = query.get('act')
         linked_to = query.get('linked_to')
@@ -105,6 +105,7 @@ class Search(Displayment):
         }, None)
         self.context.update({
             'total_count': _val.getTotalCount(),
+            'current_page_count': _val.getCount(),
             'search_html': search_html,
             'last_uuid': last_uuid,
             'per_page': per_page,

@@ -5,9 +5,28 @@
 {% endblock %}
 
 {% block body %}
+    <style>
+        .actions_row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    </style>
     {% for item in objects %}
         <div class="db_item">
             <b>{{ item.getDbIds() }}</b>
+            <div>
+                <div>
+                    <div>
+                        <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&ref={{current_url_encoded}}">{{_("client.objects.view_as_self")}}</a>
+                    </div>
+                    <div>
+                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to&display_page_as={{item._getNameJoined()}}">{{_("client.objects.view_links.as_self")}}</a>
+                    </div>
+                </div>
+            </div>
+            <hr>
             <div>
                 <table>
                     <tbody>
@@ -48,13 +67,23 @@
                             </td>
                         </tr>
                         {% endif %}
+                        {% if item.local_obj.created_at %}
                         <tr>
                             <td>{{_("client.objects.created_at")}}</td>
                             <td> {{ item.local_obj.created_at }} </td>
                         </tr>
+                        {% endif %}
+                        {% if item.obj.created_at %}
                         <tr>
                             <td>{{_("client.objects.declared_created_at")}}</td>
                             <td> {{ item.obj.created_at }} </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td>{{_("client.collections.type")}}</td>
+                            <td>
+                                <a href="?i=App.Objects.Index.Get&name={{ item._getNameJoined() }}">{{ item._getNameJoined() }}</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -75,29 +104,11 @@
                                 {{ item.getDbId() }}
                             </td>
                         </tr>
-                        <tr>
-                            <td>{{_("client.collections.type")}}</td>
-                            <td>
-                                <a href="?i=App.Objects.Index.Get&name={{ item._getNameJoined() }}">{{ item._getNameJoined() }}</a>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
             <hr>
-            <div>
-                <div>
-                    <div>
-                        <a href="?i=App.Objects.Object&uuids={{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&ref={{current_url_encoded}}">{{_("client.objects.view_as_self")}}</a>
-                    </div>
-                    <div>
-                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to">{{_("client.objects.view_links")}}</a>
-                    </div>
-                    <div>
-                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to&display_page_as={{item._getNameJoined()}}">{{_("client.objects.view_links.as_self")}}</a>
-                    </div>
-                </div>
-                <hr>
+            <div class="actions_row">
                 <div>
                     <div>
                         <a href="{{current_url}}&act=view_json">{{_("client.objects.view_json")}}</a>
@@ -109,7 +120,6 @@
                         <a href="{{current_url}}&act=show_thumbnails&ref={{current_url_encoded}}">{{_("client.objects.show_thumbnails")}}</a>
                     </div>
                 </div>
-                <hr>
                 <div>
                     <!--<div>
                         <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}">{{_("client.objects.edit_fields")}}</a>
@@ -118,8 +128,10 @@
                         <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}&act=json">{{_("client.objects.edit_json")}}</a>
                     </div>
                 </div>
-                <hr>
                 <div>
+                    <div>
+                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to">{{_("client.objects.view_links")}}</a>
+                    </div>
                     <div>
                         <a href="?i=App.DB.Link&item={{item.getDbIds()}}">{{_("client.objects.link.with")}}</a>
                     </div>
@@ -127,15 +139,11 @@
                         <a href="?i=App.DB.Link&item={{item.getDbIds()}}&act=to">{{_("client.objects.link.to")}}</a>
                     </div>
                 </div>
-                <hr>
                 <div>
                     <div>
                         <a href="?i=App.DB.Search&storage={{item.getDbName()}}&only_object={{item._getNameJoined()}}">{{_("client.objects.show_familiar")}}</a>
                     </div>
                 </div>
-
-                <hr>
-
                 <div>
                     <div>
                         <a href="/?i=App.Storage.Movement.Save&items={{item.getDbIds()}}&ref={{current_url_encoded}}">{{_("client.objects.copy")}}</a>
@@ -151,7 +159,6 @@
                     </div>
                 </div>
             </div>
-            <hr>
 
             {% if item.obj.is_forced %}
                 <div>

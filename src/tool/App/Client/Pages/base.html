@@ -14,33 +14,10 @@
     <script src="static/client/js/funcs.js"></script>
 </head>
 <body>
-    <div id="upper_bar">
-        <div id="bookmarks"></div>
-    </div>
-    <div id="shadows">
-        <div id="main_shadow"></div>
-    </div>
-
     {% if global_app_categories %}
     <div class="less_visible" id="floating_menu">
         {% include "Components/menu.html" %}
     </div>
-    {% endif %}
-
-    {% if app_name %}
-        <div id="upper">
-            <div id="upper_menu">
-                <a href="/">
-                    <b>{{ app_name }}</b>
-                </a>
-                <div class="divider"></div>
-                <a href="/?i=App&act=self_user">
-                    {{ user.name }}
-                </a>
-            </div>
-        </div>
-
-        <div id="upper_divider"></div>
     {% endif %}
 
     <div id="content">

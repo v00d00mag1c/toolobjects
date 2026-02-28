@@ -1,3 +1,16 @@
+{% if app_name %}
+    <div id="upper">
+        <div id="upper_menu">
+            <a href="/">
+                <b>{{ app_name }}</b>
+            </a>
+            <a href="/?i=App&act=self_user">
+                {{ user.name }}
+            </a>
+        </div>
+    </div>
+{% endif %}
+
 <div id="menu">
     <div>
         <div>
@@ -25,7 +38,7 @@
 
     {% endfor %}
 
-    {% if is_index == False and len(_app_bookmarks) > 0 and _app_bookmarks_collection != None %}
+    {% if len(_app_bookmarks) > 0 and _app_bookmarks_collection != None %}
         <a href="?i=App.DB.Search&storage={{_app_bookmarks_collection.getDbName()}}&linked_to={{_app_bookmarks_collection.getDbIds()}}&show_unlisted=on">
             <b>{{_("client.bookmarks")}}</b>
         </a>

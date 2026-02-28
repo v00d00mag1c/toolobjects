@@ -32,7 +32,7 @@ class Feed(Object):
     def parse(self, data: str):
         _detect = EncodingDetector.find_declared_encoding(data, is_html=True)
 
-        return BeautifulSoup(data.encode(_detect, errors = 'ignore'), 'xml')
+        return BeautifulSoup(data.encode(_detect or 'utf-8', errors = 'ignore'), 'xml')
 
     @classmethod
     def getArguments(cls):

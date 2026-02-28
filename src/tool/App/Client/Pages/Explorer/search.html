@@ -52,11 +52,33 @@
             </div>
         {% endif %}
 
+        <style>
+            .options_shown {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            .options_shown > div {
+                display: flex;
+                justify-content: end;
+            }
+        </style>
+
         <form {% if show_search %}class="options_shown"{% else %}class="options_hidden"{% endif %}>
-            <input type="hidden" name="act" value="{{current_url.query.get('act') or ''}}">
-            <input type="hidden" name="linked_to_type" value="{{current_url.query.get('linked_to_type') or ''}}">
             <table>
                 <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="act" value="{{current_url.query.get('act') or ''}}">
+                            <input type="hidden" name="linked_to_type" value="{{current_url.query.get('linked_to_type') or ''}}">
+                            <input type="hidden" name="i" value="App.DB.Search">
+                            <input type="hidden" name="linked_to" value="{{params.get('linked_to') or ''}}">
+                            <input type="hidden" name="after" value="{{after}}">
+                        </td>
+                    </tr>
                     <tr>
                         <td>{{_("client.objects.search.query")}}</td>
                         <td>
@@ -128,11 +150,10 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="hidden" name="i" value="App.DB.Search">
-            <input type="hidden" name="linked_to" value="{{params.get('linked_to') or ''}}">
-            <input type="hidden" name="after" value="{{after}}">
 
-            <input type="submit" value="{{_('client.objects.search')}}">  
+            <div>
+                <input type="submit" value="{{_('client.objects.search')}}">  
+            </div>
         </form>
     </div>
 
@@ -146,10 +167,10 @@
             </div>
 
             <div id="pages">
-                {% if before_url %}
+                {% if before_url and params.get('storage') %}
                 <a href="?{{before_url}}"><</a>
                 {% endif %}
-                {% if after_url %}
+                {% if after_url and params.get('storage') and current_page_count >= params.get('limit') %}
                     <a href="?{{after_url}}">></a>
                 {% endif %}
             </div>
