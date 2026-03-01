@@ -62,7 +62,7 @@ class Search(Act):
             Argument(
                 name = 'storage_root_if_no_collection',
                 orig = Boolean,
-                default = True
+                default = False
             ),
             Argument(
                 name = 'storage_root_if_no_collection.recursively',

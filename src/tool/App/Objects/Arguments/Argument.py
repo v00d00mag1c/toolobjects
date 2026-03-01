@@ -188,3 +188,10 @@ class Argument(NameContainable):
 
     def set_input_value(self, value):
         self.inputs = value
+
+    def _display_as_string(self) -> str:
+        _str = self.name + ' '
+        if self.orig:
+            _str += self.orig._getNameJoined()
+
+        return _str

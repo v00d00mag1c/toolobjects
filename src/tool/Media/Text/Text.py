@@ -18,6 +18,13 @@ class Text(Media):
 
     _unserializable_on_output = ['value']
 
+    @classmethod
+    async def from_some_api(cls, data: str):
+        if type(data) == str:
+            return Text(value = data)
+
+        return cls.model_validate_override(data)
+
     @computed_field
     @property
     def text(self) -> str:

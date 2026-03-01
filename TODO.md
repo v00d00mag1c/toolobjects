@@ -1,6 +1,6 @@
 core:
 
-- [ ] LinkInsertions breaks on moving between storages
+- [x] LinkInsertions breaks on moving between storages
 - [x] Object
 - [x] App
 - [x] Objects list
@@ -74,8 +74,8 @@ db and storage:
 - [x] App.Storage.CreateRoot
 - [x] VirtualPath
 - [x] allow to cancel scripts and run them at once
-- [ ] Linkable.getParents
-- [ ] storageuuid as symlink to another uuid
+- [x] Linkable.getParents
+- [ ] storageuuid as link to another uuid
 
 other with objects:
 

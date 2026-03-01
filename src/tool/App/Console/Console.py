@@ -23,6 +23,10 @@ class Console(View):
         return await self.execute(_parsed_argv[0])
 
     async def _implementation(self, i: ArgumentValues = {}):
+        from colorama import init
+
+        init()
+
         self.log("Some arguments cannot be passed in console.")
 
         self._auth(i)
@@ -49,7 +53,10 @@ class Console(View):
                         self.log_raw('[item without displayAsString]')
                         continue
 
-                    _displays.append(item.displayAsString(show_id = i.get('console.print.display_ids')))
+                    try:
+                        _displays.append(item.displayAsString(show_id = i.get('console.print.display_ids')))
+                    except Exception as e:
+                        self.log_error(e)
 
                 self.log_raw(i.get('console.print.divider').join(_displays))
             else:

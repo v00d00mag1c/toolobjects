@@ -34,7 +34,7 @@ class Create(Act):
                 name = 'db_args',
                 orig = Dict,
                 default = {
-                    'auto_commit': True
+                    'auto_commit': False
                 }
             ),
             Argument(

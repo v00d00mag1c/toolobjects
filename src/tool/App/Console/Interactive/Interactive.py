@@ -10,6 +10,10 @@ class Interactive(Console):
     _pre_i: Object = None
 
     async def _implementation(self, i):
+        from colorama import init
+
+        init()
+
         self._auth(i)
 
         self.pre_i = i.get('pre_i')()

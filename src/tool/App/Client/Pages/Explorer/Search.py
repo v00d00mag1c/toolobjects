@@ -47,7 +47,8 @@ class Search(Displayment):
                   'show_tmp': query.get('show_tmp', 'on') == 'on',
                   'storage_root_if_no_collection': True,
                   'sort': [],
-                  'order_by': order_by
+                  'order_by': order_by,
+                  'storage_root_if_no_collection': True
         }
 
         if linked_to not in bad:
