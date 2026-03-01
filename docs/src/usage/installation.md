@@ -37,13 +37,13 @@ or
 python tool.py -i App.Objects.Requirements.InstallEvery
 ```
 
-7. Then press Ctrl+C. You need to change root's password:
+7. You need to change root's password:
 
 ```
 python tool.py -i App.ACL.Users.ChangePassword -new [new password]
 ```
 
-8. Create `config.json` in `src/config` and set the content:
+8. Create `config.json` in `src/config` if not exists, set the content:
 ```
 {
     "app.autostart.as_root": true,

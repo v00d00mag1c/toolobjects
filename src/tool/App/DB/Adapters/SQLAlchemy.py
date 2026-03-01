@@ -464,10 +464,6 @@ class SQLAlchemy(ConnectionAdapter):
     def _requirements(cls):
         return [
             Requirement(
-                name = 'sqlalchemy',
-                version = '2.0.44'
-            ),
-            Requirement(
                 name = 'SQLAlchemy-Utils'
             ),
             Requirement(
