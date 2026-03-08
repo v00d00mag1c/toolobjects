@@ -11,9 +11,13 @@ class Create(Displayment):
         assert item != None
 
         creates = app.ObjectsList.get_creations()
-        object_creations = item.get_creations()
-        if len(object_creations) > 0:
-            creates = object_creations
+        _common = app.ObjectsList.get_namespace_with_name('common')
+        if _common.is_loaded == False:
+            _common.load_all()
+
+        #object_creations = item.get_creations()
+        #if len(object_creations) > 0:
+        #    creates = object_creations
 
         self.context.update({
             'creations': creates,

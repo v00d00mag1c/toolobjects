@@ -99,11 +99,16 @@ class Image(Media):
             self._reset_file()
 
     def get_thumbnail_url(self, from_server: bool = True):
-        url = None
-        for thumb in self.get_thumbnails():
-            url = thumb.item.get_url(from_server)
+        try:
+            url = None
+            for thumb in self.get_thumbnails():
+                url = thumb.item.get_url(from_server)
 
-        if url == None:
-            return self.get_url(from_server)
+            if url == None:
+                return self.get_url(from_server)
 
-        return url
+            return url
+        except Exception as e:
+            self.log_error(e)
+
+            return None

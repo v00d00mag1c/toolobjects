@@ -99,13 +99,14 @@ class Search(Displayment):
         last_uuid = None
         _items = list()
         _fallback = 'App.Objects.Object'
+        _fallback_collection = 'Media.List'
         display_as = params.get('display_as')
         if display_as in bad:
             display_as = _fallback
 
         display_page_as = params.get('display_page_as')
         if display_page_as in bad:
-            display_page_as = 'App.Objects.Object'
+            display_page_as = _fallback_collection
 
         if len(objs) > 0:
             last_uuid = objs[-1].getDbId()
@@ -115,7 +116,7 @@ class Search(Displayment):
         collection_display = self.get_for(display_page_as)
         if collection_display is None:
             #self.throw_message('no displayment for this', 'error')
-            collection_display = self.get_for(_fallback)
+            collection_display = self.get_for(_fallback_collection)
 
         collection_display = collection_display(request = self.request, context = self.context)
         search_html = await collection_display.render_as_collection(objs, {
@@ -143,7 +144,7 @@ class Search(Displayment):
                     })
                 case _:
                     self.context.update({
-                        '_object': linked_to
+                        '_object': self.get_obj(linked_to)
                     })
 
             self.context.update({

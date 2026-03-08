@@ -3,15 +3,23 @@ from Data.Primitives.Collections.Create import Create as RealCreate
 from App import app
 
 class Create(Displayment):
-    for_object = ['Data.Primitives.Collections.Create']
+    for_object = ['Data.Primitives.Collections.Create', 'Media.List.Create']
 
     async def render_as_page(self, args = {}):
         query = self.request.rel_url.query
+        for_item = query.get('i')
+        collection_type = 'Data.Primitives.Collections.Collection'
+        if for_item == 'Media.List.Create':
+            collection_type = 'Media.List'
+
         item = self.get_link_item()
 
         assert item != None
 
-        self.context['ref'] = query.get('ref')
+        self.context.update({
+            'ref': query.get('ref'),
+            'collection_type': collection_type
+        })
 
         if self.is_post():
             data = await self.request.post()

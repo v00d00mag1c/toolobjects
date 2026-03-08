@@ -18,6 +18,7 @@ class Namespace(Object):
     '''
 
     _names: list[str] = []
+    is_loaded: bool = Field(default = False)
     name: str = Field()
     root: str = Field(default = None)
     load_before: list = Field(default = [])
@@ -72,6 +73,18 @@ class Namespace(Object):
                     raise exception
 
             self.items.append(item)
+
+        if self.load_once == True:
+            self.is_loaded = True
+
+    def load_all(self):
+        for item in self.getItems():
+            try:
+                item.getModule()
+            except Exception:
+                pass
+
+        self.is_loaded = True
 
     def unload(self) -> bool:
         for item in self.items.toList():

@@ -30,32 +30,38 @@ class Object(Displayment):
                 _as = query.get('as')
                 htmls = list()
                 for item in objs:
-                    _class = self.get_for(_as)
-                    if _class == None:
+                    try:
+                        _class = self.get_for(_as)
+                        if _class == None:
+                            if redirect_if_no_displayment:
+                                return self.redirect_to_object(item)
+                            else:
+                                htmls.append(
+                                    (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': 'not found displayment for ' + _as}))
+                                )
+                            continue
+                        else:
+                                displayment = _class()
+                                displayment.request = self.request
+                                displayment.context = self.context
+                                displayment.auth = self.auth
+
+                                if displayment.prefer_object_displayment == 'object':
+                                    try:
+                                        htmls.append((item, await displayment.render_as_object(item)))
+                                    except Exception as e:
+                                        htmls.append(
+                                            (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': str(e)}))
+                                        )
+                                else:
+                                    return await displayment.render_as_page({
+                                        'item': item
+                                    })
+                    except Exception as e:
                         if redirect_if_no_displayment:
                             return self.redirect_to_object(item)
                         else:
-                            htmls.append(
-                                (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': 'not found displayment for ' + _as}))
-                            )
-                        continue
-                    else:
-                        displayment = _class()
-                        displayment.request = self.request
-                        displayment.context = self.context
-                        displayment.auth = self.auth
-
-                        if displayment.prefer_object_displayment == 'object':
-                            try:
-                                htmls.append((item, await displayment.render_as_object(item)))
-                            except Exception as e:
-                                htmls.append(
-                                    (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': str(e)}))
-                                )
-                        else:
-                            return await displayment.render_as_page({
-                                'item': item
-                            })
+                            raise e
 
                 self.context['htmls'] = htmls
 

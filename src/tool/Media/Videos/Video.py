@@ -67,5 +67,10 @@ class Video(Media):
             self._reset_file()
 
     def get_thumbnail_url(self, from_server: bool = True):
-        for thumb in self.get_thumbnails():
-            return thumb.getItem().get_url(from_server)
+        try:
+            for thumb in self.get_thumbnails():
+                return thumb.getItem().get_url(from_server)
+        except Exception as e:
+            self.log_error(e)
+
+            return None

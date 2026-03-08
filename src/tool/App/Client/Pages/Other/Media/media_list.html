@@ -1,37 +1,32 @@
-<style>
-    .gallery {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 11px;
-    }
-
-    .gallery .gallery_item img {
-        height: 81px;
-    }
-</style>
-
 <div class="gallery">
     {% for item in items %}
-        {% if item.media_type in ['image', 'video'] %}
-            <div class="search_item gallery_item">
-                <a href="{{url_for_object}}{{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&ref={{current_url_encoded}}">
-                    <img src="{{item.get_thumbnail_url(True)}}" alt="{{item.any_description or item.any_name}}">
-                </a>
-            </div>
-        {% elif item.media_type == 'audio' %}
-            <div style="width:100%;">
-                <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.any_name}}</a>
+        <a class="search_item gallery_item" href="{{url_for_object}}{{item.getDbIds()}}&act=display&as={{item._getNameJoined()}}&redirect_if_no_displayment=on&ref={{current_url_encoded}}">
+            <div class="gallery_item_content">
+            {% if 'get_thumbnail_url' in item %}
+                <img src="{{item.get_thumbnail_url(True)}}" alt="{{item.any_description or item.any_name}}">
+            {% elif item.media_type == 'audio' %}
+                <div style="width:100%;">
+                    <a href="{{url_for_object}}{{item.getDbIds()}}">{{item.any_name}}</a>
 
-                <div>
-                    <audio src="{{item.get_url(True)}}" preload="none" controls></audio>
+                    <div>
+                        <audio src="{{item.get_url(True)}}" preload="none" controls></audio>
+                    </div>
                 </div>
+            {% elif item.has_image_thumbnail() %}
+                <img src="{{item.get_image_thumbnail()[0].item.get_url(True)}}">
+            {% else %}
+                <div class="placeholder">
+                    <b>{{item._getNameJoined()}}</b>
+                </div>
+            {% endif %}
             </div>
-        {% else %}
-            <div class="search_item gallery_item">
-                <a href="{{url_for_object}}{{item.getDbIds()}}">
-                    <div class="placeholder"></div>
-                </a>
+
+            <div class="gallery_item_meta">
+                <b>{{item.any_name[0:40]}}</b>
+                {% if item.has_description() %}
+                    <span>{{item.any_description[0:100]}}</span>
+                {% endif %}
             </div>
-        {% endif %}
+        </a>
     {% endfor %}
 </div>

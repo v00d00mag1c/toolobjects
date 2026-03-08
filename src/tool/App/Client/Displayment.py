@@ -26,10 +26,10 @@ class Displayment(Object):
         ...
 
     # should return "render_string"
-    async def render_as_list_item(self, args):
+    async def render_as_list_item(self, args = {}):
         ...
 
-    async def render_as_object(self, item, args):
+    async def render_as_object(self, item, args = {}):
         ...
 
     async def render_as_collection(self, orig_items, args, orig_collection = None):
@@ -83,6 +83,11 @@ class Displayment(Object):
             objs.append(StorageUUID.fromString(id).toPython())
 
         return objs
+
+    def get_obj(self, uuid: str):
+        _id = self.get_objs(uuid)
+        if len(_id) > 0:
+            return _id[0]
 
     def redirect(self, url: str):
         return aiohttp.web.HTTPFound(url)

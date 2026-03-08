@@ -108,7 +108,7 @@
                 </table>
             </div>
             <hr>
-            <div class="actions_row">
+            <div class="actions_row" style="flex-direction: row-reverse;width: 500px;">
                 <div>
                     <div>
                         <a href="{{current_url}}&act=view_json">{{_("client.objects.view_json")}}</a>
@@ -117,17 +117,18 @@
                         <a href="{{current_url}}&act=view_json&include_nones=1">{{_("client.objects.view_json_with_none")}}</a>
                     </div>
                     <div>
-                        <a href="{{current_url}}&act=show_thumbnails&ref={{current_url_encoded}}">{{_("client.objects.show_thumbnails")}}</a>
-                    </div>
-                </div>
-                <div>
-                    <!--<div>
-                        <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}">{{_("client.objects.edit_fields")}}</a>
-                    </div>-->
-                    <div>
                         <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}&act=json">{{_("client.objects.edit_json")}}</a>
                     </div>
+                    <div>
+                        <a href="{{current_url}}&act=show_thumbnails&ref={{current_url_encoded}}">{{_("client.objects.show_thumbnails")}}</a>
+                    </div>
+                    <div>
+                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&only_object={{item._getNameJoined()}}">{{_("client.objects.show_familiar")}}</a>
+                    </div>
                 </div>
+                <!--<div>
+                    <a href="?i=App.Objects.Operations.Edit.Edit&item={{item.getDbIds()}}">{{_("client.objects.edit_fields")}}</a>
+                </div>-->
                 <div>
                     <div>
                         <a href="?i=App.DB.Search&storage={{item.getDbName()}}&linked_to={{item.getDbIds()}}&act=linked_to">{{_("client.objects.view_links")}}</a>
@@ -137,11 +138,6 @@
                     </div>
                     <div>
                         <a href="?i=App.DB.Link&item={{item.getDbIds()}}&act=to">{{_("client.objects.link.to")}}</a>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <a href="?i=App.DB.Search&storage={{item.getDbName()}}&only_object={{item._getNameJoined()}}">{{_("client.objects.show_familiar")}}</a>
                     </div>
                     <div>
                         <a href="?i=App.DB.Search&storage={{item.getDbName()}}&parent_of={{item.getDbIds()}}">{{_("client.objects.show_parents")}}</a>

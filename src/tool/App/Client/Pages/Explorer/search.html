@@ -13,9 +13,9 @@
         </script>
 
         <div>
-            {% if act == 'linked_to' %}
-                <div>
-                    {% if _item %}
+            <div>
+                <div style="display:flex;flex-direction: row;gap: 6px;">
+                    {% if act == 'linked_to' and _item %}
                         <div>
                             <a href="/?i=App.Storage.Item.Get&name={{_item.name}}">
                                 << {{_("client.index.back")}}
@@ -24,33 +24,27 @@
 
                         <div>
                             <a href="/?i=App.Objects.Operations.Create&storage={{_item.name}}&ref={{current_url_encoded}}">+ Create</a>
-                        </div>
+                        </div>   
                     {% endif %}
 
-                    {% if _object %}
+                    {% if act == 'linked_to' and _object %}
                         <div>
-                            <a href="/?i=App.Objects.Object&uuids={{_object}}">
+                            <a href="/?i=App.Objects.Object&uuids={{_object.getDbIds()}}">
                                 << {{_("client.index.back")}}
                             </a>
                         </div>
 
                         <div>
-                            <a href="/?i=App.Objects.Operations.Create&db_item={{_object}}&ref={{current_url_encoded}}">+ Create</a>
+                            <a href="/?i=App.Objects.Operations.Create&db_item={{_object.getDbIds()}}&ref={{current_url_encoded}}">+ Create</a>
                         </div>
                     {% endif %}
+
+                    <div>
+                        <a href="javascript:_toggle_options()">{{_("client.objects.search.toggle_params")}}</a>
+                    </div>
                 </div>
-                <hr>
-            {% endif %}
-
-        </div>
-
-        {% if show_search %}
-            <div></div>
-        {% else %}
-            <div>
-                <a href="javascript:_toggle_options()">{{_("client.objects.search.toggle_params")}}</a>
             </div>
-        {% endif %}
+        </div>
 
         <style>
             .options_shown {
@@ -66,7 +60,13 @@
             }
         </style>
 
-        <form {% if show_search %}class="options_shown"{% else %}class="options_hidden"{% endif %}>
+        {% if act == 'linked_to' and _object %}
+            <div>
+                <h2>{{_object.any_name}}</h2>
+            </div>
+        {% endif %}
+
+        <form class="options_hidden">
             <table>
                 <tbody>
                     <tr>
@@ -183,7 +183,7 @@
 
             <div id="pages">
                 {% if before_url and params.get('storage') %}
-                <a href="?{{before_url}}"><</a>
+                <a href="?{{before_url}}"><<</a>
                 {% endif %}
                 {% if after_url and params.get('storage') and current_page_count >= params.get('limit') %}
                     <a href="?{{after_url}}">></a>

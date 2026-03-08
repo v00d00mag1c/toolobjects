@@ -13,11 +13,7 @@ class Namespace(Displayment):
         match(act):
             case 'load_all':
                 if namespace:
-                    for item in namespace.getItems():
-                        try:
-                            item.getModule()
-                        except Exception:
-                            pass
+                    namespace.load_all()
 
                     return self.redirect('/?i=App.Objects.Index.Namespaces.Get&name=' + namespace.name)
 

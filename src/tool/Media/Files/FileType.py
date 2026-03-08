@@ -64,7 +64,7 @@ class FileType(Object):
 
         return _s
 
-    def get_url(self, from_server: bool = False) -> str:
+    def get_url(self, from_server: bool = False, ignore_source: bool = False) -> str:
         if from_server == False:
             return self.getPath()
         else:
@@ -76,11 +76,12 @@ class FileType(Object):
             if _f != None:
                 return _f.get_url() + self.storage_unit.path
 
-        _common_source = self.obj.get_common_source()
-        if _common_source == None or _common_source.obj.isInstance(URL) == False:
-            return None
+        if ignore_source == False:
+            _common_source = self.obj.get_common_source()
+            if _common_source == None or _common_source.obj.isInstance(URL) == False:
+                return None
 
-        return _common_source.obj.value
+            return _common_source.obj.value
 
     def _display_as_string(self):
         return str(self.get_url())
