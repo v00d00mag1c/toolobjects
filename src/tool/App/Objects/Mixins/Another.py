@@ -75,5 +75,15 @@ class Another():
 
         return ''
 
+    @computed_field
+    @property
+    def any_created_at(self) -> str:
+        if self.local_obj.created_at:
+            return self.local_obj.created_at
+        if self.obj.created_at:
+            return self.obj.created_at
+
+        return None
+
     def has_description(self) -> bool:
         return len(self.any_description) > 0

@@ -4,7 +4,9 @@ from App.Objects.Object import Object
 from App.Objects.Arguments.Variable import Variable
 from App.Objects.Relations.Link import Link
 from App import app
-from typing import Generator, ClassVar
+from typing import Generator, ClassVar, Optional
+from datetime import datetime, timezone
+from pydantic import Field
 import asyncio
 
 class Extractor(Executable):
@@ -13,6 +15,7 @@ class Extractor(Executable):
     '''
 
     self_name: ClassVar[str] = 'Extractor'
+    latest_timestamp: Optional[datetime] = Field(default=None)
 
     @classmethod
     def _variables(cls):
@@ -42,7 +45,7 @@ class Extractor(Executable):
         self._instance_variables.get('items').value.total_count = count
         self.trigger_variables()
 
-    async def _get_virtual_linked(self, with_role = None):
+    async def _get_virtual_linked(self, with_role = None, ids_only: bool = False):
         _items = await self.execute(self.args)
         _storage = app.Storage.get(self.getDbName())
         for item in _items.getItems():
@@ -57,19 +60,36 @@ class Extractor(Executable):
 
         _storage.adapter.commit()
 
+    async def update(self, old, response):
+        _list = ObjectsList()
+
+        for item in response.getItems():
+            if old.latest_timestamp == None or item.date > old.latest_timestamp:
+                _list.append(item)
+
+        return _list
+
     async def _implementation(self, i = {}) -> None:
         '''
-        Not supposed to return something.
+        Not supposed to return something
         '''
 
         pass
 
     async def implementation_wrap(self, i = {}) -> ObjectsList:
         self.init_vars()
-
         if asyncio.iscoroutinefunction(self._implementation):
             await self._implementation(i)
         else:
             self._implementation(i)
 
-        return self._instance_variables.get("items").value
+        items = self._instance_variables.get("items").value
+
+        try:
+            for item in items.getItems():
+                if self.latest_timestamp != None and item.any_created_at > self.latest_timestamp:
+                    self.latest_timestamp = item.any_created_at
+        except Exception as e:
+            self.log_error(e)
+
+        return items
