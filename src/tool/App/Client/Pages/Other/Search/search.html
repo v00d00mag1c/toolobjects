@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{_("client.search")}}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form method="post">
+            <div>
+                <input type="text" value="{{q}}" name="q" placeholder="{{_('client.objects.search.query')}}...">
+            </div>
+
+            {% for item in search_acts %}
+                <div>
+                    <label>
+                        <input {% if item._getNameJoined() in checkmarks %}checked{% endif %} type="checkbox" name="check_{{item._getNameJoined()}}">
+                        {{item._getNameJoined()}}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <div>
+                <input type="submit" value="{{_('client.objects.search')}}">
+            </div>
+        </form>
+    </div>
+
+    <div>
+        {% if items %}
+            {% for key, item in items.items() %}
+            <div>
+                <b>{{key}}</b>
+                <div class="result_items">
+                    {% for val in item.getItems() %}
+                        <a class="result_item" href="{{val.url}}">
+                            <div class="result_item_icon"></div>
+                            <div>
+                                <b>{{val.title}}</b>
+                                <div>
+                                    {{val.description}}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

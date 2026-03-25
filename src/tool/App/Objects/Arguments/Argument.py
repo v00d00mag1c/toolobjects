@@ -103,6 +103,9 @@ class Argument(NameContainable):
             return _val
 
         # maybe move to BaseModel.isMeets()
+        if val == None:
+            return None
+
         if val.hasDb():
             return val
 

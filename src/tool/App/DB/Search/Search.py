@@ -134,17 +134,21 @@ class Search(Act):
         for storage in storages:
             try:
                 _query = await self._search_in_storage(i, storage)
-                _objects.total_count += _query.count()
 
-                for item in _query.getAll():
-                    try:
-                        _objects.append(item.toPython())
-                    except Exception as e:
-                        self.log_error(e, exception_prefix = f"{item.uuid} not printing: ")
+                self._return_objects(_objects, _query)                   
             except Exception as e:
                 self.log_error(e)
 
         return _objects
+
+    def _return_objects(self, objects_list, query):
+        objects_list.total_count += query.count()
+
+        for item in query.getAll():
+            try:
+                objects_list.append(item.toPython())
+            except Exception as e:
+                self.log_error(e, exception_prefix = f"{item.uuid} not printing: ")
 
     async def _search_in_storage(self, i, storage):
         _query = storage.adapter.getQuery()

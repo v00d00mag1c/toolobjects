@@ -31,6 +31,9 @@ class Object(Displayment):
                 htmls = list()
                 for item in objs:
                     try:
+                        if _as == 'self':
+                            _as = item._getNameJoined()
+
                         _class = self.get_for(_as)
                         if _class == None:
                             if redirect_if_no_displayment:
@@ -41,22 +44,22 @@ class Object(Displayment):
                                 )
                             continue
                         else:
-                                displayment = _class()
-                                displayment.request = self.request
-                                displayment.context = self.context
-                                displayment.auth = self.auth
+                            displayment = _class()
+                            displayment.request = self.request
+                            displayment.context = self.context
+                            displayment.auth = self.auth
 
-                                if displayment.prefer_object_displayment == 'object':
-                                    try:
-                                        htmls.append((item, await displayment.render_as_object(item)))
-                                    except Exception as e:
-                                        htmls.append(
-                                            (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': str(e)}))
-                                        )
-                                else:
-                                    return await displayment.render_as_page({
-                                        'item': item
-                                    })
+                            if displayment.prefer_object_displayment == 'object':
+                                try:
+                                    htmls.append((item, await displayment.render_as_object(item)))
+                                except Exception as e:
+                                    htmls.append(
+                                        (item, aiohttp_jinja2.render_string('Components/message.html', self.request, {'message': str(e)}))
+                                    )
+                            else:
+                                return await displayment.render_as_page({
+                                    'item': item
+                                })
                     except Exception as e:
                         if redirect_if_no_displayment:
                             return self.redirect_to_object(item)
